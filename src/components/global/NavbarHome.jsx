@@ -84,7 +84,7 @@ const NavbarHome = () => {
       id="navbar" // Give the navbar an ID for easier selection
       className="bg-[#326350] container-fluid"
     >
-      <div className="mx-auhref px-4 sm:px-6 lg:px-8">
+      <div className="mx-auhref px-4 sm:px-6 lg:px-8 lg:py-3">
         <div className="flex items-center justify-between h-16">
           <div className="flex-shrink-0">
             <a href="/">
@@ -96,43 +96,43 @@ const NavbarHome = () => {
             </a>
           </div>
           <div className="hidden md:block">
-            <div className="flex-justify-end items-baseline space-x-4">
+            <div className="flex-justify-end items-baseline space-x-3">
               <Link
                 to="/"
-                className="text-white uppercase hover:bg-gray-700 hover:text-white px-2 py-2 rounded-md text-xs"
+                className="text-white uppercase hover:bg-gray-700 hover:text-white px-2 py-2 rounded-md text-md"
               >
                 Home
               </Link>
               <button
                 value={"about"}
                 onClick={OnNav}
-                className="text-white uppercase hover:bg-gray-700 hover:text-white px-2 py-2 rounded-md text-xs"
+                className="text-white uppercase hover:bg-gray-700 hover:text-white px-2 py-2 rounded-md text-md"
               >
                 About us{" "}
               </button>
               <button
                 value={"services"}
                 onClick={OnNav}
-                className="text-white uppercase hover:bg-gray-700 hover:text-white px-2 py-2 rounded-md text-xs"
+                className="text-white uppercase hover:bg-gray-700 hover:text-white px-2 py-2 rounded-md text-md"
               >
                 Services
               </button>
               <button
                 value={"tourist"}
                 onClick={OnNav}
-                className="text-white uppercase hover:bg-gray-700 hover:text-white px-2 py-2 rounded-md text-xs"
+                className="text-white uppercase hover:bg-gray-700 hover:text-white px-2 py-2 rounded-md text-md"
               >
                 Tourist Spot
               </button>
               <Link
                 to="/barangay"
-                className="text-white uppercase hover:bg-gray-700 hover:text-white px-2 py-2 rounded-md text-xs"
+                className="text-white uppercase hover:bg-gray-700 hover:text-white px-2 py-2 rounded-md text-md"
               >
                 List of Barangay
               </Link>
               <Link
                 to="/login"
-                className="text-white uppercase hover:bg-gray-700 hover:text-white px-2 py-2 rounded-md text-xs"
+                className="text-white uppercase hover:bg-gray-700 hover:text-white px-2 py-2 rounded-md text-md"
               >
                 Login
               </Link>
@@ -188,46 +188,46 @@ const NavbarHome = () => {
         </div>
       </div>
       <div
-        className={`${isOpen ? "block" : "hidden"} md:hidden bg-gray-800`}
+        className={`${isOpen ? "block" : "hidden"} md:hidden bg-gray-200`}
         id="mobile-menu"
       >
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
           <Link
             to="/"
-            className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            className="text-black-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
           >
             Home
           </Link>
           <button
             value={"about"}
             onClick={OnNav}
-            className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            className="text-black-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
           >
             About us
           </button>
           <button
             value={"services"}
             onClick={OnNav}
-            className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            className="text-black-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
           >
             Services
           </button>
           <button
             value={"tourist"}
             onClick={OnNav}
-            className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-          >
+            className="text-black-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >
             Tourist Spot
           </button>
           <Link
             to="/barangay"
-            className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            className="text-black-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
           >
             List of Barangay
           </Link>
           <Link
             to="/login"
-            className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            className="text-black-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
           >
             Login
           </Link>

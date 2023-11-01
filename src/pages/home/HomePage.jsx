@@ -64,7 +64,6 @@ const Homepage = () => {
           />
         </div>
       </div>
-      <div></div>
       <div className="flex justify-center sm:-mt-[20px] md:-mt-[60px] h-auto md:mx-4 lg:mx-5">
         <div className="w-full lg:my-0 lg:mx-5 relative rounded-t-[25px] h-full mx-auto bg-white shadow-2xl md:w-full flex flex-col">
           <Home />

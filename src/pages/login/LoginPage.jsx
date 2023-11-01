@@ -129,12 +129,12 @@ const Login = () => {
               <input type="checkbox" id="remember-me" className="mr-2" />
               <label
                 for="remember-me"
-                className="sm:text-[12px] md:text-[18px] text-black dark:text-black-400"
+                className="sm:text-[12px] md:text-sm text-black dark:text-black-400"
               >
                 Remember Me
               </label>
             </div>
-            <Link className="sm:text-[12px] md:text-[18px] text-sm text-black font-bold" to="/email_verify">
+            <Link className="sm:text-[12px] md:text-sm text-sm text-black font-bold" to="/email_verify">
               Forgot Password?
             </Link>
           </div>
@@ -147,7 +147,7 @@ const Login = () => {
             Login
           </button>
         </form>
-        <p className="sm:text-[12px] md:text-[18px] text-black text-center mt-2">
+        <p className="sm:text-[12px] md:text-sm text-black text-center mt-2">
           Don't have an account yet?
           <span className="font-bold">
             <Link to="/signup"> Register here.</Link>

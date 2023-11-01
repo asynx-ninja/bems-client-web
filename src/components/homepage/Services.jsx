@@ -60,7 +60,7 @@ const Services = () => {
 
       {/* Service Cards */}
       <section className="mt-4 mb-10">
-        <div className="container md:mx-auto sm:px-1 md:px-6 grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-8 w-full">
+        <div className="container md:mx-auto sm:px-0 md:px-6 grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-8 w-full">
           {services.map((service, index) => (
             <div
               key={index}

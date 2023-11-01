@@ -11,8 +11,8 @@ const Footer = () => {
   return (
     <div data-aos="fade-in" className="container-fluid w-full">
       <footer className="bg-[#295141] text-white py-8">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-wrap text-center md:text-left">
+        <div className=" mx-auto px-4">
+          <div className="flex flex-wrap text-center">
             <div className="w-full md:w-1/3">
               <h4 className="uppercase font-bold mt-5 sm:text-[14px] md:text-[18px]">About us</h4>
               <p className="sm:text-[12px] md:text-[16px]">

@@ -3,7 +3,7 @@ import React from "react";
 import NavbarHome from "../../components/global/NavbarHome";
 import { Link } from "react-router-dom";
 import video from "../../assets/image/video.mp4";
-import headerImage from '../../assets/image/header.png';
+import headerImage from "../../assets/image/header.png";
 const Barangay = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 3; // Change this to your desired number of items per page
@@ -178,17 +178,17 @@ const Barangay = () => {
           className="w-full relative rounded-t-[25px] mx-auto bg-white mb-4 shadow-2xl md:w-full flex flex-col"
         >
           <div className="relative bg-gradient-to-r from-[#295141] to-[#408D51] mx-auto justify-center items-center rounded-t-[25px] w-full">
-            <div className="bg-[url('/header-bg.png')] rounded-t-[25px]">
+            <div className="bg-[url('/header-bg.png')] sm:h-[180px] lg:h-auto rounded-t-[25px]">
               <img
                 src="https://montalbanrizalph.com/wp-content/uploads/2020/07/MONTALBAN-LOGO.png"
                 alt=""
-                className="sm:w-[120px] md:w-[160px] mx-auto absolute left-0 right-0 sm:-top-[73px] md:-top-[6rem]"
+                className="sm:w-[120px] md:w-[160px] mx-auto absolute left-0 right-0 sm:-top-[70px] md:-top-[6rem]"
               />
               <div className="h-[220px] flex flex-col justify-center items-center">
-                <h1 className="text-[26px] md:text-4xl font-bold uppercase text-white text-center pt-[40px]">
+                <h1 className="text-[22px] md:text-4xl font-bold uppercase text-white text-center pt-0 lg:pt-[40px]">
                   Municipality of Montalban
                 </h1>
-                <h6 className="text-xl md:text-2xl text-center mt-2 font-medium text-white">
+                <h6 className="text-md md:text-2xl text-center mt-2 font-medium text-white">
                   City of Rodriguez Rizal
                 </h6>
               </div>
@@ -215,30 +215,32 @@ const Barangay = () => {
 
           {/* table */}
           <div className="mt-12 px-4 md:px-8">
-            <div className="w-full h-auto bg-green-800 p-4 flex sm:flex-col md:flex-row items-center justify-between rounded-lg">
-              <h6 className="text-white sm:mb-5 md:mb-0 font-bold uppercase">
+            <div className="w-full h-auto bg-green-800 p-4 sm:p-2 md:p-4 flex flex-col md:flex-row items-center justify-between rounded-lg">
+              <h6 className="text-white mb-2 md:mb-0 font-bold uppercase">
                 List of Barangays
               </h6>
               <div className="flex items-center">
                 <input
-                  className="w-40 md:w-80 h-8 px-4 md:px-8 text-base text-gray-700 placeholder-gray-600 border rounded-lg focus:shadow-outline"
+                  className="w-full sm:w-60 md:w-96 h-8 px-4 md:px-8 text-base text-gray-700 placeholder-gray-600 border rounded-lg focus:shadow-outline"
                   type="search"
                   placeholder="Search"
                 />
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 ml-2 text-white"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  />
-                </svg>
+                <button>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6 ml-2 text-white"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    />
+                  </svg>
+                </button>
               </div>
             </div>
             <div className="py-2 mb-16 flex flex-col">
@@ -327,7 +329,7 @@ const Barangay = () => {
                               <div
                                 className=" items-center lg:py-6 py-3 px-4 border-b dark:border-gray-700"
                                 style={{
-                                  background: `url(${headerImage})`
+                                  background: `url(${headerImage})`,
                                 }}
                               >
                                 <h3 className="lg:tracking-[.4rem] tracking-widest text-md lg:text-lg font-bold uppercase text-center text-white dark:text-white">
@@ -373,10 +375,11 @@ const Barangay = () => {
                           <button
                             key={number}
                             onClick={() => handlePageChange(number)}
-                            className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${currentPage === number
-                              ? "bg-blue-500 text-white"
-                              : "border-gray-300 bg-white text-gray-500 hover:bg-gray-50"
-                              }`}
+                            className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
+                              currentPage === number
+                                ? "bg-blue-500 text-white"
+                                : "border-gray-300 bg-white text-gray-500 hover:bg-gray-50"
+                            }`}
                           >
                             {number}
                           </button>
