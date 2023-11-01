@@ -11,23 +11,16 @@ function Sent() {
     <div className="bg-[#CBD6DA] min-h-screen p-6 md:p-12 xl:p-24 flex flex-col md:flex-row">
       <div className="w-full md:w-1/4 bg-white rounded-lg p-6 mb-6 md:mb-0 md:mr-6">
         <h2 className="text-[2rem] font-bold text-green-900 mb-6">INQUIRIES</h2>
-        <button
-          data-hs-overlay="#hs-modal-compose"
-          className="mb-6 bg-green-900 py-2 px-4 rounded-full flex justify-center mx-auto items-center font-bold text-white"
-        >
-          <IoMdCreate size={20} className="mr-2" />
-          Compose
-        </button>
         <div className="mb-6">
           <Link
             to="/inquiries"
-            className="py-2 px-4 rounded-lg font-bold bg-[#d9d9d9] text-green-900 mb-4  hover:bg-green-900 hover:text-white transition ease-in-out delay-50 block"
+            className="py-2 px-4 rounded-lg font-bold lg:text-left text-center bg-[#d9d9d9] text-green-900 mb-4  hover:bg-green-900 hover:text-white transition ease-in-out delay-50 block"
           >
             Inbox
           </Link>
           <Link
             to="/sent"
-            className="py-2 px-4 rounded-lg font-bold bg-green-900 text-white transition ease-in-out delay-50 block"
+            className="py-2 px-4 rounded-lg font-bold lg:text-left text-center bg-green-900 text-white transition ease-in-out delay-50 block"
           >
             Sent
           </Link>
@@ -73,7 +66,7 @@ function Sent() {
                   type="search"
                   id="default-search"
                   className="w-full pl-10 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Search Inquiry"
+                  placeholder="Search sent messages"
                   required
                 />
               </div>
@@ -122,7 +115,7 @@ function Sent() {
                             ))}
                           <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex justify-end items-center space-x-3">
                             <Link
-                              to="/message"
+                              to="/sentmessage"
                               className="bg-blue-500 px-3 py-2 rounded-r-[20px] rounded-bl-[25px] text-white font-bold"
                             >
                               <AiFillEye size={20} />
@@ -143,6 +136,13 @@ function Sent() {
           </div>
         </div>
       </div>
+      <button
+        data-hs-overlay="#hs-modal-compose"
+        className="fixed bottom-6 right-6 bg-green-900 py-2 px-4 rounded-full flex justify-center items-center font-bold text-white"
+      >
+        <IoMdCreate size={20} className="mr-2" />
+        Compose
+      </button>
       <Compose />
       <DeleteInquiryModal />
     </div>
