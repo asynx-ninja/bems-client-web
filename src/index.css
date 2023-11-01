@@ -1,0 +1,71 @@
+
+@layer base {
+  @font-face {
+    font-family: Gilmer-Regular;
+    src: url('../src/assets/font/Gilmer-Regular.woff') format("opentype");
+  }
+  @font-face {
+    font-family: Gilmer-Bold;
+    src: url('../src/assets/font/Gilmer-Bold.woff') format("opentype");
+  }
+  @font-face {
+    font-family: Gilmer-Medium;
+    src: url('../src/assets/font/Gilmer\ Medium.otf') format("opentype");
+  }
+  @font-face {
+    font-family: Gilmer-Heavy;
+    src: url('../src/assets/font/Gilmer\ Heavy.otf') format("opentype");
+  }
+  @font-face {
+    font-family: Gilmer-Light;
+    src: url('../src/assets/font/Gilmer\ Light.otf') format("opentype");
+  }
+}
+
+:root {
+
+  font-family: "Gilmer-Regular";
+  background-color: white;
+  color: black;
+  scroll-behavior: smooth;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+::-webkit-calendar-picker-indicator {
+  filter: invert(24%) sepia(85%) saturate(7299%) hue-rotate(140deg)
+    brightness(90%) contrast(117%);
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input {
+  background-color: white;
+}
+
+.no-arrow {
+  -moz-appearance: textfield;
+}
+
+.loader {
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #3498db;
+  border-radius: 100%;
+  width: 30px;
+  height: 30px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
