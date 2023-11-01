@@ -28,8 +28,8 @@ const ServicesForm = () => {
         </div>
       </div>
 
-      <div className="w-[90%] mx-auto flex items-center">
-        <div className="flex mx-auto sm:flex-col md:flex-row w-full justify-center">
+      <div className="w-[90%] mx-auto flex items-center mt-5 px-6 lg:px-0">
+        <div className="flex mx-auto sm:flex-row md:flex-row w-full items-center gap-4 justify-center">
           <Link
             data-hs-overlay="#hs-full-screen-modal"
             className="flex items-center justify-center bg-green-700 sm:w-full md:w-[150px] sm:my-[5px] md:m-5 h-[50px] text-sm text-white font-medium rounded-lg hover:bg-gradient-to-r from-[#295141] to-[#408D51] transition duration-500 ease-in-out hover:text-custom-gold"
@@ -200,22 +200,26 @@ const ServicesForm = () => {
         </div>
       </div>
       <div
-  id="hs-toggle-between-modals-second-modal"
-  className="hs-overlay hidden w-full h-full fixed top-0 left-0 z-[60] overflow-x-visible overflow-y-auto"
->
-  <div className="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all lg:max-w-lg md:w-10/12 w-8/12 m-3 sm:mx-auto flex flex-col items-center">
-    <img
-      className="h-auto w-[100px] lg:w-[150px] -mb-[50px] lg:-mb-[75px] z-10"
-      src="https://img.icons8.com/?size=256&id=IFyb9G1c6yAC&format=png"
-    ></img>
-    <div className="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7] pt-12">
-      <div className="pb-4 px-4 overflow-y-auto mt-0 lg:mt-8 text-center">
+        id="hs-toggle-between-modals-second-modal"
+        className="hs-overlay hidden w-full h-full fixed top-0 left-0 z-[60] overflow-x-visible overflow-y-auto"
+      >
+        <div className="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all lg:max-w-lg md:w-10/12 w-8/12 m-3 sm:mx-auto flex flex-col items-center">
+          <img
+            className="h-auto w-[100px] lg:w-[150px] -mb-[50px] lg:-mb-[75px] z-10"
+            src="https://img.icons8.com/?size=256&id=IFyb9G1c6yAC&format=png"
+          ></img>
+          <div className="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7] pt-12">
+            <div className="pb-4 px-4 overflow-y-auto mt-0 lg:mt-8 text-center">
               <h3 className="font-bold lg:text-2xl text-sm text-green-800 ">
                 Success!
               </h3>
               <p className="mt-1 text-gray-800 lg:px-12 px-4 lg:text-lg text-xs">
-                Please note that you can only "<span className="text-green-500 font-bold">Edit</span>" or "<span className="text-red-500 font-bold">Delete</span>" your request in
-                “<span className="text-yellow-500 font-bold">Pending</span>" stage.
+                Please note that you can only "
+                <span className="text-green-500 font-bold">Edit</span>" or "
+                <span className="text-red-500 font-bold">Delete</span>" your
+                request in “
+                <span className="text-yellow-500 font-bold">Pending</span>"
+                stage.
               </p>
               <div className="flex justify-center pt-5">
                 <button

@@ -24,7 +24,7 @@ const NewsCarousel = () => {
                 showStatus={false}
                 autoPlay
                 infiniteLoop
-                showArrows={false}
+                showArrows={true}
                 showThumbs={false}
             >
                 {

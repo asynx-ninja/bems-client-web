@@ -55,7 +55,7 @@ const Services = () => {
       <h1 className="text-center font-bold text-2xl sm:text-lg tracking-widest text-[#326350] my-8">
         PLEASE CHOOSE FROM THE FOLLOWING SERVICES
       </h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-8 p-4 w-full max-w-7xl">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-8 p-4 w-full max-w-7xl">
         {services.map((service, index) => (
            
          <Link to={`/services_form?title=${encodeURIComponent(service.title)}`} key={index}>

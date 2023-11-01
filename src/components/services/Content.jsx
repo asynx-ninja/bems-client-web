@@ -19,8 +19,8 @@ const Content = ({ serviceTitle }) => {
     
   
     {/* DESCRIPTION */}
-  <div className="bg-white rounded-lg shadow-lg p-6 w-[90%] mx-auto mb-10">
-  <h1 className="text-custom-green-header font-bold text-[36px] w-[90%] mx-auto mb-10 text-center ">
+  <div className="bg-white rounded-lg shadow-lg p-6 lg:w-[90%] w-100 mx-auto mb-10">
+  <h1 className="text-custom-green-header font-bold text-2xl lg:text-[36px] w-[90%] mx-auto mb-10 text-center ">
       {serviceTitle}
     </h1>
     <div className="flex flex-col lg:flex-row items-start gap-10 ">
@@ -48,8 +48,8 @@ const Content = ({ serviceTitle }) => {
   
     {/* REQUIREMENTS */}
   
-    <div className="flex flex-col items-start bg-white rounded-lg shadow-lg p-6 w-[90%] mx-auto gap-5">
-      <h1 className="text-custom-green-header font-bold text-[36px] mb-10 text-center">
+    <div className="flex flex-col  bg-white rounded-lg shadow-lg p-6 lg:w-[90%] w-100 mx-auto gap-5">
+      <h1 className="text-custom-green-header font-bold text-2xl lg:text-[36px] mb-10 text-center">
         Requirements
       </h1>
       <p className="text-gray-600 mb-10 leading-relaxed">

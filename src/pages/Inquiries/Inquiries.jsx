@@ -9,8 +9,8 @@ import { Link } from 'react-router-dom';
 
 function Inquiries() {
   return (
-    <div className='bg-[#CBD6DA] h-[39.3rem] p-4 md:p-10 xl:px-24'>
-      <div className='bg-white text-white w-full h-full rounded-3xl'>
+    <div className='bg-[#CBD6DA] h-[39.3rem]  p-4 md:p-10 xl:px-24'>
+      <div className='bg-white text-white w-full h-full rounded-3xl '>
         <div className='w-full h-full flex flex-col lg:flex-row'>
           <div className='rounded-3xl h-full sm:w-full md:w-full lg:w-[25rem] lg:shadow-2xl'>
             <div className='flex flex-col items-center w-full rounded-xl'>

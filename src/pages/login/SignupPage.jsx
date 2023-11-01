@@ -14,7 +14,7 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="flex flex-col-reverse md:flex-row-reverse">
+    <div className="flex flex-col-reverse md:flex-row-reverse ">
       <div
         className="sm:hidden lg:flex flex-col justify-center items-center w-6/12 hidden"
         style={{
