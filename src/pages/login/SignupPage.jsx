@@ -1,16 +1,79 @@
 import React, { useState } from "react";
 import myImage from "../../assets/image/rizallogo2.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Carousel } from "react-responsive-carousel";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+
 const SignupPage = () => {
-  const [passwordShown, setPasswordShown] = useState(false);
-  const [repasswordShown, setRePasswordShown] = useState(false);
-  const togglePassword = () => {
-    setPasswordShown(!passwordShown);
+  const [empty, setEmpty] = useState(false);
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    middleName: "",
+    suffix: "",
+    birthday: "",
+    sex: "",
+    religion: "",
+  });
+
+  const religions = [
+    "Roman Catholic",
+    "Islam",
+    "Iglesia ni Cristo",
+    "Philippine Independent Church (Aglipayan)",
+    "Seventh-day Adventist",
+    "Bible Baptist Church",
+    "United Church of Christ in the Philippines",
+    "Jehovah Witnesses",
+    "Church of Christ",
+    "Born Again",
+    "Other Religous Affiliation",
+    // Add more religions here...
+  ];
+
+  const navigate = useNavigate();
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   };
-  const RetogglePassword = () => {
-    setRePasswordShown(!repasswordShown);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    for (let key in formData) {
+      if (key !== 'suffix' && key !== 'middleName' && !formData[key]) {
+        setEmpty(true);
+        return;
+      }
+    }
+    const birthdayDate = new Date(formData.birthday);
+
+    // Convert the Date object to a string in the format 'MM/DD/YYYY'
+
+    // Store the form data in local storage
+    localStorage.setItem(
+      "Step1",
+      JSON.stringify({
+        ...formData,
+        birthday: birthdayDate, // Use the birthday string instead of the original date
+      })
+    );
+
+    // Clear the form
+    setFormData({
+      firstName: "",
+      lastName: "",
+      middleName: "",
+      suffix: "",
+      birthday: "",
+      sex: "",
+    });
+
+    setEmpty(false);
+
+    // Navigate to the next page
+    navigate("/next_signup");
   };
 
   return (
@@ -63,7 +126,10 @@ const SignupPage = () => {
                 Immerse yourself in the rich culture and stunning landscapes of
                 our city.
               </p>
-              <Link to="/#" className="bg-white text-green-700 px-6 py-2 rounded-lg font-bold">
+              <Link
+                to="/#"
+                className="bg-white text-green-700 px-6 py-2 rounded-lg font-bold"
+              >
                 Discover More
               </Link>
             </div>
@@ -83,142 +149,109 @@ const SignupPage = () => {
           </h1>
         </div>
 
-        <form action="" className="sm:w-[80%] md:w-9/12 lg:w-9/12">
-          <div className=" flex sm:flex-col md:flex-row md:gap-4">
+        <form className="sm:w-[80%] md:w-9/12 lg:w-9/12">
+          {empty && (
+            <div
+              className="bg-red-50 border border-red-200 text-sm text-red-600 rounded-md p-4 mt-2 mb-4"
+              role="alert"
+            >
+              <span className="font-bold">Warning:</span> Please fill-out all
+              fields!
+            </div>
+          )}
+          <h1 className="py-3 mb-3 font-bold">Step 1: Personal Information</h1>
+          <div className="flex sm:flex-col md:flex-row md:gap-4">
             <div className="relative z-0 w-full mb-3 group">
-              {/* <label
-                for="input-label"
-                className="block text-sm font-medium mb-2 dark:text-black"
-              >
-                Firstname
-              </label> */}
               <input
-                required
+              
                 type="text"
-                id="input-label"
-                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 "
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleChange}
+                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500"
                 placeholder="Enter your firstname"
               />
             </div>
             <div className="relative z-0 w-full mb-3 group">
-              {/* <label
-                for="input-label"
-                className="block text-sm font-medium mb-2 dark:text-black"
-              >
-                Lastname
-              </label> */}
               <input
-                required
+                
                 type="text"
-                id="input-label"
-                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 "
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500"
                 placeholder="Enter your lastname"
               />
             </div>
           </div>
-          <div className=" flex sm:flex-col md:flex-row md:gap-4">
+          <div className="flex sm:flex-col md:flex-row md:gap-4">
             <div className="relative z-0 w-full mb-3 group">
-              {/* <label
-                for="input-label"
-                className="block text-sm font-medium mb-2 dark:text-black"
-              >
-                Birthdate
-              </label> */}
-
               <input
-                required
-                type="date"
-                id="input-label"
-                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 "
+                
+                type="text"
+                name="middleName"
+                value={formData.middleName}
+                onChange={handleChange}
+                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500"
+                placeholder="Enter your middle name"
               />
             </div>
             <div className="relative z-0 w-full mb-3 group">
-              {/* <label
-                for="input-label"
-                className="block text-sm font-medium mb-2 dark:text-black"
-              >
-                Sex
-              </label> */}
+              <input
+                
+                type="text"
+                name="suffix"
+                value={formData.suffix}
+                onChange={handleChange}
+                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500"
+                placeholder="Enter your suffix (optional)"
+              />
+            </div>
+          </div>
+          <div className="flex sm:flex-col md:flex-row md:gap-4">
+            <div className="relative z-0 w-full mb-3 group">
+              <input
+                
+                type="date"
+                name="birthday"
+                value={formData.birthday}
+                onChange={handleChange}
+                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500"
+              />
+            </div>
+            <div className="relative z-0 w-full mb-3 group">
               <select
-                required
-                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 "
+                
+                name="sex"
+                value={formData.sex}
+                onChange={handleChange}
+                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500"
               >
-                <option selected>Male</option>
-                <option>Female</option>
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
               </select>
             </div>
-          </div>
-          <div className="relative z-0 w-full mb-3 group">
-            {/* <label
-              for="input-label"
-              className="block text-sm font-medium mb-2 dark:text-black"
-            >
-              Email
-            </label> */}
-            <input
-              type="email"
-              id="input-label"
-              className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 "
-              placeholder="Enter your email"
-              required
-            />
-          </div>
-          <div className=" flex sm:flex-col md:flex-row md:gap-4">
             <div className="relative z-0 w-full mb-3 group">
-              {/* <label
-                for="input-label"
-                className="block text-sm font-medium mb-2 dark:text-black"
+              <select
+                
+                name="religion"
+                value={formData.religion}
+                onChange={handleChange}
+                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500"
               >
-                Password
-              </label> */}
-              <input
-                required
-                type={passwordShown ? "text" : "password"}
-                placeholder="Enter password"
-                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 "
-              />
-              <button
-                type="button"
-                onClick={togglePassword}
-                className="absolute top-0 right-0 p-2.5 mt-1 text-sm font-medium text-white"
-              >
-                {passwordShown ? (
-                  <AiOutlineEye style={{ color: "green" }} size={20} />
-                ) : (
-                  <AiOutlineEyeInvisible style={{ color: "green" }} size={20} />
-                )}
-              </button>
-            </div>
-            <div className="relative z-0 w-full mb-3 group">
-              {/* <label
-                for="input-label"
-                className="block text-sm font-medium mb-2 dark:text-black"
-              >
-                Re-enter Password
-              </label> */}
-              <input
-                required
-                type={repasswordShown ? "text" : "password"}
-                placeholder="Re-enter password"
-                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 "
-              />
-              <button
-                type="button"
-                onClick={RetogglePassword}
-                className="absolute top-0 right-0 p-2.5 mt-1 text-sm font-medium text-white"
-              >
-                {repasswordShown ? (
-                  <AiOutlineEye style={{ color: "green" }} size={20} />
-                ) : (
-                  <AiOutlineEyeInvisible style={{ color: "green" }} size={20} />
-                )}
-              </button>
+                <option value="">Select Religion</option>
+                {religions.map((religion) => (
+                  <option value={religion}>{religion}</option>
+                ))}
+              </select>
             </div>
           </div>
           <Link to="/next_signup">
             <button
-              type="button"
-              className="w-full mt-5 text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-green-700 dark:hover:bg-green-800 dark:focus:ring-gray-700 dark:border-gray-700"
+              onClick={handleSubmit}
+              type="submit"
+              className="w-full mt-5 text-center text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-green-700 dark:hover:bg-green-800 dark:focus:ring-gray-700 dark:border-gray-700"
             >
               Next
             </button>
@@ -234,5 +267,4 @@ const SignupPage = () => {
     </div>
   );
 };
-
 export default SignupPage;

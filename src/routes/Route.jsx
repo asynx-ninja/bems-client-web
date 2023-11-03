@@ -12,7 +12,7 @@ import Barangay from "../pages/home/Barangay";
 import Login from "../pages/login/LoginPage";
 import Signup from "../pages/login/SignupPage";
 import Nextsignup from "../pages/login/NextSignup";
-
+import Lastsignup from "../pages/login/LastPage";
 
 import Changepass from "../pages/forgotpass/Changepass";
 import Codeverify from "../pages/forgotpass/Codeverify";
@@ -163,6 +163,10 @@ const pages = [
   {
     path: "/next_signup",
     element: <Nextsignup />,
+  },
+  {
+    path: "/last_signup",
+    element: <Lastsignup />,
   },
   {
     path: "/barangay",

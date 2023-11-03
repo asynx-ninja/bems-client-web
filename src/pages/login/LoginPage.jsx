@@ -92,6 +92,7 @@ const Login = () => {
               Email
             </label> */}
             <input
+              name="email"
               type="email"
               id="input-label"
               className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 "
@@ -107,6 +108,7 @@ const Login = () => {
               Password
             </label> */}
             <input
+              name="password"
               type={passwordShown ? "text" : "password"}
               placeholder="Enter your password"
               className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 "
