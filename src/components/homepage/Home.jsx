@@ -9,9 +9,9 @@ const Home = () => {
         <div className="relative bg-gradient-to-r from-[#295141] to-[#408D51] mx-auto justify-center items-center rounded-t-[25px]">
           <div className="bg-[url('/header-bg.png')] sm:h-[180px] lg:h-auto rounded-t-[25px]">
             <img
-              src="https://montalbanrizalph.com/wp-content/uploads/2020/07/MONTALBAN-LOGO.png"
+              src="./../src/assets/header/montalban-logo.png"
               alt=""
-              className="sm:w-[120px] md:w-[160px] mx-auto absolute left-0 right-0 sm:-top-[70px] md:-top-[6rem]"
+              className="sm:w-[120px] md:w-[160px] mx-auto absolute left-0 right-0 sm:-top-[65px] md:-top-[5.5rem]"
             />
             <div className="h-[220px] flex flex-col justify-center items-center">
               <h1 className="text-[22px] md:text-4xl font-bold uppercase text-white text-center pt-0 lg:pt-[40px]">

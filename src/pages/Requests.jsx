@@ -110,6 +110,14 @@ const Requests = () => {
                 </div>
               </form>
             </div>
+
+            <div>
+              <button
+                className='w-full lg:w-40 mb-5 lg:mb-0 py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border font-medium text-white shadow-sm align-middle bg-custom-green-table-header ml-[20px]'
+              >
+                Print Records
+              </button>
+            </div>
           </div>
 
           {/* Table */}
@@ -142,7 +150,7 @@ const Requests = () => {
                     </div>
                   </th>
 
-               
+
 
                   {/* Type of Service */}
                   <th
@@ -338,8 +346,8 @@ const Requests = () => {
                         </div>
                       </td>
 
-                       {/* Action */}
-                       <td className="px-2 py-2 sm:px-3 sm:py-3 w-[15%] sm:w-1/5 whitespace-nowrap border">
+                      {/* Action */}
+                      <td className="px-2 py-2 sm:px-3 sm:py-3 w-[15%] sm:w-1/5 whitespace-nowrap border">
                         {/* Action Buttons */}
                         <div className="flex justify-center space-x-none">
                           {/* View */}
@@ -418,8 +426,8 @@ const Requests = () => {
                         </div>
                       </td>
 
-                       {/* Action */}
-                       <td className="px-2 py-2 sm:px-3 sm:py-3 w-[15%] sm:w-1/5 whitespace-nowrap border">
+                      {/* Action */}
+                      <td className="px-2 py-2 sm:px-3 sm:py-3 w-[15%] sm:w-1/5 whitespace-nowrap border">
                         {/* Action Buttons */}
                         <div className="flex justify-center space-x-none">
                           {/* View */}
@@ -491,7 +499,7 @@ const Requests = () => {
           </div>
         </div>
       </div>
-      <DeleteRequestModal/>
+      <DeleteRequestModal />
     </div>
   );
 };

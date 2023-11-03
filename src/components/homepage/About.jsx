@@ -36,7 +36,7 @@ const About = () => {
               <div className="h-64 bg-white shadow-2xl rounded-md">
                 <img
                   className="h-64 justify-center text-center mx-auto"
-                  src="https://montalbanrizalph.com/wp-content/uploads/2023/06/sdffsdfsdf-1-1024x599.png"
+                  src="./../src/assets/image/montalban-without-logo.png"
                   alt=""
                 />
               </div>
@@ -59,7 +59,7 @@ const About = () => {
             <div className="w-0 md:w-0 lg:w-1/2 sm:p-0 md:p-6 order-2 md:order-1 hidden sm:hidden md:hidden lg:block">
               <div className="h-64 bg-white shadow-2xl rounded-md">
                 <img
-                  src="https://scontent.fmnl8-1.fna.fbcdn.net/v/t39.30808-6/361105239_1037202984219868_9062298605297921981_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeGU8kputhlPdli0Esa8-A5WSUSNFP8DV-NJRI0U_wNX42Ml54B1E4KEgd3qljEhUI0l7MNNSHJmqHYMCUwKKUwc&_nc_ohc=6y1JI5V67koAX9y3X_E&_nc_ht=scontent.fmnl8-1.fna&oh=00_AfBLpJkQwUlrodaLiewoIEy3aGOrNAH6bkzfZsqSJ8T0Kw&oe=6546A963"
+                  src="./../src/assets/image/mayor.jpg"
                   className="h-64 justify-center text-center mx-auto object-fill"
                   alt=""
                 />
@@ -96,7 +96,7 @@ const About = () => {
               <div className="">
                 <img
                   className="flex mx-auto h-72"
-                  src="https://montalbanrizalph.com/wp-content/uploads/2023/07/asd.png"
+                  src="./../src/assets/image/mobile.png"
                   alt=""
                 />
               </div>
