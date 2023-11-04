@@ -42,7 +42,7 @@ const SignupPage = () => {
     e.preventDefault();
 
     for (let key in formData) {
-      if (key !== 'suffix' && key !== 'middleName' && !formData[key]) {
+      if (key !== "suffix" && key !== "middleName" && !formData[key]) {
         setEmpty(true);
         return;
       }
@@ -163,7 +163,6 @@ const SignupPage = () => {
           <div className="flex sm:flex-col md:flex-row md:gap-4">
             <div className="relative z-0 w-full mb-3 group">
               <input
-              
                 type="text"
                 name="firstName"
                 value={formData.firstName}
@@ -174,7 +173,6 @@ const SignupPage = () => {
             </div>
             <div className="relative z-0 w-full mb-3 group">
               <input
-                
                 type="text"
                 name="lastName"
                 value={formData.lastName}
@@ -187,7 +185,6 @@ const SignupPage = () => {
           <div className="flex sm:flex-col md:flex-row md:gap-4">
             <div className="relative z-0 w-full mb-3 group">
               <input
-                
                 type="text"
                 name="middleName"
                 value={formData.middleName}
@@ -198,7 +195,6 @@ const SignupPage = () => {
             </div>
             <div className="relative z-0 w-full mb-3 group">
               <input
-                
                 type="text"
                 name="suffix"
                 value={formData.suffix}
@@ -211,7 +207,6 @@ const SignupPage = () => {
           <div className="flex sm:flex-col md:flex-row md:gap-4">
             <div className="relative z-0 w-full mb-3 group">
               <input
-                
                 type="date"
                 name="birthday"
                 value={formData.birthday}
@@ -221,7 +216,6 @@ const SignupPage = () => {
             </div>
             <div className="relative z-0 w-full mb-3 group">
               <select
-                
                 name="sex"
                 value={formData.sex}
                 onChange={handleChange}
@@ -232,20 +226,19 @@ const SignupPage = () => {
                 <option value="Female">Female</option>
               </select>
             </div>
-            <div className="relative z-0 w-full mb-3 group">
-              <select
-                
-                name="religion"
-                value={formData.religion}
-                onChange={handleChange}
-                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500"
-              >
-                <option value="">Select Religion</option>
-                {religions.map((religion) => (
-                  <option value={religion}>{religion}</option>
-                ))}
-              </select>
-            </div>
+          </div>
+          <div className="relative z-0 w-full mb-3 group">
+            <select
+              name="religion"
+              value={formData.religion}
+              onChange={handleChange}
+              className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500"
+            >
+              <option value="">Select Religion</option>
+              {religions.map((religion) => (
+                <option value={religion}>{religion}</option>
+              ))}
+            </select>
           </div>
           <Link to="/next_signup">
             <button

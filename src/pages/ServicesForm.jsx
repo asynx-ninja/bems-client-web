@@ -1,18 +1,32 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
 
 import Breadcrumbs from "../components/services/Breadcrumbs";
 import Content from "../components/services/Content";
 import headerImage from "../assets/image/header.png";
+
 const ServicesForm = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const serviceTitle = queryParams.get("title") || "Default Service Title";
+  const serviceDetails = queryParams.get("details");
+  const banner = queryParams.get("banner");
+  const logo = queryParams.get("logo");
+  const file = queryParams.get("file");
+  const navigate = useNavigate();
+  const { id, brgy } = useParams();
+
+  const handleLinkClick = () => {
+    // Perform any additional logic you need here
+
+    // Navigate to the new page
+    navigate(-1);
+  };
   return (
     <div className="w-full flex flex-col sm:px-[15px] lg:px-[70px] pt-[40px] mb-[30px]">
       <img
         className=" rounded-[25px] h-[300px] object-cover"
-        src="./../src/assets/article/banner.jpg"
+        src={banner}
         alt=""
       />
 
@@ -24,7 +38,12 @@ const ServicesForm = () => {
         </div>
 
         <div>
-          <Content serviceTitle={serviceTitle} />
+          <Content
+            serviceTitle={serviceTitle}
+            serviceDetails={serviceDetails}
+            logo={logo}
+            file={file}
+          />
         </div>
       </div>
 
@@ -37,7 +56,7 @@ const ServicesForm = () => {
             Submit a request
           </Link>
           <Link
-            to="/"
+            onClick={handleLinkClick}
             className="flex items-center justify-center bg-custom-red sm:w-full md:w-[150px] h-[50px] sm:my-[20px] text-sm md:m-5 text-white font-medium rounded-lg hover:bg-gradient-to-r from-[#B90000] to-[#FF2828] transition duration-500 ease-in-out hover:text-custom-gold"
           >
             Back
@@ -57,7 +76,7 @@ const ServicesForm = () => {
               className="flex justify-between items-center py-3 px-4 border-b dark:border-gray-700"
             >
               <h3 className="lg:tracking-[.2rem] tracking-widest text-md lg:text-lg font-bold uppercase text-center text-white ">
-                Certificate of Indigency Request Form
+                {serviceTitle}
               </h3>
             </div>
 

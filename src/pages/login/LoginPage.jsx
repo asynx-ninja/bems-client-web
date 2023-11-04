@@ -1,15 +1,37 @@
 import React, { useState } from "react";
 import myImage from "../../assets/image/rizallogo2.png";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Carousel } from "react-responsive-carousel";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import axios from "axios";
+import API_LINK from "../../config/API";
 const Login = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [passwordShown, setPasswordShown] = useState(false);
+  const type = "Resident";
   const togglePassword = () => {
     setPasswordShown(!passwordShown);
   };
-  
+
+  const handleLogin = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await axios.get(
+        `${API_LINK}/auth/${username}/${password}/${type}`
+      );
+      
+     
+
+      navigate(`/dashboard/${response.data[0]._id}/${response.data[0].address.brgy}`);
+    } catch (error) {
+      // Login failed
+      // Show an error message
+      alert(error.response.data.error);
+    }
+  };
   return (
     <div className="contaiiner  flex flex-col-reverse md:flex-row-reverse">
       <div
@@ -83,35 +105,27 @@ const Login = () => {
           </h1>
         </div>
 
-        <form action="" className="sm:w-[80%] md:w-8/12 lg:w-8/12">
+        <form className="sm:w-[80%] md:w-8/12 lg:w-8/12">
           <div className="relative z-0 w-full mb-3 group">
-            {/* <label
-              for="input-label"
-              className="block text-sm font-medium mb-2 dark:text-black"
-            >
-              Email
-            </label> */}
             <input
-              name="email"
-              type="email"
+              name="username"
+              type="text"
               id="input-label"
               className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 "
-              placeholder="Enter your email"
+              placeholder="Enter your username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               required
             />
           </div>
           <div className="relative z-0 w-full mb-3 group">
-            {/* <label
-              for="input-label"
-              className="block text-sm font-medium mb-2 dark:text-black"
-            >
-              Password
-            </label> */}
             <input
               name="password"
               type={passwordShown ? "text" : "password"}
               placeholder="Enter your password"
               className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 "
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
             <button
               type="button"
@@ -125,25 +139,26 @@ const Login = () => {
               )}
             </button>
           </div>
-
           <div className="relative z-0 w-full mb-3 group flex items-center justify-between">
             <div className="flex items-center">
               <input type="checkbox" id="remember-me" className="mr-2" />
               <label
-                for="remember-me"
+                htmlFor="remember-me"
                 className="sm:text-[12px] md:text-sm text-black dark:text-black-400"
               >
                 Remember Me
               </label>
             </div>
-            <Link className="sm:text-[12px] md:text-sm text-sm text-black font-bold" to="/email_verify">
+            <Link
+              className="sm:text-[12px] md:text-sm text-sm text-black font-bold"
+              to="/email_verify"
+            >
               Forgot Password?
             </Link>
           </div>
-
           <button
-            type="button"
-            onClick={() => {navigate('/dashboard')}}
+            type="submit"
+            onClick={handleLogin}
             className="w-full mt-5 text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-green-700 dark:hover:bg-green-800 dark:focus:ring-gray-700 dark:border-gray-700"
           >
             Login

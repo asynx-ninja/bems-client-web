@@ -42,15 +42,17 @@ const LastPage = () => {
     // Check if the password meets the requirements when the user types in the password field
     if (event.target.name === "password") {
       const password = event.target.value;
-      const passwordRegex =
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-      if (!passwordRegex.test(password)) {
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/;
+      const symbolRegex = /[@$!%*?&]/;
+
+      if (!passwordRegex.test(password) || !symbolRegex.test(password)) {
         setPasswordStrengthError(true);
         setPasswordStrengthSuccess(false);
       } else {
         setPasswordStrengthError(false);
         setPasswordStrengthSuccess(true);
       }
+      // Check if passwords match
 
       let strength = 0;
       if (password.length >= 8) strength++;
@@ -82,27 +84,33 @@ const LastPage = () => {
       !formData.email ||
       !formData.username ||
       !formData.password ||
-      !formData.confirmPassword 
+      !formData.confirmPassword
     ) {
       setEmpty(true);
-      setDuplicateError(false)
+      setDuplicateError(false);
+      setShowError(false);
       return;
       // Proceed with form submission...
+    } else {
+      setEmpty(false);
     }
 
     if (!termsAccepted || !policyAccepted) {
       setShowError(true);
+      setDuplicateError(false);
+      setEmpty(false);
       return;
     } else {
       setShowError(false);
     }
-    // Check if passwords match
     if (formData.password !== formData.confirmPassword) {
       setPasswordError(true);
       setPasswordMatchSuccess(false);
       return;
+    } else {
+      setPasswordError(false);
+      setPasswordMatchSuccess(true);
     }
-    setPasswordError(false);
     // Check if username and email already exist
 
     console.log(formData);
@@ -148,6 +156,8 @@ const LastPage = () => {
 
       if (usernameExists || emailExists) {
         setDuplicateError(true);
+        setEmpty(false);
+        setShowError(false);
       } else {
         setDuplicateError(false);
         // Proceed with registration...
@@ -155,6 +165,8 @@ const LastPage = () => {
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
         setDuplicateError(error.response.data.error);
+        setEmpty(false);
+        setShowError(false);
       } else {
         setDuplicateError("An unknown error occurred.");
       }
@@ -171,7 +183,14 @@ const LastPage = () => {
       setShowError(false);
       setDuplicateError(false);
       setsuccessReg(true);
-      //   navigate("/loading");
+      
+      const email = btoa(obj._id);
+      const barangay = btoa(obj.address.brgy);
+      
+      
+      setTimeout(function () {
+        navigate(`/loading/${email}/${barangay}`);
+      }, 3000);
       console.log(response);
       // Redirect to the second signup page
     } catch (error) {
@@ -397,7 +416,7 @@ const LastPage = () => {
               <span className="font-bold">Sucess:</span> Password match
             </div>
           )}
-          {passwordStrengthError && passwordStrength < 75 && (
+          {passwordStrengthError && passwordStrength < 100 && (
             <div
               className="bg-orange-50 border border-orange-200 text-sm text-orange-600 rounded-md p-4 mt-2"
               role="alert"

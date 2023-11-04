@@ -4,22 +4,24 @@ import { BsTrash3 } from "react-icons/bs";
 import { AiFillEye } from "react-icons/ai";
 import Compose from "../../components/inquiriesComponents/Compose";
 import DeleteInquiryModal from "../../components/inquiriesComponents/DeleteModal";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+
 
 function Inquiries() {
+  const {id, brgy} = useParams();
   return (
     <div className="bg-[#CBD6DA] min-h-screen p-6 md:p-12 xl:p-24 flex flex-col md:flex-row">
       <div className="w-full md:w-1/4 bg-white rounded-lg p-6 mb-6 md:mb-0 md:mr-6">
         <h2 className="text-[2rem] font-bold text-green-900 mb-6">INQUIRIES</h2>
         <div className="mb-6">
           <Link
-            to="/inquiries"
+            to={`/inquiries/${id}/${brgy}`}
             className="py-2 px-4 rounded-lg font-bold lg:text-left text-center bg-green-900 text-white  mb-4  transition ease-in-out delay-50 block"
           >
             Inbox
           </Link>
           <Link
-            to="/sent"
+            to={`/sent/${id}/${brgy}`}
             className="py-2 px-4 rounded-lg font-bold lg:text-left text-center bg-[#d9d9d9] text-green-900 hover:bg-green-900 hover:text-white transition ease-in-out delay-50 block"
           >
             Sent
@@ -115,7 +117,7 @@ function Inquiries() {
                             ))}
                           <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex justify-end items-center space-x-3">
                             <Link
-                              to="/message"
+                              to={`/message/${id}/${brgy}`}
                               className="bg-blue-500 px-3 py-2 rounded-r-[20px] rounded-bl-[25px] text-white font-bold"
                             >
                               <AiFillEye size={20} />

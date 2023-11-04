@@ -11,10 +11,15 @@ import {
   FaAngleDown,
   FaAngleUp,
 } from 'react-icons/fa';
+import { useParams } from 'react-router-dom';
 
 const Sidebar = () => {
   const [isCollapse, onCollapse] = useState(false)
+  const {id, brgy} = useParams();
 
+
+
+ console.log("id", id)
   const OnOpen = () => {
     if (isCollapse) {
       onCollapse(false)
@@ -22,7 +27,7 @@ const Sidebar = () => {
       onCollapse(true)
     }
   }
-
+  
   return (
     <div>
       {/* SIDE BAR */}
@@ -40,7 +45,7 @@ const Sidebar = () => {
 
             <div>
               <Link
-                to="/dashboard"
+                to={`/dashboard/${id}/${brgy}`}
                 onClick={() => {
                   window.innerWidth >= 320 && window.innerWidth <= 1023
                     ? document
@@ -54,7 +59,7 @@ const Sidebar = () => {
                 <h1 className='text-bold my-auto font-bold text-sm'>DASHBOARD</h1>
               </Link>
               <Link
-                to="/settings"
+                to={`/settings/${id}/${brgy}`}
                 onClick={() => {
                   window.innerWidth >= 320 && window.innerWidth <= 1023
                     ? document
@@ -99,7 +104,7 @@ const Sidebar = () => {
                 aria-labelledby="hs-unstyled-collapse"
               >
                 <Link
-                  to="/services"
+                 to={`/services/${id}/${brgy}`}
                   onClick={() => {
                     window.innerWidth >= 320 && window.innerWidth <= 1023
                       ? document
@@ -112,7 +117,7 @@ const Sidebar = () => {
                   <h1 className='text-bold my-auto font-bold w-[50px]  text-sm'>SERVICES</h1>
                 </Link>
                 <Link
-                  to="/requests"
+                  to={`/requests/${id}/${brgy}`}
                   onClick={() => {
                     window.innerWidth >= 320 && window.innerWidth <= 1023
                       ? document
@@ -126,7 +131,7 @@ const Sidebar = () => {
                 </Link>
               </div>
               <Link
-                to="/barangay-info"
+                to={`/barangay-info/${id}/${brgy}`}
                 onClick={() => {
                   window.innerWidth >= 320 && window.innerWidth <= 1023
                     ? document
@@ -139,7 +144,7 @@ const Sidebar = () => {
                 <h1 className='text-bold my-auto font-bold w-[50px] leading-[15px] text-sm'>BARANGAY INFORMATION</h1>
               </Link>
               <Link
-                to="/inquiries"
+                to={`/inquiries/${id}/${brgy}`}
                 onClick={() => {
                   window.innerWidth >= 320 && window.innerWidth <= 1023
                     ? document
