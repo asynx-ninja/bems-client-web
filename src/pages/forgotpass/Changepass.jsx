@@ -1,9 +1,30 @@
 import React, { useState } from "react";
 import myImage from "../../assets/image/rizallogo2.png";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Carousel } from "react-responsive-carousel";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import API_LINK from "../../config/API";
+import axios from "axios";
+
+
 const Changepass = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const client_email = atob(location.pathname.split("/")[2])
+  const [password, setPassword] = useState({
+    enter: "",
+    reenter: ""
+  })
+  const [response, setResponse] = useState({
+    success: false,
+    error: false,
+    message: ""
+  });
+  const [credential, setCredential] = useState({
+    email: "",
+    password: ""
+  })
+
   const [passwordShown, setPasswordShown] = useState(false);
   const [repasswordShown, setRePasswordShown] = useState(false);
   const togglePassword = () => {
@@ -12,6 +33,57 @@ const Changepass = () => {
   const RetogglePassword = () => {
     setRePasswordShown(!repasswordShown);
   };
+
+  const handleOnChange = (e) => {
+    setPassword((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }))
+    setCredential({
+      email: client_email,
+      password: password.enter
+    })
+  }
+
+  const handleOnSubmit = async () => {
+    try {
+
+      if (password.enter !== password.reenter) {
+        setResponse({
+          success: false,
+          error: true,
+          message: "Password does not Match! Please Try Again"
+        })
+      } else {
+        await axios.post(`${API_LINK}/auth/pass/`, credential, {
+          headers: {
+            'Content-Type': 'application/json',
+        }})
+
+        setResponse({
+          success: true,
+          error: false,
+          message: "Password Change Successfully!"
+        })
+
+        setTimeout(
+          navigate('/login')
+        , 3000)
+      }
+    } catch (error) {
+      setResponse({
+        success: false,
+        error: true,
+        message: "Error: Please Try Again"
+      })
+      console.log(error)
+    }
+  }
+
+  // console.log(email)
+  // console.log(password.enter)
+  // console.log(password.reenter)
+
   return (
     <div className="flex flex-col-reverse md:flex-row-reverse">
       <div
@@ -105,6 +177,24 @@ const Changepass = () => {
             </div>
           </div>
         </div>
+
+        <div>
+          {
+            response.success ? (
+              <div className="w-[100%] bg-green-400 rounded-md mt-[10px] flex">
+                <p className="py-[10px] text-[12px] px-[20px] text-white font-medium">{response.message}</p>
+              </div>
+            ) : null
+          }
+          {
+            response.error ? (
+              <div className="w-[100%] bg-red-500 rounded-md mt-[10px] flex">
+                <p className="py-[10px] text-[12px] px-[20px] text-white font-medium">{response.message}</p>
+              </div>
+            ) : null
+          }
+        </div>
+
         <form action="" className="sm:w-[80%] mt-5 md:w-8/12 lg:w-8/12">
           <div className="relative z-0 w-full mb-3 group">
             {/* <label
@@ -115,6 +205,8 @@ const Changepass = () => {
               </label> */}
             <input
               required
+              name="enter"
+              onChange={handleOnChange}
               type={passwordShown ? "text" : "password"}
               placeholder="Enter password"
               className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 "
@@ -140,6 +232,8 @@ const Changepass = () => {
               </label> */}
             <input
               required
+              name="reenter"
+              onChange={handleOnChange}
               type={repasswordShown ? "text" : "password"}
               placeholder="Re-enter password"
               className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 "
@@ -156,14 +250,13 @@ const Changepass = () => {
               )}
             </button>
           </div>
-          <Link to="/#">
-            <button
-              type="button"
-              className="w-full text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-green-700 dark:hover:bg-green-800 dark:focus:ring-gray-700 dark:border-gray-700"
-            >
-              Submit
-            </button>
-          </Link>
+          <button
+            type="button"
+            onClick={handleOnSubmit}
+            className="w-full text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-green-700 dark:hover:bg-green-800 dark:focus:ring-gray-700 dark:border-gray-700"
+          >
+            Submit
+          </button>
         </form>
       </div>
     </div>

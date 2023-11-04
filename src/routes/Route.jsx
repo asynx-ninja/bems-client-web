@@ -133,7 +133,7 @@ const pages = [
     ),
   },
   {
-    path: "/change_pass",
+    path: "/change_pass/:email",
     element: <Changepass />,
   },
   {
@@ -141,7 +141,7 @@ const pages = [
     element: <Emailverify />,
   },
   {
-    path: "/code_verify",
+    path: "/code_verify/:email",
     element: <Codeverify />,
   },
   {

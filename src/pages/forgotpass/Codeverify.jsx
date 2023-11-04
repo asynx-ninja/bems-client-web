@@ -1,14 +1,28 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import myImage from "../../assets/image/rizallogo2.png";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Carousel } from "react-responsive-carousel";
 
+import useCountdown from "../../hooks/useCountdown";
+import axios from "axios";
+import API_LINK from "../../config/API";
+
 const Codeverfiy = () => {
+  const navigate = useNavigate()
+  const location = useLocation();
+  const email = atob(location.pathname.split("/")[2])
+  const { remainingSeconds, isCountdownRunning, startCountdown } = useCountdown(30);
   const [code, setCode] = useState("");
   const inputRefs = useRef([]);
   const setInputRef = (index, element) => {
     inputRefs.current[index] = element;
   };
+  const [response, setResponse] = useState({
+    success: false,
+    error: false,
+    message: ""
+  });
+
   // This handleOnChange will get the code inputted by the user
   const handleOnChange = (event, index) => {
     // Only allow one digit
@@ -30,6 +44,60 @@ const Codeverfiy = () => {
       inputRefs.current[index + 1].focus();
     }
   };
+
+  const handleBackspaceAndEnter = (e, index) => {
+    if (e.key === "Backspace" && !e.target.value && index > 0) {
+      inputRefs.current[index - 1].focus();
+    }
+    if (e.key === "Enter" && e.target.value && index < numberOfDigits - 1) {
+      inputRefs.current[index + 1].focus();
+    }
+  };
+
+  const handleOnSubmit = async () => {
+    try {
+      const res = await axios.get(`${API_LINK}/auth/check_pin/${email}/${code}`)
+      const encodedEmail = btoa(email);
+
+      if (res.status === 200) {
+        setResponse({
+          success: true,
+          error: false,
+          message: "Success!"
+        })
+
+        setTimeout(
+          navigate(`/change_pass/${encodedEmail}`)
+          , 3000)
+
+      }
+    } catch (error) {
+      setResponse({
+        success: false,
+        error: true,
+        message: "Incorrect Code! Please Try Again"
+      })
+      console.log(error)
+    }
+
+  }
+
+  const handleOnResend = async () => {
+    try{
+      const res = await axios.get(`${API_LINK}/auth/send_pin/${email}`)
+
+      if (res.status === 200){
+        startCountdown()
+      }
+      
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  // console.log(email)
+  // console.log(code)
+
   return (
     <div className="flex flex-col-reverse md:flex-row-reverse">
       <div
@@ -124,6 +192,24 @@ const Codeverfiy = () => {
             </div>
           </div>
         </div>
+
+        <div>
+          {
+            response.success ? (
+              <div className="w-[100%] bg-green-400 rounded-md mt-[10px] flex">
+                <p className="py-[10px] text-[12px] px-[20px] text-white font-medium">{response.message}</p>
+              </div>
+            ) : null
+          }
+          {
+            response.error ? (
+              <div className="w-[100%] bg-red-500 rounded-md mt-[10px] flex">
+                <p className="py-[10px] text-[12px] px-[20px] text-white font-medium">{response.message}</p>
+              </div>
+            ) : null
+          }
+        </div>
+
         <form action="" className="mt-5 sm:w-[80%] md:w-8/12 lg:w-9/12">
           <div className="grid grid-cols-4 md:gap-3 gap-2 lg:mx-5">
             {[...Array(4)].map((_, index) => (
@@ -134,6 +220,7 @@ const Codeverfiy = () => {
                   ref={(el) => setInputRef(index, el)}
                   value={code.charAt(index)}
                   onChange={(event) => handleOnChange(event, index)}
+                  onKeyUp={(e) => handleBackspaceAndEnter(e, index)}
                   className="no-arrow text-lg md:text-2xl lg:text-2xl text-center font-bold h-[90px] rounded-lg block py-2.5 px-0 w-full text-gray-900 bg-transparent border-2 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                   placeholder=" "
                   required
@@ -141,15 +228,22 @@ const Codeverfiy = () => {
               </div>
             ))}
           </div>
-          <Link to="/change_pass">
-            <button
-              type="button"
-              className="w-full text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-green-700 dark:hover:bg-green-800 dark:focus:ring-gray-700 dark:border-gray-700"
-            >
-              Submit
-            </button>
-          </Link>
+          <button
+            type="button"
+            onClick={handleOnSubmit}
+            className="w-full text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-green-700 dark:hover:bg-green-800 dark:focus:ring-gray-700 dark:border-gray-700"
+          >
+            Submit
+          </button>
         </form>
+
+        <button
+          onClick={handleOnResend}
+          className="text-center text-sm text-gray-500 hover:text-red-400"
+        >
+          Didn't receive code? Resend OTP{" "}
+          {isCountdownRunning ? `in ${remainingSeconds}` : null}
+        </button>
       </div>
     </div>
   );
