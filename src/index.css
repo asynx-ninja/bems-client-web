@@ -38,7 +38,9 @@
   filter: invert(24%) sepia(85%) saturate(7299%) hue-rotate(140deg)
     brightness(90%) contrast(117%);
 }
-
+body{
+  font-family: "Gilmer-Regular";
+}
 input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;

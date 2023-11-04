@@ -1,12 +1,14 @@
 import React from "react";
 import { IoMdCreate } from "react-icons/io";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import image from "../../assets/sample-image/profile.jpg";
 import Reply from "../inquiriesComponents/ReplyModal";
 import DeleteInquiryModal from "../../components/inquiriesComponents/DeleteModal";
 import { MdArrowBack, MdDelete } from "react-icons/md";
 import { useMediaQuery } from "react-responsive";
+
 function viewMessage() {
+  const {id, brgy} = useParams()
   const isSmallScreen = useMediaQuery({ query: "(max-width: 768px)" });
   return (
     <div className="bg-[#CBD6DA] min-h-screen p-6 md:p-12 xl:p-24 flex flex-col md:flex-row">
@@ -14,13 +16,13 @@ function viewMessage() {
         <h2 className="text-[2rem] font-bold text-green-900 mb-6">INQUIRIES</h2>
         <div className="mb-6">
           <Link
-            to="/inquiries"
+            to={`/inquiries/${id}/${brgy}`}
             className="py-2 px-4 rounded-lg font-bold lg:text-left text-center bg-green-900 text-white  mb-4  transition ease-in-out delay-50 block"
           >
             Inbox
           </Link>
           <Link
-            to="/sent"
+            to={`/sent/${id}/${brgy}`}
             className="py-2 px-4 rounded-lg font-bold lg:text-left text-center bg-[#d9d9d9] text-green-900 hover:bg-green-900 hover:text-white transition ease-in-out delay-50 block"
           >
             Sent
@@ -29,7 +31,7 @@ function viewMessage() {
       </div>
       <div className="w-full md:w-3/4 bg-white rounded-lg p-6 flex flex-col items-start justify-start">
         <div className="w-full flex justify-between mb-2">
-          <Link to="/inquiries" className="bg-green-700 p-2 rounded-full">
+          <Link to={`/inquiries/${id}/${brgy}`} className="bg-green-700 p-2 rounded-full">
             <MdArrowBack size={isSmallScreen ? 18 : 24} color="white" />
           </Link>
 

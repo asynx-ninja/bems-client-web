@@ -1,9 +1,67 @@
-import React from "react";
+import React, { useState } from "react";
 import myImage from "../../assets/image/rizallogo2.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import OccupationList from "../../components/occupations/OccupationList";
 const NextSignup = () => {
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    contact: "",
+    civil_status: "",
+    occupation: "",
+    city: "Rodriguez, Rizal",
+    brgy: "",
+    street: "",
+    isVoter: "",
+    isHead: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]:e.target.value,
+    });
+    // If the name of the field is 'isVoter' or 'isHead', convert the value to a boolean
+    if (e.target.name === 'isVoter' || e.target.name === 'isHead') {
+      setFormData({
+        ...formData,
+        [e.target.name]:e.target.value === 'Yes' ? true : false,
+      });
+    }
+
+   
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    for (let key in formData) {
+      if (key !== 'isVoter' && key !== 'isHead' && !formData[key]) {
+        alert(`Please fill out the ${key} field.`);
+        return;
+      }
+    }
+
+    // Store the form data in local storage
+    localStorage.setItem("Step2", JSON.stringify(formData));
+
+    // Clear the form
+    setFormData({
+      contact: "",
+      civil_status: "",
+      occupation: "",
+      city: "",
+      brgy: "",
+      street: "",
+      isVoter: "",
+      isHead: "",
+    });
+
+    // Navigate to the next page
+    navigate("/last_signup");
+  };
   return (
     <div className="flex flex-col-reverse md:flex-row-reverse">
       <div
@@ -101,21 +159,55 @@ const NextSignup = () => {
           </div>
         </div>
 
-        <form
-          action=""
-          className="sm:w-[80%] h-auto mt-5 md:w-9/12 lg:w-9/12"
-        >
+        <form action="" className="sm:w-[80%] h-auto mt-5 md:w-9/12 lg:w-9/12">
+          <h1 className="py-3 mb-3 font-bold">
+            Step 3: Other Personal Information
+          </h1>
           <div className=" flex sm:flex-col md:flex-row md:gap-4">
             <div className="relative z-0 w-full mb-3 group">
-              {/* <label
+              <input
+                
+                type="number"
+                name="contact"
+                value={formData.contact}
+                onChange={handleChange}
+                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500"
+                placeholder="Contact number"
+              />
+            </div>
+
+            <div className="relative z-0 w-full mb-3 group">
+              <label
                 for="input-label"
-                className="block text-sm font-medium mb-2 dark:text-black"
+                className="block sr-only  text-sm font-medium mb-2 dark:text-black"
               >
-                Address
-              </label> */}
-              <select className="py-3 px-4 block w-full text-black border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-white dark:border-gray-700">
-                <option selected>Select City</option>
-                <option>Montalban</option>
+                Barangay
+              </label>
+              <select
+                name="civil_status"
+                value={formData.civil_status}
+                onChange={handleChange}
+                className="py-3 px-4 block w-full text-black border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-white dark:border-gray-700"
+              >
+                <option selected>Civil Status</option>
+                <option>Single</option>
+                <option>Married</option>
+                <option>Widowed</option>
+                <option>Legally Separated</option>
+              </select>
+            </div>
+          </div>
+          <div className="relative z-0 w-full mb-3 group">
+            <OccupationList handleChange={handleChange} />
+          </div>
+          <div className=" flex sm:flex-col md:flex-row md:gap-4">
+            <div className="relative z-0 w-full mb-3 group">
+              <select
+                disabled
+                className="py-3 px-4 block w-full text-black border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-white dark:border-gray-700"
+              >
+                <option>Select City</option>
+                <option selected>Montalban</option>
               </select>
             </div>
             <div className="relative z-0 w-full mb-3 group">
@@ -125,7 +217,12 @@ const NextSignup = () => {
               >
                 Barangay
               </label>
-              <select className="py-3 px-4 block w-full text-black border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-white dark:border-gray-700">
+              <select
+                name="brgy"
+                value={formData.brgy}
+                onChange={handleChange}
+                className="py-3 px-4 block w-full text-black border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-white dark:border-gray-700"
+              >
                 <option selected>Select Barangay</option>
                 <option>Balite</option>
                 <option>Burgos</option>
@@ -143,20 +240,17 @@ const NextSignup = () => {
           </div>
 
           <div className="relative z-0 w-full mb-3 group">
-            {/* <label
-              for="input-label"
-              className="block text-sm font-medium mb-2 dark:text-black"
-            >
-              Address Line
-            </label> */}
-
             <input
               type="text"
               id="input-label"
+              name="street"
+              value={formData.street}
+              onChange={handleChange}
               className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 "
               placeholder="Enter your address line"
             />
           </div>
+
           <hr className="w[10px]"></hr>
 
           <div className="flex md:flex-row sm:flex-col sm:gap-5 mb-3 mt-3 px-2 md:gap-x-20 lg:gap-x-20 justify-between">
@@ -165,13 +259,16 @@ const NextSignup = () => {
                 for="input-label"
                 className="block text-xs font-medium mb-2 dark:text-black"
               >
-                Are you currently working on Rodriguez Rizal?
+                Are you a head of your household?
               </label>
               <div className="flex gap-x-6">
                 <div className="flex">
                   <input
                     type="radio"
-                    name="hs-radio-group"
+                    name="isHead"
+                    value="Yes"
+                    checked={formData.isHead}
+                    onChange={handleChange}
                     className="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
                     id="hs-radio-group-1"
                     defaultChecked=""
@@ -186,7 +283,10 @@ const NextSignup = () => {
                 <div className="flex">
                   <input
                     type="radio"
-                    name="hs-radio-group"
+                    name="isHead"
+                    value="No"
+                    checked={!formData.isHead}
+                    onChange={handleChange}
                     className="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
                     id="hs-radio-group-2"
                   />
@@ -211,7 +311,10 @@ const NextSignup = () => {
                 <div className="flex">
                   <input
                     type="radio"
-                    name="radio-group"
+                    name="isVoter"
+                    value="Yes"
+                    checked={formData.isVoter}
+                    onChange={handleChange}
                     className="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
                     id="radio-group-3"
                     defaultChecked=""
@@ -226,7 +329,10 @@ const NextSignup = () => {
                 <div className="flex">
                   <input
                     type="radio"
-                    name="radio-group"
+                    name="isVoter"
+                    value="No"
+                    checked={!formData.isVoter}
+                    onChange={handleChange}
                     className="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
                     id="radio-group-4"
                   />
@@ -240,57 +346,13 @@ const NextSignup = () => {
               </div>
             </div>
           </div>
-
-          <hr className="w[10px]"></hr>
-
-          <div className="relative z-0 px-2 w-full mt-3 mb-3 group">
-            <div className="flex gap-x-6">
-              <div className="flex">
-                <input
-                  type="checkbox"
-                  className="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
-                  id="hs-checkbox-group-1"
-                />
-                <label
-                  htmlFor="hs-checkbox-group-1"
-                  className="text-sm text-black ml-3 dark:text-gray-400"
-                >
-                  I have read and understood the{" "}
-                  <span className="font-bold">Terms of Use.</span>
-                </label>
-              </div>
-            </div>
-          </div>
-          <div className="relative px-2 z-0 w-full mt-3 mb-3 group">
-            <div className="flex gap-x-6">
-              <div className="flex">
-                <input
-                  type="checkbox"
-                  className="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
-                  id="hs-checkbox-group-1"
-                />
-                <label
-                  htmlFor="hs-checkbox-group-1"
-                  className="text-sm text-black ml-3 dark:text-gray-400"
-                >
-                  I have read and understood the{" "}
-                  <span className="font-bold">Data Privacy Policy.</span>
-                </label>
-              </div>
-            </div>
-          </div>
-          <p className="text-black text-sm px-2">
-            By clicking on the register button below, I hereby agree to both the
-            <span className="font-bold"> Terms of Use</span> and{" "}
-            <span className="font-bold">Data Privacy Policy</span>.
-          </p>
-          <Link
-            to="/loading"
-            type="button"
+          <button
+            onClick={handleSubmit}
+            type="submit"
             className="w-full mt-5 text-center text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-green-700 dark:hover:bg-green-800 dark:focus:ring-gray-700 dark:border-gray-700"
           >
             Submit
-          </Link>
+          </button>
         </form>
       </div>
     </div>
