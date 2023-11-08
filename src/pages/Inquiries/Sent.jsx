@@ -33,7 +33,7 @@ function Sent() {
             <select
               id="sortby"
               name="sortby"
-              className="w-full py-2 px-4 border-2 rounded-full bg-green-900 text-white font-bold text-sm shadow-[0px_0px_12px_rgba(142,142,142,0.25)] focus:border-green-500 focus:ring-green-500"
+              className="w-full py-2 px-4 border-1 border-gray-500 rounded-full bg-white  font-bold text-sm shadow-[0px_0px_12px_rgba(142,142,142,0.25)] focus:border-green-500 focus:bg-green-500 focus:ring-gray-500 focus:text-white"
             >
               <option value="" disabled selected>
                 Sort by
@@ -92,7 +92,7 @@ function Sent() {
                         <th
                           key={idx}
                           scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider"
+                          className="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider"
                         >
                           {header}
                         </th>

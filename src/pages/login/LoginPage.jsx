@@ -10,6 +10,7 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [passwordShown, setPasswordShown] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const type = "Resident";
   const togglePassword = () => {
     setPasswordShown(!passwordShown);
@@ -17,19 +18,28 @@ const Login = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault();
-
     try {
       const response = await axios.get(
         `${API_LINK}/auth/${username}/${password}/${type}`
       );
-      
-     
 
-      navigate(`/dashboard/${response.data[0]._id}/${response.data[0].address.brgy}`);
+      // Login was successful
+      // Clear the error message
+      setErrorMessage("");
+      // Navigate to the dashboard
+      navigate(
+        `/dashboard/${response.data[0]._id}/${response.data[0].address.brgy}`
+      );
     } catch (error) {
       // Login failed
-      // Show an error message
-      alert(error.response.data.error);
+      // Set the error message
+      if (error.response) {
+        setErrorMessage(error.response.data.error);
+      } else if (error.request) {
+        setErrorMessage("The request was made but no response was received");
+      } else {
+        setErrorMessage("Error: " + error.message);
+      }
     }
   };
   return (
@@ -106,12 +116,20 @@ const Login = () => {
         </div>
 
         <form className="sm:w-[80%] md:w-8/12 lg:w-8/12">
+          {errorMessage && (
+            <div
+              className="bg-red-50 border border-red-200 text-sm text-red-600 rounded-md p-4 mt-2 mb-4"
+              role="alert"
+            >
+              <span className="font-bold">Warning:</span> {errorMessage}
+            </div>
+          )}
           <div className="relative z-0 w-full mb-3 group">
             <input
               name="username"
               type="text"
               id="input-label"
-              className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 "
+              className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 bg-white "
               placeholder="Enter your username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}

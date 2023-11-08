@@ -1,6 +1,6 @@
 import { useState } from "react";
 import React from "react";
-import NavbarHome from "../../components/global/NavbarHome";
+import NavbarBrgy from "../../components/global/NavbarBrgy";
 import { Link } from "react-router-dom";
 import video from "../../assets/image/video.mp4";
 import headerImage from "../../assets/image/header.png";
@@ -148,7 +148,7 @@ const Barangay = () => {
 
   return (
     <>
-      <NavbarHome />
+      <NavbarBrgy />
       <div
       // style={{
       //   position: "sticky",

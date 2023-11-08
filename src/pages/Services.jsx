@@ -6,7 +6,6 @@ import axios from "axios";
 import API_LINK from "../config/API";
 
 const Services = () => {
- 
   const [services, setServices] = useState([]);
   const { id, brgy } = useParams();
 
@@ -27,7 +26,6 @@ const Services = () => {
 
     fetchServices();
   }, [brgy]);
-  
 
   const filteredServices = services.filter(
     (service) => filterType === "all" || service.type === filterType
@@ -48,20 +46,22 @@ const Services = () => {
           className="w-full px-4 py-2 rounded-md border border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-500"
         >
           <option value="all">All types</option>
-          <option value="Health Services">Health Services</option>
-          <option value="Education Services">Education Services</option>
-          <option value="Welfare Services">Welfare Services</option>
-          <option value="Security and Safety Services">
+          <option value="Healthcare">Healthcare Services</option>
+          <option value="Education">Education Services</option>
+          <option value="Social Welfare">
+            Social Welfare Services
+          </option>
+          <option value="Security and Safety">
             Security and Safety Services
           </option>
-          <option value="Infrastructure Services">
+          <option value="Infrastructure">
             Infrastructure Services
           </option>
           <option value="Community Services">Community Services</option>
-          <option value="Administrative Services">
+          <option value="Administrative">
             Administrative Services
           </option>
-          <option value="Environmental Services">Environmental Services</option>
+          <option value="Environmental">Environmental Services</option>
         </select>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-8 p-4 w-full max-w-7xl">
@@ -73,11 +73,9 @@ const Services = () => {
               service.details
             )}&banner=${encodeURIComponent(
               service.collections.banner[0].link
-            )}&brgy=${encodeURIComponent(
-              brgy
-            )}&logo=${encodeURIComponent(service.collections.logo[0].link
-            )}&file=${JSON.stringify(service.collections.file
-            )}`}
+            )}&brgy=${encodeURIComponent(brgy)}&logo=${encodeURIComponent(
+              service.collections.logo[0].link
+            )}&file=${JSON.stringify(service.collections.file)}`}
             key={index}
           >
             <div className="group relative rounded-lg shadow-lg overflow-hidden transform transition duration-500 ease-in-out hover:scale-105">

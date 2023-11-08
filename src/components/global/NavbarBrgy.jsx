@@ -4,14 +4,12 @@ import { Link, useLocation } from "react-router-dom";
 
 import { FaAngleUp } from "react-icons/fa";
 
-const NavbarHome = () => {
+const NavbarBrgy = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const hrefggleNavbar = () => {
     setIsOpen(!isOpen);
   };
-
-  const [isVisible, setIsVisible] = useState(false);
 
   // Show button when page is scrolled up to given distance
   const toggleVisibility = () => {
@@ -26,54 +24,6 @@ const NavbarHome = () => {
   useEffect(() => {
     window.addEventListener("scroll", toggleVisibility);
   }, []);
-
-  // useEffect(() => {
-  //   // Add event listener to handle scroll and update the navbar's position
-  //   const handleScroll = () => {
-  //     const navbar = document.getElementById("navbar");
-  //     if (window.scrollY > 0) {
-  //       navbar.style.position = "fixed";
-  //       navbar.style.width = "100%"; // Set width to 100% for full-width navbar
-  //       navbar.style.zIndex = "1000"; // Adjust the z-index value as needed
-  //     } else {
-  //       navbar.style.position = "static";
-  //       navbar.style.width = "auto"; // Reset width to auto
-  //       navbar.style.zIndex = "auto";
-  //     }
-  //   };
-
-  //   window.addEventListener("scroll", handleScroll);
-
-  //   // Remove event listener when the component unmounts
-  //   return () => {
-  //     window.removeEventListener("scroll", handleScroll);
-  //   };
-  // }, []);
-
-  // const { pathname, hash, key } = useLocation();
-
-  // useEffect(() => {
-  //   // if not a hash link, scroll to top
-  //   if (hash === "") {
-  //     window.scrollTo(0, 0);
-  //   }
-  //   // else scroll to id
-  //   else {
-  //     setTimeout(() => {
-  //       const id = hash.replace("#", "");
-  //       const element = document.getElementById(id);
-  //       if (element) {
-  //         element.scrollIntoView();
-  //       }
-  //     }, 0);
-  //   }
-  // }, [pathname, hash, key]); // do this on route change
-
-  const OnNav = (e) => {
-    document
-      .getElementById(e.target.value)
-      .scrollIntoView({ behavior: "smooth" });
-  };
 
   const iconStyle = {
     transform: isOpen ? "rotate(90deg)" : "rotate(0deg)",
@@ -97,43 +47,7 @@ const NavbarHome = () => {
           </div>
           <div className="hidden md:block">
             <div className="flex-justify-end items-baseline space-x-3">
-              <Link
-                to="/"
-                className="text-white uppercase hover:bg-gray-700 hover:text-white px-2 py-2 rounded-md text-md"
-              >
-                Home
-              </Link>
-              <Link to="/">
-                <button
-                  value={"about"}
-                  onClick={OnNav}
-                  className="text-white uppercase hover:bg-gray-700 hover:text-white px-2 py-2 rounded-md text-md"
-                >
-                  About us{" "}
-                </button>
-              </Link>
-              <Link to="/">
-              <button
-                value={"services"}
-                onClick={OnNav}
-                className="text-white uppercase hover:bg-gray-700 hover:text-white px-2 py-2 rounded-md text-md"
-              >
-                Services
-              </button>
-              </Link>
-              <button
-                value={"tourist"}
-                onClick={OnNav}
-                className="text-white uppercase hover:bg-gray-700 hover:text-white px-2 py-2 rounded-md text-md"
-              >
-                Tourist Spot
-              </button>
-              <Link
-                to="/barangay"
-                className="text-white uppercase hover:bg-gray-700 hover:text-white px-2 py-2 rounded-md text-md"
-              >
-                List of Barangay
-              </Link>
+                
               <Link
                 to="/login"
                 className="
@@ -211,38 +125,11 @@ const NavbarHome = () => {
         id="mobile-menu"
       >
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-          <Link
+        <Link
             to="/"
             className="text-black-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
           >
             Home
-          </Link>
-          <button
-            value={"about"}
-            onClick={OnNav}
-            className="text-black-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-          >
-            About us
-          </button>
-          <button
-            value={"services"}
-            onClick={OnNav}
-            className="text-black-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-          >
-            Services
-          </button>
-          <button
-            value={"tourist"}
-            onClick={OnNav}
-            className="text-black-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-          >
-            Tourist Spot
-          </button>
-          <Link
-            to="/barangay"
-            className="text-black-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-          >
-            List of Barangay
           </Link>
           <Link
             to="/login"
@@ -252,7 +139,7 @@ const NavbarHome = () => {
           </Link>
         </div>
       </div>
-      {isVisible && (
+      {/* {isVisible && (
         <button
           value={"home"}
           onClick={OnNav}
@@ -260,9 +147,9 @@ const NavbarHome = () => {
         >
           <FaAngleUp className="pointer-events-none" />
         </button>
-      )}
+      )} */}
     </nav>
   );
 };
 
-export default NavbarHome;
+export default NavbarBrgy;
