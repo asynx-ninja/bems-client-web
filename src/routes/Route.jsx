@@ -1,7 +1,6 @@
 import { createBrowserRouter, Outlet } from "react-router-dom";
 import Error404 from "../config/Error404";
 
-
 // COMPONENTS
 import Navbar from "../components/global/Navbar";
 
@@ -19,19 +18,21 @@ import Codeverify from "../pages/forgotpass/Codeverify";
 import Emailverify from "../pages/forgotpass/Emailverify";
 import Loading from "../pages/forgotpass/Loading";
 
-// PAGES 
-import Dashboard from "../pages/Dashboard"
+// PAGES
+import Dashboard from "../pages/Dashboard";
 import Articles from "../pages/Articles";
 import Settings from "../pages/Settings";
-import BarangayInfo from "../pages/BarangayInfo"
+import BarangayInfo from "../pages/BarangayInfo";
 import Requests from "../pages/Requests";
-import Inquiries from "../pages/Inquiries/Inquiries"
-import Sent from "../pages/Inquiries/Sent"
-import Message from "../components/inquiriesComponents/viewInquiry"
-import SentMessage from "../components/inquiriesComponents/viewSent"
+import Inquiries from "../pages/Inquiries/Inquiries";
+import Sent from "../pages/Inquiries/Sent";
+import Message from "../components/inquiriesComponents/viewInquiry";
+import SentMessage from "../components/inquiriesComponents/viewSent";
 import Services from "../pages/Services";
 import ServicesForm from "../pages/ServicesForm";
 
+//Tourist Spot
+import TouristSpotMain from "../components/touristspot/TouristSpotMain";
 const pages = [
   {
     path: "/dashboard",
@@ -76,7 +77,7 @@ const pages = [
         <Navbar />
         <BarangayInfo />
       </>
-    )
+    ),
   },
   {
     path: "/inquiries",
@@ -84,8 +85,8 @@ const pages = [
       <>
         <Navbar />
         <Inquiries />
-    </>
-    )
+      </>
+    ),
   },
   {
     path: "/services",
@@ -120,8 +121,8 @@ const pages = [
       <>
         <Navbar />
         <Sent />
-    </>
-    )
+      </>
+    ),
   },
   {
     path: "/services_form",
@@ -131,6 +132,10 @@ const pages = [
         <ServicesForm />
       </>
     ),
+  },
+  {
+    path: "/tourist-spot",
+    element: <TouristSpotMain />,
   },
   {
     path: "/change_pass/:email",
@@ -172,7 +177,7 @@ const pages = [
     path: "/barangay",
     element: <Barangay />,
   },
-]
+];
 
 const Route = createBrowserRouter([
   {

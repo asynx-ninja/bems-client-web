@@ -429,9 +429,6 @@ const Settings = () => {
                                                         placeholder="Suffix"
                                                         aria-describedby="hs-input-helper-text"
                                                         value={calculateAge(userData.birthday) || ''}
-                                                        onChange={(e) =>
-                                                            handleUserDataChange('age', e.target.value)
-                                                        }
                                                     />
                                                 </div>
                                                 <div>

@@ -4,23 +4,26 @@ import { BsTrash3 } from "react-icons/bs";
 import { AiFillEye } from "react-icons/ai";
 import Compose from "../../components/inquiriesComponents/Compose";
 import DeleteInquiryModal from "../../components/inquiriesComponents/DeleteModal";
-import { Link, useParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 function Sent() {
-  const {id, brgy} = useParams();
+  const [searchParams, setSearchParams] = useSearchParams()
+  const id = searchParams.get("id")
+  const brgy = searchParams.get("brgy")
+
   return (
     <div className="bg-[#CBD6DA] min-h-screen p-6 md:p-12 xl:p-24 flex flex-col md:flex-row">
       <div className="w-full md:w-1/4 bg-white rounded-lg p-6 mb-6 md:mb-0 md:mr-6">
         <h2 className="text-[2rem] font-bold text-green-900 mb-6">INQUIRIES</h2>
         <div className="mb-6">
           <Link
-            to={`/inquiries/${id}/${brgy}`}
+            to={`/inquiries/?id=${id}&brgy=${brgy}`}
             className="py-2 px-4 rounded-lg font-bold lg:text-left text-center bg-[#d9d9d9] text-green-900 mb-4  hover:bg-green-900 hover:text-white transition ease-in-out delay-50 block"
           >
             Inbox
           </Link>
           <Link
-            to={`/sent/${id}/${brgy}`}
+            to={`/sent/?id=${id}&brgy=${brgy}`}
             className="py-2 px-4 rounded-lg font-bold lg:text-left text-center bg-green-900 text-white transition ease-in-out delay-50 block"
           >
             Sent
@@ -33,7 +36,7 @@ function Sent() {
             <select
               id="sortby"
               name="sortby"
-              className="w-full py-2 px-4 border-2 rounded-full bg-green-900 text-white font-bold text-sm shadow-[0px_0px_12px_rgba(142,142,142,0.25)] focus:border-green-500 focus:ring-green-500"
+              className="w-full py-2 px-4 border-1 border-gray-500 rounded-full bg-white  font-bold text-sm shadow-[0px_0px_12px_rgba(142,142,142,0.25)] focus:border-green-500 focus:bg-green-500 focus:ring-gray-500 focus:text-white"
             >
               <option value="" disabled selected>
                 Sort by
@@ -92,7 +95,7 @@ function Sent() {
                         <th
                           key={idx}
                           scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider"
+                          className="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider"
                         >
                           {header}
                         </th>
