@@ -1,31 +1,19 @@
 import React from "react";
 import { AiFillFilePdf } from "react-icons/ai";
 
-const Content = ({ serviceTitle, serviceDetails, logo, file }) => {
-  const files = JSON.parse(file);
-
-  const requirements = [
-    {
-      req: "Lorem Ipsum is ",
-    },
-    {
-      req: "Lorem Ipsum is ",
-    },
-    {
-      req: "Lorem Ipsum is ",
-    },
-  ];
+const Content = ({ name, details, logo, file }) => {
+  const files = file;
 
   return (
     <div className="flex flex-col gap-5 px-5 md:px-0">
       {/* DESCRIPTION */}
       <div className="bg-white rounded-lg shadow-lg p-6 lg:w-[90%] w-100 mx-auto mb-10">
         <h1 className="text-custom-green-header font-bold text-2xl lg:text-[36px] w-[90%] mx-auto mb-10 text-center ">
-          {serviceTitle}
+          {name}
         </h1>
         <div className="flex flex-col lg:flex-row items-start gap-10 ">
           <p className="lg:w-[60%] text-gray-600 leading-relaxed">
-            {serviceDetails}
+            {details}
           </p>
 
           <img

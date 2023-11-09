@@ -25,7 +25,7 @@ const Login = () => {
       
      
 
-      navigate(`/dashboard/${response.data[0]._id}/${response.data[0].address.brgy}`);
+      navigate(`/dashboard/?id=${response.data[0]._id}&brgy=${response.data[0].address.brgy}`);
     } catch (error) {
       // Login failed
       // Show an error message

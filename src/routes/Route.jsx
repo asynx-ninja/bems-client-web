@@ -34,7 +34,7 @@ import ServicesForm from "../pages/ServicesForm";
 
 const pages = [
   {
-    path: "/dashboard/:id/:brgy",
+    path: "/dashboard",
     element: (
       <>
         <Navbar />
@@ -43,7 +43,7 @@ const pages = [
     ),
   },
   {
-    path: "/article/:id/:brgy",
+    path: "/article",
     element: (
       <>
         <Navbar />
@@ -52,7 +52,7 @@ const pages = [
     ),
   },
   {
-    path: "/requests/:id/:brgy",
+    path: "/requests",
     element: (
       <>
         <Navbar />
@@ -61,7 +61,7 @@ const pages = [
     ),
   },
   {
-    path: "/settings/:id/:brgy",
+    path: "/settings",
     element: (
       <>
         <Navbar />
@@ -70,7 +70,7 @@ const pages = [
     ),
   },
   {
-    path: "/barangay-info/:id/:brgy",
+    path: "/barangay-info",
     element: (
       <>
         <Navbar />
@@ -79,7 +79,7 @@ const pages = [
     )
   },
   {
-    path: "/inquiries/:id/:brgy",
+    path: "/inquiries",
     element: (
       <>
         <Navbar />
@@ -88,7 +88,7 @@ const pages = [
     )
   },
   {
-    path: "/services/:id/:brgy",
+    path: "/services",
     element: (
       <>
         <Navbar />
@@ -97,7 +97,7 @@ const pages = [
     ),
   },
   {
-    path: "/message/:id/:brgy",
+    path: "/message",
     element: (
       <>
         <Navbar />
@@ -106,7 +106,7 @@ const pages = [
     ),
   },
   {
-    path: "/sentmessage/:id/:brgy",
+    path: "/sentmessage",
     element: (
       <>
         <Navbar />
@@ -115,7 +115,7 @@ const pages = [
     ),
   },
   {
-    path: "/sent/:id/:brgy",
+    path: "/sent",
     element: (
       <>
         <Navbar />
@@ -124,7 +124,7 @@ const pages = [
     )
   },
   {
-    path: "/services_form/:id/:brgy",
+    path: "/services_form",
     element: (
       <>
         <Navbar />

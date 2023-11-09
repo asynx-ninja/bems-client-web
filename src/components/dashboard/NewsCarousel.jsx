@@ -3,10 +3,12 @@ import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import axios from "axios";
 import API_LINK from "../../config/API";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 const NewsCarousel = () => {
   const [banners, setBanners] = useState([]);
-  const { brgy } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams()
+  const brgy = searchParams.get("brgy")
+
   useEffect(() => {
     const fetchBanners = async () => {
       // Replace with your actual API call
@@ -16,7 +18,7 @@ const NewsCarousel = () => {
         },
       });
       setBanners(response.data);
-      console.log(setBanners)
+      // console.log(response.data)
     };
 
     fetchBanners();

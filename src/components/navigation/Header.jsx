@@ -1,12 +1,37 @@
-import { React } from 'react';
-import { Link } from 'react-router-dom';
+import { React, useEffect, useState } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import {
   FaBars,
   FaBell,
 } from 'react-icons/fa';
+import axios from 'axios';
+import defaultPFP from "../../assets/sample-image/default-pfp.png";
+import API_LINK from '../../config/API';
 
 
 const Header = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const id = searchParams.get("id")
+  const brgy = searchParams.get("brgy")
+  const [userData, setUserData] = useState({})
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        const res = await axios.get(`${API_LINK}/users/specific/${id}`);
+        if (res.status === 200) {
+          setUserData(res.data[0]);
+          var pfpSrc = document.getElementById("headerPFP");
+          pfpSrc.src = res.data[0].profile.link !== "" ? res.data[0].profile.link : defaultPFP
+        } else {
+          setError("Invalid username or password");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetch()
+  }, [id])
 
   const notif = [
     {
@@ -65,7 +90,7 @@ const Header = () => {
                 size={"30px"}
               />
             </button>
-            <h1 className='font-bold my-auto text-[23px] truncate text-white sm:hidden md:flex'>BARANGAY SAN JOSE</h1>
+            <h1 className='font-bold my-auto text-[23px] truncate text-white sm:hidden md:flex'>BARANGAY {brgy}</h1>
           </div>
 
           <div className='gap-5 flex'>
@@ -128,40 +153,18 @@ const Header = () => {
             {/* PROFILE DROP DOWN */}
 
             <div className='hs-dropdown bg-white w-[40px] h-[40px] rounded-[100%] my-auto sm:hidden md:flex'>
-              <img
-                id="hs-dropdown-profile"
-                className='hs-dropdown-toggle rounded-[100%] w-[40px] h-[40px] cursor-pointer'
-                src="./../src/assets/sample-image/profile.jpg"
-                alt=""
-              />
+              <button
+                id='hs-dropdown-profile'
+              >
+                <img
+                  id="headerPFP"
+                  className='hs-dropdown-toggle rounded-[100%] w-[40px] h-[40px] object-cover cursor-pointer'
+                  alt=""
+                />
+              </button>
+
 
               <div className="hs-dropdown-menu transition-[opacity,margin] font-medium duration hs-dropdown-open:opacity-100 relative hs-dropdown-open:z-[100] opacity-0 w-56 hidden z-[63] mt-2 min-w-[15rem] bg-white shadow-md rounded-lg p-2" aria-labelledby="hs-dropdown-profile">
-                <Link
-                  to="/settings"
-                  onClick={() => {
-                    window.innerWidth >= 320 && window.innerWidth <= 1023
-                      ? document
-                        .getQuerySelector("[data-hs-overlay-backdrop-template]")
-                        .remove()
-                      : null;
-                  }}
-                  className="flex items-center w-full gap-x-3.5 py-2 px-3 rounded-md text-sm hover:text-custom-gold1 text-gray-800 hover:bg-gradient-to-r from-[#295141] to-[#408D51] focus:ring-2 focus:ring-blue-500"
-                >
-                  Manage Account
-                </Link>
-                <Link
-                  to="/"
-                  onClick={() => {
-                    window.innerWidth >= 320 && window.innerWidth <= 1023
-                      ? document
-                        .getQuerySelector("[data-hs-overlay-backdrop-template]")
-                        .remove()
-                      : null;
-                  }}
-                  className="flex items-center w-full gap-x-3.5 py-2 px-3 rounded-md text-sm hover:text-custom-gold1 text-gray-800 hover:bg-gradient-to-r from-[#295141] to-[#408D51] focus:ring-2 focus:ring-blue-500 "
-                >
-                  Manage Request
-                </Link>
                 <Link
                   to="/inquiries"
                   onClick={() => {

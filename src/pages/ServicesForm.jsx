@@ -1,20 +1,15 @@
-import React from "react";
-import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
-
+import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import Breadcrumbs from "../components/services/Breadcrumbs";
 import Content from "../components/services/Content";
 import headerImage from "../assets/image/header.png";
+import { useEffect, useState, React } from "react";
 
 const ServicesForm = () => {
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const serviceTitle = queryParams.get("title") || "Default Service Title";
-  const serviceDetails = queryParams.get("details");
-  const banner = queryParams.get("banner");
-  const logo = queryParams.get("logo");
-  const file = queryParams.get("file");
   const navigate = useNavigate();
-  const { id, brgy } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams()
+  const service = JSON.parse(atob(searchParams.get("obj")))
+
+  console.log(service)
 
   const handleLinkClick = () => {
     // Perform any additional logic you need here
@@ -26,7 +21,7 @@ const ServicesForm = () => {
     <div className="w-full flex flex-col sm:px-[15px] lg:px-[70px] pt-[40px] mb-[30px]">
       <img
         className=" rounded-[25px] h-[300px] object-cover"
-        src={banner}
+        src={service.collections.banner[0].link}
         alt=""
       />
 
@@ -34,15 +29,15 @@ const ServicesForm = () => {
 
       <div className="flex flex-col">
         <div className="flex my-[10px]">
-          <Breadcrumbs serviceTitle={serviceTitle} />
+          <Breadcrumbs serviceTitle={service.name} />
         </div>
 
         <div>
           <Content
-            serviceTitle={serviceTitle}
-            serviceDetails={serviceDetails}
-            logo={logo}
-            file={file}
+            name={service.name}
+            details={service.details}
+            logo={service.collections.logo[0].link}
+            file={service.collections.file}
           />
         </div>
       </div>
@@ -76,7 +71,7 @@ const ServicesForm = () => {
               className="flex justify-between items-center py-3 px-4 border-b dark:border-gray-700"
             >
               <h3 className="lg:tracking-[.2rem] tracking-widest text-md lg:text-lg font-bold uppercase text-center text-white ">
-                {serviceTitle}
+                {service.name}
               </h3>
             </div>
 

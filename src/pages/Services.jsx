@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import NewsCarousel from "../components/dashboard/NewsCarousel";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 
 import axios from "axios";
 import API_LINK from "../config/API";
@@ -8,7 +8,9 @@ import API_LINK from "../config/API";
 const Services = () => {
  
   const [services, setServices] = useState([]);
-  const { id, brgy } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams()
+  const id = searchParams.get("id")
+  const brgy = searchParams.get("brgy")
 
   const [filterType, setFilterType] = useState("all");
   // const email = location.pathname.split("/")[2];
@@ -32,6 +34,8 @@ const Services = () => {
   const filteredServices = services.filter(
     (service) => filterType === "all" || service.type === filterType
   );
+
+  console.log("Filtered", filteredServices)
   return (
     <div className="flex flex-col items-center">
       <div className="w-full h-full text-center">
@@ -65,33 +69,24 @@ const Services = () => {
         </select>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-8 p-4 w-full max-w-7xl">
-        {filteredServices.map((service, index) => (
+        {filteredServices.map((item, index) => (
           <Link
-            to={`/services_form/${id}/${brgy}/?title=${encodeURIComponent(
-              service.name
-            )}&details=${encodeURIComponent(
-              service.details
-            )}&banner=${encodeURIComponent(
-              service.collections.banner[0].link
-            )}&brgy=${encodeURIComponent(
-              brgy
-            )}&logo=${encodeURIComponent(service.collections.logo[0].link
-            )}&file=${JSON.stringify(service.collections.file
-            )}`}
+            to={{pathname: `/services_form`, search: `id=${id}&brgy=${brgy}&obj=${btoa(JSON.stringify({...item}))}`}}
+            // to={`/services_form/?id=${id}&brgy=${brgy}&service=${btoa(JSON.stringify({...service}))}`}
             key={index}
           >
             <div className="group relative rounded-lg shadow-lg overflow-hidden transform transition duration-500 ease-in-out hover:scale-105">
               <img
                 className="w-full h-48 object-cover"
-                src={service.collections.banner[0].link}
-                alt={service.name}
+                src={item.collections.banner.link}
+                alt={item.name}
               />
               <div className="px-6 py-4 bg-white">
                 <h3 className="text-sm lg:text-xl font-bold text-gray-700 group-hover:text-green-700 transition duration-500">
-                  {service.name}
+                  {item.name}
                 </h3>
                 <p className="text-gray-700 group-hover:text-green-600 text-xs lg:text-sm transition duration-500">
-                  {service.details}
+                  {item.details}
                 </p>
               </div>
             </div>

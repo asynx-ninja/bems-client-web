@@ -1,4 +1,4 @@
-import { useState, React } from 'react';
+import { useState, useEffect, React } from 'react';
 import { Link } from 'react-router-dom';
 import {
   FaChartPie,
@@ -11,15 +11,38 @@ import {
   FaAngleDown,
   FaAngleUp,
 } from 'react-icons/fa';
-import { useParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
+import axios from 'axios';
+import defaultPFP from "../../assets/sample-image/default-pfp.png";
+import API_LINK from '../../config/API';
 
 const Sidebar = () => {
   const [isCollapse, onCollapse] = useState(false)
-  const {id, brgy} = useParams();
+  const [searchParams, setSearchParams] = useSearchParams()
+  const id = searchParams.get("id")
+  const brgy = searchParams.get("brgy")
+  const [userData, setUserData] = useState({})
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        const res = await axios.get(`${API_LINK}/users/specific/${id}`);
+        if (res.status === 200) {
+          setUserData(res.data[0]);
+          var pfpSrc = document.getElementById("sidebarPFP");
+          pfpSrc.src = res.data[0].profile.link !== "" ? res.data[0].profile.link : defaultPFP
+        } else {
+          setError("Invalid username or password");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetch()
+  }, [id])
 
 
-
- console.log("id", id)
+  // console.log("id", id)
   const OnOpen = () => {
     if (isCollapse) {
       onCollapse(false)
@@ -27,7 +50,7 @@ const Sidebar = () => {
       onCollapse(true)
     }
   }
-  
+
   return (
     <div>
       {/* SIDE BAR */}
@@ -45,7 +68,7 @@ const Sidebar = () => {
 
             <div>
               <Link
-                to={`/dashboard/${id}/${brgy}`}
+                to={`/dashboard/?id=${id}&brgy=${brgy}`}
                 onClick={() => {
                   window.innerWidth >= 320 && window.innerWidth <= 1023
                     ? document
@@ -59,7 +82,7 @@ const Sidebar = () => {
                 <h1 className='text-bold my-auto font-bold text-sm'>DASHBOARD</h1>
               </Link>
               <Link
-                to={`/settings/${id}/${brgy}`}
+                to={`/settings/?id=${id}&brgy=${brgy}`}
                 onClick={() => {
                   window.innerWidth >= 320 && window.innerWidth <= 1023
                     ? document
@@ -104,7 +127,7 @@ const Sidebar = () => {
                 aria-labelledby="hs-unstyled-collapse"
               >
                 <Link
-                 to={`/services/${id}/${brgy}`}
+                  to={`/services/?id=${id}&brgy=${brgy}`}
                   onClick={() => {
                     window.innerWidth >= 320 && window.innerWidth <= 1023
                       ? document
@@ -117,7 +140,7 @@ const Sidebar = () => {
                   <h1 className='text-bold my-auto font-bold w-[50px]  text-sm'>SERVICES</h1>
                 </Link>
                 <Link
-                  to={`/requests/${id}/${brgy}`}
+                  to={`/requests/?id=${id}&brgy=${brgy}`}
                   onClick={() => {
                     window.innerWidth >= 320 && window.innerWidth <= 1023
                       ? document
@@ -131,7 +154,7 @@ const Sidebar = () => {
                 </Link>
               </div>
               <Link
-                to={`/barangay-info/${id}/${brgy}`}
+                to={`/barangay-info/?id=${id}&brgy=${brgy}`}
                 onClick={() => {
                   window.innerWidth >= 320 && window.innerWidth <= 1023
                     ? document
@@ -144,7 +167,7 @@ const Sidebar = () => {
                 <h1 className='text-bold my-auto font-bold w-[50px] leading-[15px] text-sm'>BARANGAY INFORMATION</h1>
               </Link>
               <Link
-                to={`/inquiries/${id}/${brgy}`}
+                to={`/inquiries/?id=${id}&brgy=${brgy}`}
                 onClick={() => {
                   window.innerWidth >= 320 && window.innerWidth <= 1023
                     ? document
@@ -167,14 +190,14 @@ const Sidebar = () => {
               className='hs-dropdown-toggle cursor-pointer flex w-full'>
               <div className=' bg-white w-[40px] h-[40px] rounded-[100%] my-auto ml-[25px] sm:flex md:hidden'>
                 <img
-                  className='rounded-[100%] w-[40px] h-[40px]'
-                  src="./../src/assets/sample-image/profile.jpg"
+                  id='sidebarPFP'
+                  className='rounded-[100%] w-[40px] h-[40px] object-cover'
                   alt=""
                 />
               </div>
 
               <h1 className='text-sm w-[100px] font-bold text-white my-auto ml-[20px] leading-[20px]'>
-                Kenneth Bautistaism
+                {userData.firstName} {userData.lastName}
               </h1>
             </div>
 
