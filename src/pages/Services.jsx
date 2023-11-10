@@ -77,7 +77,7 @@ const Services = () => {
             <div className="group relative rounded-lg shadow-lg overflow-hidden transform transition duration-500 ease-in-out hover:scale-105">
               <img
                 className="w-full h-48 object-cover"
-                src={item.collections.banner[0].link}
+                src={item.collections.banner.link}
                 alt={item.name}
               />
               <div className="px-6 py-4 bg-white">

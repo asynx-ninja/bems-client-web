@@ -21,7 +21,7 @@ const ServicesForm = () => {
     <div className="w-full flex flex-col sm:px-[15px] lg:px-[70px] pt-[40px] mb-[30px]">
       <img
         className=" rounded-[25px] h-[300px] object-cover"
-        src={service.collections.banner[0].link}
+        src={service.collections.banner.link}
         alt=""
       />
 
@@ -36,7 +36,7 @@ const ServicesForm = () => {
           <Content
             name={service.name}
             details={service.details}
-            logo={service.collections.logo[0].link}
+            logo={service.collections.logo.link}
             file={service.collections.file}
           />
         </div>
