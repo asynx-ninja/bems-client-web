@@ -3,26 +3,25 @@ import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import axios from "axios";
 import API_LINK from "../../config/API";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams, Link } from "react-router-dom";
 const NewsCarousel = () => {
-  const [banners, setBanners] = useState([]);
+  const [services, setServices] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams()
+  const id = searchParams.get("id")
   const brgy = searchParams.get("brgy")
 
   useEffect(() => {
-    const fetchBanners = async () => {
-      // Replace with your actual API call
-      const response = await axios.get(`${API_LINK}/services/banner/${brgy}`, {
+    const fetchServices = async () => {
+      const response = await axios.get(`${API_LINK}/services/?brgy=${brgy}&archived=false`, {
         headers: {
           "Content-Type": "application/json",
         },
       });
-      setBanners(response.data);
-      // console.log(response.data)
+      setServices(response.data);
     };
 
-    fetchBanners();
-  }, []);
+    fetchServices();
+  }, [brgy]);
 
   return (
     <div className="w-full flex justify-center py-5">
@@ -35,16 +34,23 @@ const NewsCarousel = () => {
         showArrows={true}
         showThumbs={false}
       >
-        {banners.map((item, i) => (
-          <div key={i} className="my-auto">
+        {services.map((item, i) => (
+          <Link
+            key={i}
+            className="w-full relative"
+            to={{ pathname: `/services_form`, search: `id=${id}&brgy=${brgy}&obj=${btoa(JSON.stringify({ ...item }))}` }}
+          >
             <div className="relative">
               <img
-                src={item.banner}
+                src={item.collections.banner.link}
                 alt="Service banner"
                 className="w-full h-[300px] object-cover md:h-96 md:object-cover md:w-full"
               />
+              <div className="absolute inset-0 flex items-center justify-center bg-black opacity-0 transition-opacity duration-300 hover:opacity-50">
+                <p className="text-white font-bold text-center">Click to view {item.name}</p>
+              </div>
             </div>
-          </div>
+          </Link>
         ))}
       </Carousel>
     </div>

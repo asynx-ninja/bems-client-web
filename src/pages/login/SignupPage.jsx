@@ -167,7 +167,7 @@ const SignupPage = () => {
                 name="firstName"
                 value={formData.firstName}
                 onChange={handleChange}
-                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500"
+                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
                 placeholder="Enter your firstname"
               />
             </div>
@@ -177,7 +177,7 @@ const SignupPage = () => {
                 name="lastName"
                 value={formData.lastName}
                 onChange={handleChange}
-                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500"
+                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
                 placeholder="Enter your lastname"
               />
             </div>
@@ -189,7 +189,7 @@ const SignupPage = () => {
                 name="middleName"
                 value={formData.middleName}
                 onChange={handleChange}
-                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500"
+                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
                 placeholder="Enter your middle name"
               />
             </div>
@@ -199,7 +199,7 @@ const SignupPage = () => {
                 name="suffix"
                 value={formData.suffix}
                 onChange={handleChange}
-                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500"
+                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
                 placeholder="Enter your suffix (optional)"
               />
             </div>
@@ -211,7 +211,7 @@ const SignupPage = () => {
                 name="birthday"
                 value={formData.birthday}
                 onChange={handleChange}
-                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500"
+                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
               />
             </div>
             <div className="relative z-0 w-full mb-3 group">
@@ -219,9 +219,9 @@ const SignupPage = () => {
                 name="sex"
                 value={formData.sex}
                 onChange={handleChange}
-                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500"
+                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
               >
-                <option value="">Select Gender</option>
+                <option disabled={formData.sex !== ""} value="">Select Gender</option>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
               </select>
@@ -232,9 +232,9 @@ const SignupPage = () => {
               name="religion"
               value={formData.religion}
               onChange={handleChange}
-              className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500"
+              className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
             >
-              <option value="">Select Religion</option>
+              <option disabled={formData.religion !== ""} value="">Select Religion</option>
               {religions.map((religion) => (
                 <option value={religion}>{religion}</option>
               ))}

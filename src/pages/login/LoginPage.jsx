@@ -37,6 +37,7 @@ const Login = () => {
       }
     }
   };
+  
   return (
     <>
       <div className="contaiiner  flex flex-col-reverse md:flex-row-reverse">
@@ -125,7 +126,7 @@ const Login = () => {
                 name="username"
                 type="text"
                 id="input-label"
-                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 bg-white "
+                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 bg-white"
                 placeholder="Enter your username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
@@ -137,7 +138,7 @@ const Login = () => {
                 name="password"
                 type={passwordShown ? "text" : "password"}
                 placeholder="Enter your password"
-                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 "
+                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 "
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -155,7 +156,7 @@ const Login = () => {
             </div>
             <div className="relative z-0 w-full mb-3 group flex items-center justify-between">
               <div className="flex items-center">
-                <input type="checkbox" id="remember-me" className="mr-2" />
+                <input type="checkbox" id="remember-me" className="mr-2 text-green-500 focus:border-green-500 focus:ring-green-500" />
                 <label
                   htmlFor="remember-me"
                   className="sm:text-[12px] md:text-sm text-black dark:text-black-400"

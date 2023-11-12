@@ -14,8 +14,8 @@ const NextSignup = () => {
     city: "Rodriguez, Rizal",
     brgy: "",
     street: "",
-    isVoter: "",
-    isHead: "",
+    isVoter: "No",
+    isHead: "No",
   });
 
   const handleChange = (e) => {
@@ -171,7 +171,7 @@ const NextSignup = () => {
                 name="contact"
                 value={formData.contact}
                 onChange={handleChange}
-                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500"
+                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
                 placeholder="Contact number"
               />
             </div>
@@ -187,9 +187,9 @@ const NextSignup = () => {
                 name="civil_status"
                 value={formData.civil_status}
                 onChange={handleChange}
-                className="py-3 px-4 block w-full text-black border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-white dark:border-gray-700"
+                className="py-3 px-4 block w-full text-black border-gray-200 rounded-md text-sm focus:border-green-500 focus:ring-green-500 dark:bg-white dark:border-gray-700"
               >
-                <option selected>Civil Status</option>
+                <option selected disabled={formData.civil_status !== ""}>Civil Status</option>
                 <option>Single</option>
                 <option>Married</option>
                 <option>Widowed</option>
@@ -204,9 +204,8 @@ const NextSignup = () => {
             <div className="relative z-0 w-full mb-3 group">
               <select
                 disabled
-                className="py-3 px-4 block w-full text-black border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-white dark:border-gray-700"
+                className="py-3 px-4 block w-full text-black border-gray-200 rounded-md text-sm focus:border-green-500 focus:ring-green-500 dark:bg-white dark:border-gray-700"
               >
-                <option>Select City</option>
                 <option selected>Montalban</option>
               </select>
             </div>
@@ -221,9 +220,9 @@ const NextSignup = () => {
                 name="brgy"
                 value={formData.brgy}
                 onChange={handleChange}
-                className="py-3 px-4 block w-full text-black border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-white dark:border-gray-700"
+                className="py-3 px-4 block w-full text-black border-gray-200 rounded-md text-sm focus:border-green-500 focus:ring-green-500 dark:bg-white dark:border-gray-700"
               >
-                <option selected>Select Barangay</option>
+                <option selected disabled={formData.brgy !== ""}>Select Barangay</option>
                 <option>Balite</option>
                 <option>Burgos</option>
                 <option>Geronimo</option>
@@ -246,7 +245,7 @@ const NextSignup = () => {
               name="street"
               value={formData.street}
               onChange={handleChange}
-              className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 "
+              className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 "
               placeholder="Enter your address line"
             />
           </div>
@@ -267,9 +266,8 @@ const NextSignup = () => {
                     type="radio"
                     name="isHead"
                     value="Yes"
-                    checked={formData.isHead}
                     onChange={handleChange}
-                    className="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
+                    className="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-green-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
                     id="hs-radio-group-1"
                     defaultChecked=""
                   />
@@ -285,9 +283,8 @@ const NextSignup = () => {
                     type="radio"
                     name="isHead"
                     value="No"
-                    checked={!formData.isHead}
                     onChange={handleChange}
-                    className="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
+                    className="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-green-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
                     id="hs-radio-group-2"
                   />
                   <label
@@ -313,9 +310,8 @@ const NextSignup = () => {
                     type="radio"
                     name="isVoter"
                     value="Yes"
-                    checked={formData.isVoter}
                     onChange={handleChange}
-                    className="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
+                    className="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-green-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
                     id="radio-group-3"
                     defaultChecked=""
                   />
@@ -331,9 +327,8 @@ const NextSignup = () => {
                     type="radio"
                     name="isVoter"
                     value="No"
-                    checked={!formData.isVoter}
                     onChange={handleChange}
-                    className="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
+                    className="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-green-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
                     id="radio-group-4"
                   />
                   <label

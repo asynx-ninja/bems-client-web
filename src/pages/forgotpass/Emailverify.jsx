@@ -20,7 +20,7 @@ const Emailverify = () => {
   }
 
   const handleOnSubmit = async () => {
-    if(!email){
+    if (!email) {
       setResponse({
         success: false,
         error: true,
@@ -31,7 +31,7 @@ const Emailverify = () => {
     }
 
     try {
-      const res = await axios.get(`${API_LINK}/auth/send_pin/${email}`)
+      const res = await axios.patch(`${API_LINK}/auth/send_pin/${email}`)
       const encodedEmail = btoa(email);
 
       if (res.status === 200) {
@@ -41,9 +41,9 @@ const Emailverify = () => {
           message: "Code has been successfully sent to your Email!"
         })
 
-        setTimeout(
+        setTimeout(() => {
           navigate(`/code_verify/${encodedEmail}`)
-        , 3000)
+        }, 3000)
       }
     } catch (error) {
       setResponse({
@@ -55,6 +55,8 @@ const Emailverify = () => {
     }
 
   }
+
+  console.log(email)
 
   return (
     <div className="flex flex-col-reverse md:flex-row-reverse">
@@ -155,13 +157,13 @@ const Emailverify = () => {
               type="email"
               id="input-label"
               onChange={handleOnChange}
-              className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 "
+              className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 "
               placeholder="Enter your registered email"
             />
           </div>
 
           <button
-            type="button"
+            type="submit"
             onClick={handleOnSubmit}
             className="w-full text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-green-700 dark:hover:bg-green-800 dark:focus:ring-gray-700 dark:border-gray-700"
           >

@@ -184,12 +184,12 @@ const LastPage = () => {
       setDuplicateError(false);
       setsuccessReg(true);
       
-      const email = btoa(obj._id);
+      const email = btoa(obj.email);
       const barangay = btoa(obj.address.brgy);
       
       
       setTimeout(function () {
-        navigate(`/loading/${email}/${barangay}`);
+        navigate(`/loading/?email=${email}&brgy=${barangay}`);
       }, 3000);
       console.log(response);
       // Redirect to the second signup page
@@ -318,7 +318,7 @@ const LastPage = () => {
               name="username"
               value={formData.username}
               onChange={handleChange}
-              className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500"
+              className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
               placeholder="Enter your username"
             />
           </div>
@@ -328,7 +328,7 @@ const LastPage = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500"
+              className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
               placeholder="Enter your email"
             />
           </div>
@@ -339,7 +339,7 @@ const LastPage = () => {
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
-                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500"
+                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
                 placeholder="Enter password"
               />
               <button
@@ -360,7 +360,7 @@ const LastPage = () => {
                 name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleChange}
-                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500"
+                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
                 placeholder="Re-enter password"
               />
               <button
@@ -445,7 +445,7 @@ const LastPage = () => {
                   name="terms"
                   checked={termsAccepted}
                   onChange={() => setTermsAccepted(!termsAccepted)}
-                  className="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
+                  className="shrink-0 mt-0.5 border-gray-200 rounded text-green-500 focus:ring-green-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
                   id="hs-checkbox-group-1"
                 />
                 <label
@@ -466,7 +466,7 @@ const LastPage = () => {
                   name="policy"
                   checked={policyAccepted}
                   onChange={() => setPolicyAccepted(!policyAccepted)}
-                  className="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
+                  className="shrink-0 mt-0.5 border-gray-200 rounded text-green-500 focus:ring-green-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
                   id="hs-checkbox-group-1"
                 />
                 <label

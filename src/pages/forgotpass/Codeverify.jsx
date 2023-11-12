@@ -221,7 +221,7 @@ const Codeverfiy = () => {
                   value={code.charAt(index)}
                   onChange={(event) => handleOnChange(event, index)}
                   onKeyUp={(e) => handleBackspaceAndEnter(e, index)}
-                  className="no-arrow text-lg md:text-2xl lg:text-2xl text-center font-bold h-[90px] rounded-lg block py-2.5 px-0 w-full text-gray-900 bg-transparent border-2 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  className="no-arrow text-lg md:text-2xl lg:text-2xl text-center font-bold h-[90px] rounded-lg block py-2.5 px-0 w-full text-gray-900 bg-transparent border-2 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-green-600 peer"
                   placeholder=" "
                   required
                 />
@@ -229,7 +229,7 @@ const Codeverfiy = () => {
             ))}
           </div>
           <button
-            type="button"
+            type="submit"
             onClick={handleOnSubmit}
             className="w-full text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-green-700 dark:hover:bg-green-800 dark:focus:ring-gray-700 dark:border-gray-700"
           >

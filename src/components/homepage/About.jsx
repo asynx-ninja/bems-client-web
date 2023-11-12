@@ -8,7 +8,7 @@ const About = () => {
       id="about"
       className=" text-gray-900 sm:pt-[70px] md:pt-40 pt-20 container mx-auto gap-14 sm:pb-[90px]"
     >
-      <section className="pt-6 mb-24 ">
+      <section className="pt-6 mb-24 sm:px-[20px] md:px-0">
         <div className=" mx-auto sm:px-0 lg:px-12">
           <div
             className="flex flex-wrap md:flex-nowrap items-center"
@@ -21,10 +21,10 @@ const About = () => {
             data-aos-anchor-placement="top-center"
           >
             <div className="w-full md:w-full lg:w-1/2 md:p-6 ">
-              <h3 className="sm:text-[24px] sm:leading-6 md:leading-none md: md:text-4xl font-medium text-black sm:text-center md:text-left">
+              <h3 className="sm:text-[24px] sm:leading-6 md:leading-none md: md:text-4xl font-medium text-black sm:text-center lg:text-left">
                 Welcome to Bagong Montalban
               </h3>
-              <p className="mt-4 sm:text-[14px] md:text-[18px] text-black sm:text-center md:text-left">
+              <p className="mt-4 sm:text-[14px] md:text-[18px] text-black sm:text-center lg:text-left">
                 Mayor Ronnie S. Evangelista is committed to solving problems for
                 the people across the town under his leadership. Expanding
                 access to affordable healthcare, improving local capacity,
@@ -44,7 +44,7 @@ const About = () => {
           </div>
         </div>
       </section>
-      <section className="mt-4 md:mt-6 mb-24">
+      <section className="mt-4 md:mt-6 mb-24 sm:px-[20px] md:px-0">
         <div className=" mx-auto  sm:px-0 lg:px-12">
           <div
             className="flex flex-wrap md:flex-nowrap items-center mt-6"
@@ -66,10 +66,10 @@ const About = () => {
               </div>
             </div>
             <div className="w-full md:w-full lg:w-1/2 sm:p-0 md:p-6 order-1 md:order-2">
-              <h3 className="sm:text-[24px] md:text-4xl sm:leading-6 md:leading-none sm:text-center md:text-left font-medium text-black">
+              <h3 className="sm:text-[24px] md:text-4xl sm:leading-6 md:leading-none sm:text-center lg:text-left font-medium text-black">
                 Meet the Ideological leader of Bagong Montalban
               </h3>
-              <p className="mt-4 sm:text-[14px] md:text-[18px] text-black sm:text-center md:text-left">
+              <p className="mt-4 sm:text-[14px] md:text-[18px] text-black sm:text-center lg:text-left">
                 Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nobis
                 quasi saepe hic placeat? Deleniti quibusdam praesentium rem,
                 blanditiis, pariatur ipsum perferendis doloremque ab quidem
@@ -79,7 +79,7 @@ const About = () => {
           </div>
         </div>
       </section>
-      <section className="mt-4 md:mt-6">
+      <section className="mt-4 md:mt-6 sm:px-[20px] md:px-0">
         <div className=" mx-auto  sm:px-0 lg:px-12">
           <div
             className="flex flex-wrap md:flex-nowrap items-center mt-6"
@@ -102,10 +102,10 @@ const About = () => {
               </div>
             </div>
             <div className="w-full md:w-full lg:w-1/2 sm:p-0 md:p-6 order-1 md:order-2">
-              <h1 className="sm:text-[24px] md:text-4xl sm:leading-6 md:leading-none font-bold text-gray-900 mb-4 sm:text-center md:text-left">
+              <h1 className="sm:text-[24px] md:text-4xl sm:leading-6 md:leading-none font-bold text-gray-900 mb-4 sm:text-center lg:text-left">
                 E-Services <b className="text-custom-green-header">Montalban</b>
               </h1>
-              <p className="mt-4 sm:text-[14px] md:text-[18px] text-black sm:text-center md:text-left">
+              <p className="mt-4 sm:text-[14px] md:text-[18px] text-black sm:text-center lg:text-left">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
                 enim ad minim veniam, quis nostrud exercitation ullamco laboris

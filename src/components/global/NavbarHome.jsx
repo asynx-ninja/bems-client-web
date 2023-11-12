@@ -54,7 +54,7 @@ const NavbarHome = () => {
             </a>
           </div>
           <div className="hidden md:block">
-            <div className="flex-justify-end items-baseline space-x-3">
+            <div className="flex-justify-end items-baseline space-x-3 md:text-[12px] lg:text-[16px]">
               <Links
                 to="/"
                 className="text-white uppercase hover:bg-gray-700 hover:text-white px-2 py-2 rounded-md text-md"
@@ -173,7 +173,7 @@ const NavbarHome = () => {
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
           <Link
             to="/"
-            className="text-black-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            className="text-black-300 hover:bg-gray-700 w-full text-left hover:text-white block px-3 py-2 rounded-md text-base font-medium"
           >
             Home
           </Link>
@@ -181,7 +181,7 @@ const NavbarHome = () => {
             <button
               // value={"about"}
               // onClick={OnNav}
-              className="text-black-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+              className="text-black-300 hover:bg-gray-700 w-full text-left hover:text-white block px-3 py-2 rounded-md text-base font-medium"
             >
               About us
             </button>
@@ -190,7 +190,7 @@ const NavbarHome = () => {
             <button
               // value={"services"}
               // onClick={OnNav}
-              className="text-black-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+              className="text-black-300 hover:bg-gray-700 w-full text-left hover:text-white block px-3 py-2 rounded-md text-base font-medium"
             >
               Services
             </button>
@@ -199,35 +199,33 @@ const NavbarHome = () => {
             <button
               // value={"tourist"}
               // onClick={OnNav}
-              className="text-black-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+              className="text-black-300 hover:bg-gray-700 w-full text-left hover:text-white block px-3 py-2 rounded-md text-base font-medium"
             >
               Tourist Spot
             </button>
           </Links>
           <Link
             to="/barangay"
-            className="text-black-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            className="text-black-300 hover:bg-gray-700 w-full text-left hover:text-white block px-3 py-2 rounded-md text-base font-medium"
           >
             List of Barangay
           </Link>
           <Link
             to="/login"
-            className="text-black-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            className="text-black-300 hover:bg-gray-700 w-full text-left hover:text-white block px-3 py-2 rounded-md text-base font-medium"
           >
             Login
           </Link>
         </div>
       </div>
       {isVisible && (
-        <Links to="/">
-          <button
-            value={"home"}
-            onClick={OnNav}
-            className="text-[26px] border-white border-[1px] text-white z-[100] fixed sm:bottom-10 md:bottom-5 sm:right-5 md:right-10 bg-custom-green-header w-[50px] h-[50px] rounded-full flex justify-center items-center"
-          >
-            <FaAngleUp className="pointer-events-none" />
-          </button>
-        </Links>
+        <button
+          value={"navbar"}
+          onClick={OnNav}
+          className="text-[26px] border-white border-[1px] text-white z-[1] fixed sm:bottom-10 md:bottom-5 sm:right-5 md:right-10 bg-custom-green-header w-[50px] h-[50px] rounded-full flex justify-center items-center"
+        >
+          <FaAngleUp className="pointer-events-none" />
+        </button>
       )}
     </nav>
   );

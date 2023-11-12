@@ -150,7 +150,7 @@ const pages = [
     element: <Codeverify />,
   },
   {
-    path: "/loading/:email/:brgy",
+    path: "/loading",
     element: <Loading />,
   },
   {

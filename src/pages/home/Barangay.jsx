@@ -4,6 +4,10 @@ import NavbarHome from "../../components/global/NavbarHome";
 import { Link } from "react-router-dom";
 import video from "../../assets/image/video.mp4";
 import headerImage from "../../assets/image/header.png";
+import Footer from "../../components/homepage/Footer";
+import logo from "../../assets/header/montalban-logo.png"
+import brgyImg from "../../assets/image/brgy-list-img.jpg"
+
 const Barangay = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 3; // Change this to your desired number of items per page
@@ -35,16 +39,6 @@ const Barangay = () => {
     // Add more data as needed
   ];
   const sections = [
-    {
-      title: "Logo",
-      content: (
-        <img
-          src="https://montalbanrizalph.com/wp-content/uploads/2020/07/MONTALBAN-LOGO.png"
-          alt=""
-          className="w-[100px] md:w-[100px] items-center mx-auto"
-        />
-      ),
-    },
     {
       title: "Story",
       content: (
@@ -79,7 +73,7 @@ const Barangay = () => {
   ];
   const data = [
     {
-      logo: "https://montalbanrizalph.com/wp-content/uploads/2020/07/MONTALBAN-LOGO.png",
+      logo: logo,
       name: "Barangay Balite",
       description:
         "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos, possimus.",
@@ -89,7 +83,7 @@ const Barangay = () => {
         "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos, possimus.",
     },
     {
-      logo: "https://montalbanrizalph.com/wp-content/uploads/2020/07/MONTALBAN-LOGO.png",
+      logo: logo,
       name: "Barangay Balite",
       description:
         "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos, possimus.",
@@ -99,7 +93,7 @@ const Barangay = () => {
         "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos, possimus.",
     },
     {
-      logo: "https://montalbanrizalph.com/wp-content/uploads/2020/07/MONTALBAN-LOGO.png",
+      logo: logo,
       name: "Barangay Balite",
       description:
         "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos, possimus.",
@@ -109,7 +103,7 @@ const Barangay = () => {
         "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos, possimus.",
     },
     {
-      logo: "https://montalbanrizalph.com/wp-content/uploads/2020/07/MONTALBAN-LOGO.png",
+      logo: logo,
       name: "Barangay Balite",
       description:
         "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos, possimus.",
@@ -180,7 +174,7 @@ const Barangay = () => {
           <div className="relative bg-gradient-to-r from-[#295141] to-[#408D51] mx-auto justify-center items-center rounded-t-[25px] w-full">
             <div className="bg-[url('/header-bg.png')] sm:h-[180px] lg:h-auto rounded-t-[25px]">
               <img
-                src="https://montalbanrizalph.com/wp-content/uploads/2020/07/MONTALBAN-LOGO.png"
+                src={logo}
                 alt=""
                 className="sm:w-[120px] md:w-[160px] mx-auto absolute left-0 right-0 sm:-top-[70px] md:-top-[6rem]"
               />
@@ -322,7 +316,7 @@ const Barangay = () => {
                         ))}
                         <div
                           id="hs-vertically-centered-scrollable-modal"
-                          className="hs-overlay hidden w-full sm:w-11/12 md:w-10/12 lg:w-10/12 fixed top-0 left-0 right-0 bottom-0 m-auto z-[60] overflow-x-hidden overflow-y-auto"
+                          className="hs-overlay hidden w-full sm:w-11/12 md:w-10/12 lg:w-10/12 fixed top-0 left-0 right-0 bottom-0 m-auto z-[100] overflow-x-hidden overflow-y-auto"
                         >
                           <div className="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:w-11/12 md:w-10/12 lg:w-8/12 m-3 sm:mx-auto h-[calc(100%-3.5rem)] min-h-[calc(100%-3.5rem)] flex items-center">
                             <div className="max-h-full overflow-hidden flex flex-col bg-white border shadow-sm  dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
@@ -336,12 +330,15 @@ const Barangay = () => {
                                   Barangay Balite Information
                                 </h3>
                               </div>
-                              <div className="overflow-y-auto">
-                                <img
-                                  className="w-full md:block hidden h-auto md:h-auto lg:h-[300px] object-cover"
-                                  src="https://4.bp.blogspot.com/-_FYgSO4YHks/WBrEvVVhEvI/AAAAAAAAEkI/Q_298d7-bfATX10pZqN30vlsV1w39vBkACLcB/s1600/PhotoGrid_1475712844439.jpg"
-                                  alt=""
-                                />
+                              <div className="overflow-y-auto ">
+                                <div
+                                  className="flex flex-col justify-center items-center"
+                                  style={{
+                                    backgroundSize: 'cover',
+                                    backgroundImage: `url(${brgyImg})`,
+                                  }}>
+                                  <img className="w-[150px] sm:py-[25px] md:py-[50px]" src={logo} alt="" />
+                                </div>
                                 <div className="p-4 space-y-4 bg-white rounded-b-xl shadow-2xl transform transition-all duration-500 ease-in-out">
                                   {sections.map((section, index) => (
                                     <div key={index} className="space-y-2">
@@ -375,11 +372,10 @@ const Barangay = () => {
                           <button
                             key={number}
                             onClick={() => handlePageChange(number)}
-                            className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
-                              currentPage === number
+                            className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${currentPage === number
                                 ? "bg-blue-500 text-white"
                                 : "border-gray-300 bg-white text-gray-500 hover:bg-gray-50"
-                            }`}
+                              }`}
                           >
                             {number}
                           </button>
@@ -393,6 +389,7 @@ const Barangay = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 };

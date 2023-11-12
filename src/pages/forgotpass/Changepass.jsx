@@ -11,6 +11,9 @@ const Changepass = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const client_email = atob(location.pathname.split("/")[2])
+  const [passwordStrengthError, setPasswordStrengthError] = useState(false);
+  const [passwordStrengthSuccess, setPasswordStrengthSuccess] = useState(false);
+  const [passwordStrength, setPasswordStrength] = useState(0);
   const [password, setPassword] = useState({
     enter: "",
     reenter: ""
@@ -43,6 +46,28 @@ const Changepass = () => {
       email: client_email,
       password: password.enter
     })
+
+    if (e.target.name === "enter") {
+      const password = e.target.value;
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/;
+      const symbolRegex = /[@$!%*?&]/;
+
+      if (!passwordRegex.test(password) || !symbolRegex.test(password)) {
+        setPasswordStrengthError(true);
+        setPasswordStrengthSuccess(false);
+      } else {
+        setPasswordStrengthError(false);
+        setPasswordStrengthSuccess(true);
+      }
+      // Check if passwords match
+
+      let strength = 0;
+      if (password.length >= 8) strength++;
+      if (/[A-Z]/.test(password)) strength++;
+      if (/[a-z]/.test(password)) strength++;
+      if (/\d/.test(password)) strength++;
+      setPasswordStrength(strength * 25);
+    }
   }
 
   const handleOnSubmit = async () => {
@@ -55,10 +80,11 @@ const Changepass = () => {
           message: "Password does not Match! Please Try Again"
         })
       } else {
-        await axios.post(`${API_LINK}/auth/pass/`, credential, {
+        await axios.patch(`${API_LINK}/auth/pass/`, credential, {
           headers: {
             'Content-Type': 'application/json',
-        }})
+          }
+        })
 
         setResponse({
           success: true,
@@ -66,9 +92,9 @@ const Changepass = () => {
           message: "Password Change Successfully!"
         })
 
-        setTimeout(
+        setTimeout(() => {
           navigate('/login')
-        , 3000)
+        }, 3000)
       }
     } catch (error) {
       setResponse({
@@ -209,7 +235,7 @@ const Changepass = () => {
               onChange={handleOnChange}
               type={passwordShown ? "text" : "password"}
               placeholder="Enter password"
-              className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 "
+              className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 "
             />
             <button
               type="button"
@@ -236,7 +262,7 @@ const Changepass = () => {
               onChange={handleOnChange}
               type={repasswordShown ? "text" : "password"}
               placeholder="Re-enter password"
-              className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 "
+              className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 "
             />
             <button
               type="button"
@@ -250,8 +276,50 @@ const Changepass = () => {
               )}
             </button>
           </div>
+          <div>
+            {password.enter && (
+              <div className="flex w-full h-1.5 bg-gray-200 rounded-full overflow-hidden dark:bg-gray-700">
+                <div
+                  className={`flex flex-col justify-center overflow-hidden ${passwordStrength < 25
+                      ? "bg-red-500"
+                      : passwordStrength < 50
+                        ? "bg-yellow-500"
+                        : passwordStrength < 75
+                          ? "bg-amber-500"
+                          : passwordStrength < 100
+                            ? "bg-blue-500"
+                            : "bg-green-500"
+                    }`}
+                  role="progressbar"
+                  style={{ width: `${passwordStrength}%` }}
+                  aria-valuenow={passwordStrength}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                />
+              </div>
+            )}
+            {passwordStrengthSuccess && (
+              <div
+                className="bg-green-50 border border-green-200 text-sm text-green-600 rounded-md p-4 mt-2"
+                role="alert"
+              >
+                <span className="font-bold">Sucess:</span> Password is already
+                strong
+              </div>
+            )}
+            {passwordStrengthError && passwordStrength < 100 && (
+              <div
+                className="bg-orange-50 border border-orange-200 text-sm text-orange-600 rounded-md p-4 mt-2"
+                role="alert"
+              >
+                <span className="font-bold">Warning:</span> Password must contain
+                at least 8 characters, one uppercase letter, one lowercase letter,
+                one number, and one special character
+              </div>
+            )}
+          </div>
           <button
-            type="button"
+            type="submit"
             onClick={handleOnSubmit}
             className="w-full text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-green-700 dark:hover:bg-green-800 dark:focus:ring-gray-700 dark:border-gray-700"
           >

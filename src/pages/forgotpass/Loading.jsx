@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 const Loading = () => {
   const [secondsLeft, setSecondsLeft] = useState(5);
+  const [searchParams, setSearchParams] = useSearchParams()
+  const param_email = searchParams.get("email")
+  const email = atob(param_email)
+  const param_brgy = searchParams.get("brgy")
+  const brgy = atob(param_brgy)
 
-  const location = useLocation();
-  const email = atob(location.pathname.split("/")[2]);
-  const brgy = atob(location.pathname.split("/")[3]);
+  console.log(email, brgy)
 
   useEffect(() => {
     const delay = 10000;

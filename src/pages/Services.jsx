@@ -10,8 +10,7 @@ const Services = () => {
   const [searchParams, setSearchParams] = useSearchParams()
   const id = searchParams.get("id")
   const brgy = searchParams.get("brgy")
-
-  const [filterType, setFilterType] = useState("all");
+  const [filterType, setFilterType] = useState([])
   // const email = location.pathname.split("/")[2];
   // const brgy = location.pathname.split("/")[3];
 
@@ -24,12 +23,17 @@ const Services = () => {
       });
       setServices(response.data);
       console.log(response.data);
-      setFilter(response.data.filter(
-        (service) => filterType === "all" || service.type === filterType))
+      setFilter(response.data)
+      setFilterType(response.data)
     };
 
     fetchServices();
   }, [brgy]);
+
+  const handleOnFilter = (e) => {
+    e.target.value === "all" ? setFilterType(filter) 
+      : setFilterType(filter.filter((service) => service.type === e.target.value))
+  }
 
   console.log("filter", filter)
 
@@ -44,8 +48,7 @@ const Services = () => {
       </h1>
       <div className="w-full max-w-md mx-auto">
         <select
-          value={filterType}
-          onChange={(e) => setFilterType(e.target.value)}
+          onChange={handleOnFilter}
           className="w-full px-4 py-2 rounded-md border border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-500"
         >
           <option value="all">All types</option>
@@ -68,7 +71,7 @@ const Services = () => {
         </select>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-8 p-4 w-full max-w-7xl">
-        {filter.map((item, index) => (
+        {filterType.map((item, index) => (
           <Link
             to={{ pathname: `/services_form`, search: `id=${id}&brgy=${brgy}&obj=${btoa(JSON.stringify({ ...item }))}` }}
             // to={`/services_form/?id=${id}&brgy=${brgy}&service=${btoa(JSON.stringify({...service}))}`}

@@ -40,18 +40,7 @@ const Homepage = () => {
     <div id="home">
       <NavbarHome />
       <div
-      // style={{
-      //   position: "sticky",
-      //   top: "0",
-      //   zIndex: "0",
-      // }}
       >
-        {/* <img
-          src="https://i.pinimg.com/originals/54/6f/74/546f740782499be1e58c5fa9932e020e.gif"
-          // src="https://t4.ftcdn.net/jpg/04/26/85/41/360_F_426854113_cbuKWhr8BNyA1PhaX5ojXsExtvBYOeWr.jpg"
-          alt="Your alt text"
-          className="block w-full object-cover h-auto lg:h-[443px]  md:object-cover"
-        /> */}
         <div className="relative lg:h-[443px] w-full object-cover">
           <video className="h-full w-full object-cover" autoPlay muted loop>
             <source src={video} type="video/mp4" />

@@ -1,21 +1,24 @@
-
 @layer base {
   @font-face {
     font-family: Gilmer-Regular;
     src: url('../src/assets/font/Gilmer-Regular.woff') format("opentype");
   }
+
   @font-face {
     font-family: Gilmer-Bold;
     src: url('../src/assets/font/Gilmer-Bold.woff') format("opentype");
   }
+
   @font-face {
     font-family: Gilmer-Medium;
     src: url('../src/assets/font/Gilmer\ Medium.otf') format("opentype");
   }
+
   @font-face {
     font-family: Gilmer-Heavy;
     src: url('../src/assets/font/Gilmer\ Heavy.otf') format("opentype");
   }
+
   @font-face {
     font-family: Gilmer-Light;
     src: url('../src/assets/font/Gilmer\ Light.otf') format("opentype");
@@ -34,17 +37,43 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
+
 ::-webkit-calendar-picker-indicator {
-  filter: invert(24%) sepia(85%) saturate(7299%) hue-rotate(140deg)
-    brightness(90%) contrast(117%);
+  filter: invert(24%) sepia(85%) saturate(7299%) hue-rotate(140deg) brightness(90%) contrast(117%);
 }
-body{
+
+body {
   font-family: "Gilmer-Regular";
 }
+
 input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  /* border: 1px solid #253341; */
+  -webkit-text-fill-color: black;
+  /* -webkit-box-shadow: 0 0 0px 1000px #253341 inset; */
+  /* box-shadow: 0 0 0px 1000px #253341 inset; */
+  transition: background-color 5000s ease-in-out 0s;
+  color: black;
+}
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  /* border: 1px solid #253341; */
+  -webkit-text-fill-color: white;
+  /* -webkit-box-shadow: 0 0 0px 1000px #253341 inset; */
+  /* box-shadow: 0 0 0px 1000px #253341 inset; */
+  transition: background-color 5000s ease-in-out 0s;
+  color: black;
 }
 
 input {
@@ -65,9 +94,15 @@ input {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

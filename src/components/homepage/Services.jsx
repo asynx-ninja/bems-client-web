@@ -1,36 +1,42 @@
 import React from "react";
+import reliable from "../../assets/services/reliable.png"
+import userFriendly from "../../assets/services/user-friendly.png"
+import secure from "../../assets/services/secure.png"
+import transparency from "../../assets/services/transparency.png"
+import fastTransaction from "../../assets/services/fast-transaction.png"
+import backup from "../../assets/services/backup.png"
 
 const Services = () => {
   const services = [
     {
       title: "Reliable",
       description: "Description for Service 1 goes here.",
-      imageUrl: "https://img.icons8.com/?size=256&id=dv45Z2L7mgWt&format=png",
+      imageUrl: reliable,
     },
     {
       title: "User-friendly",
       description: "Description for Service 2 goes here.",
-      imageUrl: "https://img.icons8.com/?size=256&id=uxqHPcEFfc8W&format=png",
+      imageUrl: userFriendly,
     },
     {
       title: "Secure",
       description: "Description for Service 3 goes here.",
-      imageUrl: "https://img.icons8.com/?size=256&id=7lRoKNGvudPG&format=png",
+      imageUrl: secure,
     },
     {
       title: "Transparency",
       description: "Description for Service 3 goes here.",
-      imageUrl: "https://img.icons8.com/?size=256&id=Hku9UaGJ7edj&format=png",
+      imageUrl: transparency,
     },
     {
       title: "Fast Transaction",
       description: "Description for Service 3 goes here.",
-      imageUrl: "https://img.icons8.com/?size=256&id=UgSe3psfdGj5&format=png",
+      imageUrl: fastTransaction,
     },
     {
       title: "Data backup",
       description: "Description for Service 3 goes here.",
-      imageUrl: "https://img.icons8.com/?size=256&id=RXrON5kyN96A&format=png",
+      imageUrl: backup,
     },
   ];
   return (
