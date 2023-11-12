@@ -224,13 +224,13 @@ const Settings = () => {
             }
 
             if (response.status === 200) {
-                console.log('Update successful:', response.data);
-                setUserData(response.data);
-                setUserAddress({
-                    street: response.data.address.street,
-                    brgy: response.data.address.brgy,
-                    city: response.data.address.city
-                })
+                console.log('Update successful:', response);
+                // setUserData(response.data);
+                // setUserAddress({
+                //     street: response.data.address.street,
+                //     brgy: response.data.address.brgy,
+                //     city: response.data.address.city
+                // })
                 // setUserSocials({
                 //     facebook: {
                 //         name: response.data.socials.facebook.name,

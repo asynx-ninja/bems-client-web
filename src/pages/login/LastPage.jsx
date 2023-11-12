@@ -137,6 +137,7 @@ const LastPage = () => {
       isHead: formData.isHead,
       username: formData.username,
       password: formData.password,
+      isApproved: "Pending",
     };
 
     try {
@@ -186,7 +187,6 @@ const LastPage = () => {
       
       const email = btoa(obj.email);
       const barangay = btoa(obj.address.brgy);
-      
       
       setTimeout(function () {
         navigate(`/loading/?email=${email}&brgy=${barangay}`);
