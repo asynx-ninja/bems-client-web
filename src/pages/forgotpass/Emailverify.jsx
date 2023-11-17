@@ -19,7 +19,9 @@ const Emailverify = () => {
     setEmail(e.target.value)
   }
 
-  const handleOnSubmit = async () => {
+  const handleOnSubmit = async (e) => {
+    e.preventDefault();
+
     if (!email) {
       setResponse({
         success: false,
@@ -41,9 +43,12 @@ const Emailverify = () => {
           message: "Code has been successfully sent to your Email!"
         })
 
-        setTimeout(() => {
+        console.log(encodedEmail)
+
+        setTimeout(()=> {
           navigate(`/code_verify/${encodedEmail}`)
         }, 3000)
+        
       }
     } catch (error) {
       setResponse({
@@ -53,10 +58,9 @@ const Emailverify = () => {
       })
       console.log(error)
     }
-
   }
 
-  console.log(email)
+  // console.log(email)
 
   return (
     <div className="flex flex-col-reverse md:flex-row-reverse">

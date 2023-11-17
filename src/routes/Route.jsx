@@ -20,7 +20,7 @@ import Loading from "../pages/forgotpass/Loading";
 
 // PAGES
 import Dashboard from "../pages/Dashboard";
-import Articles from "../pages/Articles";
+import Events from "../pages/Events";
 import Settings from "../pages/Settings";
 import BarangayInfo from "../pages/BarangayInfo";
 import Requests from "../pages/Requests";
@@ -44,11 +44,11 @@ const pages = [
     ),
   },
   {
-    path: "/article",
+    path: "/events",
     element: (
       <>
         <Navbar />
-        <Articles />
+        <Events />
       </>
     ),
   },

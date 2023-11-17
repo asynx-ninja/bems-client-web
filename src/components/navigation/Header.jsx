@@ -13,7 +13,8 @@ const Header = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get("id")
   const brgy = searchParams.get("brgy")
-  const [userData, setUserData] = useState({})
+  const [userData, setUserData] = useState([])
+  const [announcement, setAnnouncements] = useState([])
 
   useEffect(() => {
     const fetch = async () => {
@@ -26,6 +27,9 @@ const Header = () => {
         } else {
           setError("Invalid username or password");
         }
+
+        const res1 = await axios.get(`${API_LINK}/announcement/all/?brgy=${brgy}`)
+        setAnnouncements(res1.data)
       } catch (error) {
         console.log(error);
       }
@@ -33,24 +37,10 @@ const Header = () => {
     fetch()
   }, [id])
 
-  const notif = [
-    {
-      title: "Libreng Tule!",
-      date: "10/16/2023",
-      message: "Tama ang iyong narinig! Libre!"
-    },
-    {
-      title: "Kasalanan ng Bayan!",
-      date: "11/01/2023",
-      message: "Si crush na ba ang the one? Pakasal na kayo!"
-    },
-    {
-      title: "Kapanganakan ni Kenneth Bautista",
-      date: "12/25/2023",
-      message: "May tatlong kumag nag-si dalaw!"
-    },
-  ]
-
+  const dateFormat = (date) => {
+    const birthdate = date === undefined ? "" : date.substr(0, 10)
+    return birthdate;
+  }
 
   return (
     <div>
@@ -115,20 +105,22 @@ const Header = () => {
 
                 {/* NOTIFICATION LIST */}
 
-                {notif.map((item, i) => (
-                  <Link
-                    key={i}
-                    to="/article"
-                    className='w-full px-[5px] py-[10px] border-b-[1px] border-custom-gray hover:bg-gray-100 cursor-pointer'
-                  >
-                    <div className='flex justify-between px-[5px] text-sm'>
-                      <h1 className='font-medium w-[200px] truncate'>{item.title}</h1>
-                      <h1 className='text-gray-400'>{item.date}</h1>
-                    </div>
-                    <p className='px-[5px] py-[5px] w-[280px] text-sm truncate'>
-                      {item.message}
-                    </p>
-                  </Link>
+                {announcement.map((item, i) => (
+                  <div key={i} className='border-b-[1px] hover:bg-gray-100 border-gray-100'>
+                    <Link
+                      to={`/events/?id=${id}&brgy=${brgy}&obj=${btoa(JSON.stringify(item))}`}
+                      className='w-full px-[5px] bg-white cursor-pointer'
+                    >
+                      <div className='flex justify-between px-[10px] text-sm bg-transparent'>
+                        <h1 className='font-medium w-[200px] truncate'>{item.title}</h1>
+                        <h1 className='text-gray-400'>{dateFormat(item.date)}</h1>
+                      </div>
+                      <p className='bg-transparent px-[10px] py-[5px] w-[280px] text-sm truncate'>
+                        {item.details}
+                      </p>
+                    </Link>
+                  </div>
+
                 ))}
 
                 <div className='w-full flex justify-center'>

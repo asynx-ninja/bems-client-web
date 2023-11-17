@@ -102,6 +102,20 @@ const Settings = () => {
                         oldPass: "",
                         newPass: ""
                     })
+                    setUserSocials({
+                        facebook: {
+                            name: res.data[0].socials.facebook.name,
+                            link: res.data[0].socials.facebook.link
+                        },
+                        instagram: {
+                            name: res.data[0].socials.instagram.name,
+                            link: res.data[0].socials.instagram.link
+                        },
+                        twitter: {
+                            name: res.data[0].socials.twitter.name,
+                            link: res.data[0].socials.twitter.link
+                        },
+                    })
                     var pfpSrc = document.getElementById("pfp");
                     pfpSrc.src = res.data[0].profile.link !== "" ? res.data[0].profile.link : defaultPFP
                 } else {
@@ -168,7 +182,7 @@ const Settings = () => {
         });
     };
 
-    console.log(userSocials)
+    // console.log(userSocials)
 
     const saveChanges = async (e) => {
 
@@ -198,7 +212,7 @@ const Settings = () => {
             socials: {
                 facebook: userSocials.facebook,
                 instagram: userSocials.instagram,
-                twitter:  userSocials.twitter
+                twitter: userSocials.twitter
             }
         };
 
@@ -225,26 +239,17 @@ const Settings = () => {
 
             if (response.status === 200) {
                 console.log('Update successful:', response);
-                // setUserData(response.data);
-                // setUserAddress({
-                //     street: response.data.address.street,
-                //     brgy: response.data.address.brgy,
-                //     city: response.data.address.city
-                // })
-                // setUserSocials({
-                //     facebook: {
-                //         name: response.data.socials.facebook.name,
-                //         link: response.data.socials.facebook.link
-                //     },
-                //     instagram: {
-                //         name: response.data.socials.instagram.name,
-                //         link: response.data.socials.instagram.link
-                //     },
-                //     twitter: {
-                //         name: response.data.socials.twitter.name,
-                //         link: response.data.socials.twitter.link
-                //     },
-                // })
+                setUserData(response.data);
+                setUserAddress({
+                    street: response.data.address.street,
+                    brgy: response.data.address.brgy,
+                    city: response.data.address.city
+                })
+                setUserSocials({
+                    facebook: response.data.socials.facebook,
+                    instagram: response.data.socials.instagram,
+                    twitter: response.data.socials.twitter,
+                })
                 setEditButton(true)
             } else {
                 console.error('Update failed. Status:', response.status);
@@ -330,16 +335,6 @@ const Settings = () => {
         }
     }
 
-    // const socials = ({
-    //     facebook: "avn.nugs",
-    //     instagram: "peko_manggo",
-    //     twitter: "andweyeyiyei",
-    //     contact: userData.contact,
-    //     email: userData.email
-    // })
-
-    // console.log(userData)
-
     return (
         <div className="">
             <div className="flex flex-col w-full">
@@ -354,7 +349,7 @@ const Settings = () => {
                                 name="personal"
                                 onClick={handleOnActive}
                                 className={activeButton.personal ? "sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-custom-green-button text-white font-medium"
-                                    : "sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-white text-black font-medium hover:bg-custom-green-button hover:text-white"}
+                                    : "sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-white text-black font-medium transition-all ease-in-out hover:bg-custom-green-button hover:text-white"}
                             >
                                 Personal Info
                             </button>
@@ -362,7 +357,7 @@ const Settings = () => {
                                 name="credential"
                                 onClick={handleOnActive}
                                 className={activeButton.credential ? "sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-custom-green-button text-white font-medium"
-                                    : "sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-white text-black font-medium hover:bg-custom-green-button hover:text-white"}
+                                    : "sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-white text-black font-medium transition-all ease-in-out hover:bg-custom-green-button hover:text-white"}
                             >
                                 Account Info
                             </button>
@@ -741,7 +736,7 @@ const Settings = () => {
                                         <h6 className='font-bold'>SOCIALS</h6>
                                     </div>
                                     <div className='grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-3'>
-                                        <div className='flex flex-col gap-3'>
+                                        <div className='flex flex-col gap-3 p-2'>
                                             <div>
                                                 <label
                                                     htmlFor="facebook-name"
@@ -752,7 +747,7 @@ const Settings = () => {
                                                 <input
                                                     id="facebook-name"
                                                     type='text'
-                                                    // value={userData.socials.facebook.name || ""}
+                                                    value={userSocials.facebook.name || ''}
                                                     disabled={editButton}
                                                     onChange={(e) => { handleUserSocials("facebook", "name", e.target.value) }}
                                                     className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 bg-white"
@@ -770,7 +765,7 @@ const Settings = () => {
                                                 <input
                                                     type='text'
                                                     id="facebook-name"
-                                                    // value={userData.socials.facebook.link|| ""}
+                                                    value={userSocials.facebook.link || ''}
                                                     disabled={editButton}
                                                     onChange={(e) => { handleUserSocials("facebook", "link", e.target.value) }}
                                                     className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 bg-white"
@@ -779,7 +774,7 @@ const Settings = () => {
                                                 />
                                             </div>
                                         </div>
-                                        <div className='flex flex-col gap-3'>
+                                        <div className='flex flex-col gap-3 p-2 sm:border-[0px] sm:border-t-[1px] sm:border-b-[1px] md:border-t-[0px] md:border-b-[0px] md:border-l-[1px] md:border-r-[1px] border-green-300'>
                                             <div>
                                                 <label
                                                     htmlFor="instagram-name"
@@ -790,7 +785,7 @@ const Settings = () => {
                                                 <input
                                                     id='instagram-name'
                                                     type='text'
-                                                    // value={userData.socials.facebook.name || ""}
+                                                    value={userSocials.instagram.name || ''}
                                                     disabled={editButton}
                                                     onChange={(e) => { handleUserSocials("instagram", "name", e.target.value) }}
                                                     className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 bg-white"
@@ -808,7 +803,7 @@ const Settings = () => {
                                                 <input
                                                     id="instagram-link"
                                                     type='text'
-                                                    // value={userData.socials.facebook.link|| ""}
+                                                    value={userSocials.instagram.link || ""}
                                                     disabled={editButton}
                                                     onChange={(e) => { handleUserSocials("instagram", "link", e.target.value) }}
                                                     className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 bg-white"
@@ -817,7 +812,7 @@ const Settings = () => {
                                                 />
                                             </div>
                                         </div>
-                                        <div className='flex flex-col gap-3'>
+                                        <div className='flex flex-col gap-3 p-2'>
                                             <div>
                                                 <label
                                                     htmlFor="twitter-name"
@@ -828,7 +823,7 @@ const Settings = () => {
                                                 <input
                                                     id="twitter-name"
                                                     type='text'
-                                                    // value={userData.socials.facebook.name || ""}
+                                                    value={userSocials.twitter.name || ""}
                                                     disabled={editButton}
                                                     onChange={(e) => { handleUserSocials("twitter", "name", e.target.value) }}
                                                     className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 bg-white"
@@ -845,7 +840,7 @@ const Settings = () => {
                                                 </label>
                                                 <input
                                                     type='text'
-                                                    // value={userData.socials.facebook.link|| ""}
+                                                    value={userSocials.twitter.link || ""}
                                                     disabled={editButton}
                                                     onChange={(e) => { handleUserSocials("twitter", "link", e.target.value) }}
                                                     className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 bg-white"
@@ -1052,30 +1047,30 @@ const Settings = () => {
                                 <h6 className="font-bold">{userData.firstName} {userData.lastName}</h6>
                                 <p className="text-[12px] leading-[10px]">{userData.username}</p>
                             </div>
-                            <div className='flex flex-col justify-center sm:w-[250px] lg:w-full items-center mx-auto mt-5 bg-custom-green-header rounded-md p-[10px]'>
+                            <div className='flex flex-col justify-center sm:w-[250px] md:w-[90%] lg:w-full items-center mx-auto mt-5 bg-custom-green-header rounded-md p-[10px]'>
                                 <div className='flex justify-center items-center border-b-[1px] border-white w-full pb-[10px]'>
                                     <h6 className='font-bold text-white'>Socials</h6>
                                 </div>
-                                <div className='py-[10px] flex flex-col gap-2'>
-                                    <button className='flex gap-2 justify-left items-center hover:bg-white hover:rounded-full hover:text-custom-green-table-header text-white hover:p-2'>
+                                <div className='p-[10px] flex sm:flex-col md:flex-row lg:flex-col gap-5'>
+                                    <button className='flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-custom-green-table-header text-white hover:p-2'>
                                         <FaFacebook />
-                                        {/* <p className='text-[14px]'>{socials.facebook}</p> */}
+                                        <p className='text-left truncate text-[12px]'>{userSocials.facebook.name}</p>
                                     </button>
-                                    <button className='flex gap-2 justify-left items-center hover:bg-white hover:rounded-full hover:text-custom-green-table-header text-white hover:p-2'>
+                                    <button className='flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-custom-green-table-header text-white hover:p-2'>
                                         <FaInstagram />
-                                        {/* <p className='text-[14px]'>{socials.instagram}</p> */}
+                                        <p className='text-left truncate text-[12px]'>{userSocials.instagram.name}</p>
                                     </button>
-                                    <button className='flex gap-2 justify-left items-center hover:bg-white hover:rounded-full hover:text-custom-green-table-header text-white hover:p-2'>
+                                    <button className='flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-custom-green-table-header text-white hover:p-2'>
                                         <FaTwitter />
-                                        {/* <p className='text-[14px]'>{socials.twitter}</p> */}
+                                        <p className='text-left truncate text-[12px]'>{userSocials.twitter.name}</p>
                                     </button>
-                                    <button className='flex gap-2 justify-left items-center hover:bg-white hover:rounded-full hover:text-custom-green-table-header text-white hover:p-2'>
+                                    <button className='flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-custom-green-table-header text-white hover:p-2'>
                                         <FaPhone />
-                                        {/* <p className='text-[14px]'>{socials.contact}</p> */}
+                                        <p className='text-left truncate text-[12px]'>{userData.contact}</p>
                                     </button>
-                                    <button className='flex gap-2 justify-left items-center hover:bg-white hover:rounded-full hover:text-custom-green-table-header text-white hover:p-2'>
+                                    <button className=' flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-custom-green-table-header text-white hover:p-2'>
                                         <FaEnvelope />
-                                        {/* <p className='text-[14px]'>{socials.email}</p> */}
+                                        <p className='text-left truncate text-[12px]'>{userData.email}</p>
                                     </button>
                                 </div>
                             </div>

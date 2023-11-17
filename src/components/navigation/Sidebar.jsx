@@ -76,7 +76,7 @@ const Sidebar = () => {
                       .remove()
                     : null;
                 }}
-                className={'flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[#326350] hover:bg-gradient-to-r from-[#295141] to-[#408D51] hover:text-custom-gold'}
+                className={'flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[#326350] transition-all ease-in-out hover:bg-gradient-to-r from-[#295141] to-[#408D51] hover:text-custom-gold'}
               >
                 <FaChartPie className='my-auto' size={"15px"} />
                 <h1 className='text-bold my-auto font-bold text-sm'>DASHBOARD</h1>
@@ -90,7 +90,7 @@ const Sidebar = () => {
                       .remove()
                     : null;
                 }}
-                className='flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[#326350] hover:bg-gradient-to-r from-[#295141] to-[#408D51] hover:text-custom-gold'
+                className='flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[#326350] transition-all ease-in-out hover:bg-gradient-to-r from-[#295141] to-[#408D51] hover:text-custom-gold'
               >
                 <FaUserAlt className='my-auto' size={"15px"} />
                 <h1 className='text-bold my-auto font-bold text-sm'>ACCOUNT</h1>
@@ -98,7 +98,7 @@ const Sidebar = () => {
               <button
                 id="hs-unstyled-collapse"
                 data-hs-collapse="#hs-unstyled-collapse-heading"
-                className='hs-collapse-toggle flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[#326350] hover:bg-gradient-to-r from-[#295141] to-[#408D51] hover:text-custom-gold'
+                className='hs-collapse-toggle flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[#326350] transition-all ease-in-out hover:bg-gradient-to-r from-[#295141] to-[#408D51] hover:text-custom-gold'
                 onClick={OnOpen}
               >
                 <FaTh className='my-auto' size={"15px"} />
@@ -135,7 +135,7 @@ const Sidebar = () => {
                         .remove()
                       : null;
                   }}
-                  className={'flex h-[50px] w-full my-auto pl-[60px] gap-5 text-[#326350] hover:bg-gradient-to-r from-[#295141] to-[#408D51] hover:text-custom-gold'}
+                  className={'flex h-[50px] w-full my-auto pl-[60px] gap-5 text-[#326350] transition-all ease-in-out hover:bg-gradient-to-r from-[#295141] to-[#408D51] hover:text-custom-gold'}
                 >                  <FaCog className='my-auto' size={"15px"} />
                   <h1 className='text-bold my-auto font-bold w-[50px]  text-sm'>SERVICES</h1>
                 </Link>
@@ -148,7 +148,7 @@ const Sidebar = () => {
                         .remove()
                       : null;
                   }}
-                  className={'flex h-[50px] w-full my-auto pl-[60px] gap-5 text-[#326350] hover:bg-gradient-to-r from-[#295141] to-[#408D51] hover:text-custom-gold'}
+                  className={'flex h-[50px] w-full my-auto pl-[60px] gap-5 text-[#326350] transition-all ease-in-out hover:bg-gradient-to-r from-[#295141] to-[#408D51] hover:text-custom-gold'}
                 >                  <FaRegListAlt className='my-auto' size={"15px"} />
                   <h1 className='text-bold my-auto font-bold w-[50px] leading-[20px] text-sm'>REQUEST</h1>
                 </Link>
@@ -162,7 +162,7 @@ const Sidebar = () => {
                       .remove()
                     : null;
                 }}
-                className={'flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[#326350] hover:bg-gradient-to-r from-[#295141] to-[#408D51] hover:text-custom-gold'}
+                className={'flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[#326350] transition-all ease-in-out hover:bg-gradient-to-r from-[#295141] to-[#408D51] hover:text-custom-gold'}
               >                <FaInfo className='my-auto' size={"15px"} />
                 <h1 className='text-bold my-auto font-bold w-[50px] leading-[15px] text-sm'>BARANGAY INFORMATION</h1>
               </Link>

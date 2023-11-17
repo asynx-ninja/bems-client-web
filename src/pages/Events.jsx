@@ -1,15 +1,22 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useParams, useSearchParams, Link } from "react-router-dom";
 
 import Breadcrumbs from "../components/articles/Breadcrumbs";
 import Content from "../components/articles/Content";
 
 const Articles = () => {
+  const [searchParams, setSearchParams] = useSearchParams()
+  const id = searchParams.get("id")
+  const brgy = searchParams.get("brgy")
+  const event = JSON.parse(atob(searchParams.get("obj")))
+
+  console.log(event)
+
   return (
     <div className="w-full flex flex-col sm:px-[15px] lg:px-[70px] pt-[40px] mb-[30px]">
       <img
         className=" rounded-[25px] h-[300px] object-cover"
-        src="./../src/assets/article/banner.jpg"
+        src={event.collections.banner.link}
         alt=""
       />
 
@@ -17,11 +24,11 @@ const Articles = () => {
 
       <div className="flex flex-col">
         <div className="flex my-[10px]">
-          <Breadcrumbs />
+          <Breadcrumbs title={event.title}/>
         </div>
 
         <div>
-          <Content />
+          <Content event={event} />
         </div>
       </div>
 

@@ -178,7 +178,7 @@ const Barangay = () => {
                 alt=""
                 className="sm:w-[120px] md:w-[160px] mx-auto absolute left-0 right-0 sm:-top-[70px] md:-top-[6rem]"
               />
-              <div className="h-[220px] flex flex-col justify-center items-center">
+              <div className="sm:h-[220px] md:h-[250px] lg:h-[220px] flex flex-col justify-center items-center">
                 <h1 className="text-[22px] md:text-4xl font-bold uppercase text-white text-center pt-0 lg:pt-[40px]">
                   Municipality of Montalban
                 </h1>
@@ -273,7 +273,7 @@ const Barangay = () => {
                             scope="col"
                             className="px-6 py-3 text-left whitespace-nowrap text-xs font-bold text-black uppercase"
                           >
-                            Barangay Vission
+                            Barangay Vision
                           </th>
                           <th
                             scope="col"

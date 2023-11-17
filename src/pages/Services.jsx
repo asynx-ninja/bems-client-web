@@ -22,7 +22,7 @@ const Services = () => {
         },
       });
       setServices(response.data);
-      console.log(response.data);
+      // console.log(response.data);
       setFilter(response.data)
       setFilterType(response.data)
     };
@@ -35,7 +35,7 @@ const Services = () => {
       : setFilterType(filter.filter((service) => service.type === e.target.value))
   }
 
-  console.log("filter", filter)
+  // console.log("filter", filter)
 
   return (
     <div className="flex flex-col items-center">
