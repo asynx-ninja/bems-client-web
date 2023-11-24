@@ -2,14 +2,167 @@ import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import Breadcrumbs from "../components/services/Breadcrumbs";
 import Content from "../components/services/Content";
 import headerImage from "../assets/image/header.png";
-import { useEffect, useState, React } from "react";
+import { useEffect, useState, React, useRef } from "react";
+import axios from "axios";
+import API_LINK from "../config/API";
+import defaultPFP from "../assets/sample-image/formPic.png";
+
+import {
+  FaCamera,
+} from "react-icons/fa";
+
+// FORM INPUTS
+import OccupationList from "../components/ServiceForm/OccupationList";
+import Religion from "../components/ServiceForm/Religion"
+import CivilStatus from "../components/ServiceForm/CivilStatus"
+import RadioInput from "../components/ServiceForm/RadioInput";
+import Sex from "../components/ServiceForm/Sex"
 
 const ServicesForm = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams()
+  const [detail, setDetail] = useState({})
+  const [userData, setUserData] = useState({})
+  const [personalDeets, setPersonalDeets] = useState(false)
+  const id = searchParams.get("id")
+  const brgy = searchParams.get("brgy")
+  const fileInputRef = useRef();
+  const [pfp, setPfp] = useState();
   const service = JSON.parse(atob(searchParams.get("obj")))
 
-  console.log(service)
+  useEffect(() => {
+    const filterDetail = (item) => {
+      return item.filter((item) => item.isActive === true)
+    }
+    const fetchForms = async () => {
+      try {
+        const response = await axios.get(`${API_LINK}/forms/?brgy=${brgy}&service_id=${service.service_id}`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        const getUser = await axios.get(`${API_LINK}/users/specific/${id}`);
+
+        setUserData(getUser.data[0])
+
+        const filter = Object.assign({}, filterDetail(response.data)[0])
+
+        filter.form[0] = Object.fromEntries(
+          Object.entries(filter.form[0]).filter(
+            ([key, value]) => value.checked === true
+          )
+        )
+
+        setDetail(filter)
+
+      } catch (error) {
+        console.log(error)
+      }
+      var pfpSrc = document.getElementById("formPic");
+      pfpSrc.src = defaultPFP
+
+    };
+    fetchForms()
+  }, [])
+
+  const handleAdd = (e) => {
+    e.preventDefault();
+
+    fileInputRef.current.click();
+  };
+
+  const calculateAge = (birthDate) => {
+    const today = new Date();
+    const birthDateObj = new Date(birthDate);
+    let age = today.getFullYear() - birthDateObj.getFullYear();
+    const monthDiff = today.getMonth() - birthDateObj.getMonth();
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthDateObj.getDate())
+    ) {
+      age--;
+    }
+
+    return age;
+  };
+
+  const getDefaultDeets = (e) => {
+    if (e.target.checked) {
+      setPersonalDeets(true)
+    } else {
+      setPersonalDeets(false)
+    }
+  }
+
+  const setDefault = (key) => {
+    // const getVar = Object.keys({ ...userData })
+    const data = userData[key]
+    console.log(data)
+
+    return data
+  }
+
+  const handlePersonalDetail = (e, key) => {
+    const newData = detail.form[0]
+
+    if (key === "id_pic") {
+      e.preventDefault();
+
+      setPfp(e.target.files[0]);
+
+      var output = document.getElementById("formPic");
+      output.src = URL.createObjectURL(e.target.files[0]);
+      output.onload = function () {
+        URL.revokeObjectURL(output.src); // free memory
+      };
+
+      newData[key] = {
+        ...newData[key],
+        value: e.target.files[0]
+      }
+    } else {
+
+      if (key === "birthday") {
+        newData.age = {
+          ...newData.age,
+          value: calculateAge(e.target.value)
+        }
+      }
+
+      newData[key] = {
+        ...newData[key],
+        value: e.target.value
+      }
+
+    }
+
+    // console.log(newData)
+
+    setDetail((prev) => ({
+      ...prev,
+      [detail.form[0]]: newData,
+    }))
+
+  }
+
+  const handleOtherDetail = (e, key, sectionInx) => {
+    const newData = [...detail.form[1]]
+
+    newData[sectionInx].form[key] = {
+      ...newData[sectionInx].form[key],
+      value: e.target.value
+    }
+    // console.log(newData)
+
+    setDetail((prev) => ({
+      ...prev,
+      [detail.form[1]]: newData
+    }))
+  }
+
+  // console.log("user default data: ", userData)
+  // console.log("new form detail: ", detail)
 
   const handleLinkClick = () => {
     // Perform any additional logic you need here
@@ -17,6 +170,8 @@ const ServicesForm = () => {
     // Navigate to the new page
     navigate(-1);
   };
+
+
   return (
     <div className="w-full flex flex-col sm:px-[15px] lg:px-[70px] pt-[40px] mb-[30px]">
       <img
@@ -62,8 +217,8 @@ const ServicesForm = () => {
         id="hs-full-screen-modal"
         className="hs-overlay hidden w-full h-full fixed top-0 left-0 z-[60] overflow-x-hidden overflow-y-auto flex items-center justify-center"
       >
-        <div className="hs-overlay-open:mt-0 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-10 opacity-0 transition-all max-w-full w-[90%] md:w-[60%] lg:w-[60%] bg-white dark:bg-gray-800 rounded-lg ">
-          <div className="flex flex-col bg-white dark:bg-gray-800 overflow-y-auto max-h-[90vh]">
+        <div className="hs-overlay-open:mt-0 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-10 opacity-0 transition-all max-w-full w-[90%] md:w-[80%] lg:w-[80%] bg-white dark:bg-gray-800 rounded-lg ">
+          <div className="flex flex-col bg-white dark:bg-gray-800 overflow-y-auto max-h-[90vh] rounded-lg">
             <div
               style={{
                 background: `url(${headerImage})`,
@@ -104,95 +259,217 @@ const ServicesForm = () => {
                     </div>
                   </div>
                 </div>
-                <div className="flex flex-col lg:flex-row gap-3">
-                  <input
-                    type="text"
-                    placeholder="Lastname"
-                    className="py-3 px-4 block w-full border-gray-300 text-black rounded-lg shadow-sm text-sm placeholder-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
-                  />
-                  <input
-                    type="text"
-                    placeholder="Firstname"
-                    className="py-3 px-4 block w-full border-gray-300 text-black rounded-lg shadow-sm text-sm placeholder-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
-                  />
-                  <input
-                    type="text"
-                    placeholder="Middle Initial"
-                    className="py-3 px-4 block w-full border-gray-300 text-black rounded-lg shadow-sm text-sm placeholder-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
-                  />
-                  <select
-                    required
-                    className="py-3 px-4 block w-full lg:w-1/2 border-gray-300 text-black rounded-lg shadow-sm text-sm placeholder-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
-                  >
-                    <option selected>Male</option>
-                    <option>Female</option>
-                  </select>
+
+                <div className="flex flex-col-reverse mx-5">
+                  <div className="flex w-full justify-start items-center gap-5">
+                    <input
+                      id="defaultDeets"
+                      type="checkbox"
+                      onChange={(e) => getDefaultDeets(e)}
+                      className="shrink-0 mt-0.5 border-gray-500 rounded-sm h-[20px] w-[20px] text-green-500 focus:ring-green-500"
+                    />
+                    <label
+                      htmlFor="defaultDeets"
+                    >
+                      Check to insert your personal details
+                    </label>
+                  </div>
+                  <div className="relative lg:w-full flex m-auto justify-end items-center">
+                    <div className="absolute top-[100px] right-[-90px] transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+                      <label
+                        htmlFor="file_input"
+                        onClick={handleAdd}
+                        className="block text-transparent p-[70px] font-medium text-sm text-center opacity-0 hover:opacity-100 transition-opacity hover:bg-[#295141] hover:bg-opacity-60 cursor-pointer"
+                      >
+                        <FaCamera size={50} style={{ color: "#ffffff" }} className="cursor-none" />
+                      </label>
+
+                    </div>
+                    <img
+                      id="formPic"
+                      className="w-[200px] h-[200px] sm:mb-3 lg:mb-0 border-[1px] border-[#295141] object-cover"
+                    />
+                    {/* <button className="relative bottom-[25px] w-[40px] h-[40px] flex justify-center items-center rounded-full bg-[#295141] text-white px-3 py-2">
+                                    <FaCamera size={20} className="cursor-none" />
+                                </button> */}
+                  </div>
                 </div>
 
-                <div className="flex flex-col lg:flex-row gap-4">
-                  <input
-                    disabled
-                    type="number"
-                    placeholder="Age"
-                    className="py-3 px-4 block w-full border-gray-300 text-black rounded-lg shadow-sm text-sm placeholder-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
-                  />
-                  <input
-                    type="date"
-                    placeholder="Birthdate"
-                    className="py-3 px-4 block w-full border-gray-300 text-black rounded-lg shadow-sm text-sm placeholder-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
-                  />
-                </div>
-                <div className="flex flex-col lg:flex-row gap-4">
-                  <select className="py-3 px-4 block w-full border-gray-300 text-black rounded-lg shadow-sm text-sm placeholder-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none">
-                    <option selected>Select City</option>
-                    <option>Montalban</option>
-                  </select>
-                  <select className="py-3 px-4 block w-full border-gray-300 text-black rounded-lg shadow-sm text-sm placeholder-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none">
-                    <option selected>Select Barangay</option>
-                    <option>Balite</option>
-                    <option>Burgos</option>
-                    <option>Geronimo</option>
-                    <option>Macabud</option>
-                    <option>Manggahan</option>
-                    <option>Mascap</option>
-                    <option>Puray</option>
-                    <option>Rosario</option>
-                    <option>San Isidro</option>
-                    <option>San Jose</option>
-                    <option>San Rafael</option>
-                  </select>
-                </div>
-                <div className="flex flex-col lg:flex-row gap-4">
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    className="py-3 px-4 block w-full border-gray-300 text-black rounded-lg shadow-sm text-sm placeholder-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
-                  />
-                  <input
-                    type="text"
-                    placeholder="Contact no."
-                    className="py-3 px-4 block w-full border-gray-300 text-black rounded-lg shadow-sm text-sm placeholder-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
-                  />
-                </div>
-                <div className="flex flex-row-2 sm:flex-col gap-4">
-                  <input
-                    type="text"
-                    placeholder="Guardian full name (if you're a child)"
-                    className="py-3 px-4 block w-full border-gray-300 text-black rounded-lg shadow-sm text-sm placeholder-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
-                  />
-                  <input
-                    type="text"
-                    placeholder="Relationship to guardian"
-                    className="py-3 px-4 block w-full border-gray-300 text-black rounded-lg shadow-sm text-sm placeholder-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
-                  />
-                </div>
+                <fieldset className="flex-col border-[1px] border-black rounded-md">
+                  <legend className="ml-2 px-2 text-sm font-medium">Personal Details</legend>
+                  <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center items-center gap-3 p-6">
 
-                <textarea
-                  placeholder="Reason/Purpose of this request"
-                  className="py-3 px-4 block w-full border-gray-300 text-black rounded-lg shadow-sm text-sm placeholder-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
-                  rows={4}
-                />
+                    {detail.form &&
+                      Object.entries(detail.form[0]).map(([key, item], idx) => {
+                        return (
+                          <div key={idx} className={item.display === "address" ? "sm:col-span-1 md:col-span-2 lg:col-span-3" : "col-span-1"}>
+                            {
+                              item.display === "occupation" ?
+                                <OccupationList variable={key} personalDeets={personalDeets} item={item} setDefault={setDefault} handlePersonalDetail={handlePersonalDetail} />
+                                : null
+                            }
+                            {
+                              item.display === "civil status" ?
+                                <CivilStatus variable={key} item={item} personalDeets={personalDeets} setDefault={setDefault} handlePersonalDetail={handlePersonalDetail} />
+                                : null
+                            }
+                            {
+                              item.display === "religion" ?
+                                <Religion variable={key} item={item} personalDeets={personalDeets} setDefault={setDefault} handlePersonalDetail={handlePersonalDetail} />
+                                : null
+                            }
+                            {
+                              item.display === "sex" ?
+                                <Sex variable={key} item={item} personalDeets={personalDeets} setDefault={setDefault}  handlePersonalDetail={handlePersonalDetail} />
+                                : null
+                            }
+                            {
+                              item.type === "file" ?
+                                <input
+                                  type={item.type}
+                                  name={key}
+                                  id={item.display}
+                                  onChange={(e) => handlePersonalDetail(e, key)}
+                                  ref={fileInputRef}
+                                  accept="image/*"
+                                  multiple="multiple"
+                                  className="hidden"
+                                />
+                                : null
+                            }
+                            {
+                              item.type === "date" || item.type === "email" || item.type === "number" || item.type === "text" ?
+                                <div>
+                                  <label
+                                    htmlFor={item.display}
+                                    className="block sm:text-xs lg:text-sm font-medium mb-2"
+                                  >
+                                    {item.display.toUpperCase()}
+                                  </label>
+                                  <input
+                                    name={key}
+                                    type={item.type}
+                                    id={item.display}
+                                    value={personalDeets ? setDefault(key) : item.value}
+                                    readOnly={item.display === "age"}
+                                    className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 bg-white"
+                                    placeholder={item.display === "address" ? "Street / Barangay / Municipality" : item.display}
+                                    aria-describedby="hs-input-helper-text"
+                                    onChange={(e) => handlePersonalDetail(e, key)}
+                                  />
+                                </div>
+                                : null
+                            }
+                          </div>
+                        )
+                      })
+                    }
+                  </div>
+                </fieldset>
+
+                {detail.form &&
+                  Object.entries(detail.form[1]).map(([sectionInx, sectionItem]) => {
+                    return (
+                      <fieldset key={sectionInx} className="flex-col border-[1px] border-black rounded-md">
+                        <legend className="ml-2 px-2 text-sm font-medium">{sectionItem.section_title}</legend>
+                        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 justify-center items-center gap-3 p-6">
+
+                          {detail.form &&
+                            Object.entries(sectionItem.form).map(([key, item], idx) => {
+                              return (
+                                <div key={idx}>
+                                  {
+                                    item.type === "select" ?
+                                      <div>
+                                        <label
+                                          htmlFor={item.display}
+                                          className="block sm:text-xs lg:text-sm font-medium mb-2"
+                                        >
+                                          {item.display.toUpperCase()}
+                                        </label>
+                                        <select
+                                          id={item.display}
+                                          name={item.variable}
+                                          onChange={(e) => handleOtherDetail(e, key, sectionInx)}
+                                          className="py-3 px-4 block w-full text-black border-gray-200 rounded-md text-sm focus:border-green-500 focus:ring-green-500 dark:bg-white dark:border-gray-700"
+                                        >
+                                          {
+                                            Object.entries(item.children).map(([i, option]) => {
+                                              return (
+                                                <option key={i} value={option.value}>{option.option}</option>
+                                              )
+                                            })
+                                          }
+                                        </select>
+                                      </div>
+                                      : null
+                                  }
+                                  {
+                                    item.type === "radio" ?
+                                      <div>
+                                        <label
+                                          htmlFor={item.display}
+                                          className="block sm:text-xs lg:text-sm font-medium mb-2"
+                                        >
+                                          {item.display.toUpperCase()}
+                                        </label>
+                                        {
+                                          Object.entries(item.children).map(([i, option]) => {
+                                            (
+                                              <div key={i} className="flex items-center">
+                                                <input
+                                                  className="shrink-0 mt-0.5 border-gray-200 rounded-full text-green-500 focus:ring-green-500"
+                                                  id='gender'
+                                                  name='gender'
+                                                  type="radio"
+                                                  value="Male"
+                                                  onChange={(e) => handleOtherDetail(e, key, sectionInx)}
+                                                />
+                                                <label htmlFor="male" className="ml-2">
+                                                  {option}
+                                                </label>
+                                              </div>
+                                            )
+                                          })
+                                        }
+                                      </div>
+                                      : null
+                                  }
+                                  {
+                                    item.type === "date" || item.type === "email" || item.type === "number" || item.type === "text" ?
+                                      <div>
+                                        <label
+                                          htmlFor={item.display}
+                                          className="block sm:text-xs lg:text-sm font-medium mb-2"
+                                        >
+                                          {item.display.toUpperCase()}
+                                        </label>
+                                        <input
+                                          name={item.variable}
+                                          type={item.type}
+                                          id={item.display}
+                                          readOnly={item.display === "age"}
+                                          className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 bg-white"
+                                          placeholder={item.display === "address" ? "Street / Barangay / Municipality" : item.display.toLowerCase()}
+                                          aria-describedby="hs-input-helper-text"
+                                          onChange={(e) => handleOtherDetail(e, key, sectionInx)}
+                                        />
+                                      </div>
+                                      : null
+                                  }
+                                </div>
+                              )
+                            })
+                          }
+                        </div>
+                      </fieldset>
+                    )
+                  })
+                }
+
               </form>
+
+
             </div>
             <div className="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-gray-700">
               <button

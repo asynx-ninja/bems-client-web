@@ -11,6 +11,7 @@ const SignupPage = () => {
     middleName: "",
     suffix: "",
     birthday: "",
+    age: 0,
     sex: "",
     religion: "",
   });
@@ -36,10 +37,37 @@ const SignupPage = () => {
       ...formData,
       [e.target.name]: e.target.value,
     });
+
+    // if(e.target.name === "birthday"){
+    //   setFormData({
+    //     ...formData,
+    //     age: calculateAge(e.target.value)
+    //   })
+    // }
+  };
+
+  const calculateAge = (birthDate) => {
+    const today = new Date();
+    const birthDateObj = new Date(birthDate);
+    let age = today.getFullYear() - birthDateObj.getFullYear();
+    const monthDiff = today.getMonth() - birthDateObj.getMonth();
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthDateObj.getDate())
+    ) {
+      age--;
+    }
+
+    return age;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    setFormData({
+      ...formData,
+      age: calculateAge(formData.birthday)
+    })
 
     for (let key in formData) {
       if (key !== "suffix" && key !== "middleName" && !formData[key]) {
@@ -67,6 +95,7 @@ const SignupPage = () => {
       middleName: "",
       suffix: "",
       birthday: "",
+      age: 0,
       sex: "",
     });
 
