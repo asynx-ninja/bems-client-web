@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Sex = ({ variable, item, setDefault, handlePersonalDetail }) => {
+const Sex = ({ variable, item, handlePersonalDetail }) => {
 
     return (
         <div>
@@ -14,7 +14,7 @@ const Sex = ({ variable, item, setDefault, handlePersonalDetail }) => {
                     name='gender'
                     type="radio"
                     value="Male"
-                    checked={setDefault(variable) === "Male"}
+                    checked={item.value === "Male"}
                     onChange={(e) => handlePersonalDetail(e, variable)}
                 />
                 <label htmlFor="male" className="ml-2">
@@ -26,7 +26,7 @@ const Sex = ({ variable, item, setDefault, handlePersonalDetail }) => {
                     name='gender'
                     type="radio"
                     value="Female"
-                    checked={setDefault(variable) === "Female"}
+                    checked={item.value === "Female"}
                     onChange={(e) => handlePersonalDetail(e, variable)}
                 />
                 <label className="ml-2">Female</label>

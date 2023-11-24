@@ -1,6 +1,6 @@
 import React from 'react'
 
-const OccupationList = ({ variable, item, setDefault, handlePersonalDetail  }) => {
+const OccupationList = ({ variable, item, handlePersonalDetail }) => {
 
   return (
     <div>
@@ -13,8 +13,10 @@ const OccupationList = ({ variable, item, setDefault, handlePersonalDetail  }) =
       <select
         className="form-control dropdown py-3 px-4 block w-full text-black border-gray-200 rounded-md text-sm focus:border-green-500 focus:ring-green-500 dark:bg-white dark:border-gray-700"
         id={item.display} name={item.display}
-        onChange={(e) => handlePersonalDetail(e, variable)}>
-        <option value="" disabled="disabled">
+        onChange={(e) => handlePersonalDetail(e, variable)}
+        value={item.value || ""}
+      >
+        <option value="" selected disabled="disabled">
           -- select occupation --
         </option>
         <optgroup label="Healthcare Practitioners and Technical Occupations:">

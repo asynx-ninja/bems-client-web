@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Religion = ({ variable, item, setDefault, handlePersonalDetail }) => {
+const Religion = ({ variable, item, handlePersonalDetail }) => {
     const religions = [
         "Roman Catholic",
         "Islam",
@@ -27,11 +27,12 @@ const Religion = ({ variable, item, setDefault, handlePersonalDetail }) => {
             <select
                 name={item.display}
                 onChange={(e) => handlePersonalDetail(e, variable)}
+                value={item.value || ""}
                 className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
             >
                 <option value="">Select Religion</option>
-                {religions.map((i, religion) => (
-                    <option key={i} value={religion}>{religion}</option>
+                {religions.map((religions) => (
+                    <option value={religions}>{religions}</option>
                 ))}
             </select>
         </div>
