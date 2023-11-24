@@ -52,8 +52,6 @@ const Content = ({ name, details, logo, file }) => {
               </a>
               </div>
             ))}
-
-         
         </div>
       </div>
     </div>

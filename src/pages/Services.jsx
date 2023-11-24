@@ -5,14 +5,11 @@ import axios from "axios";
 import API_LINK from "../config/API";
 
 const Services = () => {
-  const [services, setServices] = useState([]);
   const [filter, setFilter] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams()
   const id = searchParams.get("id")
   const brgy = searchParams.get("brgy")
   const [filterType, setFilterType] = useState([])
-  // const email = location.pathname.split("/")[2];
-  // const brgy = location.pathname.split("/")[3];
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -21,8 +18,7 @@ const Services = () => {
           "Content-Type": "application/json",
         },
       });
-      setServices(response.data);
-      // console.log(response.data);
+
       setFilter(response.data)
       setFilterType(response.data)
     };
@@ -34,8 +30,6 @@ const Services = () => {
     e.target.value === "all" ? setFilterType(filter) 
       : setFilterType(filter.filter((service) => service.type === e.target.value))
   }
-
-  // console.log("filter", filter)
 
   return (
     <div className="flex flex-col items-center">

@@ -17,14 +17,12 @@ const Requests = () => {
           src="./../src/assets/image/1.png"
           alt=""
         />
-
         <img
           className="absolute inset-0 mx-auto my-auto w-[700px]"
           src="./../src/assets/header/montalban-banner2.png"
           alt=""
         />
       </div>
-
       <div className="p-4 lg:p-10 border">
         <div className="flex flex-col">
           <div className="flex flex-col lg:flex-row">

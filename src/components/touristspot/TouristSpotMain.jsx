@@ -1,7 +1,6 @@
-import { useLocation, Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import NavbarHome from "../global/NavbarHome";
 import React, { useState } from "react";
-import { HashLink as Links } from "react-router-hash-link";
 import Breadcrumbs from "./Breadcrumbs";
 
 const TouristSpotMain = () => {

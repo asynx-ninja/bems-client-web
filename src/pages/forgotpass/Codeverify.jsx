@@ -1,8 +1,7 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef} from "react";
 import myImage from "../../assets/image/rizallogo2.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Carousel } from "react-responsive-carousel";
-
 import useCountdown from "../../hooks/useCountdown";
 import axios from "axios";
 import API_LINK from "../../config/API";
@@ -10,6 +9,7 @@ import API_LINK from "../../config/API";
 const Codeverfiy = () => {
   const navigate = useNavigate()
   const location = useLocation();
+
   const email = atob(location.pathname.split("/")[2])
   const { remainingSeconds, isCountdownRunning, startCountdown } = useCountdown(30);
   const [code, setCode] = useState("");
@@ -94,9 +94,6 @@ const Codeverfiy = () => {
       console.log(error)
     }
   }
-
-  // console.log(email)
-  // console.log(code)
 
   return (
     <div className="flex flex-col-reverse md:flex-row-reverse">
@@ -192,7 +189,6 @@ const Codeverfiy = () => {
             </div>
           </div>
         </div>
-
         <div>
           {
             response.success ? (
@@ -236,7 +232,6 @@ const Codeverfiy = () => {
             Submit
           </button>
         </form>
-
         <button
           onClick={handleOnResend}
           className="text-center text-sm text-gray-500 hover:text-red-400"

@@ -6,7 +6,6 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import API_LINK from "../../config/API";
 import axios from "axios";
 
-
 const Changepass = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -27,7 +26,6 @@ const Changepass = () => {
     email: "",
     password: ""
   })
-
   const [passwordShown, setPasswordShown] = useState(false);
   const [repasswordShown, setRePasswordShown] = useState(false);
   const togglePassword = () => {
@@ -59,7 +57,6 @@ const Changepass = () => {
         setPasswordStrengthError(false);
         setPasswordStrengthSuccess(true);
       }
-      // Check if passwords match
 
       let strength = 0;
       if (password.length >= 8) strength++;
@@ -72,7 +69,6 @@ const Changepass = () => {
 
   const handleOnSubmit = async () => {
     try {
-
       if (password.enter !== password.reenter) {
         setResponse({
           success: false,
@@ -105,10 +101,6 @@ const Changepass = () => {
       console.log(error)
     }
   }
-
-  // console.log(email)
-  // console.log(password.enter)
-  // console.log(password.reenter)
 
   return (
     <div className="flex flex-col-reverse md:flex-row-reverse">

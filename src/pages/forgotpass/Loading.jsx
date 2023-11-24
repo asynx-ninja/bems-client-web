@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useSearchParams } from "react-router-dom";
+
 const Loading = () => {
   const [secondsLeft, setSecondsLeft] = useState(5);
   const [searchParams, setSearchParams] = useSearchParams()
@@ -9,11 +9,7 @@ const Loading = () => {
   const param_brgy = searchParams.get("brgy")
   const brgy = atob(param_brgy)
 
-  console.log(email, brgy)
-
   useEffect(() => {
-    const delay = 10000;
-
     const intervalId = setInterval(() => {
       if (secondsLeft > 0) {
         setSecondsLeft((prevSeconds) => prevSeconds - 1);
@@ -62,12 +58,6 @@ const Loading = () => {
           <p className="text-white lg:text-base text-sm">
             Redirecting to homepage in {secondsLeft} seconds...
           </p>
-          {/* <button
-      type="button"
-      className="w-[500px] uppercase text-black bg-white hover:bg-green-800 hover:text-white focus:outline-none focus:ring-4 focus:ring-gray-300 font-bold rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-green-700 dark:hover:bg-green-800 dark:focus:ring-gray-700 dark:border-gray-700"
-    >
-      return to homepage
-    </button> */}
         </div>
       </div>
     </>

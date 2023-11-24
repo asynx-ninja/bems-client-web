@@ -1,5 +1,4 @@
 import React from "react";
-import { IoMdCreate } from "react-icons/io";
 import { Link, useParams } from "react-router-dom";
 import image from "../../assets/sample-image/profile.jpg";
 import Reply from "../inquiriesComponents/ReplyModal";
@@ -8,8 +7,9 @@ import { MdArrowBack, MdDelete } from "react-icons/md";
 import { useMediaQuery } from "react-responsive";
 
 function viewMessage() {
-  const {id, brgy} = useParams()
+  const { id, brgy } = useParams();
   const isSmallScreen = useMediaQuery({ query: "(max-width: 768px)" });
+
   return (
     <div className="bg-[#CBD6DA] min-h-screen p-6 md:p-12 xl:p-24 flex flex-col md:flex-row">
       <div className="w-full md:w-1/4 bg-white rounded-lg p-6 mb-6 md:mb-0 md:mr-6">
@@ -31,7 +31,10 @@ function viewMessage() {
       </div>
       <div className="w-full md:w-3/4 bg-white rounded-lg p-6 flex flex-col items-start justify-start">
         <div className="w-full flex justify-between mb-2">
-          <Link to={`/inquiries/${id}/${brgy}`} className="bg-green-700 p-2 rounded-full">
+          <Link
+            to={`/inquiries/${id}/${brgy}`}
+            className="bg-green-700 p-2 rounded-full"
+          >
             <MdArrowBack size={isSmallScreen ? 18 : 24} color="white" />
           </Link>
 
@@ -83,13 +86,6 @@ function viewMessage() {
           Reply
         </button>
       </div>
-      {/* <button
-        data-hs-overlay="#hs-modal-compose"
-        className="fixed bottom-6 right-6 bg-green-900 py-2 px-4 rounded-full flex justify-center items-center font-bold text-white"
-      >
-        <IoMdCreate size={20} className="mr-2" />
-        Compose
-      </button> */}
       <Reply />
       <DeleteInquiryModal />
     </div>

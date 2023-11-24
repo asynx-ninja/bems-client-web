@@ -1,24 +1,37 @@
-import React from 'react'
-import { useLocation } from 'react-router-dom'
+import React from "react";
+import { useLocation } from "react-router-dom";
 
-const OccupationList = ({ handleChange, handleUserDataChange, occupation, editButton }) => {
-  const location = useLocation()
-  const page = location.pathname.split("/")[1]
+const OccupationList = ({
+  handleChange,
+  handleUserDataChange,
+  occupation,
+  editButton,
+}) => {
+  const location = useLocation();
+  const page = location.pathname.split("/")[1];
 
   return (
     <select
       className="form-control dropdown py-3 px-4 block w-full text-black border-gray-200 rounded-md text-sm focus:border-green-500 focus:ring-green-500 dark:bg-white dark:border-gray-700"
-      value={page === "settings" ? occupation : ""}
+      defaultValue={occupation}
       disabled={page === "settings" ? editButton : false}
-      id="occupation" name="occupation"
-      onChange={page === "settings" ? (e) => handleUserDataChange('occupation', e.target.value) : handleChange}>
-      <option value="" disabled="disabled">
+      id="occupation"
+      name="occupation"
+      onChange={
+        page === "settings"
+          ? (e) => handleUserDataChange("occupation", e.target.value)
+          : handleChange
+      }
+    >
+      <option value="" disabled>
         -- select occupation --
       </option>
       <optgroup label="Healthcare Practitioners and Technical Occupations:">
         <option value="Chiropractor">Chiropractor</option>
         <option value="Dentist">Dentist</option>
-        <option value="Dietitian or Nutritionist">Dietitian or Nutritionist</option>
+        <option value="Dietitian or Nutritionist">
+          Dietitian or Nutritionist
+        </option>
         <option value="Optometrist">Optometrist</option>
         <option value="Pharmacist">Pharmacist</option>
         <option value="Physician">Physician</option>
@@ -54,7 +67,8 @@ const OccupationList = ({ handleChange, handleUserDataChange, occupation, editBu
           value="Advertising, Marketing, Promotions, Public Relations, and Sales
       Manager"
         >
-          Advertising, Marketing, Promotions, Public Relations, and Sales Manager
+          Advertising, Marketing, Promotions, Public Relations, and Sales
+          Manager
         </option>
         <option value="Operations Specialties Manager (e.g., IT or HR Manager)">
           Operations Specialties Manager (e.g., IT or HR Manager)
@@ -104,7 +118,8 @@ const OccupationList = ({ handleChange, handleUserDataChange, occupation, editBu
           value="Counselor, Social Worker, or Other Community and Social Service
       Specialist"
         >
-          Counselor, Social Worker, or Other Community and Social Service Specialist
+          Counselor, Social Worker, or Other Community and Social Service
+          Specialist
         </option>
         <option value="Lawyer, Judge">Lawyer, Judge</option>
         <option
@@ -168,7 +183,8 @@ const OccupationList = ({ handleChange, handleUserDataChange, occupation, editBu
           value="Personal Care and Service (e.g., Hairdresser, Flight Attendant,
       Concierge)"
         >
-          Personal Care and Service (e.g., Hairdresser, Flight Attendant, Concierge)
+          Personal Care and Service (e.g., Hairdresser, Flight Attendant,
+          Concierge)
         </option>
         <option value="Sales Supervisor, Retail Sales">
           Sales Supervisor, Retail Sales
@@ -177,7 +193,9 @@ const OccupationList = ({ handleChange, handleUserDataChange, occupation, editBu
         <option value="Insurance Sales Agent">Insurance Sales Agent</option>
         <option value="Sales Representative">Sales Representative</option>
         <option value="Real Estate Sales Agent">Real Estate Sales Agent</option>
-        <option value="Other Services Occupation">Other Services Occupation</option>
+        <option value="Other Services Occupation">
+          Other Services Occupation
+        </option>
       </optgroup>
       <optgroup label="Agriculture, Maintenance, Repair, and Skilled Crafts Occupations:">
         <option value="Construction and Extraction (e.g., Construction Laborer, Electrician)">
@@ -214,8 +232,7 @@ const OccupationList = ({ handleChange, handleUserDataChange, occupation, editBu
         <option value="Not Applicable">Not Applicable</option>
       </optgroup>
     </select>
+  );
+};
 
-  )
-}
-
-export default OccupationList
+export default OccupationList;

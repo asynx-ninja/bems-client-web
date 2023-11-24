@@ -5,15 +5,10 @@ import { Carousel } from "react-responsive-carousel";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import axios from "axios";
 import API_LINK from "../../config/API";
+
 const LastPage = () => {
   const [passwordShown, setPasswordShown] = useState(false);
   const [repasswordShown, setRePasswordShown] = useState(false);
-  const togglePassword = () => {
-    setPasswordShown(!passwordShown);
-  };
-  const RetogglePassword = () => {
-    setRePasswordShown(!repasswordShown);
-  };
   const [passwordError, setPasswordError] = useState(false);
   const [empty, setEmpty] = useState(false);
   const [passwordStrengthError, setPasswordStrengthError] = useState(false);
@@ -29,10 +24,17 @@ const LastPage = () => {
     email: "",
     username: "",
     password: "",
-    age: 18,
     type: "Resident",
   });
   const navigate = useNavigate();
+
+  const togglePassword = () => {
+    setPasswordShown(!passwordShown);
+  };
+  const RetogglePassword = () => {
+    setRePasswordShown(!repasswordShown);
+  };
+
   const handleChange = (event) => {
     setFormData({
       ...formData,
@@ -62,6 +64,7 @@ const LastPage = () => {
       setPasswordStrength(strength * 25);
     }
   };
+
   useEffect(() => {
     const stepOneData = JSON.parse(localStorage.getItem("Step1"));
     const stepTwoData = JSON.parse(localStorage.getItem("Step2"));
@@ -72,7 +75,6 @@ const LastPage = () => {
       email: "",
       username: "",
       password: "",
-      age: 18,
       type: "Resident",
     });
   }, []);
@@ -111,9 +113,7 @@ const LastPage = () => {
       setPasswordError(false);
       setPasswordMatchSuccess(true);
     }
-    // Check if username and email already exist
 
-    console.log(formData);
     const obj = {
       firstName: formData.firstName,
       middleName: formData.middleName,
@@ -184,15 +184,13 @@ const LastPage = () => {
       setShowError(false);
       setDuplicateError(false);
       setsuccessReg(true);
-      
+
       const email = btoa(obj.email);
       const barangay = btoa(obj.address.brgy);
-      
+
       setTimeout(function () {
         navigate(`/loading/?email=${email}&brgy=${barangay}`);
       }, 3000);
-      console.log(response);
-      // Redirect to the second signup page
     } catch (error) {
       console.error("Error:", error);
     }
@@ -223,7 +221,6 @@ const LastPage = () => {
               dynamicHeight
             >
               {/* Add more items here */}
-
               <div className="relative h-full">
                 <img
                   src="https://www.vigattintourism.com/assets/tourist_spots_photos/optimize/1352778031ovsjTSQS.jpg"
@@ -503,4 +500,5 @@ const LastPage = () => {
     </div>
   );
 };
+
 export default LastPage;

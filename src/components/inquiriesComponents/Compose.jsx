@@ -97,7 +97,7 @@ function composeModal() {
                   class="h-[2.5rem] w-[9.5rem] py-1 px-6 inline-flex justify-center items-center gap-2 rounded-md borde text-sm font-base bg-teal-900 text-white shadow-sm align-middle"
                   data-hs-overlay="#hs-modal-compose"
                 >
-                 Send
+                  Send
                 </button>
                 <button
                   type="button"

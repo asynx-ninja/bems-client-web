@@ -36,11 +36,11 @@ const Homepage = () => {
     mirror: false, // whether elements should animate out while scrolling past them
     anchorPlacement: "top-bottom", // defines which position of the element regarding to window should trigger the animation
   });
+
   return (
     <div id="home">
       <NavbarHome />
-      <div
-      >
+      <div>
         <div className="relative lg:h-[443px] w-full object-cover">
           <video className="h-full w-full object-cover" autoPlay muted loop>
             <source src={video} type="video/mp4" />

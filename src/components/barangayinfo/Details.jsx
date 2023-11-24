@@ -1,6 +1,21 @@
 import React from "react";
+import axios from "axios";
+import API_LINK from "../../config/API";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 
 const Details = () => {
+  const [searchParams] = useSearchParams();
+  const brgy = searchParams.get("brgy");
+  const [info, setInfo] = useState({
+    banner: {
+      link: "",
+    },
+    logo: {
+      link: "",
+    },
+  });
+
   const stats = [
     {
       title: "Total Population",
@@ -29,6 +44,16 @@ const Details = () => {
     // Add more data as needed
   ];
 
+  useEffect(() => {
+    const fetch = async () => {
+      const response = await axios.get(`${API_LINK}/brgyinfo/?brgy=${brgy}`);
+
+      setInfo(response.data[0]);
+    };
+
+    fetch();
+  }, []);
+
   return (
     <>
       <div className="flex justify-center w-full sm:-mt-[50px] md:-mt-[150px] mb-[50px]">
@@ -42,40 +67,30 @@ const Details = () => {
           <div className="relative bg-gradient-to-r from-[#295141] to-[#408D51] mx-auto justify-center items-center rounded-t-[25px] w-full">
             <div className="bg-[url('/header-bg.png')] sm:h-[180px] lg:h-auto rounded-t-[25px]">
               <img
-                src="./../src/assets/barangayinfo/sanjoselogo.png"
+                src={info.logo.link !== "" ? info.logo.link : null}
                 alt=""
                 className="sm:w-[120px] md:w-[160px] mx-auto absolute left-0 right-0 sm:-top-[65px] md:-top-[5.5rem]"
               />
               <div className="h-[220px] flex flex-col justify-center items-center">
                 <h1 className="text-[22px] md:text-4xl font-bold uppercase text-white text-center pt-0 lg:pt-[40px]">
-                  Welcome to Barangay San Jose
+                  Welcome to Barangay {brgy}
                 </h1>
                 <h6 className="text-md md:text-2xl text-center mt-2 font-medium text-white">
-                  Municipality of Rodriguez Rizal
+                  Municipality of Rodriguez, Rizal
                 </h6>
               </div>
             </div>
           </div>
 
           {/* DESCRIPTION */}
-
           <div className="flex pb-[20px] w-[90%] mx-auto sm:mt-[50px] md:mt-[80px] justify-between sm:flex-col-reverse lg:flex-row gap-5">
-            <p className="sm:w-full lg:w-[60%] sm:text-[14px] md:text-[18px]">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book. It has
-              survived not only five centuries, but also the leap into
-              electronic typesetting, remaining essentially unchanged. It was
-              popularised in the 1960s with the release of Letraset sheets
-              containing Lorem Ipsum passages, and more recently with desktop
-              publishing software like Aldus PageMaker including versions of
-              Lorem Ipsum.
-            </p>
+            <textarea disabled className="sm:w-full lg:w-[60%] sm:text-[14px] md:text-[18px] border-0 bg-transparent resize-none">
+              {info.story}
+            </textarea>
 
             <img
               className="w-[400px] h-[400px] sm:mx-auto lg:mx-0 object-cover rounded-[25px]"
-              src="./../src/assets/barangayinfo/sanjosechurch.jpg"
+              src={info.banner.link !== "" ? info.banner.link : null}
               alt=""
             />
           </div>
@@ -99,24 +114,13 @@ const Details = () => {
           </div>
 
           {/* MISSION VISION */}
-
           <div className="flex pb-[20px] border-t-2 pt-[20px] border-b-2 border-gray-400 w-[90%] mx-auto sm:mt-[50px] md:mt-[80px] justify-between sm:flex-col lg:flex-row gap-5">
             <div className="sm:w-full lg:w-[50%]">
               <h6 className="font-bold bg-custom-green-header text-[24px] pl-[15px] text-white">
                 MISSION
               </h6>
-
               <p className="mt-[15px] sm:text-[14px] md:text-[18px]">
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard dummy
-                text ever since the 1500s, when an unknown printer took a galley
-                of type and scrambled it to make a type specimen book. It has
-                survived not only five centuries, but also the leap into
-                electronic typesetting, remaining essentially unchanged. It was
-                popularised in the 1960s with the release of Letraset sheets
-                containing Lorem Ipsum passages, and more recently with desktop
-                publishing software like Aldus PageMaker including versions of
-                Lorem Ipsum.
+                {info.mission}
               </p>
             </div>
 
@@ -124,18 +128,8 @@ const Details = () => {
               <h6 className="font-bold bg-custom-green-header text-[24px] pl-[15px] text-white">
                 VISION
               </h6>
-
               <p className="mt-[15px] sm:text-[14px] md:text-[18px]">
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard dummy
-                text ever since the 1500s, when an unknown printer took a galley
-                of type and scrambled it to make a type specimen book. It has
-                survived not only five centuries, but also the leap into
-                electronic typesetting, remaining essentially unchanged. It was
-                popularised in the 1960s with the release of Letraset sheets
-                containing Lorem Ipsum passages, and more recently with desktop
-                publishing software like Aldus PageMaker including versions of
-                Lorem Ipsum.
+                {info.vision}
               </p>
             </div>
           </div>

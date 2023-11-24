@@ -1,10 +1,10 @@
 import React from "react";
-import reliable from "../../assets/services/reliable.png"
-import userFriendly from "../../assets/services/user-friendly.png"
-import secure from "../../assets/services/secure.png"
-import transparency from "../../assets/services/transparency.png"
-import fastTransaction from "../../assets/services/fast-transaction.png"
-import backup from "../../assets/services/backup.png"
+import reliable from "../../assets/services/reliable.png";
+import userFriendly from "../../assets/services/user-friendly.png";
+import secure from "../../assets/services/secure.png";
+import transparency from "../../assets/services/transparency.png";
+import fastTransaction from "../../assets/services/fast-transaction.png";
+import backup from "../../assets/services/backup.png";
 
 const Services = () => {
   const services = [

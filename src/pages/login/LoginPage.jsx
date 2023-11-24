@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import myImage from "../../assets/image/rizallogo2.png";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Carousel } from "react-responsive-carousel";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import axios from "axios";
 import API_LINK from "../../config/API";
+
 const Login = () => {
-  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [passwordShown, setPasswordShown] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
   const type = "Resident";
+
   const togglePassword = () => {
     setPasswordShown(!passwordShown);
   };
@@ -23,7 +25,7 @@ const Login = () => {
         `${API_LINK}/auth/${username}/${password}/${type}`
       );
       setErrorMessage("");
-      
+
       navigate(
         `/dashboard/?id=${response.data[0]._id}&brgy=${response.data[0].address.brgy}`
       );
@@ -37,7 +39,7 @@ const Login = () => {
       }
     }
   };
-  
+
   return (
     <>
       <div className="contaiiner  flex flex-col-reverse md:flex-row-reverse">
@@ -156,7 +158,11 @@ const Login = () => {
             </div>
             <div className="relative z-0 w-full mb-3 group flex items-center justify-between">
               <div className="flex items-center">
-                <input type="checkbox" id="remember-me" className="mr-2 text-green-500 focus:border-green-500 focus:ring-green-500" />
+                <input
+                  type="checkbox"
+                  id="remember-me"
+                  className="mr-2 text-green-500 focus:border-green-500 focus:ring-green-500"
+                />
                 <label
                   htmlFor="remember-me"
                   className="sm:text-[12px] md:text-sm text-black dark:text-black-400"

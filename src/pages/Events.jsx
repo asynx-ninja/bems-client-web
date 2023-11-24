@@ -1,16 +1,11 @@
 import React from "react";
-import { useParams, useSearchParams, Link } from "react-router-dom";
-
+import { useSearchParams, Link } from "react-router-dom";
 import Breadcrumbs from "../components/articles/Breadcrumbs";
 import Content from "../components/articles/Content";
 
 const Articles = () => {
-  const [searchParams, setSearchParams] = useSearchParams()
-  const id = searchParams.get("id")
-  const brgy = searchParams.get("brgy")
-  const event = JSON.parse(atob(searchParams.get("obj")))
-
-  console.log(event)
+  const [searchParams, setSearchParams] = useSearchParams();
+  const event = JSON.parse(atob(searchParams.get("obj")));
 
   return (
     <div className="w-full flex flex-col sm:px-[15px] lg:px-[70px] pt-[40px] mb-[30px]">
@@ -21,12 +16,10 @@ const Articles = () => {
       />
 
       {/* CONTENTS */}
-
       <div className="flex flex-col">
         <div className="flex my-[10px]">
-          <Breadcrumbs title={event.title}/>
+          <Breadcrumbs title={event.title} />
         </div>
-
         <div>
           <Content event={event} />
         </div>

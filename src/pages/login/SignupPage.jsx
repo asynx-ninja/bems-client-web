@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Carousel } from "react-responsive-carousel";
 
 const SignupPage = () => {
+  const [emptyFields, setEmptyFields] = useState([]);
   const [empty, setEmpty] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "",
@@ -32,18 +33,12 @@ const SignupPage = () => {
   ];
 
   const navigate = useNavigate();
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
 
-    // if(e.target.name === "birthday"){
-    //   setFormData({
-    //     ...formData,
-    //     age: calculateAge(e.target.value)
-    //   })
-    // }
+  const handleChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
   };
 
   const calculateAge = (birthDate) => {
@@ -61,48 +56,63 @@ const SignupPage = () => {
     return age;
   };
 
+  const checkEmptyFields = () => {
+    let arr = [];
+
+    const obj = {
+      firstName: "First Name",
+      lastName: "Last Name",
+      middleName: "Middle Name",
+      suffix: "Suffix",
+      birthday: "Birthday",
+      age: 0,
+      sex: "Sex",
+      religion: "Religion",
+    };
+
+    for (const [key, value] of Object.entries(formData)) {
+      if (key !== "suffix" && value === "") {
+        arr.push(Object.entries(obj).find(([k, v]) => key === k)[1]);
+      }
+    }
+
+    return arr;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    setFormData({
-      ...formData,
-      age: calculateAge(formData.birthday)
-    })
+    const arr = checkEmptyFields();
 
-    for (let key in formData) {
-      if (key !== "suffix" && key !== "middleName" && !formData[key]) {
-        setEmpty(true);
-        return;
-      }
+    if (arr.length > 0) {
+      setEmpty(true);
+      setEmptyFields(arr);
+    } else {
+      localStorage.setItem(
+        "Step1",
+        JSON.stringify({
+          ...formData,
+          birthday: new Date(formData.birthday), // Use the birthday string instead of the original date
+          age: calculateAge(formData.birthday),
+        })
+      );
+
+      // Clear the form
+      setFormData({
+        firstName: "",
+        lastName: "",
+        middleName: "",
+        suffix: "",
+        birthday: "",
+        age: 0,
+        sex: "",
+      });
+
+      setEmpty(false);
+
+      // Navigate to the next page
+      navigate("/next_signup");
     }
-    const birthdayDate = new Date(formData.birthday);
-
-    // Convert the Date object to a string in the format 'MM/DD/YYYY'
-
-    // Store the form data in local storage
-    localStorage.setItem(
-      "Step1",
-      JSON.stringify({
-        ...formData,
-        birthday: birthdayDate, // Use the birthday string instead of the original date
-      })
-    );
-
-    // Clear the form
-    setFormData({
-      firstName: "",
-      lastName: "",
-      middleName: "",
-      suffix: "",
-      birthday: "",
-      age: 0,
-      sex: "",
-    });
-
-    setEmpty(false);
-
-    // Navigate to the next page
-    navigate("/next_signup");
   };
 
   return (
@@ -185,7 +195,7 @@ const SignupPage = () => {
               role="alert"
             >
               <span className="font-bold">Warning:</span> Please fill-out all
-              fields!
+              fields: {emptyFields.join(", ")}!
             </div>
           )}
           <h1 className="py-3 mb-3 font-bold">Step 1: Personal Information</h1>
@@ -248,9 +258,12 @@ const SignupPage = () => {
                 name="sex"
                 value={formData.sex}
                 onChange={handleChange}
+                defaultValue={""}
                 className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
               >
-                <option disabled={formData.sex !== ""} value="">Select Gender</option>
+                <option value="" disabled>
+                  Select Gender
+                </option>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
               </select>
@@ -263,7 +276,9 @@ const SignupPage = () => {
               onChange={handleChange}
               className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
             >
-              <option disabled={formData.religion !== ""} value="">Select Religion</option>
+              <option disabled={formData.religion !== ""} value="">
+                Select Religion
+              </option>
               {religions.map((religion) => (
                 <option value={religion}>{religion}</option>
               ))}

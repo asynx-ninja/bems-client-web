@@ -1,15 +1,15 @@
-import React from 'react';
-import { IoMdCreate } from "react-icons/io";
-import { Link, useParams } from 'react-router-dom';
-import image from "../../assets/sample-image/profile.jpg"
-import Reply from "../inquiriesComponents/ReplyModal"
-import DeleteInquiryModal from '../../components/inquiriesComponents/DeleteModal';
+import React from "react";
+import { Link, useParams } from "react-router-dom";
+import image from "../../assets/sample-image/profile.jpg";
+import Reply from "../inquiriesComponents/ReplyModal";
+import DeleteInquiryModal from "../../components/inquiriesComponents/DeleteModal";
 import { MdArrowBack, MdDelete } from "react-icons/md";
 import { useMediaQuery } from "react-responsive";
 
 function viewSent() {
-  const {id, brgy} = useParams();
+  const { id, brgy } = useParams();
   const isSmallScreen = useMediaQuery({ query: "(max-width: 768px)" });
+
   return (
     <div className="bg-[#CBD6DA] min-h-screen p-6 md:p-12 xl:p-24 flex flex-col md:flex-row">
       <div className="w-full md:w-1/4 bg-white rounded-lg p-6 mb-6 md:mb-0 md:mr-6">
@@ -24,15 +24,17 @@ function viewSent() {
           <Link
             to={`/sent/${id}/${brgy}`}
             className="py-2 px-4 rounded-lg font-bold lg:text-left text-center bg-green-900 text-white    transition ease-in-out delay-50 block"
-            >
-           
+          >
             Sent
           </Link>
         </div>
       </div>
       <div className="w-full md:w-3/4 bg-white rounded-lg p-6 flex flex-col items-start justify-start">
         <div className="w-full flex justify-between mb-2">
-          <Link to={`/sent/${id}/${brgy}`} className="bg-green-700 p-2 rounded-full">
+          <Link
+            to={`/sent/${id}/${brgy}`}
+            className="bg-green-700 p-2 rounded-full"
+          >
             <MdArrowBack size={isSmallScreen ? 18 : 24} color="white" />
           </Link>
 
@@ -97,4 +99,4 @@ function viewSent() {
   );
 }
 
-export default viewSent
+export default viewSent;

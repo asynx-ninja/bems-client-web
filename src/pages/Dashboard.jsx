@@ -98,7 +98,6 @@ const Dashboard = () => {
             <h1>Follow Our Socials</h1>
           </div>
         </div>
-
       </div>
     </div>
   )

@@ -41,12 +41,10 @@ function ViewFeedbackModal({ onClose }) {
                   </div>
 
                   <div className="w-[54%] flex flex-col md:flex-row">
-                    <h1 className="font-bold ">
-                      REQUEST TYPE:
-                    </h1>
+                    <h1 className="font-bold ">REQUEST TYPE:</h1>
                     <span className="font-light md:ml-2">
-                        Certificate of Indigency
-                      </span>
+                      Certificate of Indigency
+                    </span>
                   </div>
 
                   <div className="w-[20%]">

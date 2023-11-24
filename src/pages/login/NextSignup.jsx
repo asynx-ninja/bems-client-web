@@ -4,9 +4,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import OccupationList from "../../components/occupations/OccupationList";
-const NextSignup = () => {
-  const navigate = useNavigate();
 
+const NextSignup = () => {
+  const [emptyFields, setEmptyFields] = useState([]);
+  const [empty, setEmpty] = useState(false);
   const [formData, setFormData] = useState({
     contact: "",
     civil_status: "",
@@ -14,54 +15,69 @@ const NextSignup = () => {
     city: "Rodriguez, Rizal",
     brgy: "",
     street: "",
-    isVoter: "No",
-    isHead: "No",
+    isVoter: false,
+    isHead: false,
   });
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]:e.target.value,
-    });
-    // If the name of the field is 'isVoter' or 'isHead', convert the value to a boolean
-    if (e.target.name === 'isVoter' || e.target.name === 'isHead') {
-      setFormData({
-        ...formData,
-        [e.target.name]:e.target.value === 'Yes' ? true : false,
-      });
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const checkEmptyFields = () => {
+    let arr = [];
+
+    const obj = {
+      contact: "Contact",
+      civil_status: "Civil Status",
+      occupation: "Occupation",
+      city: "City",
+      brgy: "Barangay",
+      street: "Street",
+      isVoter: "Registered Voter",
+      isHead: "Head of the Family",
+    };
+
+    for (const [key, value] of Object.entries(formData)) {
+      if ((key !== "isHead" || key !== "isVoter") && value === "") {
+        arr.push(Object.entries(obj).find(([k, v]) => key === k)[1]);
+      }
     }
 
-   
+    return arr;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    for (let key in formData) {
-      if (key !== 'isVoter' && key !== 'isHead' && !formData[key]) {
-        alert(`Please fill out the ${key} field.`);
-        return;
-      }
+    const arr = checkEmptyFields();
+
+    if (arr.length > 0) {
+      setEmpty(true);
+      setEmptyFields(arr);
+    } else {
+      localStorage.setItem("Step2", JSON.stringify(formData));
+
+      // Clear the form
+      setFormData({
+        contact: "",
+        civil_status: "",
+        occupation: "",
+        city: "",
+        brgy: "",
+        street: "",
+        isVoter: "",
+        isHead: "",
+      });
+
+      // Navigate to the next page
+      navigate("/last_signup");
     }
-
-    // Store the form data in local storage
-    localStorage.setItem("Step2", JSON.stringify(formData));
-
-    // Clear the form
-    setFormData({
-      contact: "",
-      civil_status: "",
-      occupation: "",
-      city: "",
-      brgy: "",
-      street: "",
-      isVoter: "",
-      isHead: "",
-    });
-
-    // Navigate to the next page
-    navigate("/last_signup");
   };
+
   return (
     <div className="flex flex-col-reverse md:flex-row-reverse">
       <div
@@ -160,13 +176,21 @@ const NextSignup = () => {
         </div>
 
         <form action="" className="sm:w-[80%] h-auto mt-5 md:w-9/12 lg:w-9/12">
+          {empty && (
+            <div
+              className="bg-red-50 border border-red-200 text-sm text-red-600 rounded-md p-4 mt-2 mb-4"
+              role="alert"
+            >
+              <span className="font-bold">Warning:</span> Please fill-out all
+              fields: {emptyFields.join(", ")}!
+            </div>
+          )}
           <h1 className="py-3 mb-3 font-bold">
-            Step 3: Other Personal Information
+            Step 2: Other Personal Information
           </h1>
           <div className=" flex sm:flex-col md:flex-row md:gap-4">
             <div className="relative z-0 w-full mb-3 group">
               <input
-                
                 type="number"
                 name="contact"
                 value={formData.contact}
@@ -189,7 +213,9 @@ const NextSignup = () => {
                 onChange={handleChange}
                 className="py-3 px-4 block w-full text-black border-gray-200 rounded-md text-sm focus:border-green-500 focus:ring-green-500 dark:bg-white dark:border-gray-700"
               >
-                <option selected disabled={formData.civil_status !== ""}>Civil Status</option>
+                <option selected disabled={formData.civil_status !== ""}>
+                  Civil Status
+                </option>
                 <option>Single</option>
                 <option>Married</option>
                 <option>Widowed</option>
@@ -198,7 +224,10 @@ const NextSignup = () => {
             </div>
           </div>
           <div className="relative z-0 w-full mb-3 group">
-            <OccupationList handleChange={handleChange} />
+            <OccupationList
+              handleChange={handleChange}
+              occupation={formData.occupation}
+            />
           </div>
           <div className=" flex sm:flex-col md:flex-row md:gap-4">
             <div className="relative z-0 w-full mb-3 group">
@@ -222,7 +251,9 @@ const NextSignup = () => {
                 onChange={handleChange}
                 className="py-3 px-4 block w-full text-black border-gray-200 rounded-md text-sm focus:border-green-500 focus:ring-green-500 dark:bg-white dark:border-gray-700"
               >
-                <option selected disabled={formData.brgy !== ""}>Select Barangay</option>
+                <option selected disabled={formData.brgy !== ""}>
+                  Select Barangay
+                </option>
                 <option>Balite</option>
                 <option>Burgos</option>
                 <option>Geronimo</option>
@@ -265,7 +296,7 @@ const NextSignup = () => {
                   <input
                     type="radio"
                     name="isHead"
-                    value="Yes"
+                    value="true"
                     onChange={handleChange}
                     className="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-green-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
                     id="hs-radio-group-1"
@@ -282,7 +313,7 @@ const NextSignup = () => {
                   <input
                     type="radio"
                     name="isHead"
-                    value="No"
+                    value="false"
                     onChange={handleChange}
                     className="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-green-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
                     id="hs-radio-group-2"
@@ -309,7 +340,7 @@ const NextSignup = () => {
                   <input
                     type="radio"
                     name="isVoter"
-                    value="Yes"
+                    value="true"
                     onChange={handleChange}
                     className="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-green-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
                     id="radio-group-3"
@@ -326,7 +357,7 @@ const NextSignup = () => {
                   <input
                     type="radio"
                     name="isVoter"
-                    value="No"
+                    value="false"
                     onChange={handleChange}
                     className="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-green-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
                     id="radio-group-4"

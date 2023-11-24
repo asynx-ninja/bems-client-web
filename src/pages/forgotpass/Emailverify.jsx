@@ -60,8 +60,6 @@ const Emailverify = () => {
     }
   }
 
-  // console.log(email)
-
   return (
     <div className="flex flex-col-reverse md:flex-row-reverse">
       <div
@@ -119,7 +117,6 @@ const Emailverify = () => {
           </div>
         </div>
       </div>
-
       <div className="sm:w-full lg:w-6/12 mx-auto h-screen flex flex-col items-center justify-center bg-white">
         <img
           className="sm:w-[250px] md:w-1/3 lg:w-[450px]"
@@ -131,7 +128,6 @@ const Emailverify = () => {
             City of Rodriguez Rizal
           </h1>
         </div>
-
         <div>
           {
             response.success ? (
@@ -148,7 +144,6 @@ const Emailverify = () => {
             ) : null
           }
         </div>
-
         <form action="" className="sm:w-[80%] md:w-8/12 lg:w-8/12">
           <div className="relative z-0 w-full mb-3 group">
             <label
@@ -173,7 +168,6 @@ const Emailverify = () => {
           >
             Submit
           </button>
-
         </form>
       </div>
     </div>
