@@ -1,7 +1,11 @@
-import React from 'react'
+import React from "react";
 
-const OccupationList = ({ variable, item, handlePersonalDetail }) => {
-
+const OccupationList = ({
+  variable,
+  item,
+  handlePersonalDetail,
+  emptyFields,
+}) => {
   return (
     <div>
       <label
@@ -11,8 +15,13 @@ const OccupationList = ({ variable, item, handlePersonalDetail }) => {
         {item.display.toUpperCase()}
       </label>
       <select
-        className="form-control dropdown py-3 px-4 block w-full text-black border-gray-200 rounded-md text-sm focus:border-green-500 focus:ring-green-500 dark:bg-white dark:border-gray-700"
-        id={item.display} name={item.display}
+        className={`${
+          emptyFields.includes(item.display.toUpperCase())
+            ? "border-red-700"
+            : "border-gray-200"
+        } form-control dropdown py-3 px-4 block w-full text-blackrounded-md text-sm focus:border-green-500 focus:ring-green-500 bg-white`}
+        id={item.display}
+        name={item.display}
         onChange={(e) => handlePersonalDetail(e, variable)}
         value={item.value || ""}
       >
@@ -22,7 +31,9 @@ const OccupationList = ({ variable, item, handlePersonalDetail }) => {
         <optgroup label="Healthcare Practitioners and Technical Occupations:">
           <option value="Chiropractor">Chiropractor</option>
           <option value="Dentist">Dentist</option>
-          <option value="Dietitian or Nutritionist">Dietitian or Nutritionist</option>
+          <option value="Dietitian or Nutritionist">
+            Dietitian or Nutritionist
+          </option>
           <option value="Optometrist">Optometrist</option>
           <option value="Pharmacist">Pharmacist</option>
           <option value="Physician">Physician</option>
@@ -58,7 +69,8 @@ const OccupationList = ({ variable, item, handlePersonalDetail }) => {
             value="Advertising, Marketing, Promotions, Public Relations, and Sales
       Manager"
           >
-            Advertising, Marketing, Promotions, Public Relations, and Sales Manager
+            Advertising, Marketing, Promotions, Public Relations, and Sales
+            Manager
           </option>
           <option value="Operations Specialties Manager (e.g., IT or HR Manager)">
             Operations Specialties Manager (e.g., IT or HR Manager)
@@ -108,7 +120,8 @@ const OccupationList = ({ variable, item, handlePersonalDetail }) => {
             value="Counselor, Social Worker, or Other Community and Social Service
       Specialist"
           >
-            Counselor, Social Worker, or Other Community and Social Service Specialist
+            Counselor, Social Worker, or Other Community and Social Service
+            Specialist
           </option>
           <option value="Lawyer, Judge">Lawyer, Judge</option>
           <option
@@ -119,7 +132,8 @@ const OccupationList = ({ variable, item, handlePersonalDetail }) => {
             Zoologist)
           </option>
           <option value="Physical Scientist (e.g., Astronomer, Physicist, Chemist, Hydrologist)">
-            Physical Scientist (e.g., Astronomer, Physicist, Chemist, Hydrologist)
+            Physical Scientist (e.g., Astronomer, Physicist, Chemist,
+            Hydrologist)
           </option>
           <option
             value="Religious Worker (e.g., Clergy, Director of Religious Activities or
@@ -155,8 +169,8 @@ const OccupationList = ({ variable, item, handlePersonalDetail }) => {
             value="Protective Service (e.g., Fire Fighting, Police Officer, Correctional
       Officer)"
           >
-            Protective Service (e.g., Fire Fighting, Police Officer, Correctional
-            Officer)
+            Protective Service (e.g., Fire Fighting, Police Officer,
+            Correctional Officer)
           </option>
           <option value="Chef or Head Cook">Chef or Head Cook</option>
           <option value="Cook or Food Preparation Worker">
@@ -172,7 +186,8 @@ const OccupationList = ({ variable, item, handlePersonalDetail }) => {
             value="Personal Care and Service (e.g., Hairdresser, Flight Attendant,
       Concierge)"
           >
-            Personal Care and Service (e.g., Hairdresser, Flight Attendant, Concierge)
+            Personal Care and Service (e.g., Hairdresser, Flight Attendant,
+            Concierge)
           </option>
           <option value="Sales Supervisor, Retail Sales">
             Sales Supervisor, Retail Sales
@@ -180,12 +195,17 @@ const OccupationList = ({ variable, item, handlePersonalDetail }) => {
           <option value="Retail Sales Worker">Retail Sales Worker</option>
           <option value="Insurance Sales Agent">Insurance Sales Agent</option>
           <option value="Sales Representative">Sales Representative</option>
-          <option value="Real Estate Sales Agent">Real Estate Sales Agent</option>
-          <option value="Other Services Occupation">Other Services Occupation</option>
+          <option value="Real Estate Sales Agent">
+            Real Estate Sales Agent
+          </option>
+          <option value="Other Services Occupation">
+            Other Services Occupation
+          </option>
         </optgroup>
         <optgroup label="Agriculture, Maintenance, Repair, and Skilled Crafts Occupations:">
           <option value="Construction and Extraction (e.g., Construction Laborer, Electrician)">
-            Construction and Extraction (e.g., Construction Laborer, Electrician)
+            Construction and Extraction (e.g., Construction Laborer,
+            Electrician)
           </option>
           <option value="Farming, Fishing, and Forestry">
             Farming, Fishing, and Forestry
@@ -195,7 +215,8 @@ const OccupationList = ({ variable, item, handlePersonalDetail }) => {
           </option>
           <option value="Production Occupations">Production Occupations</option>
           <option value="Other Agriculture, Maintenance, Repair, and Skilled Crafts Occupation">
-            Other Agriculture, Maintenance, Repair, and Skilled Crafts Occupation
+            Other Agriculture, Maintenance, Repair, and Skilled Crafts
+            Occupation
           </option>
         </optgroup>
         <optgroup label="Transportation Occupations:">
@@ -219,7 +240,7 @@ const OccupationList = ({ variable, item, handlePersonalDetail }) => {
         </optgroup>
       </select>
     </div>
-  )
-}
+  );
+};
 
-export default OccupationList
+export default OccupationList;
