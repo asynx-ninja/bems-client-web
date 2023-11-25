@@ -11,24 +11,20 @@ import {
   FaCamera,
 } from "react-icons/fa";
 
-// FORM INPUTS
-import OccupationList from "../components/ServiceForm/OccupationList";
-import Religion from "../components/ServiceForm/Religion"
-import CivilStatus from "../components/ServiceForm/CivilStatus"
-import RadioInput from "../components/ServiceForm/RadioInput";
-import Sex from "../components/ServiceForm/Sex"
+// FORM DETAILS
+import PersonalDetails from "../components/serviceform/PersonalDetails";
+import OtherDetails from "../components/serviceform/OtherDetails";
 
 const ServicesForm = () => {
+  const fileInputRef = useRef();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams()
-  const [detail, setDetail] = useState({})
-  const [userData, setUserData] = useState({})
-  const [personalDeets, setPersonalDeets] = useState(false)
   const id = searchParams.get("id")
   const brgy = searchParams.get("brgy")
-  const fileInputRef = useRef();
-  const [pfp, setPfp] = useState();
+  const [detail, setDetail] = useState({})
   const service = JSON.parse(atob(searchParams.get("obj")))
+  const [userData, setUserData] = useState({})
+  const [pfp, setPfp] = useState();
 
   useEffect(() => {
     const filterDetail = (item) => {
@@ -43,9 +39,6 @@ const ServicesForm = () => {
         });
 
         const getUser = await axios.get(`${API_LINK}/users/specific/${id}`);
-
-        setUserData(getUser.data[0])
-
         const filter = Object.assign({}, filterDetail(response.data)[0])
 
         filter.form[0] = Object.fromEntries(
@@ -54,6 +47,7 @@ const ServicesForm = () => {
           )
         )
 
+        setUserData(getUser.data[0])
         setDetail(filter)
 
       } catch (error) {
@@ -89,18 +83,80 @@ const ServicesForm = () => {
 
   const getDefaultDeets = (e) => {
     if (e.target.checked) {
-      setPersonalDeets(true)
+      const newData = detail.form[0]
+
+      Object.entries(detail.form[0]).map(([key]) => {
+        newData[key] = {
+          ...newData[key],
+          value: userData[key]
+        }
+
+        if (key === "id_pic") {
+          newData[key] = {
+            ...newData[key],
+            value: null
+          }
+        }
+
+        if (key === "address") {
+          const address = `${userData.address.street}, ${userData.address.brgy}, ${userData.address.city}`
+          newData[key] = {
+            ...newData[key],
+            value: address
+          }
+        }
+
+        if (key === "birthday") {
+          const birthdate = userData.birthday === undefined ? "" : userData.birthday.substr(0, 10)
+          newData[key] = {
+            ...newData[key],
+            value: birthdate
+          }
+        }
+
+        if (key === "age") {
+          const age = calculateAge(userData.birthday)
+
+          newData[key] = {
+            ...newData[key],
+            value: age
+          }
+        }
+
+        setDetail((prev) => ({
+          ...prev,
+          [detail.form[0]]: newData,
+        }))
+      })
     } else {
-      setPersonalDeets(false)
+      const newData = detail.form[0]
+
+      Object.entries(detail.form[0]).map(([key]) => {
+        newData[key] = {
+          ...newData[key],
+          value: ""
+        }
+
+        if (key === "id_pic") {
+          newData[key] = {
+            ...newData[key],
+            value: null
+          }
+        }
+
+        if (key === "age" || key === "weight" || key === "contact") {
+          newData[key] = {
+            ...newData[key],
+            value: 0
+          }
+        }
+
+        setDetail((prev) => ({
+          ...prev,
+          [detail.form[0]]: newData,
+        }))
+      })
     }
-  }
-
-  const setDefault = (key) => {
-    // const getVar = Object.keys({ ...userData })
-    const data = userData[key]
-    console.log(data)
-
-    return data
   }
 
   const handlePersonalDetail = (e, key) => {
@@ -134,16 +190,12 @@ const ServicesForm = () => {
         ...newData[key],
         value: e.target.value
       }
-
     }
-
-    // console.log(newData)
 
     setDetail((prev) => ({
       ...prev,
       [detail.form[0]]: newData,
     }))
-
   }
 
   const handleOtherDetail = (e, key, sectionInx) => {
@@ -153,7 +205,6 @@ const ServicesForm = () => {
       ...newData[sectionInx].form[key],
       value: e.target.value
     }
-    // console.log(newData)
 
     setDetail((prev) => ({
       ...prev,
@@ -162,7 +213,7 @@ const ServicesForm = () => {
   }
 
   // console.log("user default data: ", userData)
-  // console.log("new form detail: ", detail)
+  console.log("new form detail: ", detail)
 
   const handleLinkClick = () => {
     // Perform any additional logic you need here
@@ -289,187 +340,13 @@ const ServicesForm = () => {
                       id="formPic"
                       className="w-[200px] h-[200px] sm:mb-3 lg:mb-0 border-[1px] border-[#295141] object-cover"
                     />
-                    {/* <button className="relative bottom-[25px] w-[40px] h-[40px] flex justify-center items-center rounded-full bg-[#295141] text-white px-3 py-2">
-                                    <FaCamera size={20} className="cursor-none" />
-                                </button> */}
                   </div>
                 </div>
 
-                <fieldset className="flex-col border-[1px] border-black rounded-md">
-                  <legend className="ml-2 px-2 text-sm font-medium">Personal Details</legend>
-                  <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center items-center gap-3 p-6">
-
-                    {detail.form &&
-                      Object.entries(detail.form[0]).map(([key, item], idx) => {
-                        return (
-                          <div key={idx} className={item.display === "address" ? "sm:col-span-1 md:col-span-2 lg:col-span-3" : "col-span-1"}>
-                            {
-                              item.display === "occupation" ?
-                                <OccupationList variable={key} personalDeets={personalDeets} item={item} setDefault={setDefault} handlePersonalDetail={handlePersonalDetail} />
-                                : null
-                            }
-                            {
-                              item.display === "civil status" ?
-                                <CivilStatus variable={key} item={item} personalDeets={personalDeets} setDefault={setDefault} handlePersonalDetail={handlePersonalDetail} />
-                                : null
-                            }
-                            {
-                              item.display === "religion" ?
-                                <Religion variable={key} item={item} personalDeets={personalDeets} setDefault={setDefault} handlePersonalDetail={handlePersonalDetail} />
-                                : null
-                            }
-                            {
-                              item.display === "sex" ?
-                                <Sex variable={key} item={item} personalDeets={personalDeets} setDefault={setDefault}  handlePersonalDetail={handlePersonalDetail} />
-                                : null
-                            }
-                            {
-                              item.type === "file" ?
-                                <input
-                                  type={item.type}
-                                  name={key}
-                                  id={item.display}
-                                  onChange={(e) => handlePersonalDetail(e, key)}
-                                  ref={fileInputRef}
-                                  accept="image/*"
-                                  multiple="multiple"
-                                  className="hidden"
-                                />
-                                : null
-                            }
-                            {
-                              item.type === "date" || item.type === "email" || item.type === "number" || item.type === "text" ?
-                                <div>
-                                  <label
-                                    htmlFor={item.display}
-                                    className="block sm:text-xs lg:text-sm font-medium mb-2"
-                                  >
-                                    {item.display.toUpperCase()}
-                                  </label>
-                                  <input
-                                    name={key}
-                                    type={item.type}
-                                    id={item.display}
-                                    value={personalDeets ? setDefault(key) : item.value}
-                                    readOnly={item.display === "age"}
-                                    className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 bg-white"
-                                    placeholder={item.display === "address" ? "Street / Barangay / Municipality" : item.display}
-                                    aria-describedby="hs-input-helper-text"
-                                    onChange={(e) => handlePersonalDetail(e, key)}
-                                  />
-                                </div>
-                                : null
-                            }
-                          </div>
-                        )
-                      })
-                    }
-                  </div>
-                </fieldset>
-
-                {detail.form &&
-                  Object.entries(detail.form[1]).map(([sectionInx, sectionItem]) => {
-                    return (
-                      <fieldset key={sectionInx} className="flex-col border-[1px] border-black rounded-md">
-                        <legend className="ml-2 px-2 text-sm font-medium">{sectionItem.section_title}</legend>
-                        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 justify-center items-center gap-3 p-6">
-
-                          {detail.form &&
-                            Object.entries(sectionItem.form).map(([key, item], idx) => {
-                              return (
-                                <div key={idx}>
-                                  {
-                                    item.type === "select" ?
-                                      <div>
-                                        <label
-                                          htmlFor={item.display}
-                                          className="block sm:text-xs lg:text-sm font-medium mb-2"
-                                        >
-                                          {item.display.toUpperCase()}
-                                        </label>
-                                        <select
-                                          id={item.display}
-                                          name={item.variable}
-                                          onChange={(e) => handleOtherDetail(e, key, sectionInx)}
-                                          className="py-3 px-4 block w-full text-black border-gray-200 rounded-md text-sm focus:border-green-500 focus:ring-green-500 dark:bg-white dark:border-gray-700"
-                                        >
-                                          {
-                                            Object.entries(item.children).map(([i, option]) => {
-                                              return (
-                                                <option key={i} value={option.value}>{option.option}</option>
-                                              )
-                                            })
-                                          }
-                                        </select>
-                                      </div>
-                                      : null
-                                  }
-                                  {
-                                    item.type === "radio" ?
-                                      <div>
-                                        <label
-                                          htmlFor={item.display}
-                                          className="block sm:text-xs lg:text-sm font-medium mb-2"
-                                        >
-                                          {item.display.toUpperCase()}
-                                        </label>
-                                        {
-                                          Object.entries(item.children).map(([i, option]) => {
-                                            (
-                                              <div key={i} className="flex items-center">
-                                                <input
-                                                  className="shrink-0 mt-0.5 border-gray-200 rounded-full text-green-500 focus:ring-green-500"
-                                                  id='gender'
-                                                  name='gender'
-                                                  type="radio"
-                                                  value="Male"
-                                                  onChange={(e) => handleOtherDetail(e, key, sectionInx)}
-                                                />
-                                                <label htmlFor="male" className="ml-2">
-                                                  {option}
-                                                </label>
-                                              </div>
-                                            )
-                                          })
-                                        }
-                                      </div>
-                                      : null
-                                  }
-                                  {
-                                    item.type === "date" || item.type === "email" || item.type === "number" || item.type === "text" ?
-                                      <div>
-                                        <label
-                                          htmlFor={item.display}
-                                          className="block sm:text-xs lg:text-sm font-medium mb-2"
-                                        >
-                                          {item.display.toUpperCase()}
-                                        </label>
-                                        <input
-                                          name={item.variable}
-                                          type={item.type}
-                                          id={item.display}
-                                          readOnly={item.display === "age"}
-                                          className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 bg-white"
-                                          placeholder={item.display === "address" ? "Street / Barangay / Municipality" : item.display.toLowerCase()}
-                                          aria-describedby="hs-input-helper-text"
-                                          onChange={(e) => handleOtherDetail(e, key, sectionInx)}
-                                        />
-                                      </div>
-                                      : null
-                                  }
-                                </div>
-                              )
-                            })
-                          }
-                        </div>
-                      </fieldset>
-                    )
-                  })
-                }
+                <PersonalDetails detail={detail} fileInputRef={fileInputRef} handlePersonalDetail={handlePersonalDetail} />
+                <OtherDetails detail={detail} handleOtherDetail={handleOtherDetail} />
 
               </form>
-
-
             </div>
             <div className="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-gray-700">
               <button
