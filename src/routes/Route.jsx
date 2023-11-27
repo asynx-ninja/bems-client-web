@@ -25,9 +25,6 @@ import Settings from "../pages/Settings";
 import BarangayInfo from "../pages/BarangayInfo";
 import Requests from "../pages/Requests";
 import Inquiries from "../pages/Inquiries/Inquiries";
-import Sent from "../pages/Inquiries/Sent";
-import Message from "../components/inquiriesComponents/viewInquiry";
-import SentMessage from "../components/inquiriesComponents/viewSent";
 import Services from "../pages/Services";
 import ServicesForm from "../pages/ServicesForm";
 
@@ -94,33 +91,6 @@ const pages = [
       <>
         <Navbar />
         <Services />
-      </>
-    ),
-  },
-  {
-    path: "/message",
-    element: (
-      <>
-        <Navbar />
-        <Message />
-      </>
-    ),
-  },
-  {
-    path: "/sentmessage",
-    element: (
-      <>
-        <Navbar />
-        <SentMessage />
-      </>
-    ),
-  },
-  {
-    path: "/sent",
-    element: (
-      <>
-        <Navbar />
-        <Sent />
       </>
     ),
   },
