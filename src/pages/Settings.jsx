@@ -188,6 +188,8 @@ const Settings = () => {
   };
 
   const saveChanges = async (e) => {
+    e.preventDefault()
+
     const obj = {
       firstName: userData.firstName,
       middleName: userData.middleName,
@@ -222,7 +224,7 @@ const Settings = () => {
       var formData = new FormData();
       formData.append("users", JSON.stringify(obj));
       formData.append("file", pfp);
-      const response = await axios.patch(`${API_LINK}/users/${id}`, formData);
+      const response = await axios.patch(`${API_LINK}/users/?doc_id=${id}`, formData);
 
       // CHANGE USER CREDENTIALS
 

@@ -22,13 +22,18 @@ const Login = () => {
     event.preventDefault();
     try {
       const response = await axios.get(
-        `${API_LINK}/auth/${username}/${password}/${type}`
+        `${API_LINK}/auth/${username}/${password}`
       );
       setErrorMessage("");
 
-      navigate(
-        `/dashboard/?id=${response.data[0]._id}&brgy=${response.data[0].address.brgy}`
-      );
+      if(response.data[0].type !== type){
+        setErrorMessage("Invalid account type! Please create a Resident account.")
+      }else{
+        navigate(
+          `/dashboard/?id=${response.data[0]._id}&brgy=${response.data[0].address.brgy}`
+        );
+      }
+      
     } catch (error) {
       if (error.response) {
         setErrorMessage(error.response.data.error);

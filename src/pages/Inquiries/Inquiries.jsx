@@ -19,6 +19,7 @@ const Inquiries = () => {
   const brgy = searchParams.get("brgy");
   const [inquiries, setInquiries] = useState([]);
   const [inquiry, setInquiry] = useState([]);
+  const [isArchived, setIsArchived] = useState(false);
   const [sortOrder, setSortOrder] = useState("desc");
   const [sortColumn, setSortColumn] = useState(null);
 
@@ -29,7 +30,7 @@ const Inquiries = () => {
   useEffect(() => {
     const fetch = async () => {
       const response = await axios.get(
-        `${API_LINK}/inquiries/?brgy=${brgy}&archived=false`
+        `${API_LINK}/inquiries/?id=${id}&brgy=${brgy}&archived=${isArchived}`
       );
       if (response.status === 200) setInquiries(response.data);
       else setInquiries([]);
@@ -108,6 +109,15 @@ const Inquiries = () => {
     return dateFormat;
   };
 
+  const handleOnArchived = (e) => {
+    console.log(e.target.value)
+    if(e.target.value === true){
+      setIsArchived(true)
+    }else{
+      setIsArchived(false)
+    }
+  }
+
   const handleView = (item) => {
     setInquiry(item);
   };
@@ -116,7 +126,7 @@ const Inquiries = () => {
     <div className="mx-4 w-[calc(100vw]">
       <div>
         <div className="flex flex-row mt-5 sm:flex-col-reverse lg:flex-row w-full">
-          <div className="sm:mt-5 md:mt-4 lg:mt-0 bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-[#3e5fc2] to-[#1f2f5e] py-2 lg:py-4 px-5 md:px-10 lg:px-0 xl:px-10 sm:rounded-t-lg lg:rounded-t-[1.75rem]  w-full lg:w-2/5 xxl:h-[4rem] xxxl:h-[5rem]">
+          <div className="sm:mt-5 md:mt-4 lg:mt-0 bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-custom-green-button to-custom-green-header py-2 lg:py-4 px-5 md:px-10 lg:px-0 xl:px-10 sm:rounded-t-lg lg:rounded-t-[1.75rem]  w-full lg:w-2/5 xxl:h-[4rem] xxxl:h-[5rem]">
             <h1
               className="text-center sm:text-[15px] mx-auto font-bold md:text-xl lg:text-[1.2rem] xl:text-[1.5rem] xxl:text-[2.1rem] xxxl:text-4xl xxxl:mt-1 text-white"
               style={{ letterSpacing: "0.2em" }}
@@ -127,25 +137,25 @@ const Inquiries = () => {
           <div className="lg:w-3/5 flex flex-row justify-end items-center ">
             <div className="sm:w-full md:w-full lg:w-2/5 flex sm:flex-col md:flex-row md:justify-center md:items-center sm:space-y-2 md:space-y-0 md:space-x-2 ">
               <div className="w-full rounded-lg ">
-                <Link to={`/archivedinquiries/?id=${id}&brgy=${brgy}`}>
-                  <div className="hs-tooltip inline-block w-full">
-                    <button
-                      type="button"
-                      className="hs-tooltip-toggle justify-center sm:px-2 sm:p-2 md:px-5 md:p-3 rounded-lg bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-[#3e5fc2] to-[#1f2f5e] w-full text-white font-medium text-sm text-center inline-flex items-center"
+                <div className="hs-tooltip inline-block w-full">
+                  <button
+                    type="button"
+                    value={true}
+                    onClick={handleOnArchived}
+                    className="hs-tooltip-toggle justify-center sm:px-2 sm:p-2 md:px-5 md:p-3 rounded-lg bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-custom-green-button to-custom-green-header w-full text-white font-medium text-sm text-center inline-flex items-center"
+                  >
+                    <FaArchive size={24} style={{ color: "#ffffff" }} />
+                    <span className="sm:block md:hidden sm:pl-5">
+                      Archived Inquiries
+                    </span>
+                    <span
+                      className="sm:hidden md:block hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-50 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded-md shadow-sm "
+                      role="tooltip"
                     >
-                      <FaArchive size={24} style={{ color: "#ffffff" }} />
-                      <span className="sm:block md:hidden sm:pl-5">
-                        Archived Inquiries
-                      </span>
-                      <span
-                        className="sm:hidden md:block hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-50 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded-md shadow-sm "
-                        role="tooltip"
-                      >
-                        Archived Inquiries
-                      </span>
-                    </button>
-                  </div>
-                </Link>
+                      Archived Inquiries
+                    </span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -157,7 +167,7 @@ const Inquiries = () => {
               <button
                 id="hs-dropdown"
                 type="button"
-                className="bg-[#253a7a] sm:w-full md:w-full sm:mt-2 md:mt-0 text-white hs-dropdown-toggle py-1 px-5 inline-flex justify-center items-center gap-2 rounded-md  font-medium shadow-sm align-middle transition-all text-sm  "
+                className="bg-custom-green-header sm:w-full md:w-full sm:mt-2 md:mt-0 text-white hs-dropdown-toggle py-1 px-5 inline-flex justify-center items-center gap-2 rounded-md  font-medium shadow-sm align-middle transition-all text-sm  "
               >
                 SORT BY
                 <svg
@@ -178,7 +188,7 @@ const Inquiries = () => {
                 </svg>
               </button>
               <ul
-                className="bg-[#253a7a] border-2 border-[#ffb13c] hs-dropdown-menu w-72 transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden z-10  shadow-md rounded-lg p-2 "
+                className="bg-custom-green-header border-2 border-[#ffb13c] hs-dropdown-menu w-72 transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden z-10  shadow-md rounded-lg p-2 "
                 aria-labelledby="hs-dropdown"
               >
                 <li
@@ -230,7 +240,7 @@ const Inquiries = () => {
             </div>
             <div className="sm:flex-col md:flex-row flex sm:w-full md:w-7/12">
               <div className="flex flex-row w-full md:mr-2">
-                <button className=" bg-[#253a7a] p-3 rounded-l-md">
+                <button className=" bg-custom-green-header p-3 rounded-l-md">
                   <div className="w-full overflow-hidden">
                     <svg
                       className="h-3.5 w-3.5 text-white"
@@ -263,7 +273,7 @@ const Inquiries = () => {
                   <button
                     type="button"
                     data-hs-overlay="#hs-modal-archive"
-                    className="hs-tooltip-toggle sm:w-full md:w-full text-white rounded-md bg-blue-800 font-medium text-xs sm:py-1 md:px-3 md:py-2 flex items-center justify-center"
+                    className="hs-tooltip-toggle sm:w-full md:w-full text-white rounded-md bg-custom-green-header font-medium text-xs sm:py-1 md:px-3 md:py-2 flex items-center justify-center"
                   >
                     <BsPrinter size={24} style={{ color: "#ffffff" }} />
                     <span
@@ -296,7 +306,7 @@ const Inquiries = () => {
 
         <div className="overflow-y-auto sm:overflow-x-auto h-[calc(100vh_-_270px)] xxxl:h-[calc(100vh_-_286px)]">
           <table className="w-full ">
-            <thead className="bg-[#2a3f80] sticky top-0">
+            <thead className="bg-custom-green-header sticky top-0">
               <tr className="">
                 <th scope="col" className="px-6 py-4">
                   <div className="flex justify-center items-center">
@@ -435,7 +445,7 @@ const Inquiries = () => {
             </tbody>
           </table>
         </div>
-        <div className="md:py-4 md:px-4 bg-[#253a7a] flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3">
+        <div className="md:py-4 md:px-4 bg-custom-green-header flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3">
           <span className="font-medium text-white sm:text-xs text-sm">
             Showing 1 out of 15 pages
           </span>
