@@ -65,7 +65,7 @@ const EventsCarousel = () => {
                                     <p className='pl-[10px] sm:line-clamp-6 md:line-clamp-3 w-full'>{item.details}</p>
                                 </div>
                                 <Link
-                                    to={`/events/?id=${id}&brgy=${brgy}&obj=${btoa(JSON.stringify(item))}`}
+                                    to={`/events/?id=${id}&brgy=${brgy}&event_id=${item._id}`}
                                     className='bg-custom-green-button w-[150px] sm:mx-auto md:mx-0 text-white font-medium px-[25px] py-[10px] my-[25px] rounded-lg hover:bg-gradient-to-r from-[#295141] to-[#408D51] transition duration-500 ease-in-out hover:text-custom-gold'
                                 >
                                     Read More

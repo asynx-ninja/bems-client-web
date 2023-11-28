@@ -1,9 +1,9 @@
 import React from "react";
-import Error from "../../assets/image/Error.png";
+import Error from "../../../assets/image/Error.png";
 import axios from "axios";
-import API_LINK from "../../config/API";
+import API_LINK from "../../../config/API";
 
-function ArchiveInquiryModal({ selectedItems }) {
+const ArchiveInquiryModal = ({ selectedItems }) => {
 
   const handleSave = async (e) => {
     try {

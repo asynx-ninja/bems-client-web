@@ -49,7 +49,7 @@ const Details = () => {
       const response = await axios.get(`${API_LINK}/brgyinfo/?brgy=${brgy}`);
 
       setInfo(response.data[0]);
-      console.log(response.data[0])
+      // console.log(response.data[0])
     };
 
     fetch();
@@ -85,7 +85,10 @@ const Details = () => {
 
           {/* DESCRIPTION */}
           <div className="flex pb-[20px] w-[90%] mx-auto sm:mt-[50px] md:mt-[80px] justify-between sm:flex-col-reverse lg:flex-row gap-5">
-            <textarea disabled className="sm:w-full lg:w-[60%] sm:text-[14px] md:text-[18px] text-black border-0 bg-transparent resize-none">
+            <textarea
+            disabled
+            value={info.story}
+            className="sm:w-full sm:h-[400px] lg:h-auto lg:w-[60%] sm:text-[14px] md:text-[18px] text-black border-0 bg-transparent resize-none">
               {info.story}
             </textarea>
 

@@ -6,7 +6,6 @@ import { useEffect, useState, React, useRef } from "react";
 import axios from "axios";
 import API_LINK from "../config/API";
 import defaultPFP from "../assets/sample-image/formPic.png";
-
 import { FaCamera } from "react-icons/fa";
 
 // FORM DETAILS
@@ -24,6 +23,10 @@ const ServicesForm = () => {
   const [userData, setUserData] = useState({});
   const [emptyFields, setEmptyFields] = useState([]);
   const [empty, setEmpty] = useState(false);
+  const [purpose, setPurpose] = useState("");
+  const [document, setDocument] = useState(null);
+  const [NewPDF, setNewPDF] = useState(null);
+  const imageRef = useRef();
 
   useEffect(() => {
     const filterDetail = (item) => {
@@ -66,8 +69,8 @@ const ServicesForm = () => {
       } catch (error) {
         console.log(error);
       }
-      var pfpSrc = document.getElementById("formPic");
-      pfpSrc.src = defaultPFP;
+
+      imageRef.current.src = defaultPFP;
     };
     fetchForms();
   }, []);
@@ -95,7 +98,8 @@ const ServicesForm = () => {
         if (
           element.value === "" ||
           element.value === null ||
-          element.value === undefined
+          element.value === undefined ||
+          element.value.length === 0
         ) {
           arr.push(element.display.toUpperCase());
         }
@@ -162,8 +166,8 @@ const ServicesForm = () => {
       value: Object.entries(objectConstraint).find(([k]) => key === k)
         ? objectConstraint[key]
         : key === "user_id"
-        ? newData[key].value
-        : "",
+          ? newData[key].value
+          : "",
     };
 
     return newData;
@@ -197,7 +201,7 @@ const ServicesForm = () => {
     const newData = detail.form[0];
 
     if (key === "id_pic") {
-      var output = document.getElementById("formPic");
+      var output = imageRef.current;
       output.src = URL.createObjectURL(e.target.files[0]);
       output.onload = function () {
         URL.revokeObjectURL(output.src); // free memory
@@ -230,10 +234,34 @@ const ServicesForm = () => {
   const handleOtherDetail = (e, key, sectionInx) => {
     const newData = [...detail.form[1]];
 
-    newData[sectionInx].form[key] = {
-      ...newData[sectionInx].form[key],
-      value: e.target.value,
-    };
+    switch (newData[sectionInx].form[key].type) {
+      case "file":
+        newData[sectionInx].form[key] = {
+          ...newData[sectionInx].form[key],
+          value: e.target.files[0],
+        };
+        break;
+      case "checkbox":
+        const chk = newData[sectionInx].form[key].value;
+
+        if (e.target.checked) {
+          newData[sectionInx].form[key] = {
+            ...newData[sectionInx].form[key],
+            value: [...chk, e.target.value],
+          };
+        } else {
+          newData[sectionInx].form[key] = {
+            ...newData[sectionInx].form[key],
+            value: chk.filter((value) => value !== e.target.value),
+          };
+        }
+        break;
+      default:
+        newData[sectionInx].form[key] = {
+          ...newData[sectionInx].form[key],
+          value: e.target.value,
+        };
+    }
 
     setDetail((prev) => ({
       ...prev,
@@ -241,14 +269,97 @@ const ServicesForm = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const renameFile = (file, newName) => {
+    const newFile = new File([file], newName, { type: file.type });
+    return newFile;
+  };
+
+  // const generatePDF = async () => {
+  //   try {
+  //     const result = await pdf(<SampleDocument detail={detail} />).toBlob();
+  //     saveAs(new File([result], "filename"), "NewFile.pdf");
+  //   } catch (error) {
+  //     console.error(error.message);
+  //   }
+  // };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
     const arr = checkEmptyFields();
 
-    console.log("arr", arr);
-    console.log("final", detail);
-
     if (arr.length === 0) {
-      HSOverlay.close(
+      var formData = new FormData();
+
+      detail.form[1].map((item) =>
+        item.form.map(
+          (childItem) =>
+            childItem.type === "file" &&
+            formData.append(
+              "files",
+              renameFile(
+                childItem.value,
+                `${detail.form[0].lastName.value
+                } - ${childItem.display.toUpperCase()}`
+              )
+            )
+        )
+      );
+
+      // const { id_pic: _, ...newForm1 } = detail.form[0];
+
+      // const deleteFileForm2 = detail.form[1].map((item) => {
+      //   return {
+      //     ...item,
+      //     form: item.form.filter((childItem) => childItem.type !== "file"),
+      //   };
+      // });
+
+      const newForm2 = detail.form[1].map((item) => {
+        return {
+          ...item,
+          form: item.form.map((childItem) => {
+            return {
+              ...childItem,
+              value:
+                childItem.type === "checkbox"
+                  ? childItem.value.join(", ")
+                  : childItem.value,
+            };
+          }),
+        };
+      });
+
+      detail.form = [detail.form[0], newForm2];
+
+      console.log("new detail", detail);
+
+      formData.append(
+        "form",
+        JSON.stringify({
+          ...detail,
+          purpose: purpose,
+          name: service.name,
+          service_type: service.type,
+          fee: service.fee,
+        })
+      );
+
+      try {
+        const response = await axios.post(`${API_LINK}/requests/`, formData);
+        console.log(response);
+      } catch (err) {
+        console.log(err.message);
+      }
+
+      // generatePDF();
+
+      // for (var pair of formData.entries()) {
+      //   console.log(pair[0] + ", " + pair[1]);
+      // }
+
+      HSOverlay.close(document.getElementById("hs-full-screen-modal"));
+      HSOverlay.open(
         document.getElementById("hs-toggle-between-modals-second-modal")
       );
     } else {
@@ -293,7 +404,7 @@ const ServicesForm = () => {
         <div className="flex mx-auto sm:flex-row md:flex-row w-full items-center gap-4 justify-center">
           <Link
             data-hs-overlay="#hs-full-screen-modal"
-            className="flex items-center justify-center bg-green-700 sm:w-full md:w-[150px] sm:my-[5px] md:m-5 h-[50px] text-sm text-white font-medium rounded-lg hover:bg-gradient-to-r from-[#295141] to-[#408D51] transition duration-500 ease-in-out hover:text-custom-gold"
+            className="flex items-center justify-center text-center bg-green-700 sm:w-full md:w-[150px] sm:my-[5px] md:m-5 h-[50px] text-sm text-white font-medium rounded-lg hover:bg-gradient-to-r from-[#295141] to-[#408D51] transition duration-500 ease-in-out hover:text-custom-gold"
           >
             Submit a request
           </Link>
@@ -332,7 +443,7 @@ const ServicesForm = () => {
                     Please fill out the required information!
                   </div>
                 )}
-                <div className="flex mx-5">
+                <div className="flex flex-col gap-5 mx-5">
                   <div className="flex flex-col w-full space-y-2">
                     <div
                       className="w-full bg-green-400 border rounded-md dark:border-gray-700"
@@ -356,7 +467,8 @@ const ServicesForm = () => {
                             Note: Please read through the form before completing
                             it. All question MUST be answered. Failure to
                             provide full and accurate information will
-                            disqualify the application.
+                            disqualify the application. Please Also inform that once the request is sent,
+                            it cannot be edited.
                           </p>
                         </div>
                       </div>
@@ -391,40 +503,17 @@ const ServicesForm = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="flex w-full justify-start items-center gap-5">
-                      <input
-                        id="defaultDeets"
-                        type="checkbox"
-                        onChange={(e) => getDefaultDeets(e)}
-                        className="shrink-0 mt-0.5 border-gray-500 rounded-sm h-[20px] w-[20px] text-green-500 focus:ring-green-500"
-                      />
-                      <label htmlFor="defaultDeets">
-                        Check to insert your personal details
-                      </label>
-                    </div>
                   </div>
-                  <div className="relative lg:w-4/12 flex m-auto justify-end items-center">
-                    <div className="absolute top-[100px] right-[-90px] transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
-                      <label
-                        htmlFor="file_input"
-                        onClick={handleAdd}
-                        className="block text-transparent p-[70px] font-medium text-sm text-center opacity-0 hover:opacity-100 transition-opacity hover:bg-[#295141] hover:bg-opacity-60 cursor-pointer"
-                      >
-                        <FaCamera
-                          size={50}
-                          style={{ color: "#ffffff" }}
-                          className="cursor-none"
-                        />
-                      </label>
-                    </div>
-                    <img
-                      id="formPic"
-                      className={`${
-                        emptyFields.includes("ID PICTURE (WHITE BACKGROUND)")
-                          ? "border-red-700"
-                          : "border-[#295141]"
-                      } w-[200px] border-[1px] h-[200px] sm:mb-3 lg:mb-0  object-cover`}
+                  <div className="flex w-full justify-start items-center gap-5">
+                    <input
+                      id="defaultDeets"
+                      type="checkbox"
+                      onChange={(e) => getDefaultDeets(e)}
+                      className="shrink-0 mt-0.5 border-gray-500 rounded-sm h-[20px] w-[20px] text-green-500 focus:ring-green-500"
                     />
+                    <label htmlFor="defaultDeets">
+                      Check to insert your personal details
+                    </label>
                   </div>
                 </div>
                 <PersonalDetails
@@ -438,6 +527,26 @@ const ServicesForm = () => {
                   handleOtherDetail={handleOtherDetail}
                   emptyFields={emptyFields}
                 />
+                <fieldset className="flex-col border-[1px] border-black rounded-md">
+                  <legend className="ml-2 px-2 text-sm font-medium">
+                    Other Requirements
+                  </legend>
+                  <div className="w-full px-6 py-3">
+                    <label
+                      for="message"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Purpose of this Request
+                    </label>
+                    <textarea
+                      onChange={(e) => setPurpose(e.target.value)}
+                      id="message"
+                      rows="4"
+                      className="resize-none block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
+                      placeholder="Write your thoughts here..."
+                    ></textarea>
+                  </div>
+                </fieldset>
               </form>
             </div>
             <div className="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-gray-700">

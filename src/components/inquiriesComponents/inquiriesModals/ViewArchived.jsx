@@ -1,32 +1,27 @@
 import React from "react";
-import bgmodal from "../../assets/image/header.png";
 
-function composeModal() {
+const ViewArchivedModal = () => {
   return (
     <div>
       <div className="">
         <div
-          id="hs-modal-compose"
-          class="hs-overlay hidden fixed top-0 left-0 z-[60] w-full h-full overflow-x-hidden overflow-y-auto flex items-center justify-center"
+          id="hs-modal-viewArchived"
+          className="hs-overlay hidden fixed top-0 left-0 z-[60] w-full h-full overflow-x-hidden overflow-y-auto flex items-center justify-center"
         >
           {/* Modal */}
-          <div class="hs-overlay-open:opacity-100 hs-overlay-open:duration-500 px-3 md:px-0 opacity-0 transition-all sm:max-w-lg sm:w-full m-3 sm:mx-auto lg:ml-96 xl:ml-[500px] xxl:ml-[600px] xxxl:ml-[850px]">
-            <div class="flex flex-col bg-white shadow-sm ">
+          <div className="hs-overlay-open:opacity-100 hs-overlay-open:duration-500 px-3 py-5 md:px-5 opacity-0 transition-all w-full h-auto">
+            <div className="flex flex-col bg-white shadow-sm rounded-t-3xl rounded-b-3xl w-full h-full md:max-w-xl lg:max-w-2xl xxl:max-w-3xl mx-auto max-h-screen">
               {/* Header */}
-              <div class="bg-[#295141] overflow-hidden ">
-                <div
-                  class="flex justify-between items-center p-5 w-full h-full bg-cover bg-no-repeat transform"
-                  style={{ backgroundImage: `url(${bgmodal})` }}
+              <div className="py-5 px-3 flex justify-between items-center bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-[#3e5fc2] to-[#1f2f5e] overflow-hidden rounded-t-2xl">
+                <h3
+                  className="font-bold text-white mx-auto md:text-xl text-center"
+                  style={{ letterSpacing: "0.3em" }}
                 >
-                  <h3
-                    class="font-base text-white mx-auto md:text-xl"
-                    style={{ letterSpacing: "0.3em" }}
-                  >
-                    COMPOSE
-                  </h3>
-                </div>
+                  VIEW INQUIRY
+                </h3>
               </div>
-              <div className="mt-5">
+
+              <div className="flex flex-col mx-auto w-full pt-5 px-5 overflow-y-auto relative max-h-[470px]">
                 <form>
                   <div className="flex flex-col lg:flex-row">
                     <div className="mb-4 px-4">
@@ -91,18 +86,11 @@ function composeModal() {
                 </form>
               </div>
               {/* Buttons */}
-              <div class="flex justify-center items-center gap-x-2 py-3 px-6 dark:border-gray-700">
+              <div className="flex justify-center items-center gap-x-2 py-3 px-6 dark:border-gray-700">
                 <button
                   type="button"
-                  class="h-[2.5rem] w-[9.5rem] py-1 px-6 inline-flex justify-center items-center gap-2 rounded-md borde text-sm font-base bg-teal-900 text-white shadow-sm align-middle"
-                  data-hs-overlay="#hs-modal-compose"
-                >
-                  Send
-                </button>
-                <button
-                  type="button"
-                  class="h-[2.5rem] w-[9.5rem] py-1 px-6 inline-flex justify-center items-center gap-2 rounded-md border text-sm font-base bg-pink-800 text-white shadow-sm align-middle"
-                  data-hs-overlay="#hs-modal-compose"
+                  className="h-[2.5rem] w-full py-1 px-6 gap-2 rounded-md borde text-sm font-base bg-pink-900 text-white shadow-sm"
+                  data-hs-overlay="#hs-modal-viewArchived"
                 >
                   CLOSE
                 </button>
@@ -115,4 +103,4 @@ function composeModal() {
   );
 }
 
-export default composeModal;
+export default ViewArchivedModal;

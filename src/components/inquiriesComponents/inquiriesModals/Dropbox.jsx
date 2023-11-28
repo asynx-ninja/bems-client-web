@@ -78,7 +78,7 @@ const Dropbox = ({createFiles, setCreateFiles, handleFileChange}) => {
                 {createFiles.length > 0 ? (
                   createFiles.map((file, idx) => (
                     <li
-                      className="block p-1 w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/6 xl:w-1/4 h-20"
+                      className="block p-1 w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/4 h-20"
                       key={idx}
                     >
                       <article

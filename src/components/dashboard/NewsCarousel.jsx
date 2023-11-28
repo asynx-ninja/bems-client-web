@@ -41,31 +41,35 @@ const NewsCarousel = () => {
         showArrows={true}
         showThumbs={false}
       >
-        {services.map((item, i) => (
-          <Link
-            key={i}
-            className="w-full relative"
-            to={{ pathname: `/services_form`, search: `id=${id}&brgy=${brgy}&obj=${btoa(JSON.stringify({ ...item }))}` }}
-          >
-            <div className="relative">
-              <img
-                src={item.collections.banner.link}
-                alt="Service banner"
-                className="w-full h-[300px] object-cover md:h-96 md:object-cover md:w-full"
-              />
-              <div className="absolute inset-0 flex items-center justify-center bg-black opacity-0 transition-opacity duration-300 hover:opacity-50">
-                <p className="text-white font-bold text-center">Click to view {item.name}</p>
+        {
+          page === "services" ?
+            services.map((item, i) => (
+              <div
+                key={i}
+                className="w-full relative"
+              // to={{ pathname: `/services_form`, search: `id=${id}&brgy=${brgy}&obj=${btoa(JSON.stringify({ ...item }))}` }}
+              >
+                <div className="relative">
+                  <img
+                    src={item.collections.banner.link}
+                    alt="Service banner"
+                    className="w-full h-[300px] object-cover md:h-96 md:object-cover md:w-full"
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center bg-black opacity-0 transition-opacity duration-300 hover:opacity-50">
+                    <p className="text-white font-bold text-center">{item.name}</p>
+                  </div>
+                </div>
               </div>
-            </div>
-          </Link>
-        ))}
+            ))
+            : null
+        }
         {
           page !== "services" ?
             announcement.map((item, i) => (
               <Link
                 key={i}
                 className="w-full relative"
-                to={{ pathname: `/events`, search: `id=${id}&brgy=${brgy}&obj=${btoa(JSON.stringify({ ...item }))}` }}
+                to={{ pathname: `/events`, search: `id=${id}&brgy=${brgy}&event_id=${item._id}`}}
               >
                 <div className="relative">
                   <img

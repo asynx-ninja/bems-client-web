@@ -1,16 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { AiOutlineStop, AiOutlineEye } from "react-icons/ai";
-import { FaArchive } from "react-icons/fa";
+import { AiOutlineStop } from "react-icons/ai";
+import { FaArchive, FaPlus } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
 import { BsPrinter } from "react-icons/bs";
-import ArchiveModal from "../../components/inquiriesComponents/ArchivedInquiryModal";
-import ViewMessage from "../../components/inquiriesComponents/ViewMessage";
 import { useState, useEffect } from "react";
 // import ReactPaginate from "react-paginate";
 import axios from "axios";
 import API_LINK from "../../config/API";
 import { useSearchParams } from "react-router-dom";
+
+// COMPONENTS
+import ArchiveInquiryModal from "../../components/inquiriesComponents/inquiriesModals/ArchivedInquiryModal";
+import ViewMessage from "../../components/inquiriesComponents/inquiriesModals/ViewMessage";
+import ComposeModal from "../../components/inquiriesComponents/inquiriesModals/Compose";
+import InquiriesList from "../../components/inquiriesComponents/InquiriesList";
+
 
 const Inquiries = () => {
   const [selectedItems, setSelectedItems] = useState([]);
@@ -19,7 +24,6 @@ const Inquiries = () => {
   const brgy = searchParams.get("brgy");
   const [inquiries, setInquiries] = useState([]);
   const [inquiry, setInquiry] = useState([]);
-  const [isArchived, setIsArchived] = useState(false);
   const [sortOrder, setSortOrder] = useState("desc");
   const [sortColumn, setSortColumn] = useState(null);
 
@@ -30,8 +34,10 @@ const Inquiries = () => {
   useEffect(() => {
     const fetch = async () => {
       const response = await axios.get(
-        `${API_LINK}/inquiries/?id=${id}&brgy=${brgy}&archived=${isArchived}`
+        `${API_LINK}/inquiries/?id=${id}&brgy=${brgy}&archived=false`
       );
+
+      // console.log(response)
       if (response.status === 200) setInquiries(response.data);
       else setInquiries([]);
     };
@@ -104,58 +110,65 @@ const Inquiries = () => {
     "actions",
   ];
 
-  const DateFormat = (date) => {
-    const dateFormat = date === undefined ? "" : date.substr(0, 10);
-    return dateFormat;
-  };
-
-  const handleOnArchived = (e) => {
-    console.log(e.target.value)
-    if(e.target.value === true){
-      setIsArchived(true)
-    }else{
-      setIsArchived(false)
-    }
-  }
-
-  const handleView = (item) => {
-    setInquiry(item);
-  };
-
   return (
     <div className="mx-4 w-[calc(100vw]">
       <div>
         <div className="flex flex-row mt-5 sm:flex-col-reverse lg:flex-row w-full">
-          <div className="sm:mt-5 md:mt-4 lg:mt-0 bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-custom-green-button to-custom-green-header py-2 lg:py-4 px-5 md:px-10 lg:px-0 xl:px-10 sm:rounded-t-lg lg:rounded-t-[1.75rem]  w-full lg:w-2/5 xxl:h-[4rem] xxxl:h-[5rem]">
+          <Link
+            to={`/inquiries/?id=${id}&brgy=${brgy}`}
+            className="sm:mt-5 md:mt-4 lg:mt-0 bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-custom-green-button to-custom-green-header py-2 lg:py-4 px-5 md:px-10 lg:px-0 xl:px-10 sm:rounded-t-lg lg:rounded-t-[1.75rem]  w-full lg:w-2/5 xxl:h-[4rem] xxxl:h-[5rem]"
+          >
             <h1
               className="text-center sm:text-[15px] mx-auto font-bold md:text-xl lg:text-[1.2rem] xl:text-[1.5rem] xxl:text-[2.1rem] xxxl:text-4xl xxxl:mt-1 text-white"
               style={{ letterSpacing: "0.2em" }}
             >
               INQUIRIES
             </h1>
-          </div>
+          </Link>
           <div className="lg:w-3/5 flex flex-row justify-end items-center ">
             <div className="sm:w-full md:w-full lg:w-2/5 flex sm:flex-col md:flex-row md:justify-center md:items-center sm:space-y-2 md:space-y-0 md:space-x-2 ">
-              <div className="w-full rounded-lg ">
-                <div className="hs-tooltip inline-block w-full">
+              <div className="w-full rounded-lg h-full">
+                <div className="hs-tooltip inline-block w-full h-full">
                   <button
                     type="button"
-                    value={true}
-                    onClick={handleOnArchived}
-                    className="hs-tooltip-toggle justify-center sm:px-2 sm:p-2 md:px-5 md:p-3 rounded-lg bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-custom-green-button to-custom-green-header w-full text-white font-medium text-sm text-center inline-flex items-center"
+                    data-hs-overlay="#hs-modal-compose"
+                    className="hs-tooltip-toggle justify-center sm:px-2 sm:p-2 md:px-5 md:p-3 rounded-lg bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-custom-green-button to-custom-green-header w-full text-white font-medium text-sm text-center inline-flex items-center h-full"
                   >
-                    <FaArchive size={24} style={{ color: "#ffffff" }} />
+                    <FaPlus size={24} style={{ color: "#ffffff" }} />
                     <span className="sm:block md:hidden sm:pl-5">
-                      Archived Inquiries
+                      Compose
                     </span>
                     <span
                       className="sm:hidden md:block hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-50 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded-md shadow-sm "
                       role="tooltip"
                     >
-                      Archived Inquiries
+                      Compose
                     </span>
                   </button>
                 </div>
+              </div>
+              <div className="w-full rounded-lg ">
+                <Link
+                  to={`/archive/?id=${id}&brgy=${brgy}`}
+                >
+                  <div className="hs-tooltip inline-block w-full">
+                    <button
+                      type="button"
+                      className="hs-tooltip-toggle justify-center sm:px-2 sm:p-2 md:px-5 md:p-3 rounded-lg bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-custom-green-button to-custom-green-header w-full text-white font-medium text-sm text-center inline-flex items-center"
+                    >
+                      <FaArchive size={24} style={{ color: "#ffffff" }} />
+                      <span className="sm:block md:hidden sm:pl-5">
+                        Archived Inquiries
+                      </span>
+                      <span
+                        className="sm:hidden md:block hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-50 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded-md shadow-sm "
+                        role="tooltip"
+                      >
+                        Archived Inquiries
+                      </span>
+                    </button>
+                  </div>
+                </Link>
               </div>
             </div>
           </div>
@@ -329,120 +342,7 @@ const Inquiries = () => {
                 ))}
               </tr>
             </thead>
-            <tbody className="odd:bg-slate-100">
-              {inquiries.map((item, index) => (
-                <tr key={index} className="odd:bg-slate-100 text-center">
-                  <td className="px-6 py-3">
-                    <div className="flex justify-center items-center">
-                      <input
-                        type="checkbox"
-                        checked={selectedItems.includes(item._id)}
-                        value={item._id}
-                        onChange={checkboxHandler}
-                        id=""
-                      />
-                    </div>
-                  </td>
-                  <td className="px-6 py-3">
-                    <span className="text-xs sm:text-sm text-black line-clamp-2 ">
-                      {item.inq_id}
-                    </span>
-                  </td>
-                  <td className="px-6 py-3">
-                    <div className="flex justify-center items-center">
-                      <span className="text-xs sm:text-sm text-black  line-clamp-2 ">
-                        {item.name}
-                      </span>
-                    </div>
-                  </td>
-                  <td className="px-6 py-3">
-                    <div className="flex justify-center items-center">
-                      <span className="text-xs sm:text-sm text-black  line-clamp-2 ">
-                        {item.email}
-                      </span>
-                    </div>
-                  </td>
-                  <td className="px-6 py-3">
-                    <div className="flex justify-center items-center">
-                      <span className="text-xs sm:text-sm text-black line-clamp-2">
-                        {DateFormat(item.compose.date) || ""}
-                      </span>
-                    </div>
-                  </td>
-
-                  <td className="px-6 py-3">
-                    <div className="flex justify-center items-center">
-                      {item.isApproved === "Completed" && (
-                        <div className="flex w-full items-center justify-center bg-custom-green-button3 m-2 rounded-lg">
-                          <span className="text-xs sm:text-sm font-bold text-white p-3 mx-5">
-                            COMPLETED
-                          </span>
-                        </div>
-                      )}
-                      {item.isApproved === "Not Responded" && (
-                        <div className="flex w-full items-center justify-center bg-custom-red-button m-2 rounded-lg">
-                          <span className="text-xs sm:text-sm font-bold text-white p-3 mx-5">
-                            NOT RESPONDED
-                          </span>
-                        </div>
-                      )}
-                      {item.isApproved === "In Progress" && (
-                        <div className="flex w-full items-center justify-center bg-custom-amber m-2 rounded-lg">
-                          <span className="text-xs sm:text-sm font-bold text-white p-3 mx-5">
-                            IN PROGRESS
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  </td>
-
-                  <td className="px-6 py-3">
-                    <div className="flex justify-center space-x-1 sm:space-x-none">
-                      <div className="hs-tooltip inline-block">
-                        <button
-                          type="button"
-                          data-hs-overlay="#hs-modal-viewInquiries"
-                          onClick={() => handleView({ ...item })}
-                          className="hs-tooltip-toggle text-white bg-teal-800  font-medium text-xs px-2 py-2 inline-flex items-center rounded-lg"
-                        >
-                          <AiOutlineEye
-                            size={24}
-                            style={{ color: "#ffffff" }}
-                          />
-                        </button>
-                        <span
-                          className="sm:hidden md:block hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-20 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded-md shadow-sm "
-                          role="tooltip"
-                        >
-                          View Inquiry
-                        </span>
-                      </div>
-                      <div className="hs-tooltip inline-block">
-                        <button
-                          type="button"
-                          data-hs-overlay="#hs-modal-status"
-                          onClick={() =>
-                            handleStatus({
-                              id: item._id,
-                              status: item.isApproved,
-                            })
-                          }
-                          className="hs-tooltip-toggle text-white bg-yellow-800 font-medium text-xs px-2 py-2 inline-flex items-center rounded-lg"
-                        >
-                          <FiEdit size={24} style={{ color: "#ffffff" }} />
-                        </button>
-                        <span
-                          className="sm:hidden md:block hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-20 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded-md shadow-sm "
-                          role="tooltip"
-                        >
-                          Edit Status
-                        </span>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
+            <InquiriesList inquiries={inquiries} selectedItems={selectedItems} checkboxHandler={checkboxHandler} setInquiry={setInquiry} />
           </table>
         </div>
         <div className="md:py-4 md:px-4 bg-custom-green-header flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3">
@@ -462,7 +362,8 @@ const Inquiries = () => {
             renderOnZeroPageCount={null}
           /> */}
         </div>
-        <ArchiveModal selectedItems={selectedItems} />
+        <ComposeModal />
+        <ArchiveInquiryModal selectedItems={selectedItems} />
         <ViewMessage inquiry={inquiry} setInquiry={setInquiry} />
       </div>
     </div>

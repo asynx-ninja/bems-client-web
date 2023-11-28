@@ -1,7 +1,7 @@
 import React from "react";
 import bgmodal from "../../assets/image/header.png";
 
-function replyModal() {
+const replyModal = () => {
   return (
     <div>
       <div className="">
