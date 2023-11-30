@@ -47,8 +47,8 @@ const NewsCarousel = () => {
               <div
                 key={i}
                 className="w-full relative"
-              // to={{ pathname: `/services_form`, search: `id=${id}&brgy=${brgy}&obj=${btoa(JSON.stringify({ ...item }))}` }}
-              >
+                to={{ pathname: `/services_form`, search: `id=${id}&brgy=${brgy}&service_id=${item.service_id}` }}
+                >
                 <div className="relative">
                   <img
                     src={item.collections.banner.link}
@@ -69,7 +69,7 @@ const NewsCarousel = () => {
               <Link
                 key={i}
                 className="w-full relative"
-                to={{ pathname: `/events`, search: `id=${id}&brgy=${brgy}&event_id=${item._id}`}}
+                to={{ pathname: `/events/`, search: `id=${id}&brgy=${brgy}&event_id=${item._id}` }}
               >
                 <div className="relative">
                   <img

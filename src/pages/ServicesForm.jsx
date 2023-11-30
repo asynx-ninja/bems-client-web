@@ -6,6 +6,7 @@ import { useEffect, useState, React, useRef } from "react";
 import axios from "axios";
 import API_LINK from "../config/API";
 import defaultPFP from "../assets/sample-image/formPic.png";
+import defaultBanner from "../assets/image/1.png"
 import { FaCamera } from "react-icons/fa";
 
 // FORM DETAILS
@@ -18,8 +19,9 @@ const ServicesForm = () => {
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
   const brgy = searchParams.get("brgy");
-  const service = JSON.parse(atob(searchParams.get("obj")));
+  const service_id = searchParams.get("service_id");
   const [detail, setDetail] = useState({});
+  const [service, setService] = useState({})
   const [userData, setUserData] = useState({});
   const [emptyFields, setEmptyFields] = useState([]);
   const [empty, setEmpty] = useState(false);
@@ -35,28 +37,21 @@ const ServicesForm = () => {
 
     const fetchForms = async () => {
       try {
-        const response = await axios.get(
-          `${API_LINK}/forms/?brgy=${brgy}&service_id=${service.service_id}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        const getUser = await axios.get(`${API_LINK}/users/specific/${id}`);
+        const response = await axios.get(`${API_LINK}/forms/?brgy=${brgy}&service_id=${service_id}`);
         const filter = Object.assign({}, filterDetail(response.data)[0]);
-
         filter.form[0] = Object.fromEntries(
           Object.entries(filter.form[0]).filter(
             ([key, value]) => value.checked === true
           )
         );
 
-        setUserData(getUser.data[0]);
         setDetail(filter);
+        console.log(filter)
 
-        const newData = filter.form[0];
+        const getUser = await axios.get(`${API_LINK}/users/specific/${id}`);
+        setUserData(getUser.data[0]);
+
+        const newData = detail.form[0];
         newData["user_id"] = {
           ...newData["user_id"],
           value: getUser.data[0].user_id,
@@ -64,16 +59,31 @@ const ServicesForm = () => {
 
         setDetail((prev) => ({
           ...prev,
-          form: [newData, filter.form[1]],
+          form: [newData, detail.form[1]],
         }));
+
       } catch (error) {
         console.log(error);
       }
 
-      imageRef.current.src = defaultPFP;
+      // imageRef.current.src = defaultPFP;
     };
     fetchForms();
-  }, []);
+  }, [service_id]);
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const services = await axios.get(`${API_LINK}/services/?brgy=${brgy}&archived=false&approved=Approved`);
+        const filteredServices = Object.assign({}, services.data.filter((item) => item.service_id === service_id)[0])
+
+        setService(filteredServices)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchServices()
+  }, [brgy])
 
   const checkEmptyFields = () => {
     let arr = [];
@@ -379,7 +389,14 @@ const ServicesForm = () => {
     <div className="w-full flex flex-col sm:px-[15px] lg:px-[70px] pt-[40px] mb-[30px]">
       <img
         className=" rounded-[25px] h-[300px] object-cover"
-        src={service.collections.banner.link}
+        src={
+          service &&
+            service.collections &&
+            service.collections.banner &&
+            service.collections.banner.link !== undefined
+            ? service.collections.banner.link
+            : defaultBanner
+        }
         alt=""
       />
 
@@ -392,10 +409,7 @@ const ServicesForm = () => {
 
         <div>
           <Content
-            name={service.name}
-            details={service.details}
-            logo={service.collections.logo.link}
-            file={service.collections.file}
+            service={service}
           />
         </div>
       </div>
@@ -409,7 +423,7 @@ const ServicesForm = () => {
             Submit a request
           </Link>
           <Link
-            onClick={handleLinkClick}
+            to={`/services/?id=${id}&brgy=${brgy}`}
             className="flex items-center justify-center bg-custom-red sm:w-full md:w-[150px] h-[50px] sm:my-[20px] text-sm md:m-5 text-white font-medium rounded-lg hover:bg-gradient-to-r from-[#B90000] to-[#FF2828] transition duration-500 ease-in-out hover:text-custom-gold"
           >
             Back
@@ -533,7 +547,7 @@ const ServicesForm = () => {
                   </legend>
                   <div className="w-full px-6 py-3">
                     <label
-                      for="message"
+                      htmlFor="message"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
                       Purpose of this Request

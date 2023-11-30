@@ -40,9 +40,9 @@ const Breadcrumbs = ({ serviceTitle }) => {
             >
               <path
                 stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 d="m1 9 4-4-4-4"
               />
             </svg>
@@ -50,7 +50,7 @@ const Breadcrumbs = ({ serviceTitle }) => {
               to={`/services/?id=${id}&brgy=${brgy}`}
               className="ml-1 line-clamp-1 text:xs lg:text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white"
             >
-              Services Management
+              Services
             </Link>
           </div>
         </li>

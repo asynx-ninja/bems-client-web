@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { FiSearch } from "react-icons/fi";
 import { AiOutlineStop } from "react-icons/ai";
-import { FaArchive, FaPlus } from "react-icons/fa";
-import { FiEdit } from "react-icons/fi";
+import { FaPlus } from "react-icons/fa";
 import { BsPrinter } from "react-icons/bs";
 import { useState, useEffect } from "react";
 // import ReactPaginate from "react-paginate";
@@ -111,81 +111,49 @@ const Inquiries = () => {
   ];
 
   return (
-    <div className="mx-4 w-[calc(100vw]">
-      <div>
-        <div className="flex flex-row mt-5 sm:flex-col-reverse lg:flex-row w-full">
-          <Link
-            to={`/inquiries/?id=${id}&brgy=${brgy}`}
-            className="sm:mt-5 md:mt-4 lg:mt-0 bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-custom-green-button to-custom-green-header py-2 lg:py-4 px-5 md:px-10 lg:px-0 xl:px-10 sm:rounded-t-lg lg:rounded-t-[1.75rem]  w-full lg:w-2/5 xxl:h-[4rem] xxxl:h-[5rem]"
-          >
-            <h1
-              className="text-center sm:text-[15px] mx-auto font-bold md:text-xl lg:text-[1.2rem] xl:text-[1.5rem] xxl:text-[2.1rem] xxxl:text-4xl xxxl:mt-1 text-white"
-              style={{ letterSpacing: "0.2em" }}
+    <div className="flex flex-col h-full">
+      <div className="relative">
+        <img
+          className="h-[400px] w-full object-cover"
+          src="./../src/assets/image/1.png"
+          alt=""
+        />
+        <img
+          className="absolute inset-0 mx-auto my-auto w-[700px]"
+          src="./../src/assets/header/montalban-banner2.png"
+          alt=""
+        />
+      </div>
+      <div className="p-4 lg:p-10 border flex sm:flex-col lg:flex-row">
+        <div className="w-full lg:w-[30%] md:mr-[20px] bg-white rounded-lg">
+          <h2 className="text-[2rem] font-bold text-green-900 mb-6">INQUIRIES</h2>
+          <div className="mb-6">
+            <Link
+              to={`/inquiries/?id=${id}&brgy=${brgy}`}
+              className="py-2 px-4 rounded-lg font-bold lg:text-left text-center bg-green-900 text-white mb-4 transition ease-in-out delay-50 block"
             >
-              INQUIRIES
-            </h1>
-          </Link>
-          <div className="lg:w-3/5 flex flex-row justify-end items-center ">
-            <div className="sm:w-full md:w-full lg:w-2/5 flex sm:flex-col md:flex-row md:justify-center md:items-center sm:space-y-2 md:space-y-0 md:space-x-2 ">
-              <div className="w-full rounded-lg h-full">
-                <div className="hs-tooltip inline-block w-full h-full">
-                  <button
-                    type="button"
-                    data-hs-overlay="#hs-modal-compose"
-                    className="hs-tooltip-toggle justify-center sm:px-2 sm:p-2 md:px-5 md:p-3 rounded-lg bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-custom-green-button to-custom-green-header w-full text-white font-medium text-sm text-center inline-flex items-center h-full"
-                  >
-                    <FaPlus size={24} style={{ color: "#ffffff" }} />
-                    <span className="sm:block md:hidden sm:pl-5">
-                      Compose
-                    </span>
-                    <span
-                      className="sm:hidden md:block hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-50 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded-md shadow-sm "
-                      role="tooltip"
-                    >
-                      Compose
-                    </span>
-                  </button>
-                </div>
-              </div>
-              <div className="w-full rounded-lg ">
-                <Link
-                  to={`/archive/?id=${id}&brgy=${brgy}`}
-                >
-                  <div className="hs-tooltip inline-block w-full">
-                    <button
-                      type="button"
-                      className="hs-tooltip-toggle justify-center sm:px-2 sm:p-2 md:px-5 md:p-3 rounded-lg bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-custom-green-button to-custom-green-header w-full text-white font-medium text-sm text-center inline-flex items-center"
-                    >
-                      <FaArchive size={24} style={{ color: "#ffffff" }} />
-                      <span className="sm:block md:hidden sm:pl-5">
-                        Archived Inquiries
-                      </span>
-                      <span
-                        className="sm:hidden md:block hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-50 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded-md shadow-sm "
-                        role="tooltip"
-                      >
-                        Archived Inquiries
-                      </span>
-                    </button>
-                  </div>
-                </Link>
-              </div>
-            </div>
+              Inquiries
+            </Link>
+            <Link
+              to={`/archive/?id=${id}&brgy=${brgy}`}
+              className="py-2 px-4 rounded-lg font-bold lg:text-left text-center bg-[#d9d9d9] text-green-900 hover:bg-green-900 hover:text-white transition ease-in-out delay-50 block"
+            >
+              Archives
+            </Link>
           </div>
         </div>
-
-        <div className="py-2 px-2 bg-gray-400 border-0 border-t-2 border-white">
-          <div className="sm:flex-col-reverse md:flex-row flex justify-between w-full">
-            <div className="hs-dropdown relative inline-flex sm:[--placement:bottom] md:[--placement:bottom-left]">
+        <div className="w-full flex flex-col">
+          <div className="flex flex-col lg:flex-row justify-center">
+            {/* SORT */}
+            <div class="hs-dropdown relative inline-flex">
               <button
-                id="hs-dropdown"
+                id="hs-dropdown-basic"
                 type="button"
-                className="bg-custom-green-header sm:w-full md:w-full sm:mt-2 md:mt-0 text-white hs-dropdown-toggle py-1 px-5 inline-flex justify-center items-center gap-2 rounded-md  font-medium shadow-sm align-middle transition-all text-sm  "
+                class="hs-dropdown-toggle w-full lg:w-40 mb-5 lg:mb-0 py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border font-medium text-white shadow-sm align-middle bg-custom-green-table-header"
               >
                 SORT BY
                 <svg
-                  className={`hs-dropdown-open:rotate-${sortOrder === "asc" ? "180" : "0"
-                    } w-2.5 h-2.5 text-white`}
+                  class="hs-dropdown-open:rotate-180 w-2.5 h-2.5 text-white"
                   width="16"
                   height="16"
                   viewBox="0 0 16 16"
@@ -195,18 +163,18 @@ const Inquiries = () => {
                   <path
                     d="M2 5L8.16086 10.6869C8.35239 10.8637 8.64761 10.8637 8.83914 10.6869L15 5"
                     stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
+                    stroke-width="2"
+                    stroke-linecap="round"
                   />
                 </svg>
               </button>
               <ul
-                className="bg-custom-green-header border-2 border-[#ffb13c] hs-dropdown-menu w-72 transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden z-10  shadow-md rounded-lg p-2 "
+                className="bg-custom-green-header hs-dropdown-menu w-72 transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden z-10 shadow-md rounded-lg p-2 "
                 aria-labelledby="hs-dropdown"
               >
                 <li
                   onClick={() => handleSort("inquiries_id")}
-                  className="font-medium uppercase flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-white hover:bg-gradient-to-r from-[#253a7a] to-[#2645a6] hover:text-[#EFC586] focus:ring-2 focus:ring-blue-500 "
+                  className="font-medium uppercase flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-white hover:bg-gradient-to-r from-custom-green-button to-custom-green-header hover:text-[#EFC586] focus:ring-2 focus:ring-blue-500 "
                 >
                   SERVICE ID
                   {sortColumn === "inquiries_id" && (
@@ -221,7 +189,7 @@ const Inquiries = () => {
                 </li>
                 <li
                   onClick={() => handleSort("date")}
-                  className="font-medium uppercase flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-white hover:bg-gradient-to-r from-[#253a7a] to-[#2645a6] hover:text-[#EFC586] focus:ring-2 focus:ring-blue-500 "
+                  className="font-medium uppercase flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-white hover:bg-gradient-to-r from-custom-green-button to-custom-green-header hover:text-[#EFC586] focus:ring-2 focus:ring-blue-500 "
                 >
                   Date
                   {sortColumn === "date" && (
@@ -236,7 +204,7 @@ const Inquiries = () => {
                 </li>
                 <li
                   onClick={() => handleSort("isApproved")}
-                  className="font-medium uppercase flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-white hover:bg-gradient-to-r from-[#253a7a] to-[#2645a6] hover:text-[#EFC586] focus:ring-2 focus:ring-blue-500 "
+                  className="font-medium uppercase flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-white hover:bg-gradient-to-r from-custom-green-button to-custom-green-header hover:text-[#EFC586] focus:ring-2 focus:ring-blue-500 "
                 >
                   STATUS
                   {sortColumn === "isApproved" && (
@@ -251,57 +219,42 @@ const Inquiries = () => {
                 </li>
               </ul>
             </div>
-            <div className="sm:flex-col md:flex-row flex sm:w-full md:w-7/12">
-              <div className="flex flex-row w-full md:mr-2">
-                <button className=" bg-custom-green-header p-3 rounded-l-md">
-                  <div className="w-full overflow-hidden">
-                    <svg
-                      className="h-3.5 w-3.5 text-white"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      viewBox="0 0 16 16"
-                    >
-                      <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                    </svg>
+
+            <div className="flex sm:flex-col md:flex-row w-full h-auto">
+              {/* Search */}
+              <div className="relative lg:ml-5 w-full">
+                <form className="flex my-auto">
+                  <div className="relative w-full">
+                    <div className="flex flex-row sm:w-12/6 sm:h-[2.5rem]">
+                      <button
+                        type="submit"
+                        className="sm:px-5 py-3.5 px-8 my-auto text-sm font-medium text-white bg-custom-green-table-header rounded-l-lg border"
+                      >
+                        <FiSearch
+                          size={20} // You can adjust the size as needed
+                          style={{ color: "#ffffff" }}
+                        />
+                      </button>
+
+                      <input
+                        type="search"
+                        id="search-dropdown"
+                        className="block py-6 flex-grow z-10 text-sm text-gray-900 bg-gray-50 rounded-r-lg border-l-gray-50 border-l-2 border border-gray-300"
+                        placeholder="Search..."
+                        required
+                      />
+                    </div>
                   </div>
-                </button>
-                <label
-                  htmlFor="hs-table-with-pagination-search"
-                  className="sr-only"
-                >
-                  Search
-                </label>
-                <input
-                  type="text"
-                  name="hs-table-with-pagination-search"
-                  id="hs-table-with-pagination-search"
-                  className="sm:px-3 sm:py-1 md:px-3 md:py-1 block w-full text-black border-gray-200 rounded-r-md text-sm focus:border-blue-500 focus:ring-blue-500 "
-                  placeholder="Search for items"
-                />
+                </form>
               </div>
-              <div className="sm:mt-2 md:mt-0 flex w-full items-center justify-center space-x-2">
-                <div className="hs-tooltip inline-block w-full">
-                  <button
-                    type="button"
-                    data-hs-overlay="#hs-modal-archive"
-                    className="hs-tooltip-toggle sm:w-full md:w-full text-white rounded-md bg-custom-green-header font-medium text-xs sm:py-1 md:px-3 md:py-2 flex items-center justify-center"
-                  >
-                    <BsPrinter size={24} style={{ color: "#ffffff" }} />
-                    <span
-                      className="sm:hidden md:block hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-20 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded-md shadow-sm "
-                      role="tooltip"
-                    >
-                      Generate Report
-                    </span>
-                  </button>
-                </div>
-                <div className="hs-tooltip inline-block w-full">
+
+              <div className="sm:mt-[20px] sm:mx-auto md:mt-0 flex">
+                {/* ARCHIVE BUTTON */}
+                <div className="hs-tooltip inline-block mx-[10px] my-auto w-[50px]">
                   <button
                     type="button"
                     data-hs-overlay="#hs-modal-archiveInquiry"
-                    className="hs-tooltip-toggle sm:w-full md:w-full text-white rounded-md  bg-pink-800 font-medium text-xs sm:py-1 md:px-3 md:py-2 flex items-center justify-center"
+                    className="hs-tooltip-toggle w-[50px] h-[50px] text-white rounded-md  bg-pink-800 font-medium text-xs sm:py-1 md:px-3 md:py-2 flex items-center justify-center"
                   >
                     <AiOutlineStop size={24} style={{ color: "#ffffff" }} />
                     <span
@@ -312,60 +265,114 @@ const Inquiries = () => {
                     </span>
                   </button>
                 </div>
+
+                {/* COMPOSE BUTTON */}
+                <button
+                  type="button"
+                  data-hs-overlay="#hs-modal-compose"
+                  className="hs-tooltip-toggle flex justify-center items-center rounded-lg bg-custom-green-header text-white font-medium text-sm text-center w-[100px] h-[50px]"
+                >
+                  <FaPlus size={24} style={{ color: "#ffffff" }} />
+                  <span
+                    className="sm:hidden md:block hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-50 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded-md shadow-sm "
+                    role="tooltip"
+                  >
+                    Compose
+                  </span>
+                </button>
               </div>
+
             </div>
           </div>
-        </div>
 
-        <div className="overflow-y-auto sm:overflow-x-auto h-[calc(100vh_-_270px)] xxxl:h-[calc(100vh_-_286px)]">
-          <table className="w-full ">
-            <thead className="bg-custom-green-header sticky top-0">
-              <tr className="">
-                <th scope="col" className="px-6 py-4">
-                  <div className="flex justify-center items-center">
-                    <input
-                      type="checkbox"
-                      name=""
-                      onClick={checkAllHandler}
-                      id=""
-                    />
-                  </div>
-                </th>
-                {tableHeader.map((item, idx) => (
-                  <th
-                    scope="col"
-                    key={idx}
-                    className="px-6 py-3 text-center text-xs font-bold text-white uppercase"
-                  >
-                    {item}
+          {/* Table */}
+          <div className="overflow-x-auto sm:h-[380px] lg:h-[680px] xl:h-[700px] xxl:h-[700px] xxxl:h-[640px] border border-b-0 mt-5 rounded-t-xl">
+            <table className="w-full divide-y divide-gray-200 ">
+              {/* Table Headers */}
+              <thead className="bg-custom-green-table-header border">
+                <tr>
+                  <th scope="col" className="px-6 py-4">
+                    <div className="flex justify-center items-center">
+                      <input
+                        type="checkbox"
+                        name=""
+                        onClick={checkAllHandler}
+                        id=""
+                      />
+                    </div>
                   </th>
-                ))}
-              </tr>
-            </thead>
-            <InquiriesList inquiries={inquiries} selectedItems={selectedItems} checkboxHandler={checkboxHandler} setInquiry={setInquiry} />
-          </table>
+                  {
+                    tableHeader.map((item, i) => (
+                      <th
+                        scope="col"
+                        key={i}
+                        className="px-6 py-3 text-center text-xs font-bold text-white uppercase"
+                      >
+                        {item}
+                      </th>
+                    ))
+                  }
+                </tr>
+              </thead>
+
+              {/* Table Body */}
+              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                {
+                  inquiries.length === 0 ?
+                    <tr>
+                      <th className="pt-[50px]" rowSpan={5} colSpan={7}>
+                        No Records Shown
+                      </th>
+                    </tr>
+                    :
+                    <InquiriesList inquiries={inquiries} selectedItems={selectedItems} checkboxHandler={checkboxHandler} setInquiry={setInquiry} />
+                }
+              </tbody>
+            </table>
+          </div>
+
+          <div class="py-1 px-4 border rounded-b-lg bg-custom-green-table-header">
+            <nav class="flex items-center space-x-2">
+              <a
+                class="text-gray-400 hover:text-blue-600 p-4 inline-flex items-center gap-2 font-medium rounded-md"
+                href="#"
+              >
+                <span aria-hidden="true">«</span>
+                <span class="sr-only">Previous</span>
+              </a>
+              <a
+                class="w-10 h-10 bg-custom-amber text-white p-4 inline-flex items-center text-sm font-medium rounded-full"
+                href="#"
+                aria-current="page"
+              >
+                1
+              </a>
+              <a
+                class="w-10 h-10 text-gray-400 hover:text-blue-600 p-4 inline-flex items-center text-sm font-medium rounded-full"
+                href="#"
+              >
+                2
+              </a>
+              <a
+                class="w-10 h-10 text-gray-400 hover:text-blue-600 p-4 inline-flex items-center text-sm font-medium rounded-full"
+                href="#"
+              >
+                3
+              </a>
+              <a
+                class="text-gray-400 hover:text-blue-600 p-4 inline-flex items-center gap-2 font-medium rounded-md"
+                href="#"
+              >
+                <span class="sr-only">Next</span>
+                <span aria-hidden="true">»</span>
+              </a>
+            </nav>
+          </div>
         </div>
-        <div className="md:py-4 md:px-4 bg-custom-green-header flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3">
-          <span className="font-medium text-white sm:text-xs text-sm">
-            Showing 1 out of 15 pages
-          </span>
-          {/* <ReactPaginate
-            breakLabel="..."
-            nextLabel=">>"
-            onPageChange={() => {}}
-            pageRangeDisplayed={3}
-            pageCount={15}
-            previousLabel="<<"
-            className="flex space-x-3 text-white font-bold "
-            activeClassName="text-yellow-500"
-            disabledLinkClassName="text-gray-300"
-            renderOnZeroPageCount={null}
-          /> */}
-        </div>
-        <ComposeModal />
-        <ArchiveInquiryModal selectedItems={selectedItems} />
-        <ViewMessage inquiry={inquiry} setInquiry={setInquiry} />
       </div>
+      <ComposeModal />
+      <ArchiveInquiryModal selectedItems={selectedItems} />
+      <ViewMessage inquiry={inquiry} setInquiry={setInquiry} />
     </div>
   );
 };

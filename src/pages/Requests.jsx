@@ -1,13 +1,116 @@
 import React from "react";
-import { useState } from "react";
+import { Link } from "react-router-dom";
 import { FiSearch } from "react-icons/fi";
-import ViewFeedbackModal from "../components/requests/ViewFeedbackModal";
-import EditRequestModal from "../components/requests/EditRequestModal";
-import { AiOutlineDelete } from "react-icons/ai";
-import DeleteRequestModal from "../components/requests/DeleteRequestModal";
+import { useState, useEffect } from "react";
+// import ReactPaginate from "react-paginate";
+import axios from "axios";
+import API_LINK from "../config/API";
+import { useSearchParams } from "react-router-dom";
+
+// COMPONENTS
+import ViewRequestModal from "../components/requests/modals/ViewRequestModal";
+import RequestList from "../components/requests/RequestList";
 
 const Requests = () => {
-  const [status, setStatus] = useState("PENDING");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const id = searchParams.get("id");
+  const brgy = searchParams.get("brgy");
+  const [request, setRequest] = useState([])
+  const [viewRequest, setViewRequest] = useState([])
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [sortOrder, setSortOrder] = useState("desc");
+  const [sortColumn, setSortColumn] = useState(null);
+
+  useEffect(() => {
+    document.title = "Service Request | Barangay E-Services Management";
+  }, []);
+
+  useEffect(() => {
+    const fetch = async () => {
+      const response = await axios.get(
+        `${API_LINK}/requests/?brgy=${brgy}&archived=false`
+      );
+
+      const getUser = await axios.get(`${API_LINK}/users/specific/${id}`);
+
+      if (response.status === 200) {
+        setRequest(Object.fromEntries(
+          Object.entries(response.data).filter(
+            ([idx, item]) => item.form[0].user_id.value === getUser.data[0].user_id,
+          )
+        ))
+      }
+      else setRequest([]);
+    };
+
+    fetch();
+  }, []);
+
+  // console.log(request)
+
+  const handleSort = (sortBy) => {
+    const newSortOrder = sortOrder === "asc" ? "desc" : "asc";
+    setSortOrder(newSortOrder);
+    setSortColumn(sortBy);
+
+    const sortedData = request.slice().sort((a, b) => {
+      if (sortBy === "service_id") {
+        return newSortOrder === "asc"
+          ? a.service_id.localeCompare(b.service_id)
+          : b.service_id.localeCompare(a.service_id);
+      } else if (sortBy === "lastName") {
+        return newSortOrder === "asc"
+          ? a.lastName.localeCompare(b.lastName)
+          : b.lastName.localeCompare(a.lastName);
+      } else if (sortBy === "isApproved") {
+        const order = { Completed: 1, "In Progress": 2, "Not Responded": 3 };
+        return newSortOrder === "asc"
+          ? order[a.isApproved] - order[b.isApproved]
+          : order[b.isApproved] - order[a.isApproved];
+      }
+
+      return 0;
+    });
+
+    setInquiries(sortedData);
+  };
+
+  // console.log(viewRequest);
+
+  const checkboxHandler = (e) => {
+    let isSelected = e.target.checked;
+    let value = e.target.value;
+
+    if (isSelected) {
+      setSelectedItems([...selectedItems, value]);
+    } else {
+      setSelectedItems((prevData) => {
+        return prevData.filter((id) => {
+          return id !== value;
+        });
+      });
+    }
+  };
+
+  const checkAllHandler = () => {
+    if (inquiries.length === selectedItems.length) {
+      setSelectedItems([]);
+    } else {
+      const postIds = inquiries.map((item) => {
+        return item._id;
+      });
+
+      setSelectedItems(postIds);
+    }
+  };
+
+  const tableHeader = [
+    "Request id",
+    "name",
+    "date",
+    "status",
+    "actions",
+  ];
 
   return (
     <div className="flex flex-col">
@@ -50,36 +153,56 @@ const Requests = () => {
                   />
                 </svg>
               </button>
-
-              <div
-                class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 w-full lg:w-56 hidden z-20 mt-2 min-w-[15rem] bg-white shadow-md rounded-lg p-2"
-                aria-labelledby="hs-dropdown-basic"
+              <ul
+                className="bg-custom-green-header hs-dropdown-menu w-72 transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden z-10 shadow-md rounded-lg p-2 "
+                aria-labelledby="hs-dropdown"
               >
-                <a
-                  class="flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 "
-                  href="#"
+                <li
+                  onClick={() => handleSort("inquiries_id")}
+                  className="font-medium uppercase flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-white hover:bg-gradient-to-r from-custom-green-button to-custom-green-header hover:text-[#EFC586] focus:ring-2 focus:ring-blue-500 "
                 >
-                  Request ID
-                </a>
-                <a
-                  class="flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 "
-                  href="#"
+                  SERVICE ID
+                  {sortColumn === "inquiries_id" && (
+                    <span className="ml-auto">
+                      {sortOrder === "asc" ? (
+                        <span>DESC &darr;</span>
+                      ) : (
+                        <span>ASC &uarr;</span>
+                      )}
+                    </span>
+                  )}
+                </li>
+                <li
+                  onClick={() => handleSort("date")}
+                  className="font-medium uppercase flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-white hover:bg-gradient-to-r from-custom-green-button to-custom-green-header hover:text-[#EFC586] focus:ring-2 focus:ring-blue-500 "
                 >
-                  Name
-                </a>
-                <a
-                  class="flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100"
-                  href="#"
+                  Date
+                  {sortColumn === "date" && (
+                    <span className="ml-auto">
+                      {sortOrder === "asc" ? (
+                        <span>OLD TO LATEST &darr;</span>
+                      ) : (
+                        <span>LATEST TO OLD &uarr;</span>
+                      )}
+                    </span>
+                  )}
+                </li>
+                <li
+                  onClick={() => handleSort("isApproved")}
+                  className="font-medium uppercase flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-white hover:bg-gradient-to-r from-custom-green-button to-custom-green-header hover:text-[#EFC586] focus:ring-2 focus:ring-blue-500 "
                 >
-                  Request Type
-                </a>
-                <a
-                  class="flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100"
-                  href="#"
-                >
-                  Request Date
-                </a>
-              </div>
+                  STATUS
+                  {sortColumn === "isApproved" && (
+                    <span className="ml-auto">
+                      {sortOrder === "asc" ? (
+                        <span>DESC &darr;</span>
+                      ) : (
+                        <span>ASC &uarr;</span>
+                      )}
+                    </span>
+                  )}
+                </li>
+              </ul>
             </div>
 
             {/* Search */}
@@ -108,14 +231,6 @@ const Requests = () => {
                 </div>
               </form>
             </div>
-
-            <div>
-              <button
-                className='w-full lg:w-40 mb-5 lg:mb-0 py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border font-medium text-white shadow-sm align-middle bg-custom-green-table-header ml-[20px]'
-              >
-                Print Records
-              </button>
-            </div>
           </div>
 
           {/* Table */}
@@ -124,336 +239,42 @@ const Requests = () => {
               {/* Table Headers */}
               <thead className="bg-custom-green-table-header border">
                 <tr>
-                  {/* Service Name */}
-                  <th
-                    scope="col"
-                    className="px-2 py-2 sm:px-6 sm:py-3 text-left border"
-                  >
-                    <div className="flex items-center">
-                      <span className="text-sm sm:text-md font-semibold uppercase tracking-wide text-white">
-                        Request ID
-                      </span>
+                  <th scope="col" className="px-6 py-4">
+                    <div className="flex justify-center items-center">
+                      <input
+                        type="checkbox"
+                        name=""
+                        onClick={checkAllHandler}
+                        id=""
+                      />
                     </div>
                   </th>
-
-                  {/* Details */}
-                  <th
-                    scope="col"
-                    className="px-2 py-2 sm:px-6 sm:py-3 text-left border"
-                  >
-                    <div className="flex items-center">
-                      <span className="text-sm sm:text-md font-semibold uppercase tracking-wide text-white">
-                        Full Name
-                      </span>
-                    </div>
-                  </th>
-
-
-
-                  {/* Type of Service */}
-                  <th
-                    scope="col"
-                    className="px-2 py-2 sm:px-6 sm:py-3 text-left border"
-                  >
-                    <div className="flex items-center">
-                      <span className="text-sm sm:text-md font-semibold uppercase tracking-wide text-white mx-auto">
-                        Request Type
-                      </span>
-                    </div>
-                  </th>
-
-                  {/* Date */}
-                  <th
-                    scope="col"
-                    className="px-2 py-2 sm:px-6 sm:py-3 text-left border"
-                  >
-                    <div className="flex items-center">
-                      <span className="text-sm sm:text-md font-semibold uppercase tracking-wide text-white mx-auto">
-                        Request Date
-                      </span>
-                    </div>
-                  </th>
-
-                  {/* Status */}
-                  <th
-                    scope="col"
-                    className="px-2 py-2 sm:px-6 sm:py-3 text-left border"
-                  >
-                    <div className="flex items-center">
-                      <span className="text-sm sm:text-md font-semibold uppercase tracking-wide text-white mx-auto">
-                        Status
-                      </span>
-                    </div>
-                  </th>
-
-                  {/* Actions */}
-                  <th
-                    scope="col"
-                    className="px-2 py-2 sm:px-6 sm:py-3 text-left border"
-                  >
-                    <div className="flex items-center">
-                      <span className="text-sm sm:text-md font-semibold uppercase tracking-wide text-white mx-auto">
-                        Actions
-                      </span>
-                    </div>
-                  </th>
-
-                  {/* Status */}
-                  <th
-                    scope="col"
-                    className="px-2 py-2 sm:px-6 sm:py-3 text-left border"
-                  >
-                    <div className="flex items-center">
-                      <span className="text-sm sm:text-md font-semibold uppercase tracking-wide text-white mx-auto">
-                        Feedback
-                      </span>
-                    </div>
-                  </th>
+                  {
+                    tableHeader.map((item, i) => (
+                      <th
+                        scope="col"
+                        key={i}
+                        className="px-6 py-3 text-center text-xs font-bold text-white uppercase"
+                      >
+                        {item}
+                      </th>
+                    ))
+                  }
                 </tr>
               </thead>
 
               {/* Table Body */}
               <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                {/* Datas */}
-                {Array(3)
-                  .fill("")
-                  .map((_, idx) => (
-                    <tr className="hover-bg-gray-50 border">
-                      {/* Service Name */}
-                      <td className="w-[15%] sm:w-1/5 whitespace-nowrap border">
-                        <div className="px-2 sm:px-6 py-2">
-                          <span className="text-xs sm:text-lg text-black mx-auto">
-                            1
-                          </span>
-                        </div>
-                      </td>
-
-                      {/* Details */}
-                      <td className="w-[15%] sm:w-3/5 border">
-                        <div className="px-2 sm:px-6 py-2">
-                          <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 lg:h-10 overflow-hidden line-clamp-3">
-                            Batallones, Rimel John V.
-                          </span>
-                        </div>
-                      </td>
-
-                      {/* Service Type */}
-                      <td className="px-2 py-2 sm:px-3 sm:py-3 w-[15%] sm:w-1/5 whitespace-nowrap border">
-                        <div className="flex items-center justify-center">
-                          <span className="text-xs sm:text-sm text-black">
-                            Certificate of Indigency
-                          </span>
-                        </div>
-                      </td>
-
-                      {/* Date */}
-                      <td className="px-2 py-2 sm:px-3 sm:py-3 w-[15%] sm:w-1/5 whitespace-nowrap border">
-                        <div className="flex items-center justify-center">
-                          <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mx-5">
-                            09 / 23 / 2023
-                          </span>
-                        </div>
-                      </td>
-
-                      {/* Status */}
-                      <td className="px-2 py-2 sm:px-3 sm:py-3 w-[15%] sm:w-1/5 whitespace-nowrap border">
-                        <div className="flex items-center justify-center bg-custom-green-button2 m-2">
-                          <span className="text-xs sm:text-sm text-white p-3 mx-5">
-                            APPROVED
-                          </span>
-                        </div>
-                      </td>
-
-                      {/* Action */}
-                      <td className="px-2 py-2 sm:px-3 sm:py-3 w-[15%] sm:w-1/5 whitespace-nowrap border">
-                        {/* Action Buttons */}
-                        <div className="flex justify-center space-x-none">
-                          {/* View */}
-                          <EditRequestModal />
-                          <button
-                            type="button"
-                            className="text-white w-full justify-center bg-custom-red-button font-medium rounded-full text-sm m-2 py-2 px-10 text-center inline-flex items-center mr-2"
-                            style={{ margin: "10px 0px", padding: "10px 20px" }}
-                            data-hs-overlay="#hs-delete-request-modal"
-                          >
-                            <AiOutlineDelete
-                              size={24}
-                              style={{ color: "#ffffff" }}
-                            />
-                          </button>
-                        </div>
-                      </td>
-
-                      {/* Action */}
-                      <td className="px-2 py-2 sm:px-3 sm:py-3 w-[15%] sm:w-1/5 whitespace-nowrap border">
-                        {/* Action Buttons */}
-                        <div className="flex justify-center space-x-1 sm:space-x-none">
-                          {/* View */}
-                          <ViewFeedbackModal />
-                        </div>
-                      </td>
+                {
+                  JSON.stringify(request) === '{}' ?
+                    <tr>
+                      <th className="pt-[50px]" rowSpan={5} colSpan={6}>
+                        No Records Shown
+                      </th>
                     </tr>
-                  ))}
-
-                {Array(3)
-                  .fill("")
-                  .map((_, idx) => (
-                    <tr className="bg-white hover-bg-gray-50 border">
-                      {/* Service Name */}
-                      <td className="w-[15%] sm:w-1/5 whitespace-nowrap border">
-                        <div className="px-2 sm:px-6 py-2">
-                          <span className="text-xs sm:text-lg text-black mx-auto">
-                            2
-                          </span>
-                        </div>
-                      </td>
-
-                      {/* Details */}
-                      <td className="w-[15%] sm:w-3/5 border">
-                        <div className="px-2 sm:px-6 py-2">
-                          <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 lg:h-10 overflow-hidden line-clamp-3">
-                            Obsequio, Russell A.
-                          </span>
-                        </div>
-                      </td>
-
-                      {/* Service Type */}
-                      <td className="px-2 py-2 sm:px-3 sm:py-3 w-[15%] sm:w-1/5 whitespace-nowrap border">
-                        <div className="flex items-center justify-center">
-                          <span className="text-xs sm:text-sm text-black">
-                            Business Permit
-                          </span>
-                        </div>
-                      </td>
-
-                      {/* Date */}
-                      <td className="px-2 py-2 sm:px-3 sm:py-3 w-[15%] sm:w-1/5 whitespace-nowrap border">
-                        <div className="flex items-center justify-center">
-                          <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mx-5">
-                            09 / 23 / 2023
-                          </span>
-                        </div>
-                      </td>
-
-                      {/* Status */}
-                      <td className="px-2 py-2 sm:px-3 sm:py-3 w-[20%] sm:w-1/5 whitespace-nowrap border">
-                        <div className="flex items-center justify-center bg-custom-red-button m-2">
-                          <span className="text-xs sm:text-sm text-white p-3 mx-5">
-                            REJECTED
-                          </span>
-                        </div>
-                      </td>
-
-                      {/* Action */}
-                      <td className="px-2 py-2 sm:px-3 sm:py-3 w-[15%] sm:w-1/5 whitespace-nowrap border">
-                        {/* Action Buttons */}
-                        <div className="flex justify-center space-x-none">
-                          {/* View */}
-                          <EditRequestModal />
-                          <button
-                            type="button"
-                            className="text-white w-full justify-center bg-custom-red-button font-medium rounded-full text-sm m-2 py-2 px-10 text-center inline-flex items-center mr-2"
-                            style={{ margin: "10px 0px", padding: "10px 20px" }}
-                            data-hs-overlay="#hs-delete-request-modal"
-                          >
-                            <AiOutlineDelete
-                              size={24}
-                              style={{ color: "#ffffff" }}
-                            />
-                          </button>
-                        </div>
-                      </td>
-
-                      {/* Feedback */}
-                      <td className="px-2 py-2 sm:px-3 sm:py-3 w-[15%] sm:w-1/5 whitespace-nowrap border">
-                        {/* Feedback Buttons */}
-                        <div className="flex justify-center space-x-1 sm:space-x-none">
-                          {/* View */}
-                          <ViewFeedbackModal />
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-
-                {Array(3)
-                  .fill("")
-                  .map((_, idx) => (
-                    <tr className="bg-white hover-bg-gray-50 border">
-                      {/* Service Name */}
-                      <td className="w-[15%] sm:w-1/5 whitespace-nowrap border">
-                        <div className="px-2 sm:px-6 py-2">
-                          <span className="text-xs sm:text-lg text-black mx-auto">
-                            3
-                          </span>
-                        </div>
-                      </td>
-
-                      {/* Details */}
-                      <td className="w-[15%] sm:w-3/5 border">
-                        <div className="px-2 sm:px-6 py-2">
-                          <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 lg:h-10 overflow-hidden line-clamp-3">
-                            Nuguid, Andrei V.
-                          </span>
-                        </div>
-                      </td>
-
-                      {/* Service Type */}
-                      <td className="px-2 py-2 sm:px-3 sm:py-3 w-[15%] sm:w-1/5 whitespace-nowrap border">
-                        <div className="flex items-center justify-center">
-                          <span className="text-xs sm:text-sm text-black">
-                            Cedula
-                          </span>
-                        </div>
-                      </td>
-
-                      {/* Date */}
-                      <td className="px-2 py-2 sm:px-3 sm:py-3 w-[15%] sm:w-1/5 whitespace-nowrap border">
-                        <div className="flex items-center justify-center">
-                          <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mx-5">
-                            09 / 23 / 2023
-                          </span>
-                        </div>
-                      </td>
-
-                      {/* Status */}
-                      <td className="px-2 py-2 sm:px-3 sm:py-3 w-[20%] sm:w-1/5 whitespace-nowrap border">
-                        <div className="flex items-center justify-center bg-custom-amber m-2">
-                          <span className="text-xs sm:text-sm text-white p-3 mx-5">
-                            {status}
-                          </span>
-                        </div>
-                      </td>
-
-                      {/* Action */}
-                      <td className="px-2 py-2 sm:px-3 sm:py-3 w-[15%] sm:w-1/5 whitespace-nowrap border">
-                        {/* Action Buttons */}
-                        <div className="flex justify-center space-x-none">
-                          {/* View */}
-                          <EditRequestModal />
-                          <button
-                            type="button"
-                            className="text-white w-full justify-center bg-custom-red-button font-medium rounded-full text-sm m-2 py-2 px-10 text-center inline-flex items-center mr-2"
-                            style={{ margin: "10px 0px", padding: "10px 20px" }}
-                            data-hs-overlay="#hs-delete-request-modal"
-                          >
-                            <AiOutlineDelete
-                              size={24}
-                              style={{ color: "#ffffff" }}
-                            />
-                          </button>
-                        </div>
-                      </td>
-
-                      {/* Feedback */}
-                      <td className="px-2 py-2 sm:px-3 sm:py-3 w-[15%] sm:w-1/5 whitespace-nowrap border">
-                        {/* Feedback Buttons */}
-                        <div className="flex justify-center space-x-1 sm:space-x-none">
-                          {/* View */}
-                          <ViewFeedbackModal />
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                    :
+                    <RequestList request={request} selectedItems={selectedItems} checkboxHandler={checkAllHandler} setViewRequest={setViewRequest} />
+                }
               </tbody>
             </table>
           </div>
@@ -497,7 +318,7 @@ const Requests = () => {
           </div>
         </div>
       </div>
-      <DeleteRequestModal />
+      <ViewRequestModal viewRequest={viewRequest} />
     </div>
   );
 };

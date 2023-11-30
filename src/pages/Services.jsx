@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import NewsCarousel from "../components/dashboard/NewsCarousel";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import API_LINK from "../config/API";
 
@@ -13,21 +13,24 @@ const Services = () => {
 
   useEffect(() => {
     const fetchServices = async () => {
-      const response = await axios.get(`${API_LINK}/services/?brgy=${brgy}&archived=false`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      try {
+        const response = await axios.get(`${API_LINK}/services/?brgy=${brgy}&archived=false&approved=Approved`);
 
-      setFilter(response.data)
-      setFilterType(response.data)
+        console.log(response.data)
+
+        setFilter(response.data)
+        setFilterType(response.data)
+      } catch (error) {
+        console.log(error)
+      }
     };
-
     fetchServices();
   }, [brgy]);
 
+  console.log(filter)
+
   const handleOnFilter = (e) => {
-    e.target.value === "all" ? setFilterType(filter) 
+    e.target.value === "all" ? setFilterType(filter)
       : setFilterType(filter.filter((service) => service.type === e.target.value))
   }
 
@@ -65,11 +68,10 @@ const Services = () => {
         </select>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-8 p-4 w-full max-w-7xl">
-        {filterType.map((item, index) => (
+        {filterType.map((item, i) => (
           <Link
-            to={{ pathname: `/services_form`, search: `id=${id}&brgy=${brgy}&obj=${btoa(JSON.stringify({ ...item }))}` }}
-            // to={`/services_form/?id=${id}&brgy=${brgy}&service=${btoa(JSON.stringify({...service}))}`}
-            key={index}
+            key={i}
+            to={{ pathname: `/services_form`, search: `id=${id}&brgy=${brgy}&service_id=${item.service_id}` }}
           >
             <div className="group relative rounded-lg shadow-lg overflow-hidden transform transition duration-500 ease-in-out hover:scale-105">
               <img
@@ -81,7 +83,7 @@ const Services = () => {
                 <h3 className="text-sm lg:text-xl font-bold text-gray-700 group-hover:text-green-700 transition duration-500">
                   {item.name}
                 </h3>
-                <p className="text-gray-700 group-hover:text-green-600 text-xs lg:text-sm transition duration-500">
+                <p className="text-gray-700 group-hover:text-green-600 text-xs lg:text-sm transition duration-500 line-clamp-4">
                   {item.details}
                 </p>
               </div>
