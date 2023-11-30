@@ -169,7 +169,7 @@ const Header = () => {
                 aria-labelledby="hs-dropdown-profile"
               >
                 <Link
-                  to="/inquiries"
+                  to={`/inquiries/?id=${id}&brgy=${brgy}`}
                   onClick={() => {
                     window.innerWidth >= 320 && window.innerWidth <= 1023
                       ? document

@@ -223,7 +223,7 @@ const Requests = () => {
                     <input
                       type="search"
                       id="search-dropdown"
-                      className="block py-6 flex-grow z-10 text-sm text-gray-900 bg-gray-50 rounded-r-lg border-l-gray-50 border-l-2 border border-gray-300"
+                      className="block py-6 flex-grow z-1 text-sm text-gray-900 bg-gray-50 rounded-r-lg border-l-gray-50 border-l-2 border border-gray-300"
                       placeholder="Search..."
                       required
                     />
@@ -234,7 +234,7 @@ const Requests = () => {
           </div>
 
           {/* Table */}
-          <div className="overflow-x-auto  lg:h-[680px] xl:h-[700px] xxl:h-[700px] xxxl:h-[640px] border border-b-0 mt-5 rounded-t-xl">
+          <div className="overflow-x-auto sm:h-[380px] lg:h-[680px] xl:h-[700px] xxl:h-[700px] xxxl:h-[640px] border border-b-0 mt-5 rounded-t-xl">
             <table className="w-full divide-y divide-gray-200 ">
               {/* Table Headers */}
               <thead className="bg-custom-green-table-header border">

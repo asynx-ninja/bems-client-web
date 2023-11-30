@@ -163,8 +163,8 @@ const Inquiries = () => {
                   <path
                     d="M2 5L8.16086 10.6869C8.35239 10.8637 8.64761 10.8637 8.83914 10.6869L15 5"
                     stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
+                    strokeWidth="2"
+                    strokeLinecap="round"
                   />
                 </svg>
               </button>
@@ -239,7 +239,7 @@ const Inquiries = () => {
                       <input
                         type="search"
                         id="search-dropdown"
-                        className="block py-6 flex-grow z-10 text-sm text-gray-900 bg-gray-50 rounded-r-lg border-l-gray-50 border-l-2 border border-gray-300"
+                        className="block py-6 flex-grow z-1 text-sm text-gray-900 bg-gray-50 rounded-r-lg border-l-gray-50 border-l-2 border border-gray-300"
                         placeholder="Search..."
                         required
                       />
@@ -316,7 +316,6 @@ const Inquiries = () => {
               </thead>
 
               {/* Table Body */}
-              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                 {
                   inquiries.length === 0 ?
                     <tr>
@@ -324,10 +323,9 @@ const Inquiries = () => {
                         No Records Shown
                       </th>
                     </tr>
-                    :
-                    <InquiriesList inquiries={inquiries} selectedItems={selectedItems} checkboxHandler={checkboxHandler} setInquiry={setInquiry} />
+                    : null
                 }
-              </tbody>
+                <InquiriesList inquiries={inquiries} selectedItems={selectedItems} checkboxHandler={checkboxHandler} setInquiry={setInquiry} />
             </table>
           </div>
 

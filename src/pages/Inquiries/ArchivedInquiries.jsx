@@ -236,7 +236,7 @@ const ArchivedInquiries = () => {
                                             <input
                                                 type="search"
                                                 id="search-dropdown"
-                                                className="block py-6 flex-grow z-10 text-sm text-gray-900 bg-gray-50 rounded-r-lg border-l-gray-50 border-l-2 border border-gray-300"
+                                                className="block py-6 flex-grow z-1 text-sm text-gray-900 bg-gray-50 rounded-r-lg border-l-gray-50 border-l-2 border border-gray-300"
                                                 placeholder="Search..."
                                                 required
                                             />

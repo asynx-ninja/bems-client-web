@@ -15,7 +15,7 @@ const NewsCarousel = () => {
 
   useEffect(() => {
     const fetchNews = async () => {
-      const response = await axios.get(`${API_LINK}/services/?brgy=${brgy}&archived=false`, {
+      const response = await axios.get(`${API_LINK}/services/?brgy=${brgy}&archived=false&approved=Approved`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -42,26 +42,24 @@ const NewsCarousel = () => {
         showThumbs={false}
       >
         {
-          page === "services" ?
-            services.map((item, i) => (
-              <div
-                key={i}
-                className="w-full relative"
-                to={{ pathname: `/services_form`, search: `id=${id}&brgy=${brgy}&service_id=${item.service_id}` }}
-                >
-                <div className="relative">
-                  <img
-                    src={item.collections.banner.link}
-                    alt="Service banner"
-                    className="w-full h-[300px] object-cover md:h-96 md:object-cover md:w-full"
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center bg-black opacity-0 transition-opacity duration-300 hover:opacity-50">
-                    <p className="text-white font-bold text-center">{item.name}</p>
-                  </div>
+          services.map((item, i) => (
+            <div
+              key={i}
+              className="w-full relative"
+              to={{ pathname: `/services_form`, search: `id=${id}&brgy=${brgy}&service_id=${item.service_id}` }}
+            >
+              <div className="relative">
+                <img
+                  src={item.collections.banner.link}
+                  alt="Service banner"
+                  className="w-full h-[300px] object-cover md:h-96 md:object-cover md:w-full"
+                />
+                <div className="absolute inset-0 flex items-center justify-center bg-black opacity-0 transition-opacity duration-300 hover:opacity-50">
+                  <p className="text-white font-bold text-center">{item.name}</p>
                 </div>
               </div>
-            ))
-            : null
+            </div>
+          ))
         }
         {
           page !== "services" ?
