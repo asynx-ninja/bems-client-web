@@ -1,16 +1,15 @@
 import React from "react";
 import { FaCalendarAlt } from "react-icons/fa";
+import { useRef, useEffect } from "react";
 
 //COMPONENTS
 import ReservationModal from "./ReservationModal";
 
 const Content = ({ announcement }) => {
-
-
   const dateFormat = (date) => {
-    const newFormat = date === undefined ? "" : date.substr(0, 10)
+    const newFormat = date === undefined ? "" : date.substr(0, 10);
     return newFormat;
-  }
+  };
 
   // console.log(event)
 
@@ -35,13 +34,13 @@ const Content = ({ announcement }) => {
             Reserve your Slots!
           </button>
         </div>
-
       </div>
-
 
       {/* DESCRIPTION */}
       <div className="flex border-b-[3px] border-gray-300 mb-[20px] pb-[20px] w-[90%] mx-auto justify-between sm:flex-col lg:flex-row gap-5">
-        <p className="sm:w-full md:w-[60%]">{announcement.details}</p>
+        <p className="sm:w-full md:w-[60%] whitespace-pre-wrap border-none">
+          {announcement.details}
+        </p>
 
         <img
           className="w-[400px] h-[400px] sm:mx-auto lg:mx-0 object-cover rounded-[25px]"
@@ -49,7 +48,10 @@ const Content = ({ announcement }) => {
           alt=""
         />
       </div>
-      <ReservationModal eventId={announcement._id} announcement={announcement} />
+      <ReservationModal
+        eventId={announcement._id}
+        announcement={announcement}
+      />
     </div>
   );
 };
