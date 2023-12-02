@@ -142,8 +142,8 @@ const Inquiries = () => {
             </Link>
           </div>
         </div>
-        <div className="w-full flex flex-col">
-          <div className="flex flex-col lg:flex-row justify-center">
+        <div className="sm:w-full lg:w-[80%] flex flex-col">
+          <div className="flex flex-col lg:flex-row w-full justify-center">
             {/* SORT */}
             <div class="hs-dropdown relative inline-flex">
               <button
@@ -286,7 +286,7 @@ const Inquiries = () => {
           </div>
 
           {/* Table */}
-          <div className="overflow-x-auto sm:h-[380px] lg:h-[680px] xl:h-[700px] xxl:h-[700px] xxxl:h-[640px] border border-b-0 mt-5 rounded-t-xl">
+          <div className="overflow-x-auto sm:h-[380px] lg:h-[680px] border border-b-0 mt-5 rounded-t-xl">
             <table className="w-full divide-y divide-gray-200 ">
               {/* Table Headers */}
               <thead className="bg-custom-green-table-header border">

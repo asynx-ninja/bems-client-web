@@ -140,7 +140,7 @@ const ArchivedInquiries = () => {
                         </Link>
                     </div>
                 </div>
-                <div className="w-full flex flex-col">
+                <div className="sm:w-full lg:w-[80%]git a flex flex-col">
                     <div className="flex flex-col lg:flex-row">
                         {/* SORT */}
                         <div class="hs-dropdown relative inline-flex">
