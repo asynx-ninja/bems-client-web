@@ -15,6 +15,7 @@ const Requests = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get("id");
   const brgy = searchParams.get("brgy");
+  const user_id = searchParams.get("user_id")
   const [request, setRequest] = useState([])
   const [viewRequest, setViewRequest] = useState([])
   const [selectedItems, setSelectedItems] = useState([]);
@@ -27,26 +28,24 @@ const Requests = () => {
 
   useEffect(() => {
     const fetch = async () => {
-      const response = await axios.get(
-        `${API_LINK}/requests/?brgy=${brgy}&archived=false`
-      );
+      try {
+        const response = await axios.get(
+          `${API_LINK}/requests/specific/?user_id=${user_id}`
+        );
 
-      const getUser = await axios.get(`${API_LINK}/users/specific/${id}`);
+        // const getUser = await axios.get(`${API_LINK}/users/specific/${id}`);
 
-      if (response.status === 200) {
-        setRequest(Object.fromEntries(
-          Object.entries(response.data).filter(
-            ([idx, item]) => item.form[0].user_id.value === getUser.data[0].user_id,
-          )
-        ))
+        setRequest(response.data)
+
+      } catch (err) {
+        console.log(err)
       }
-      else setRequest([]);
     };
 
     fetch();
-  }, []);
+  }, [brgy, id]);
 
-  // console.log(request)
+  console.log(request)
 
   const handleSort = (sortBy) => {
     const newSortOrder = sortOrder === "asc" ? "desc" : "asc";
@@ -72,31 +71,16 @@ const Requests = () => {
       return 0;
     });
 
-    setInquiries(sortedData);
+    setRequest(sortedData);
   };
 
   // console.log(viewRequest);
 
-  const checkboxHandler = (e) => {
-    let isSelected = e.target.checked;
-    let value = e.target.value;
-
-    if (isSelected) {
-      setSelectedItems([...selectedItems, value]);
-    } else {
-      setSelectedItems((prevData) => {
-        return prevData.filter((id) => {
-          return id !== value;
-        });
-      });
-    }
-  };
-
   const checkAllHandler = () => {
-    if (inquiries.length === selectedItems.length) {
+    if (request.length === selectedItems.length) {
       setSelectedItems([]);
     } else {
-      const postIds = inquiries.map((item) => {
+      const postIds = request.map((item) => {
         return item._id;
       });
 
@@ -130,15 +114,15 @@ const Requests = () => {
         <div className="flex flex-col">
           <div className="flex flex-col lg:flex-row">
             {/* SORT */}
-            <div class="hs-dropdown relative inline-flex">
+            <div className="hs-dropdown relative inline-flex">
               <button
                 id="hs-dropdown-basic"
                 type="button"
-                class="hs-dropdown-toggle w-full lg:w-40 mb-5 lg:mb-0 py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border font-medium text-white shadow-sm align-middle bg-custom-green-table-header"
+                className="hs-dropdown-toggle w-full lg:w-40 mb-5 lg:mb-0 py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border font-medium text-white shadow-sm align-middle bg-custom-green-table-header"
               >
                 SORT BY
                 <svg
-                  class="hs-dropdown-open:rotate-180 w-2.5 h-2.5 text-white"
+                  className="hs-dropdown-open:rotate-180 w-2.5 h-2.5 text-white"
                   width="16"
                   height="16"
                   viewBox="0 0 16 16"
@@ -148,8 +132,8 @@ const Requests = () => {
                   <path
                     d="M2 5L8.16086 10.6869C8.35239 10.8637 8.64761 10.8637 8.83914 10.6869L15 5"
                     stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
+                    strokeWidth="2"
+                    strokeLinecap="round"
                   />
                 </svg>
               </button>
@@ -239,16 +223,6 @@ const Requests = () => {
               {/* Table Headers */}
               <thead className="bg-custom-green-table-header border">
                 <tr>
-                  <th scope="col" className="px-6 py-4">
-                    <div className="flex justify-center items-center">
-                      <input
-                        type="checkbox"
-                        name=""
-                        onClick={checkAllHandler}
-                        id=""
-                      />
-                    </div>
-                  </th>
                   {
                     tableHeader.map((item, i) => (
                       <th
@@ -266,7 +240,7 @@ const Requests = () => {
               {/* Table Body */}
               <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                 {
-                  JSON.stringify(request) === '{}' ?
+                  request.length === 0 ?
                     <tr>
                       <th className="pt-[50px]" rowSpan={5} colSpan={6}>
                         No Records Shown
@@ -279,39 +253,39 @@ const Requests = () => {
             </table>
           </div>
 
-          <div class="py-1 px-4 border rounded-b-lg bg-custom-green-table-header">
-            <nav class="flex items-center space-x-2">
+          <div className="py-1 px-4 border rounded-b-lg bg-custom-green-table-header">
+            <nav className="flex items-center space-x-2">
               <a
-                class="text-gray-400 hover:text-blue-600 p-4 inline-flex items-center gap-2 font-medium rounded-md"
+                className="text-gray-400 hover:text-blue-600 p-4 inline-flex items-center gap-2 font-medium rounded-md"
                 href="#"
               >
                 <span aria-hidden="true">«</span>
-                <span class="sr-only">Previous</span>
+                <span className="sr-only">Previous</span>
               </a>
               <a
-                class="w-10 h-10 bg-custom-amber text-white p-4 inline-flex items-center text-sm font-medium rounded-full"
+                className="w-10 h-10 bg-custom-amber text-white p-4 inline-flex items-center text-sm font-medium rounded-full"
                 href="#"
                 aria-current="page"
               >
                 1
               </a>
               <a
-                class="w-10 h-10 text-gray-400 hover:text-blue-600 p-4 inline-flex items-center text-sm font-medium rounded-full"
+                className="w-10 h-10 text-gray-400 hover:text-blue-600 p-4 inline-flex items-center text-sm font-medium rounded-full"
                 href="#"
               >
                 2
               </a>
               <a
-                class="w-10 h-10 text-gray-400 hover:text-blue-600 p-4 inline-flex items-center text-sm font-medium rounded-full"
+                className="w-10 h-10 text-gray-400 hover:text-blue-600 p-4 inline-flex items-center text-sm font-medium rounded-full"
                 href="#"
               >
                 3
               </a>
               <a
-                class="text-gray-400 hover:text-blue-600 p-4 inline-flex items-center gap-2 font-medium rounded-md"
+                className="text-gray-400 hover:text-blue-600 p-4 inline-flex items-center gap-2 font-medium rounded-md"
                 href="#"
               >
-                <span class="sr-only">Next</span>
+                <span className="sr-only">Next</span>
                 <span aria-hidden="true">»</span>
               </a>
             </nav>

@@ -6,8 +6,8 @@ import API_LINK from "../../../config/API";
 import { AiOutlineSend } from "react-icons/ai";
 import { IoIosAttach } from "react-icons/io";
 import { IoSend } from "react-icons/io5";
-// import Dropbox from "./Dropbox";
-// import ViewDropbox from "./ViewDropbox";
+import Dropbox from "./Dropbox";
+import ViewDropbox from "./ViewDropbox";
 // import EditDropbox from "./EditDropbox";
 
 const ViewRequestModal = ({ viewRequest }) => {
@@ -17,28 +17,35 @@ const ViewRequestModal = ({ viewRequest }) => {
   const [files, setFiles] = useState([]);
   const [createFiles, setCreateFiles] = useState([]);
   const [viewFiles, setViewFiles] = useState([]);
+  const [newMessage, setNewMessage] = useState({
+    sender: "Resident",
+    message: "",
+    date: ""
+  });
 
-  // useEffect(() => {
-  //   setFiles(request.length === 0 ? [] : request.compose.file);
-  // }, [request]);
+  useEffect(() => {
+    setFiles(viewRequest.length === 0 ? [] : viewRequest.file);
+  }, [viewRequest]);
 
-  // useEffect(() => {
-  //   if (request && request.response.length !== 0) {
-  //     const lastResponse = request.response[request.response.length - 1];
+  useEffect(() => {
+    if (viewRequest && viewRequest.response && viewRequest.response.length !== 0) {
+      const lastResponse = viewRequest.response[viewRequest.response.length - 1];
 
-  //     if (lastResponse.file && lastResponse.file.length > 0) {
-  //       setViewFiles(lastResponse.file);
-  //     } else {
-  //       setViewFiles([]);
-  //     }
-  //   } else {
-  //     setViewFiles([]);
-  //   }
-  // }, [request]);
+      console.log(lastResponse)
+
+      if (lastResponse.file && lastResponse.file.length > 0) {
+        setViewFiles(lastResponse.file);
+      } else {
+        setViewFiles([]);
+      }
+    } else {
+      setViewFiles([]);
+    }
+  }, [viewRequest]);
 
   // Initialize with the last index expanded
   useEffect(() => {
-    const lastIndex = viewRequest.response ? viewRequest.response.length - 1 : 0;
+    const lastIndex = 0;
     setExpandedIndexes([lastIndex]);
   }, [viewRequest.response]);
 
@@ -96,33 +103,54 @@ const ViewRequestModal = ({ viewRequest }) => {
     setUpload(!upload);
   };
 
-  // const handleOnSend = async (e) => {
-  //   e.preventDefault();
-  //   console.log(newMessage);
+  const handleOnSend = async (e) => {
+    e.preventDefault();
+    console.log(newMessage);
 
-  //   try {
-  //     const obj = {
-  //       sender: newMessage.sender,
-  //       message: newMessage.message,
-  //       date: newMessage.date,
-  //       folder_id: request.folder_id,
-  //     };
-  //     var formData = new FormData();
-  //     formData.append("response", JSON.stringify(obj));
-  //     for (let i = 0; i < createFiles.length; i++) {
-  //       formData.append("files", createFiles[i]);
-  //     }
+    try {
+      const obj = {
+        sender: newMessage.sender,
+        message: newMessage.message,
+        status: viewRequest.status,
+        isRepliable: false,
+        date: new Date(),
+        folder_id: viewRequest.folder_id,
+      };
+      var formData = new FormData();
+      formData.append("response", JSON.stringify(obj));
+      for (let i = 0; i < createFiles.length; i++) {
+        formData.append("files", createFiles[i]);
+      }
 
-  //     const response = await axios.patch(
-  //       `${API_LINK}/inquiries/?inq_id=${request._id}`,
-  //       formData
-  //     );
+      const response = await axios.patch(
+        `${API_LINK}/requests/?req_id=${viewRequest._id}`,
+        formData
+      );
 
-  //     window.location.reload();
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const setColor = (status) => {
+    if (status === "Completed")
+      return 'green-800'
+    else if (status === "Pending")
+      return 'custom-amber'
+    else if (status === "Cancelled")
+      return 'gray-700'
+    else if (status === "Processing")
+      return 'blue-800'
+    else if (status === "Paid")
+      return 'violet-700'
+    else if (status === "Not Responded")
+      return 'pink-700'
+    else if (status === "Rejected")
+      return 'red-800'
+    else
+      return 'black'
+  }
 
   return (
     <div>
@@ -144,31 +172,16 @@ const ViewRequestModal = ({ viewRequest }) => {
             </div>
 
             <div className="scrollbarWidth scrollbarTrack scrollbarHover scrollbarThumb flex flex-col mx-auto w-full py-5 px-5 overflow-y-auto relative h-[470px]">
-              <b className="border-solid border-0 border-black/50 border-b-2 uppercase font-medium text-lg md:text-lg mb-4">
-                Evaluation
-              </b>
-              <div className="flex flex-col border rounded-xl p-2">
-                <p className="font-medium">DISAPPROVED</p>
-                <div className="flex flex-row justify-between">
-                  <p className="font-medium">Processed by: Andrei Nuguid</p>
-                  <p className="font-base">January 20, 2024 - 2:20 AM</p>
-                </div>
-
-                <div className="my-2">
-                  <textarea
-                    id="details"
-                    name="details"
-                    rows="4"
-                    className="shadow appearance-none border w-full h-full py-2 px-3 text-sm text-black rounded-lg focus:border-green-500 focus:ring-green-500 focus:outline-none focus:shadow-outline"
-                    disabled
-                  />
+              <div className="border-solid border-0 border-black/50 border-b-2 flex justify-between items-center mb-4">
+                <b className="uppercase font-medium text-lg md:text-lg">
+                  Evaluation
+                </b>
+                <div className="flex gap-1">
+                  <p className="font-medium">Status: </p>
+                  <p className={`font-medium text-${setColor(viewRequest.status)}`}>{viewRequest.status}</p>
                 </div>
               </div>
-
-              <div className="flex flex-col mt-5 w-full">
-                <b className="border-solid border-0 w-full border-black/50 border-b-2 my-4 uppercase font-medium text-lg md:text-lg mb-4">
-                  Conversation History
-                </b>
+              <div className="flex flex-col p-2">
                 <form>
                   {!viewRequest.response || viewRequest.response.length === 0 ? (
                     <div className="flex flex-row items-center">
@@ -206,7 +219,7 @@ const ViewRequestModal = ({ viewRequest }) => {
                               <div className="flex items-center gap-x-1">
                                 <button
                                   type="submit"
-                                  // onClick={handleOnSend}
+                                  onClick={handleOnSend}
                                   className="inline-flex flex-shrink-0 justify-center items-center w-28 rounded-lg text-white py-1 px-6 gap-2 bg-cyan-700"
                                 >
                                   <span>SEND</span>
@@ -233,21 +246,26 @@ const ViewRequestModal = ({ viewRequest }) => {
                   ) : null}
                   {viewRequest &&
                     viewRequest.response &&
-                    viewRequest.response.map((responseItem, index) => (
+                    (viewRequest.response.sort((a, b) => new Date(b.date) - new Date(a.date))).map((responseItem, index) => (
                       <div
                         key={index}
-                        className={`flex flex-col lg:flex-row h-16 mb-2 border-b ${
-                          expandedIndexes.includes(index)
-                            ? "h-auto border-b"
-                            : ""
-                        }`}
+                        className={`flex flex-col lg:flex-row h-16 mb-2 border rounded-xl ${expandedIndexes.includes(index)
+                          ? "h-auto border-b"
+                          : ""
+                          }`}
                         onClick={() => handleToggleClick(index)}
                       >
                         {!expandedIndexes.includes(index) ? (
                           <div className="flex flex-col w-full px-2 md:px-4 py-2">
                             <div className="flex flex-row w-full justify-between">
                               <p className="text-[14px] md:text-sm font-medium uppercase">
-                                {responseItem.sender}
+                                {responseItem.sender === "Resident" ?
+                                  responseItem.sender
+                                  :
+                                  <p className="text-[14px] md:text-sm font-medium uppercase">
+                                    Processed by: {responseItem.sender}
+                                  </p>
+                                }
                               </p>
                               <p className="text-[10px] md:text-xs text-right text-xs">
                                 {DateFormat(responseItem.date) || ""}
@@ -282,23 +300,25 @@ const ViewRequestModal = ({ viewRequest }) => {
                                 </p>
                               </div>
                             </div>
-                            {viewFiles.length > 0 && (
-                              <ViewDropbox
-                                viewFiles={responseItem.file || []}
-                                setViewFiles={setViewFiles}
-                              />
-                            )}
-                            {index === viewRequest.response.length - 1 && (
+                            <ViewDropbox
+                              viewFiles={responseItem.file || []}
+                              setViewFiles={setViewFiles}
+                            />
+                            {index === 0 && (
                               <div className="flex flex-row items-center">
-                                <button
-                                  type="button"
-                                  className="h-8 w-full lg:w-32 py-1 px-2 gap-2 mt-4 rounded-full borde text-sm font-base bg-teal-900 text-white shadow-sm"
-                                  onClick={handleOnReply}
-                                  hidden={reply}
-                                >
-                                  REPLY
-                                </button>
-
+                                {
+                                  responseItem.isRepliable === false ?
+                                    null
+                                    :
+                                    <button
+                                      type="button"
+                                      className="h-8 w-full lg:w-32 py-1 px-2 gap-2 mt-4 rounded-full borde text-sm font-base bg-teal-900 text-white shadow-sm"
+                                      onClick={handleOnReply}
+                                      hidden={reply}
+                                    >
+                                      REPLY
+                                    </button>
+                                }
                                 {!reply ? (
                                   <div></div>
                                 ) : (
@@ -335,13 +355,12 @@ const ViewRequestModal = ({ viewRequest }) => {
                                             >
                                               <IoIosAttach size={24} />
                                             </button>
-                                            {/* <IoIosAttach size={24} /> */}
                                           </div>
 
                                           <div className="flex items-center gap-x-1">
                                             <button
                                               type="submit"
-                                              // onClick={handleOnSend}
+                                              onClick={handleOnSend}
                                               className="inline-flex flex-shrink-0 justify-center items-center w-28 rounded-lg text-white py-1 px-6 gap-2 bg-cyan-700"
                                             >
                                               <span>SEND</span>

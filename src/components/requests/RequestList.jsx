@@ -16,19 +16,8 @@ const RequestList = ({ request, selectedItems, checkboxHandler, setViewRequest }
     };
 
     return (
-        Object.entries(request).map(([key, item], idx) => (
+        Object.entries(request).map(([idx, item]) => (
             <tr key={idx} className="odd:bg-slate-100 text-center">
-                <td className="px-6 py-3">
-                    <div className="flex justify-center items-center">
-                        <input
-                            type="checkbox"
-                            checked={selectedItems.includes(item._id)}
-                            value={item._id}
-                            onChange={checkboxHandler}
-                            id=""
-                        />
-                    </div>
-                </td>
                 <td className="px-6 py-3">
                     <span className="text-xs sm:text-sm text-black line-clamp-2 ">
                         {item.service_id}
@@ -59,16 +48,44 @@ const RequestList = ({ request, selectedItems, checkboxHandler, setViewRequest }
                             </div>
                         )}
                         {item.status === "Not Responded" && (
-                            <div className="flex w-full items-center justify-center bg-custom-red-button m-2 rounded-lg">
+                            <div className="flex w-full items-center justify-center bg-pink-700 m-2 rounded-lg">
                                 <span className="text-xs sm:text-sm font-bold text-white p-3 mx-5">
                                     NOT RESPONDED
                                 </span>
                             </div>
                         )}
-                        {item.status === "In Progress" && (
+                        {item.status === "Rejected" && (
+                            <div className="flex w-full items-center justify-center bg-red-800 m-2 rounded-lg">
+                                <span className="text-xs sm:text-sm font-bold text-white p-3 mx-5">
+                                    REJECTED
+                                </span>
+                            </div>
+                        )}
+                        {item.status === "Cancelled" && (
+                            <div className="flex w-full items-center justify-center bg-gray-700 m-2 rounded-lg">
+                                <span className="text-xs sm:text-sm font-bold text-white p-3 mx-5">
+                                    CANCELLED
+                                </span>
+                            </div>
+                        )}
+                        {item.status === "Processing" && (
                             <div className="flex w-full items-center justify-center bg-custom-amber m-2 rounded-lg">
                                 <span className="text-xs sm:text-sm font-bold text-white p-3 mx-5">
-                                    IN PROGRESS
+                                    PROCESSING
+                                </span>
+                            </div>
+                        )}
+                        {item.status === "Paid" && (
+                            <div className="flex w-full items-center justify-center bg-violet-800 m-2 rounded-lg">
+                                <span className="text-xs sm:text-sm font-bold text-white p-3 mx-5">
+                                    PAID
+                                </span>
+                            </div>
+                        )}
+                        {item.status === "Pending" && (
+                            <div className="flex w-full items-center justify-center bg-custom-amber m-2 rounded-lg">
+                                <span className="text-xs sm:text-sm font-bold text-white p-3 mx-5">
+                                    PENDING
                                 </span>
                             </div>
                         )}

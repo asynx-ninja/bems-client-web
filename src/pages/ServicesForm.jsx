@@ -6,14 +6,14 @@ import { useEffect, useState, React, useRef } from "react";
 import axios from "axios";
 import API_LINK from "../config/API";
 import defaultPFP from "../assets/sample-image/formPic.png";
-import defaultBanner from "../assets/image/1.png"
+import defaultBanner from "../assets/image/1.png";
 import { FaCamera } from "react-icons/fa";
 
 // FORM DETAILS
 import PersonalDetails from "../components/serviceform/PersonalDetails";
 import OtherDetails from "../components/serviceform/OtherDetails";
 
-const ServicesForm = () => {
+const ServicesForm = ({ props }) => {
   const fileInputRef = useRef();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -21,69 +21,48 @@ const ServicesForm = () => {
   const brgy = searchParams.get("brgy");
   const service_id = searchParams.get("service_id");
   const [detail, setDetail] = useState({});
-  const [service, setService] = useState({})
+  const [service, setService] = useState({});
   const [userData, setUserData] = useState({});
   const [emptyFields, setEmptyFields] = useState([]);
   const [empty, setEmpty] = useState(false);
-  const [purpose, setPurpose] = useState("");
-  const [document, setDocument] = useState(null);
-  const [NewPDF, setNewPDF] = useState(null);
   const imageRef = useRef();
 
   useEffect(() => {
-    const filterDetail = (item) => {
-      return item.filter((item) => item.isActive === true);
-    };
-
     const fetchForms = async () => {
       try {
-        const response = await axios.get(`${API_LINK}/forms/?brgy=${brgy}&service_id=${service_id}`);
-        const filter = Object.assign({}, filterDetail(response.data)[0]);
+        const service_response = await axios.get(
+          `${API_LINK}/services/specific_service/?service_id=${service_id}`
+        );
+
+        const { service_form, ...rest } = service_response.data[0];
+
+        const filter = [service_form].filter((item) => item.isActive)[0];
+
         filter.form[0] = Object.fromEntries(
           Object.entries(filter.form[0]).filter(
             ([key, value]) => value.checked === true
           )
         );
 
-        setDetail(filter);
-        console.log(filter)
-
         const getUser = await axios.get(`${API_LINK}/users/specific/${id}`);
+
         setUserData(getUser.data[0]);
 
-        const newData = detail.form[0];
-        newData["user_id"] = {
-          ...newData["user_id"],
-          value: getUser.data[0].user_id,
-        };
+        filter.form[0].user_id.value = getUser.data[0].user_id;
 
-        setDetail((prev) => ({
-          ...prev,
-          form: [newData, detail.form[1]],
-        }));
-
+        setService(rest);
+        setDetail(filter);
       } catch (error) {
         console.log(error);
       }
 
       // imageRef.current.src = defaultPFP;
     };
+
     fetchForms();
   }, [service_id]);
 
-  useEffect(() => {
-    const fetchServices = async () => {
-      try {
-        const services = await axios.get(`${API_LINK}/services/?brgy=${brgy}&archived=false&approved=Approved`);
-        const filteredServices = Object.assign({}, services.data.filter((item) => item.service_id === service_id)[0])
-
-        setService(filteredServices)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    fetchServices()
-  }, [brgy])
+  console.log("service", service, detail);
 
   const checkEmptyFields = () => {
     let arr = [];
@@ -117,12 +96,6 @@ const ServicesForm = () => {
     }
 
     return arr;
-  };
-
-  const handleAdd = (e) => {
-    e.preventDefault();
-
-    fileInputRef.current.click();
   };
 
   const calculateAge = (birthDate) => {
@@ -176,8 +149,8 @@ const ServicesForm = () => {
       value: Object.entries(objectConstraint).find(([k]) => key === k)
         ? objectConstraint[key]
         : key === "user_id"
-          ? newData[key].value
-          : "",
+        ? newData[key].value
+        : "",
     };
 
     return newData;
@@ -309,7 +282,8 @@ const ServicesForm = () => {
               "files",
               renameFile(
                 childItem.value,
-                `${detail.form[0].lastName.value
+                `${
+                  detail.form[0].lastName.value
                 } - ${childItem.display.toUpperCase()}`
               )
             )
@@ -348,7 +322,6 @@ const ServicesForm = () => {
         "form",
         JSON.stringify({
           ...detail,
-          purpose: purpose,
           name: service.name,
           service_type: service.type,
           fee: service.fee,
@@ -388,12 +361,12 @@ const ServicesForm = () => {
   return (
     <div className="w-full flex flex-col sm:px-[15px] lg:px-[70px] pt-[40px] mb-[30px]">
       <img
-        className=" rounded-[25px] h-[300px] object-cover"
+        className=" rounded-[25px] h-[300px] object-contain"
         src={
           service &&
-            service.collections &&
-            service.collections.banner &&
-            service.collections.banner.link !== undefined
+          service.collections &&
+          service.collections.banner &&
+          service.collections.banner.link !== undefined
             ? service.collections.banner.link
             : defaultBanner
         }
@@ -404,17 +377,15 @@ const ServicesForm = () => {
 
       <div className="flex flex-col">
         <div className="flex my-[10px]">
-          <Breadcrumbs serviceTitle={service.name} />
+          <Breadcrumbs serviceTitle={service && service.name} />
         </div>
 
         <div>
-          <Content
-            service={service}
-          />
+          <Content service={service} />
         </div>
       </div>
 
-      <div className="w-[90%] mx-auto flex items-center mt-5 px-6 lg:px-0">
+      <div className="w-[90%] mx-auto flex items-center px-6 lg:px-0">
         <div className="flex mx-auto sm:flex-row md:flex-row w-full items-center gap-4 justify-center">
           <Link
             data-hs-overlay="#hs-full-screen-modal"
@@ -443,7 +414,7 @@ const ServicesForm = () => {
               className="flex justify-between items-center py-3 px-4 border-b dark:border-gray-700"
             >
               <h3 className="lg:tracking-[.2rem] tracking-widest text-md lg:text-lg font-bold uppercase text-center text-white ">
-                {service.name}
+                {service && service.name}
               </h3>
             </div>
 
@@ -481,8 +452,8 @@ const ServicesForm = () => {
                             Note: Please read through the form before completing
                             it. All question MUST be answered. Failure to
                             provide full and accurate information will
-                            disqualify the application. Please Also inform that once the request is sent,
-                            it cannot be edited.
+                            disqualify the application. Please Also inform that
+                            once the request is sent, it cannot be edited.
                           </p>
                         </div>
                       </div>
@@ -541,26 +512,7 @@ const ServicesForm = () => {
                   handleOtherDetail={handleOtherDetail}
                   emptyFields={emptyFields}
                 />
-                <fieldset className="flex-col border-[1px] border-black rounded-md">
-                  <legend className="ml-2 px-2 text-sm font-medium">
-                    Other Requirements
-                  </legend>
-                  <div className="w-full px-6 py-3">
-                    <label
-                      htmlFor="message"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Purpose of this Request
-                    </label>
-                    <textarea
-                      onChange={(e) => setPurpose(e.target.value)}
-                      id="message"
-                      rows="4"
-                      className="resize-none block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
-                      placeholder="Write your thoughts here..."
-                    ></textarea>
-                  </div>
-                </fieldset>
+                
               </form>
             </div>
             <div className="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-gray-700">

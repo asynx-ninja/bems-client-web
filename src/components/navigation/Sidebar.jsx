@@ -158,7 +158,7 @@ const Sidebar = () => {
                   </h1>
                 </Link>
                 <Link
-                  to={`/requests/?id=${id}&brgy=${brgy}`}
+                  to={`/requests/?id=${id}&brgy=${brgy}&user_id=${userData.user_id}`}
                   onClick={() => {
                     window.innerWidth >= 320 && window.innerWidth <= 1023
                       ? document

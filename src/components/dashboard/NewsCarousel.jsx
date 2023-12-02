@@ -4,18 +4,19 @@ import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a lo
 import axios from "axios";
 import API_LINK from "../../config/API";
 import { useLocation, useSearchParams, Link } from "react-router-dom";
+
 const NewsCarousel = () => {
-  const location = useLocation()
+  const location = useLocation();
   const page = location.pathname.split("/")[1]
   const [services, setServices] = useState([]);
   const [announcement, setAnnouncements] = useState([]);
-  const [searchParams, setSearchParams] = useSearchParams()
-  const id = searchParams.get("id")
-  const brgy = searchParams.get("brgy")
+  const [searchParams] = useSearchParams();
+  const id = searchParams.get("id");
+  const brgy = searchParams.get("brgy");
 
   useEffect(() => {
     const fetchNews = async () => {
-      const response = await axios.get(`${API_LINK}/services/?brgy=${brgy}&archived=false&approved=Approved`, {
+      const response = await axios.get(`${API_LINK}/services/?brgy=${brgy}&archived=false`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -27,8 +28,6 @@ const NewsCarousel = () => {
     };
     fetchNews();
   }, [brgy]);
-
-  // console.log(announcement)
 
   return (
     <div className="w-full flex justify-center py-5">
