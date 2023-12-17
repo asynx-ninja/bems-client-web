@@ -33,10 +33,11 @@ const Emailverify = () => {
     }
 
     try {
-      const res = await axios.patch(`${API_LINK}/auth/send_pin/${email}`)
+      const res = await axios.patch(`${API_LINK}/auth/send_pin/${email}`, {type: "Resident"})
       const encodedEmail = btoa(email);
 
       if (res.status === 200) {
+        console.log(res)
         setResponse({
           success: true,
           error: false,

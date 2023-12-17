@@ -54,7 +54,9 @@ const Codeverfiy = () => {
     }
   };
 
-  const handleOnSubmit = async () => {
+  const handleOnSubmit = async (e) => {
+    e.preventDefault()
+    
     try {
       const res = await axios.get(`${API_LINK}/auth/check_pin/${email}/${code}`)
       const encodedEmail = btoa(email);

@@ -25,6 +25,8 @@ const NewsCarousel = () => {
 
       const res = await axios.get(`${API_LINK}/announcement/all/?brgy=${brgy}`)
       setAnnouncements(res.data)
+
+      console.log(res)
     };
     fetchNews();
   }, [brgy]);
@@ -42,7 +44,7 @@ const NewsCarousel = () => {
       >
         {
           services.map((item, i) => (
-            <div
+            <Link
               key={i}
               className="w-full relative"
               to={{ pathname: `/services_form`, search: `id=${id}&brgy=${brgy}&service_id=${item.service_id}` }}
@@ -57,7 +59,7 @@ const NewsCarousel = () => {
                   <p className="text-white font-bold text-center">{item.name}</p>
                 </div>
               </div>
-            </div>
+            </Link>
           ))
         }
         {

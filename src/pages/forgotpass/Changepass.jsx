@@ -67,7 +67,9 @@ const Changepass = () => {
     }
   }
 
-  const handleOnSubmit = async () => {
+  const handleOnSubmit = async (e) => {
+    e.preventDefault()
+    
     try {
       if (password.enter !== password.reenter) {
         setResponse({
