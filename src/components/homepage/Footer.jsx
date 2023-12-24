@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <div data-aos="fade-in" className="container-fluid w-full">
+    <div data-aos="" className="container-fluid w-full">
       <footer className="bg-[#295141] text-white py-8">
         <div className=" mx-auto px-4">
           <div className="flex flex-wrap text-center">

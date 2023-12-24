@@ -114,7 +114,7 @@ const pages = [
     ),
   },
   {
-    path: "/tourist-spot",
+    path: "/tourist-spot/:id",
     element: <TouristSpotMain />,
   },
   {
