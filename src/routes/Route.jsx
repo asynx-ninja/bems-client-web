@@ -29,6 +29,10 @@ import ArchivedInquiries from "../pages/Inquiries/ArchivedInquiries";
 import Services from "../pages/Services";
 import ServicesForm from "../pages/ServicesForm";
 
+// DASHBOARD SUB PAGES
+import Mobile from "../components/dashboard/Mobile";
+import EventsInfo from "../components/dashboard/EventsInfo";
+
 //Tourist Spot
 import TouristSpotMain from "../components/touristspot/TouristSpotMain";
 const pages = [
@@ -40,6 +44,24 @@ const pages = [
         <Dashboard />
       </>
     ),
+  },
+  {
+    path: "/mobile",
+    element: (
+      <>
+        <Navbar />
+        <Mobile />
+      </>
+    )
+  },
+  {
+    path: "/events-list",
+    element: (
+      <>
+        <Navbar />
+        <EventsInfo />
+      </>
+    )
   },
   {
     path: "/events",

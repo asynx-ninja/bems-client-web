@@ -65,10 +65,10 @@ const InquiriesList = ({ inquiries, selectedItems, checkboxHandler, setInquiry }
                                 </span>
                             </div>
                         )}
-                        {item.isApproved === "Not Responded" && (
+                        {item.isApproved === "Pending" && (
                             <div className="flex w-full items-center justify-center bg-custom-red-button m-2 rounded-lg">
                                 <span className="text-xs sm:text-sm font-bold text-white p-3 mx-5">
-                                    NOT RESPONDED
+                                    Pending
                                 </span>
                             </div>
                         )}
