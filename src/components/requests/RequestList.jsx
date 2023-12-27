@@ -47,10 +47,10 @@ const RequestList = ({ request, selectedItems, checkboxHandler, setViewRequest }
                                 </span>
                             </div>
                         )}
-                        {item.status === "Not Responded" && (
-                            <div className="flex w-full items-center justify-center bg-pink-700 m-2 rounded-lg">
+                        {item.status === "Transaction Completed" && (
+                            <div className="flex w-full items-center justify-center bg-green-500 m-2 rounded-lg">
                                 <span className="text-xs sm:text-sm font-bold text-white p-3 mx-5">
-                                    NOT RESPONDED
+                                    Transaction Completed
                                 </span>
                             </div>
                         )}
