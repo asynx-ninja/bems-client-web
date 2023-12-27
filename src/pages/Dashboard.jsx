@@ -37,13 +37,15 @@ const Dashboard = () => {
     fetch();
   }, [id]);
 
+  console.log(userData)
+
   return (
     <div className='flex flex-col'>
 
       <div className='font-bold w-[90%] mx-auto py-10 mt-[30px] flex justify-between'>
         <div>
           <p className='text-[20px] leading-[1px]'>HI, <b className='text-custom-green-header'>{userData.firstName}!</b> WELCOME TO </p>
-          <h1 className='text-[38px]'>MONTALBAN <b className='text-custom-green-header'>E-SERVICES</b></h1>
+          <h1 className='text-[38px]'>BARANGAY <b className='text-custom-green-header'>E-SERVICES</b> APPLICATION</h1>
         </div>
       </div>
 
@@ -121,7 +123,7 @@ const Dashboard = () => {
           <div className='flex flex-col py-5 w-[50%] justify-center'>
             <h1 className='text-white font-bold sm:text-[12px] lg:text-[20px] x:text-[28px] sm:leading-3 md:leading-4 lg:leading-5 x:leading-7'>TRACK YOUR REQUEST IN BARANGAY SERVICES</h1>
             <Link
-              to={`/requests/?id=${id}&brgy=${brgy}`}
+              to={`/requests/?id=${id}&brgy=${brgy}&user_id=${userData.user_id}`}
               className='sm:w-[90px] lg:w-[120px] mt-[18px] bg-white font-medium sm:text-[10px] lg:text-[14px] py-[8px] rounded-md hover:scale-[105%] transition text-center'
             >
               <h1>

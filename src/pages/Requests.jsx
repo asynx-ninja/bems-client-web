@@ -89,9 +89,8 @@ const Requests = () => {
   };
 
   const tableHeader = [
-    "Request id",
-    "name",
-    "date",
+    "Request Name",
+    "date requested",
     "status",
     "actions",
   ];

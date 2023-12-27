@@ -35,37 +35,17 @@ const Services = () => {
     e.target.value === "all"
       ? setFilterType(filter)
       : setFilterType(
-          filter.filter((service) => service.type === e.target.value)
-        );
+        filter.filter((service) => service.type === e.target.value)
+      );
   };
 
   return (
     <div className="flex flex-col items-center">
-      <div className="w-full h-full text-center">
-        {/* CAROUSEL */}
-        {/* <NewsCarousel /> */}
+
+      <div className='font-bold w-[90%] mx-auto py-10 mt-[30px] flex justify-center'>
+        <h1 className='text-[38px] text-center border-b-[2px] border-custom-green-header'>OFFERED <b className='text-custom-green-header'>SERVICES</b></h1>
       </div>
-      <h1 className="text-center font-bold text-2xl sm:text-lg tracking-widest text-[#326350] mb-4 mt-8">
-        PLEASE CHOOSE FROM THE FOLLOWING SERVICES
-      </h1>
-      <div className="w-full max-w-md mx-auto mb-4">
-        <select
-          onChange={handleOnFilter}
-          className="w-full px-4 py-2 rounded-md border border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-500"
-        >
-          <option value="all">All types</option>
-          <option value="Healthcare">Healthcare Services</option>
-          <option value="Education">Education Services</option>
-          <option value="Social Welfare">Social Welfare Services</option>
-          <option value="Security and Safety">
-            Security and Safety Services
-          </option>
-          <option value="Infrastructure">Infrastructure Services</option>
-          <option value="Community Services">Community Services</option>
-          <option value="Administrative">Administrative Services</option>
-          <option value="Environmental">Environmental Services</option>
-        </select>
-      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-8 p-4 w-full max-w-7xl">
         {filterType.map((item, i) => (
           <Link

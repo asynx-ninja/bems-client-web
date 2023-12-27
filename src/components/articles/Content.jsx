@@ -11,7 +11,11 @@ const Content = ({ announcement }) => {
     return newFormat;
   };
 
-  // console.log(event)
+  const reqAnother = () => {
+    
+  }
+
+  console.log(announcement.attendees)
 
   return (
     <div className="flex flex-col gap-5">

@@ -20,7 +20,7 @@ const ViewRequestModal = ({ viewRequest }) => {
   const [newMessage, setNewMessage] = useState({
     sender: "Resident",
     message: "",
-    date: ""
+    date: "",
   });
 
   useEffect(() => {
@@ -30,8 +30,6 @@ const ViewRequestModal = ({ viewRequest }) => {
   useEffect(() => {
     if (viewRequest && viewRequest.response && viewRequest.response.length !== 0) {
       const lastResponse = viewRequest.response[viewRequest.response.length - 1];
-
-      console.log(lastResponse)
 
       if (lastResponse.file && lastResponse.file.length > 0) {
         setViewFiles(lastResponse.file);
@@ -123,7 +121,7 @@ const ViewRequestModal = ({ viewRequest }) => {
       }
 
       const response = await axios.patch(
-        `${API_LINK}/requests/?req_id=${viewRequest._id}`,
+        `${API_LINK}/requests/?req_id=${viewRequest._id}&last_response=${viewRequest.response.length - 1}&user_type=${"Resident"}`,
         formData
       );
 
