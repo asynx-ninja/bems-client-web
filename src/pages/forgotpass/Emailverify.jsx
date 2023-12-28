@@ -49,7 +49,7 @@ const Emailverify = () => {
         setTimeout(()=> {
           navigate(`/code_verify/${encodedEmail}`)
         }, 3000)
-        
+        setTimeout(navigate(`/pin/${encodedEmail}`), 3000);
       }
     } catch (error) {
       setResponse({
