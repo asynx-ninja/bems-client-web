@@ -6,6 +6,7 @@ import { Carousel } from "react-responsive-carousel";
 const SignupPage = () => {
   const [emptyFields, setEmptyFields] = useState([]);
   const [empty, setEmpty] = useState(false);
+  const [restrict, setRestrict] = useState(false)
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -88,30 +89,34 @@ const SignupPage = () => {
       setEmpty(true);
       setEmptyFields(arr);
     } else {
-      localStorage.setItem(
-        "Step1",
-        JSON.stringify({
-          ...formData,
-          birthday: new Date(formData.birthday), // Use the birthday string instead of the original date
-          age: calculateAge(formData.birthday),
-        })
-      );
+      if (calculateAge(formData.birthday) < 18) {
+        setRestrict(true)
+      } else {
+        localStorage.setItem(
+          "Step1",
+          JSON.stringify({
+            ...formData,
+            birthday: new Date(formData.birthday), // Use the birthday string instead of the original date
+            age: calculateAge(formData.birthday),
+          })
+        );
 
-      // Clear the form
-      setFormData({
-        firstName: "",
-        lastName: "",
-        middleName: "",
-        suffix: "",
-        birthday: "",
-        age: 0,
-        sex: "",
-      });
+        // Clear the form
+        setFormData({
+          firstName: "",
+          lastName: "",
+          middleName: "",
+          suffix: "",
+          birthday: "",
+          age: 0,
+          sex: "",
+        });
 
-      setEmpty(false);
+        setEmpty(false);
 
-      // Navigate to the next page
-      navigate("/next_signup");
+        // Navigate to the next page
+        navigate("/next_signup");
+      }
     }
   };
 
@@ -196,6 +201,15 @@ const SignupPage = () => {
             >
               <span className="font-bold">Warning:</span> Please fill-out all
               fields: {emptyFields.join(", ")}!
+            </div>
+          )}
+          {restrict && (
+            <div
+              className="bg-red-50 border border-red-200 text-sm text-red-600 rounded-md p-4 mt-2 mb-4"
+              role="alert"
+            >
+              <span className="font-bold">Warning:</span> Age must be
+              18 and above to Register.
             </div>
           )}
           <h1 className="py-3 mb-3 font-bold">Step 1: Personal Information</h1>

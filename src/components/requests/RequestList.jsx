@@ -7,8 +7,14 @@ const RequestList = ({ request, selectedItems, checkboxHandler, setViewRequest }
     const page = location.pathname.split("/")[1]
 
     const DateFormat = (date) => {
-        const dateFormat = date === undefined ? "" : date.substr(0, 10);
-        return dateFormat;
+        if (!date) return "";
+
+        const options = {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+        };
+        return new Intl.DateTimeFormat("en-US", options).format(new Date(date));
     };
 
     const handleView = (item) => {
@@ -19,16 +25,9 @@ const RequestList = ({ request, selectedItems, checkboxHandler, setViewRequest }
         Object.entries(request).map(([idx, item]) => (
             <tr key={idx} className="odd:bg-slate-100 text-center">
                 <td className="px-6 py-3">
-                    <span className="text-xs sm:text-sm text-black line-clamp-2 ">
-                        {item.service_id}
+                    <span className="text-xs sm:text-sm text-black line-clamp-2 uppercase">
+                        {item.service_name}
                     </span>
-                </td>
-                <td className="px-6 py-3">
-                    <div className="flex justify-center items-center">
-                        <span className="text-xs sm:text-sm text-black  line-clamp-2 ">
-                            {item.form[0].lastName.value}, {item.form[0].firstName.value}
-                        </span>
-                    </div>
                 </td>
                 <td className="px-6 py-3">
                     <div className="flex justify-center items-center">
@@ -47,10 +46,10 @@ const RequestList = ({ request, selectedItems, checkboxHandler, setViewRequest }
                                 </span>
                             </div>
                         )}
-                        {item.status === "Not Responded" && (
-                            <div className="flex w-full items-center justify-center bg-pink-700 m-2 rounded-lg">
+                        {item.status === "Transaction Completed" && (
+                            <div className="flex w-full items-center justify-center bg-green-500 m-2 rounded-lg">
                                 <span className="text-xs sm:text-sm font-bold text-white p-3 mx-5">
-                                    NOT RESPONDED
+                                    TRANSACTION COMPLETED
                                 </span>
                             </div>
                         )}

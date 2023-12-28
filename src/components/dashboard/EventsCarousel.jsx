@@ -3,6 +3,7 @@ import { Carousel } from "react-responsive-carousel";
 import { useParams, useSearchParams, Link } from "react-router-dom";
 import API_LINK from "../../config/API";
 import axios from "axios";
+import banner from "../../assets/header/montalban-banner2.png"
 
 const EventsCarousel = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -27,11 +28,20 @@ const EventsCarousel = () => {
   }, [brgy]);
 
   const dateFormat = (date) => {
-    const birthdate = date === undefined ? "" : date.substr(0, 10);
-    return birthdate;
+    if (!date) return "";
+
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    };
+    return new Intl.DateTimeFormat("en-US", options).format(new Date(date));
   };
 
-  // console.log(allAnnouncement)
+  console.log(announcements)
 
   return (
     <div
@@ -58,6 +68,9 @@ const EventsCarousel = () => {
               key={i}
               className="sm:w-full flex flex-col h-auto text-left p-5"
             >
+              <div>
+                <img src={item.collections.banner.link === undefined ? banner : item.collections.banner.link} alt="" />
+              </div>
               <div className="pl-[10px] my-[10px]">
                 <h1 className="font-medium truncate">{item.title}</h1>
                 <p className="text-gray-500">{dateFormat(item.date)}</p>
