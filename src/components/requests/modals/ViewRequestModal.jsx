@@ -113,6 +113,8 @@ const ViewRequestModal = ({ viewRequest }) => {
         isRepliable: false,
         date: new Date(),
         folder_id: viewRequest.folder_id,
+        last_sender: viewRequest.response[viewRequest.response.length - 1],
+        last_array: viewRequest.response.length - 1
       };
       var formData = new FormData();
       formData.append("response", JSON.stringify(obj));
@@ -121,7 +123,7 @@ const ViewRequestModal = ({ viewRequest }) => {
       }
 
       const response = await axios.patch(
-        `${API_LINK}/requests/?req_id=${viewRequest._id}&last_response=${viewRequest.response.length - 1}&user_type=${"Resident"}`,
+        `${API_LINK}/requests/?req_id=${viewRequest._id}&user_type=${"Residentpnpm run dev"}`,
         formData
       );
 
