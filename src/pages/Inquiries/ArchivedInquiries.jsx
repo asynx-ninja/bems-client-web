@@ -22,8 +22,7 @@ const ArchivedInquiries = () => {
     const brgy = searchParams.get("brgy");
     const [inquiries, setInquiries] = useState([]);
     const [inquiry, setInquiry] = useState([]);
-    const [sortOrder, setSortOrder] = useState("desc");
-    const [sortColumn, setSortColumn] = useState(null);
+
 
     useEffect(() => {
         document.title = "Inquiries | Barangay E-Services Management";
@@ -43,34 +42,6 @@ const ArchivedInquiries = () => {
         fetch();
     }, []);
 
-    const handleSort = (sortBy) => {
-        const newSortOrder = sortOrder === "asc" ? "desc" : "asc";
-        setSortOrder(newSortOrder);
-        setSortColumn(sortBy);
-
-        const sortedData = inquiries.slice().sort((a, b) => {
-            if (sortBy === "inquiries_id") {
-                return newSortOrder === "asc"
-                    ? a.inquiries_id.localeCompare(b.inquiries_id)
-                    : b.inquiries_id.localeCompare(a.inquiries_id);
-            } else if (sortBy === "lastName") {
-                return newSortOrder === "asc"
-                    ? a.lastName.localeCompare(b.lastName)
-                    : b.lastName.localeCompare(a.lastName);
-            } else if (sortBy === "isApproved") {
-                const order = { Completed: 1, "In Progress": 2, "Not Responded": 3 };
-                return newSortOrder === "asc"
-                    ? order[a.isApproved] - order[b.isApproved]
-                    : order[b.isApproved] - order[a.isApproved];
-            }
-
-            return 0;
-        });
-
-        setInquiries(sortedData);
-    };
-
-    // console.log(inquiries);
 
     const checkboxHandler = (e) => {
         let isSelected = e.target.checked;
@@ -142,108 +113,9 @@ const ArchivedInquiries = () => {
                 </div>
                 <div className="sm:w-full lg:w-[80%]git a flex flex-col">
                     <div className="flex flex-col lg:flex-row">
-                        {/* SORT */}
-                        <div class="hs-dropdown relative inline-flex">
-                            <button
-                                id="hs-dropdown-basic"
-                                type="button"
-                                class="hs-dropdown-toggle w-full lg:w-40 mb-5 lg:mb-0 py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border font-medium text-white shadow-sm align-middle bg-custom-green-table-header"
-                            >
-                                SORT BY
-                                <svg
-                                    class="hs-dropdown-open:rotate-180 w-2.5 h-2.5 text-white"
-                                    width="16"
-                                    height="16"
-                                    viewBox="0 0 16 16"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path
-                                        d="M2 5L8.16086 10.6869C8.35239 10.8637 8.64761 10.8637 8.83914 10.6869L15 5"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                    />
-                                </svg>
-                            </button>
-                            <ul
-                                className="bg-custom-green-header hs-dropdown-menu w-72 transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden z-10 shadow-md rounded-lg p-2 "
-                                aria-labelledby="hs-dropdown"
-                            >
-                                <li
-                                    onClick={() => handleSort("inquiries_id")}
-                                    className="font-medium uppercase flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-white hover:bg-gradient-to-r from-custom-green-button to-custom-green-header hover:text-[#EFC586] focus:ring-2 focus:ring-blue-500 "
-                                >
-                                    SERVICE ID
-                                    {sortColumn === "inquiries_id" && (
-                                        <span className="ml-auto">
-                                            {sortOrder === "asc" ? (
-                                                <span>DESC &darr;</span>
-                                            ) : (
-                                                <span>ASC &uarr;</span>
-                                            )}
-                                        </span>
-                                    )}
-                                </li>
-                                <li
-                                    onClick={() => handleSort("date")}
-                                    className="font-medium uppercase flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-white hover:bg-gradient-to-r from-custom-green-button to-custom-green-header hover:text-[#EFC586] focus:ring-2 focus:ring-blue-500 "
-                                >
-                                    Date
-                                    {sortColumn === "date" && (
-                                        <span className="ml-auto">
-                                            {sortOrder === "asc" ? (
-                                                <span>OLD TO LATEST &darr;</span>
-                                            ) : (
-                                                <span>LATEST TO OLD &uarr;</span>
-                                            )}
-                                        </span>
-                                    )}
-                                </li>
-                                <li
-                                    onClick={() => handleSort("isApproved")}
-                                    className="font-medium uppercase flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-white hover:bg-gradient-to-r from-custom-green-button to-custom-green-header hover:text-[#EFC586] focus:ring-2 focus:ring-blue-500 "
-                                >
-                                    STATUS
-                                    {sortColumn === "isApproved" && (
-                                        <span className="ml-auto">
-                                            {sortOrder === "asc" ? (
-                                                <span>DESC &darr;</span>
-                                            ) : (
-                                                <span>ASC &uarr;</span>
-                                            )}
-                                        </span>
-                                    )}
-                                </li>
-                            </ul>
-                        </div>
-                        <div className="flex sm:flex-col md:flex-row w-full h-auto">
-                            {/* Search */}
-                            <div className="relative lg:ml-5 w-full">
-                                <form className="flex my-auto">
-                                    <div className="relative w-full">
-                                        <div className="flex flex-row sm:w-12/6 sm:h-[2.5rem] ">
-                                            <button
-                                                type="submit"
-                                                className="sm:px-5 py-3.5 px-8 my-auto text-sm font-medium text-white bg-custom-green-table-header rounded-l-lg border"
-                                            >
-                                                <FiSearch
-                                                    size={20} // You can adjust the size as needed
-                                                    style={{ color: "#ffffff" }}
-                                                />
-                                            </button>
 
-                                            <input
-                                                type="search"
-                                                id="search-dropdown"
-                                                className="block py-6 flex-grow z-1 text-sm text-gray-900 bg-gray-50 rounded-r-lg border-l-gray-50 border-l-2 border border-gray-300"
-                                                placeholder="Search..."
-                                                required
-                                            />
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
+                        <div className="flex sm:flex-col md:flex-row w-full h-auto justify-end">
+
 
                             {/* RESTORE */}
                             <div className="hs-tooltip sm:mt-[20px] sm:mx-auto md:mt-0 inline-block md:mx-[10px] my-auto w-[50px]">
@@ -251,7 +123,7 @@ const ArchivedInquiries = () => {
                                     type="button"
                                     data-hs-overlay="#hs-modal-restoreInquiry"
                                     className="hs-tooltip-toggle w-[50px] h-[50px] text-white rounded-md  bg-pink-800 font-medium text-xs sm:py-1 md:px-3 md:py-2 flex items-center justify-center"
-                                    >
+                                >
                                     <FaTrashRestoreAlt size={24} style={{ color: "#ffffff" }} />
                                     <span
                                         className="sm:hidden md:block hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-20 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded-md shadow-sm "
