@@ -72,7 +72,7 @@ const Dashboard = () => {
           <div className='flex flex-col py-5 w-[50%] justify-center'>
             <h1 className='text-white font-bold sm:text-[12px] lg:text-[20px] x:text-[28px] sm:leading-3 md:leading-4 lg:leading-5 x:leading-7'>EXPLORE BEAUTY OF THE BARANGAY</h1>
             <Link
-              to={`/barangay-info/?id=${id}&brgy=${brgy}`}
+              to={`/brgy-tourist-spot/?id=${id}&brgy=${brgy}`}
               className='sm:w-[90px] lg:w-[120px] mt-[18px] bg-white font-medium sm:text-[10px] lg:text-[14px] py-[8px] rounded-md hover:scale-[105%] transition text-center'
             >
               <h1>

@@ -77,6 +77,8 @@ const ComposeModal = () => {
       const response = await axios.post(`${API_LINK}/inquiries/`, formData)
 
       // console.log(response)
+
+      window.location.reload()
     } catch (error) {
       console.log(error)
     }
@@ -167,7 +169,7 @@ const ComposeModal = () => {
                       onChange={handleOnCompose}
                       className="w-full p-2 border border-gray-300 rounded focus:border-green-500 focus:ring-green-500"
                     >
-                      <option value="" disabled>-- Select Recipient --</option>
+                      <option value="" selected disabled>-- Select Recipient --</option>
                       <option value="Admin">Admin</option>
                       <option value="Staff">Staff</option>
                     </select>

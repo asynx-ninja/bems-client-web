@@ -36,6 +36,9 @@ import EventsInfo from "../components/dashboard/EventsInfo";
 
 //Tourist Spot
 import TouristSpotMain from "../components/touristspot/TouristSpotMain";
+import TouristSpot from "../pages/TouristSpot"
+import TouristSpotInfo from "../components/touristspot/TouristSpotInfo"
+
 const pages = [
   {
     path: "/dashboard",
@@ -142,6 +145,24 @@ const pages = [
       <>
         <Navbar />
         <ServicesForm />
+      </>
+    ),
+  },
+  {
+    path: "/brgy-tourist-spot",
+    element: (
+      <>
+        <Navbar />
+        <TouristSpot />
+      </>
+    ),
+  },
+  {
+    path: "/brgy-tourist-spot-info",
+    element: (
+      <>
+        <Navbar />
+        <TouristSpotInfo />
       </>
     ),
   },

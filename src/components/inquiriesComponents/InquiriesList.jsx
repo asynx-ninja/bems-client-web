@@ -7,8 +7,14 @@ const InquiriesList = ({ inquiries, selectedItems, checkboxHandler, setInquiry }
     const page = location.pathname.split("/")[1]
 
     const DateFormat = (date) => {
-        const dateFormat = date === undefined ? "" : date.substr(0, 10);
-        return dateFormat;
+        if (!date) return "";
+
+        const options = {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+        };
+        return new Intl.DateTimeFormat("en-US", options).format(new Date(date));
     };
 
     const handleView = (item) => {
@@ -33,13 +39,6 @@ const InquiriesList = ({ inquiries, selectedItems, checkboxHandler, setInquiry }
                     <span className="text-xs sm:text-sm text-black line-clamp-2 ">
                         {item.inq_id}
                     </span>
-                </td>
-                <td className="px-6 py-3">
-                    <div className="flex justify-center items-center">
-                        <span className="text-xs sm:text-sm text-black  line-clamp-2 ">
-                            {item.name}
-                        </span>
-                    </div>
                 </td>
                 <td className="px-6 py-3">
                     <div className="flex justify-center items-center">
