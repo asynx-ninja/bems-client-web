@@ -25,7 +25,6 @@ import Settings from "../pages/Settings";
 import BarangayInfo from "../pages/BarangayInfo";
 import Requests from "../pages/Requests";
 import Inquiries from "../pages/Inquiries/Inquiries";
-import ArchivedInquiries from "../pages/Inquiries/ArchivedInquiries";
 import Services from "../pages/Services";
 import ServicesForm from "../pages/ServicesForm";
 import Reservation from "../pages/Reservation"
@@ -120,15 +119,6 @@ const pages = [
         <Inquiries />
       </>
     ),
-  },
-  {
-    path: "/archive",
-    element: (
-      <>
-        <Navbar />
-        <ArchivedInquiries />
-      </>
-    )
   },
   {
     path: "/services",

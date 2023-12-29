@@ -24,8 +24,7 @@ const Inquiries = () => {
   const brgy = searchParams.get("brgy");
   const [inquiries, setInquiries] = useState([]);
   const [inquiry, setInquiry] = useState([]);
-  const [sortOrder, setSortOrder] = useState("desc");
-  const [sortColumn, setSortColumn] = useState(null);
+
 
   useEffect(() => {
     document.title = "Inquiries | Barangay E-Services Management";
@@ -45,7 +44,6 @@ const Inquiries = () => {
     fetch();
   }, []);
 
-  // console.log(inquiries);
 
   const checkboxHandler = (e) => {
     let isSelected = e.target.checked;
@@ -96,44 +94,14 @@ const Inquiries = () => {
           alt=""
         />
       </div>
-      <div className="p-4 lg:p-10 border flex sm:flex-col lg:flex-row">
-        <div className="w-full lg:w-[30%] md:mr-[20px] bg-white rounded-lg">
-          <h2 className="text-[2rem] font-bold text-green-900 mb-6">INQUIRIES</h2>
-          <div className="mb-6">
-            <Link
-              to={`/inquiries/?id=${id}&brgy=${brgy}`}
-              className="py-2 px-4 rounded-lg font-bold lg:text-left text-center bg-green-900 text-white mb-4 transition ease-in-out delay-50 block"
-            >
-              Inquiries
-            </Link>
-            <Link
-              to={`/archive/?id=${id}&brgy=${brgy}`}
-              className="py-2 px-4 rounded-lg font-bold lg:text-left text-center bg-[#d9d9d9] text-green-900 hover:bg-green-900 hover:text-white transition ease-in-out delay-50 block"
-            >
-              Archives
-            </Link>
-          </div>
-        </div>
-        <div className="sm:w-full lg:w-[80%] flex flex-col">
-          <div className="flex flex-row w-full">
-            <div className="sm:mt-[20px] w-full sm:mx-auto md:mt-0 flex justify-end items-end">
-              {/* ARCHIVE BUTTON */}
-              <div className="hs-tooltip inline-block mx-[10px] my-auto w-[50px]">
-                <button
-                  type="button"
-                  data-hs-overlay="#hs-modal-archiveInquiry"
-                  className="hs-tooltip-toggle w-[50px] h-[50px] text-white rounded-md  bg-pink-800 font-medium text-xs sm:py-1 md:px-3 md:py-2 flex items-center justify-center"
-                >
-                  <AiOutlineStop size={24} style={{ color: "#ffffff" }} />
-                  <span
-                    className="sm:hidden md:block hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-20 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded-md shadow-sm "
-                    role="tooltip"
-                  >
-                    Archived Selected Inquiries
-                  </span>
-                </button>
-              </div>
+      <div className="p-4 lg:p-10 border flex flex-col">
+        <div className="w-full flex flex-col">
+          <div className="flex w-full justify-between">
+            <div className="md:mr-[20px] bg-white rounded-lg">
+              <h2 className="text-[2rem] font-bold text-green-900">INQUIRIES</h2>
+            </div>
 
+            <div className="flex h-auto justify-end">
               {/* COMPOSE BUTTON */}
               <button
                 type="button"
@@ -182,16 +150,19 @@ const Inquiries = () => {
               </thead>
 
               {/* Table Body */}
-              {
-                inquiries.length === 0 ?
-                  <tr>
-                    <th className="pt-[50px]" rowSpan={5} colSpan={7}>
-                      No Records Shown
-                    </th>
-                  </tr>
-                  : null
-              }
-              <InquiriesList inquiries={inquiries} selectedItems={selectedItems} checkboxHandler={checkboxHandler} setInquiry={setInquiry} />
+              {inquiries.length === 0 ? (
+                <tr>
+                  <th className="pt-[50px]" rowSpan={5} colSpan={7}>
+                    No Records Shown
+                  </th>
+                </tr>
+              ) : null}
+              <InquiriesList
+                inquiries={inquiries}
+                selectedItems={selectedItems}
+                checkboxHandler={checkboxHandler}
+                setInquiry={setInquiry}
+              />
             </table>
           </div>
 

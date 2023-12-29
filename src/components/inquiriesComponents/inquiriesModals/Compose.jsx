@@ -17,6 +17,7 @@ const ComposeModal = () => {
     email: "",
     compose: {
       subject: "",
+      type: "Resident",
       message: "",
       date: new Date(),
       to: "",
@@ -70,6 +71,7 @@ const ComposeModal = () => {
     try {
       var formData = new FormData()
       formData.append("inquiries", JSON.stringify(composeMessage))
+      console.log(composeMessage)
       for (let i = 0; i < createFiles.length; i++) {
         formData.append("files", createFiles[i])
       }

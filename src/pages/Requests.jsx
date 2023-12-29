@@ -19,8 +19,7 @@ const Requests = () => {
   const [request, setRequest] = useState([])
   const [viewRequest, setViewRequest] = useState([])
   const [selectedItems, setSelectedItems] = useState([]);
-  const [sortOrder, setSortOrder] = useState("desc");
-  const [sortColumn, setSortColumn] = useState(null);
+
 
   useEffect(() => {
     document.title = "Service Request | Barangay E-Services Management";
@@ -46,6 +45,8 @@ const Requests = () => {
   }, [brgy, id]);
 
   console.log(request)
+
+
 
   // console.log(viewRequest);
 
@@ -85,6 +86,8 @@ const Requests = () => {
 
       <div className="p-4 lg:p-10">
         <div className="flex flex-col">
+
+
           {/* Table */}
           <div className="overflow-x-auto sm:h-[380px] lg:h-[680px] xl:h-[700px] xxl:h-[700px] xxxl:h-[640px] border border-b-0 mt-5 rounded-t-xl">
             <table className="w-full divide-y divide-gray-200 ">

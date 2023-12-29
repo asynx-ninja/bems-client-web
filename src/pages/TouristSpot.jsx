@@ -5,6 +5,7 @@ import API_LINK from "../config/API";
 
 //COMPONENTS
 import video from "../assets/image/video.mp4";
+import Breadcrumbs from "../components/touristspot/Breadcrumbs"
 
 
 const TouristSpot = () => {
@@ -52,6 +53,8 @@ const TouristSpot = () => {
                     <h1 className='text-[38px] text-center'>BARANGAY <b className='text-custom-green-header'>{brgy}</b></h1>
                 </div>
             </div>
+
+            <Breadcrumbs />
 
             <div className="sm:mt-[20px] lg:mt-[50px]">
                 {touristSpot.map((item, i) => (

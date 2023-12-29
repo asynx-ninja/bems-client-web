@@ -5,6 +5,7 @@ import API_LINK from "../../config/API";
 
 //COMPONENTS
 import video from "../../assets/image/video.mp4";
+import Breadcrumbs from "../../components/touristspot/Breadcrumbs"
 
 
 const TouristSpotInfo = () => {
@@ -45,7 +46,7 @@ const TouristSpotInfo = () => {
     return (
         <div className='flex flex-col mb-[50px]'>
 
-            <div>
+            <div className="mb-[20px]">
                 <div className="relative lg:h-[250px] w-full object-cover">
                     <video className="h-full w-full object-cover" autoPlay muted loop>
                         <source src={video} type="video/mp4" />
@@ -58,6 +59,8 @@ const TouristSpotInfo = () => {
                     />
                 </div>
             </div>
+
+            <Breadcrumbs  touristInfo={touristInfo} />
 
             <div className="grid sm:grid-cols-1 lg:grid-cols-2 sm:px-[20px] lg:px-[50px] py-[50px]">
                 <div className="grid gap-4 w-full">
