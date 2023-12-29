@@ -87,6 +87,9 @@ const Requests = () => {
       <div className="p-4 lg:p-10">
         <div className="flex flex-col">
 
+          <div className="md:mr-[20px] bg-white rounded-lg">
+            <h2 className="text-[2rem] font-bold text-green-900">REQUEST</h2>
+          </div>
 
           {/* Table */}
           <div className="overflow-x-auto sm:h-[380px] lg:h-[680px] xl:h-[700px] xxl:h-[700px] xxxl:h-[640px] border border-b-0 mt-5 rounded-t-xl">
