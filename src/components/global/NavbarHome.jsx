@@ -79,14 +79,11 @@ const NavbarHome = () => {
                   Services
                 </button>
               </Links>
-              <Links to="/#tourist">
-                <button
-                  // value={"tourist"}
-                  // onClick={OnNav}
-                  className="text-white uppercase hover:bg-gray-700 hover:text-white px-2 py-2 rounded-md text-md"
-                >
-                  Tourist Spot
-                </button>
+              <Links
+                to="/tourist-spot-list"
+                className="text-white uppercase hover:bg-gray-700 hover:text-white px-2 py-2 rounded-md text-md"
+              >
+                Tourist Spot
               </Links>
               <Link
                 to="/barangay"
@@ -195,14 +192,11 @@ const NavbarHome = () => {
               Services
             </button>
           </Links>
-          <Links to="/#tourist">
-            <button
-              // value={"tourist"}
-              // onClick={OnNav}
-              className="text-black-300 hover:bg-gray-700 w-full text-left hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-            >
-              Tourist Spot
-            </button>
+          <Links
+            to="/tourist-spot-list"
+            className="text-black-300 hover:bg-gray-700 w-full text-left hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+          >
+            Tourist Spot
           </Links>
           <Link
             to="/barangay"

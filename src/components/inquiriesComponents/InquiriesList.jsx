@@ -58,7 +58,7 @@ const InquiriesList = ({ inquiries, selectedItems, checkboxHandler, setInquiry }
                 <td className="px-6 py-3">
                     <div className="flex justify-center items-center">
                         {item.isApproved === "Completed" && (
-                            <div className="flex w-full items-center justify-center bg-custom-green-button3 m-2 rounded-lg">
+                            <div className="flex w-full items-center justify-center bg-custom-green-button2 m-2 rounded-lg">
                                 <span className="text-xs sm:text-sm font-bold text-white p-3 mx-5">
                                     COMPLETED
                                 </span>

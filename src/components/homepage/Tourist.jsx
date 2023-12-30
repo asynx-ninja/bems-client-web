@@ -1,7 +1,9 @@
-import React from "react";
 import Carousel from "react-multi-carousel";
+import { React, useEffect, useState } from "react";
+import { Link, useSearchParams, useLocation } from "react-router-dom";
+import axios from "axios";
+import API_LINK from "../../config/API";
 import "react-multi-carousel/lib/styles.css";
-import { Link } from "react-router-dom";
 import lubog1 from "../../assets/tourist-spot/lubog1.jpg"
 import lubog2 from "../../assets/tourist-spot/lubog2.jpg"
 import lubog3 from "../../assets/tourist-spot/lubog3.jpg"
@@ -20,6 +22,23 @@ import sdalaga3 from "../../assets/tourist-spot/susong-dalaga3.jpg"
 import sdalaga4 from "../../assets/tourist-spot/susong-dalaga4.jpg"
 
 const Tourist = () => {
+
+  const [touristSpot, setTouristSpot] = useState([]);
+
+  useEffect(() => {
+    const fetchTouristSpot = async () => {
+      try {
+        const result = await axios.get(`${API_LINK}/tourist_spot/?brgy=${"All"}&archived=false`)
+
+        setTouristSpot(result.data)
+      } catch (error) {
+        console.log(error)
+      }
+
+    }
+    fetchTouristSpot();
+  })
+
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
@@ -119,7 +138,7 @@ const Tourist = () => {
           customRightArrow={<></>}
           className="sm:mt-12 -mt-12 md:mt-8 lg:mt-0 "
         >
-          {touristSpots.map((spot, index) => (
+          {touristSpot.map((spot, index) => (
             <div className="carousel-item-container p-4 " key={index}>
               <div className="rounded-xl relative">
                 {/* Overlay */}
@@ -131,19 +150,7 @@ const Tourist = () => {
                     {spot.location}
                   </p>
                   <Link
-                    to={`/tourist-spot/?name=${encodeURIComponent(
-                      spot.name
-                    )}&location=${encodeURIComponent(
-                      spot.location
-                    )}&image=${encodeURIComponent(
-                      spot.image
-                    )}&image1=${encodeURIComponent(
-                      spot.image1
-                    )}&image2=${encodeURIComponent(
-                      spot.image2
-                    )}&image3=${encodeURIComponent(
-                      spot.image3
-                    )}&details=${encodeURIComponent(spot.details)}`}
+                    to={`/tourist-spot/?tourist_id=${spot._id}`}
                   >
                     <button
                       type="button"
@@ -155,7 +162,7 @@ const Tourist = () => {
                 </div>
                 <img
                   className="max-h-[160px] md:max-h-[200px] w-full object-cover rounded-xl"
-                  src={spot.image}
+                  src={spot.image[0].link}
                   alt={spot.name}
                 />
               </div>

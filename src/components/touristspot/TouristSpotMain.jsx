@@ -1,91 +1,110 @@
-import { useLocation } from "react-router-dom";
+import { React, useEffect, useState } from "react";
+import { Link, useSearchParams, useLocation } from "react-router-dom";
+import axios from "axios";
+import API_LINK from "../../config/API";
+
+//COMPONENTS
 import NavbarHome from "../global/NavbarHome";
-import React, { useState } from "react";
-import Breadcrumbs from "./Breadcrumbs";
+import video from "../../assets/image/video.mp4";
+import Breadcrumbs from "../../components/touristspot/Breadcrumbs"
+
 
 const TouristSpotMain = () => {
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const name = queryParams.get("name");
-  const locations = queryParams.get("location");
-  const details = queryParams.get("details");
-  const image = queryParams.get("image");
-  const image1 = queryParams.get("image1");
-  const image2 = queryParams.get("image2");
-  const image3 = queryParams.get("image3");
+  const [searchParams, setSearchParams] = useSearchParams()
+  const tourist_id = searchParams.get("tourist_id")
+  const [img, setImg] = useState("");
+  const [imgList, setImgList] = useState([]);
+  const [touristInfo, setTouristInfo] = useState([]);
 
-  const [selectedImage, setSelectedImage] = useState(null);
+  useEffect(() => {
+    const fetchTouristSpot = async () => {
+      try {
+        const result = await axios.get(`${API_LINK}/tourist_spot/tourist_info/${tourist_id}`)
 
-  const openImage = (imageSrc) => {
-    setSelectedImage(imageSrc);
-  };
+        setTouristInfo(result.data[0])
+        setImgList(result.data[0].image)
+        setImg(result.data[0].image[0].link);
 
-  const closeImage = () => {
-    setSelectedImage(null);
+      } catch (error) {
+        console.log(error)
+      }
+
+    }
+    fetchTouristSpot();
+  }, [tourist_id])
+
+  // console.log(touristInfo)
+
+  const handleOnMouseOver = (e) => {
+    const data = imgList[e.target.id];
+    data === undefined ? setImg(imgList[0].link) : setImg(data.link);
   };
 
   return (
     <>
       <NavbarHome />
-      <div className="p-6 bg-white mb-12 rounded-lg shadow-md md:shadow-none max-w-4xl m-auto mt-12 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-105">
-        <Breadcrumbs/>
-        <div className="flex justify-between items-center mb-4">
-          <div className="flex flex-col">
-            <h1 className="text-3xl font-bold text-green-700">{name}</h1>
-            <h2 className="text-xl leading-5 text-gray-600 mb-4">{locations}</h2>
-          </div>
-          {/* <Links to="/#tourist">
-            <button className="mb-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-2 md:px-4 rounded">
-              Back
-            </button>
-          </Links> */}
+
+      <div className="mb-[20px]">
+        <div className="relative lg:h-[250px] w-full object-cover">
+          <video className="h-full w-full object-cover" autoPlay muted loop>
+            <source src={video} type="video/mp4" />
+          </video>
+          <div
+            className="absolute inset-0 bg-black opacity-50"
+            style={{
+              content: "''",
+            }}
+          />
         </div>
-        <div className="grid grid-cols-2 gap-4 mb-6">
-          <img
-            className="w-full h-32 object-cover rounded-lg cursor-pointer"
-            src={image}
-            alt={name}
-            onClick={() => openImage(image)}
-          />
-          {/* Repeat for other images */}
-          <img
-            className="w-full h-32 object-cover rounded-lg cursor-pointer"
-            src={image1}
-            alt={name}
-            onClick={() => openImage(image1)}
-          />
-          <img
-            className="w-full h-32 object-cover rounded-lg cursor-pointer"
-            src={image2}
-            alt={name}
-            onClick={() => openImage(image2)}
-          />
-          <img
-            className="w-full h-32 object-cover rounded-lg cursor-pointer"
-            src={image3}
-            alt={name}
-            onClick={() => openImage(image3)}
-          />
-          {selectedImage && (
-            <div
-              className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50"
-              onClick={closeImage}
-            >
-              <div className="bg-white p-4 rounded-lg flex items-center justify-center">
-                <img
-                  src={selectedImage}
-                  alt="Selected"
-                  className="max-w-md max-h-md rounded-lg"
-                />
+      </div>
+
+      <div className='flex flex-col mb-[50px] sm:px-[15px] md:px-[30px]'>
+
+        <Breadcrumbs touristInfo={touristInfo} />
+
+        <div className="grid sm:grid-cols-1 lg:grid-cols-2 sm:px-[20px] lg:px-[50px] py-[50px]">
+          <div className="grid gap-4 w-full">
+            <div>
+              <img className="h-full max-w-full w-full rounded-lg" src={img} alt="" />
+            </div>
+            <div className="grid grid-cols-5 sm:gap-1 lg:gap-4">
+              {imgList.map((item, i) => (
+                <button
+                  onMouseOver={handleOnMouseOver}
+                  value={item.id}
+                  id={item.id}
+                  key={i}
+                  className="h-full max-w-full"
+                >
+                  <img
+                    id={i}
+                    name={item.name}
+                    className="h-auto max-w-full rounded-lg"
+                    src={item.link}
+                    alt=""
+                  />
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <div className='font-bold md:w-[90%] mx-auto py-10 flex justify-between'>
+              <div className="flex flex-col gap-3">
+                <h1 className='text-[38px] leading-8'>Welcome to <b className="text-custom-green-header">{touristInfo.name}</b></h1>
+                <p className="text-gray-500">LOCATION: {touristInfo.brgy}</p>
               </div>
             </div>
-          )}
+            <div className="w-full md:px-[20px] ">
+              <textarea
+                disabled
+                value={touristInfo.details}
+                className="w-full h-[600px] md:text-[18px] text-black border-0 bg-transparent resize-none">
+              </textarea>
+            </div>
+          </div>
         </div>
-        {details.split("\n").map((paragraph, index) => (
-          <p key={index} className="mb-4 text-gray-700">
-            {paragraph}
-          </p>
-        ))}
+
       </div>
     </>
   );

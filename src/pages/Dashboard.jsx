@@ -70,9 +70,9 @@ const Dashboard = () => {
 
         <div className='bg-[#7251b5] px-5 pt-5 flex flex-row sm:h-auto lg:h-[260px] justify-center rounded-md hover:scale-[105%] transition'>
           <div className='flex flex-col py-5 w-[50%] justify-center'>
-            <h1 className='text-white font-bold sm:text-[12px] lg:text-[20px] x:text-[28px] sm:leading-3 md:leading-4 lg:leading-5 x:leading-7'>EXPLORE BEAUTY OF THE BARANGAY</h1>
+            <h1 className='text-white font-bold sm:text-[12px] lg:text-[20px] x:text-[28px] sm:leading-3 md:leading-4 lg:leading-5 x:leading-7'>GET TO KNOW MY BARANGAY</h1>
             <Link
-              to={`/brgy-tourist-spot/?id=${id}&brgy=${brgy}`}
+              to={`/barangay-info/?id=${id}&brgy=${brgy}`}
               className='sm:w-[90px] lg:w-[120px] mt-[18px] bg-white font-medium sm:text-[10px] lg:text-[14px] py-[8px] rounded-md hover:scale-[105%] transition text-center'
             >
               <h1>
@@ -87,7 +87,7 @@ const Dashboard = () => {
 
         <div className='bg-[#f9a620] px-5 pt-5 flex flex-row sm:h-auto lg:h-[260px]  justify-center rounded-md hover:scale-[105%] transition'>
           <div className='flex flex-col py-5 w-[50%] justify-center'>
-            <h1 className='text-white font-bold sm:text-[12px] lg:text-[20px] x:text-[28px] sm:leading-3 md:leading-4 lg:leading-5 x:leading-7'>PARTICIPATE EVENTS NEAR YOUR BARANGAY!</h1>
+            <h1 className='text-white font-bold sm:text-[12px] lg:text-[20px] x:text-[28px] sm:leading-3 md:leading-4 lg:leading-5 x:leading-7'>COME AND PARTICIPATE EVENTS HERE</h1>
             <Link
               to={`/events-list/?id=${id}&brgy=${brgy}`}
               className='sm:w-[90px] lg:w-[120px] mt-[18px] bg-white font-medium sm:text-[10px] lg:text-[14px] py-[8px] rounded-md hover:scale-[105%] transition text-center'
@@ -121,7 +121,7 @@ const Dashboard = () => {
 
         <div className='bg-[#0077b6] px-5 pt-5 flex flex-row sm:h-auto lg:h-[260px] justify-center rounded-md hover:scale-[105%] transition'>
           <div className='flex flex-col py-5 w-[50%] justify-center'>
-            <h1 className='text-white font-bold sm:text-[12px] lg:text-[20px] x:text-[28px] sm:leading-3 md:leading-4 lg:leading-5 x:leading-7'>TRACK YOUR REQUEST IN BARANGAY SERVICES</h1>
+            <h1 className='text-white font-bold sm:text-[12px] lg:text-[20px] x:text-[28px] sm:leading-3 md:leading-4 lg:leading-5 x:leading-7'>TRACK YOUR FILES IN REQUESTED SERVICE</h1>
             <Link
               to={`/requests/?id=${id}&brgy=${brgy}&user_id=${userData.user_id}`}
               className='sm:w-[90px] lg:w-[120px] mt-[18px] bg-white font-medium sm:text-[10px] lg:text-[14px] py-[8px] rounded-md hover:scale-[105%] transition text-center'
@@ -138,7 +138,7 @@ const Dashboard = () => {
 
         <div className='bg-[#d00000] px-5 pt-5 flex flex-row sm:h-auto lg:h-[260px] justify-center rounded-md hover:scale-[105%] transition'>
           <div className='flex flex-col py-5 w-[50%] justify-center'>
-            <h1 className='text-white font-bold sm:text-[12px] lg:text-[20px] x:text-[28px] sm:leading-3 md:leading-4 lg:leading-5 x:leading-7'>GOT A QUERY? TALK TO US!</h1>
+            <h1 className='text-white font-bold sm:text-[12px] lg:text-[20px] x:text-[28px] sm:leading-3 md:leading-4 lg:leading-5 x:leading-7'>GOT A QUERIES? TALK TO US!</h1>
             <Link
               to={`/inquiries/?id=${id}&brgy=${brgy}`}
               className='sm:w-[90px] lg:w-[120px] mt-[18px] bg-white font-medium sm:text-[10px] lg:text-[14px] py-[8px] rounded-md hover:scale-[105%] transition text-center'
