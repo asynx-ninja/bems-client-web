@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { FiSearch } from "react-icons/fi";
 import { useState, useEffect } from "react";
 // import ReactPaginate from "react-paginate";
+import video from "../assets/image/video.mp4";
 import axios from "axios";
 import API_LINK from "../config/API";
 import { useSearchParams } from "react-router-dom";
@@ -71,16 +72,15 @@ const Requests = () => {
 
   return (
     <div className="flex flex-col">
-      <div className="relative">
-        <img
-          className="h-[400px] w-full object-cover"
-          src="./../src/assets/image/1.png"
-          alt=""
-        />
-        <img
-          className="absolute inset-0 mx-auto my-auto w-[700px]"
-          src="./../src/assets/header/montalban-banner2.png"
-          alt=""
+      <div className="relative lg:h-[250px] w-full object-cover">
+        <video className="h-full w-full object-cover" autoPlay muted loop>
+          <source src={video} type="video/mp4" />
+        </video>
+        <div
+          className="absolute inset-0 bg-black opacity-50"
+          style={{
+            content: "''",
+          }}
         />
       </div>
 

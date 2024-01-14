@@ -1,21 +1,27 @@
 import React from "react";
 import { FaCalendarAlt } from "react-icons/fa";
 import { useRef, useEffect } from "react";
+import { AiFillFilePdf } from "react-icons/ai";
 
 //COMPONENTS
 import ReservationModal from "./ReservationModal";
 
 const Content = ({ announcement }) => {
+  const files =
+    announcement && announcement.collections && announcement.collections.file !== undefined
+      ? announcement.collections.file
+      : "";
+
   const dateFormat = (date) => {
     const newFormat = date === undefined ? "" : date.substr(0, 10);
     return newFormat;
   };
 
   const reqAnother = () => {
-    
+
   }
 
-  console.log(announcement.attendees)
+  console.log(announcement)
 
   return (
     <div className="flex flex-col gap-5">
@@ -46,11 +52,31 @@ const Content = ({ announcement }) => {
           {announcement.details}
         </p>
 
-        <img
-          className="w-[400px] h-[400px] sm:mx-auto lg:mx-0 object-cover rounded-[25px]"
-          id="logo"
-          alt=""
-        />
+        <div>
+          <img
+            className="w-[400px] h-[400px] sm:mx-auto lg:mx-0 object-cover rounded-[25px]"
+            id="logo"
+            alt=""
+          />
+
+          <div className="flex flex-col w-full items-center bg-green-500 shadow-lg py-3 px-3 mt-3 rounded-lg">
+            {files &&
+              files.map((item, idx) => (
+                <div className="my-auto flex justify-start items-center">
+                  <a
+                    key={idx}
+                    href={item.link}
+                    target="_blank"
+                    className="flex gap-5 hover:text-yellow-300 text-white leading-relaxed font-bold uppercase"
+                  >
+                    <AiFillFilePdf className="my-auto" />
+                    {item.name}
+                  </a>
+                </div>
+              ))}
+          </div>
+        </div>
+
       </div>
       <ReservationModal
         eventId={announcement._id}

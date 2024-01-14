@@ -15,6 +15,7 @@ import ArchiveInquiryModal from "../../components/inquiriesComponents/inquiriesM
 import ViewMessage from "../../components/inquiriesComponents/inquiriesModals/ViewMessage";
 import ComposeModal from "../../components/inquiriesComponents/inquiriesModals/Compose";
 import InquiriesList from "../../components/inquiriesComponents/InquiriesList";
+import video from "../../assets/image/video.mp4";
 
 
 const Inquiries = () => {
@@ -82,16 +83,15 @@ const Inquiries = () => {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="relative">
-        <img
-          className="h-[400px] w-full object-cover"
-          src="./../src/assets/image/1.png"
-          alt=""
-        />
-        <img
-          className="absolute inset-0 mx-auto my-auto w-[700px]"
-          src="./../src/assets/header/montalban-banner2.png"
-          alt=""
+      <div className="relative lg:h-[250px] w-full object-cover">
+        <video className="h-full w-full object-cover" autoPlay muted loop>
+          <source src={video} type="video/mp4" />
+        </video>
+        <div
+          className="absolute inset-0 bg-black opacity-50"
+          style={{
+            content: "''",
+          }}
         />
       </div>
       <div className="p-4 lg:p-10 border flex flex-col">

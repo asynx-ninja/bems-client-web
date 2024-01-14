@@ -12,7 +12,6 @@ const EventsInfo = () => {
     const id = searchParams.get("id");
     const brgy = searchParams.get("brgy");
     const [announcements, setAnnouncements] = useState([]);
-    const [services, setServices] = useState([]);
 
     useEffect(() => {
         const fetchEvents = async () => {
@@ -21,7 +20,8 @@ const EventsInfo = () => {
                     `${API_LINK}/announcement/all/?brgy=${brgy}`
                 );
 
-                setAnnouncements(res.data);
+                setAnnouncements(res.data.sort((date1, date2) => new Date(date2.createdAt) - new Date(date1.createdAt)));
+
             } catch (err) {
                 console.log(err);
             }
@@ -36,14 +36,11 @@ const EventsInfo = () => {
             year: "numeric",
             month: "short",
             day: "numeric",
-            hour: "numeric",
-            minute: "numeric",
-            hour12: true,
         };
         return new Intl.DateTimeFormat("en-US", options).format(new Date(date));
     };
 
-    console.log(announcements)
+    // console.log(announcements)
 
     return (
         <div className="mb-[50px]">
@@ -83,7 +80,7 @@ const EventsInfo = () => {
                             <div className="sm:w-full md:w-[70%] flex flex-col gap-3">
                                 <div className="my-[10px]">
                                     <h1 className="font-medium truncate">{item.title}</h1>
-                                    <p className="text-gray-500">{dateFormat(item.date)}</p>
+                                    <p className="text-gray-500">{dateFormat(item.createdAt)}</p>
                                 </div>
                                 <div className="w-full">
                                     <p className="sm:line-clamp-6 md:line-clamp-3 w-full">
