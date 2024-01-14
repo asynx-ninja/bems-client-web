@@ -1,12 +1,34 @@
 import React, { useState } from "react";
 import myImage from "../../assets/image/rizallogo2.png";
 import { Link, useNavigate } from "react-router-dom";
-import { Carousel } from "react-responsive-carousel";
+import axios from "axios";
+import API_LINK from "../../config/API"
+
+// COMPONENTS
+import SideInfo from "../../components/signup/SideInfo";
+import PersonalInfo from "../../components/signup/PersonalInfo";
+import Address from "../../components/signup/Address";
+import AccountCredentials from "../../components/signup/AccountCredentials";
 
 const SignupPage = () => {
+  const [passwordError, setPasswordError] = useState(false);
+  const [passwordStrengthError, setPasswordStrengthError] = useState(false);
+  const [passwordMatchSuccess, setPasswordMatchSuccess] = useState(false);
+  const [passwordStrengthSuccess, setPasswordStrengthSuccess] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [passwordStrength, setPasswordStrength] = useState(0);
+  const [duplicateError, setDuplicateError] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [policyAccepted, setPolicyAccepted] = useState(false);
+  const [successReg, setsuccessReg] = useState(false);
   const [emptyFields, setEmptyFields] = useState([]);
   const [empty, setEmpty] = useState(false);
   const [restrict, setRestrict] = useState(false)
+  const [signupPage, setSignupPage] = useState({
+    personal: true,
+    address: false,
+    credential: false,
+  })
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -16,22 +38,19 @@ const SignupPage = () => {
     age: 0,
     sex: "",
     religion: "",
+    contact: "",
+    civil_status: "",
+    occupation: "",
+    city: "Rodriguez, Rizal",
+    brgy: "",
+    street: "",
+    isVoter: false,
+    isHead: false,
+    email: "",
+    username: "",
+    password: "",
+    type: "Resident",
   });
-
-  const religions = [
-    "Roman Catholic",
-    "Islam",
-    "Iglesia ni Cristo",
-    "Philippine Independent Church (Aglipayan)",
-    "Seventh-day Adventist",
-    "Bible Baptist Church",
-    "United Church of Christ in the Philippines",
-    "Jehovah Witnesses",
-    "Church of Christ",
-    "Born Again",
-    "Other Religous Affiliation",
-    // Add more religions here...
-  ];
 
   const navigate = useNavigate();
 
@@ -40,6 +59,28 @@ const SignupPage = () => {
       ...prev,
       [e.target.name]: e.target.value,
     }));
+
+    if (e.target.name === "password") {
+      const password = e.target.value;
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/;
+      const symbolRegex = /[@$!%*?&]/;
+
+      if (!passwordRegex.test(password) || !symbolRegex.test(password)) {
+        setPasswordStrengthError(true);
+        setPasswordStrengthSuccess(false);
+      } else {
+        setPasswordStrengthError(false);
+        setPasswordStrengthSuccess(true);
+      }
+      // Check if passwords match
+
+      let strength = 0;
+      if (password.length >= 8) strength++;
+      if (/[A-Z]/.test(password)) strength++;
+      if (/[a-z]/.test(password)) strength++;
+      if (/\d/.test(password)) strength++;
+      setPasswordStrength(strength * 25);
+    }
   };
 
   const calculateAge = (birthDate) => {
@@ -57,6 +98,30 @@ const SignupPage = () => {
     return age;
   };
 
+  const handleNextPage = (e) => {
+    if (e.target.name === "Personal") {
+      setSignupPage({
+        personal: true,
+        address: false,
+        credential: false,
+      })
+    } else if (e.target.name === "Address") {
+      setSignupPage({
+        personal: false,
+        address: true,
+        credential: false,
+      })
+    } else if (e.target.name === "Credentials") {
+      setSignupPage({
+        personal: false,
+        address: false,
+        credential: true,
+      })
+    }
+  }
+
+  console.log(formData)
+
   const checkEmptyFields = () => {
     let arr = [];
 
@@ -69,6 +134,14 @@ const SignupPage = () => {
       age: 0,
       sex: "Sex",
       religion: "Religion",
+      contact: "Contact",
+      civil_status: "Civil Status",
+      occupation: "Occupation",
+      city: "City",
+      brgy: "Barangay",
+      street: "Street",
+      isVoter: "Registered Voter",
+      isHead: "Head of the Family",
     };
 
     for (const [key, value] of Object.entries(formData)) {
@@ -80,106 +153,127 @@ const SignupPage = () => {
     return arr;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const arr = checkEmptyFields();
-
-    if (arr.length > 0) {
+    if (
+      !formData.email ||
+      !formData.username ||
+      !formData.password ||
+      !formData.confirmPassword
+    ) {
       setEmpty(true);
-      setEmptyFields(arr);
+      setDuplicateError(false);
+      setShowError(false);
+      return;
+      // Proceed with form submission...
     } else {
-      if (calculateAge(formData.birthday) < 18) {
-        setRestrict(true)
-      } else {
-        localStorage.setItem(
-          "Step1",
-          JSON.stringify({
-            ...formData,
-            birthday: new Date(formData.birthday), // Use the birthday string instead of the original date
-            age: calculateAge(formData.birthday),
-          })
-        );
+      setEmpty(false);
+    }
 
-        // Clear the form
-        setFormData({
-          firstName: "",
-          lastName: "",
-          middleName: "",
-          suffix: "",
-          birthday: "",
-          age: 0,
-          sex: "",
-        });
+    if (!termsAccepted || !policyAccepted) {
+      setShowError(true);
+      setDuplicateError(false);
+      setEmpty(false);
+      return;
+    } else {
+      setShowError(false);
+    }
+    if (formData.password !== formData.confirmPassword) {
+      setPasswordError(true);
+      setPasswordMatchSuccess(false);
+      return;
+    } else {
+      setPasswordError(false);
+      setPasswordMatchSuccess(true);
+    }
 
+    const obj = {
+      firstName: formData.firstName,
+      middleName: formData.middleName,
+      lastName: formData.lastName,
+      suffix: formData.suffix,
+      religion: formData.religion,
+      email: formData.email,
+      birthday: formData.birthday,
+      age: calculateAge(formData.birthday),
+      contact: formData.contact,
+      sex: formData.sex,
+      address: {
+        street: formData.street,
+        brgy: formData.brgy,
+        city: formData.city,
+      },
+      occupation: formData.occupation,
+      civil_status: formData.civil_status,
+      type: formData.type,
+      isVoter: formData.isVoter,
+      isHead: formData.isHead,
+      username: formData.username,
+      password: formData.password,
+      isApproved: "Pending",
+    };
+
+    try {
+      const response = await axios.get(`${API_LINK}/users/${brgy}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const users = response.data; // Assign the response data to users
+
+      const usernameExists = users.some(
+        (user) => user.username.toLowerCase() === username.toLowerCase()
+      );
+      const emailExists = users.some(
+        (user) => user.email.toLowerCase() === email.toLowerCase()
+      );
+
+      if (usernameExists || emailExists) {
+        setDuplicateError(true);
         setEmpty(false);
-
-        // Navigate to the next page
-        navigate("/next_signup");
+        setShowError(false);
+      } else {
+        setDuplicateError(false);
+        // Proceed with registration...
       }
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.error) {
+        setDuplicateError(error.response.data.error);
+        setEmpty(false);
+        setShowError(false);
+      } else {
+        setDuplicateError("An unknown error occurred.");
+      }
+    }
+
+    // Continue with the form submission if the passwords match
+    try {
+      const response = await axios.post(`${API_LINK}/users/`, obj, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      setEmpty(false);
+      setShowError(false);
+      setDuplicateError(false);
+      setsuccessReg(true);
+
+      const email = btoa(obj.email);
+      const barangay = btoa(obj.address.brgy);
+
+      setTimeout(function () {
+        navigate(`/loading/?email=${email}&brgy=${barangay}`);
+      }, 3000);
+    } catch (error) {
+      console.error("Error:", error);
     }
   };
 
   return (
     <div className="flex flex-col-reverse md:flex-row-reverse ">
-      <div
-        className="sm:hidden lg:flex flex-col justify-center items-center w-6/12 hidden"
-        style={{
-          background:
-            "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.template.net/99413/nature-forest-background-3b296.jpg')",
-          backgroundSize: "cover",
-          backgroundBlendMode: "multiply",
-        }}
-      >
-        <div className="relative w-full px-16">
-          <div className="relative h-auto overflow-hidden md:h-full">
-            <Carousel
-              showThumbs={false}
-              autoPlay
-              infinite
-              interval={3000}
-              showStatus={false}
-              showArrows={false}
-              showIndicators={true} // Add this to hide the indicators
-              width="100%" // Set the width to 100%
-              dynamicHeight
-            >
-              {/* Add more items here */}
 
-              <div className="relative h-full">
-                <img
-                  src="https://www.vigattintourism.com/assets/tourist_spots_photos/optimize/1352778031ovsjTSQS.jpg"
-                  alt="Your alt text"
-                  className="block w-full h-auto object-cover rounded-lg md:h-120 md:object-cover"
-                />
-              </div>
-
-              <div className="relative h-full">
-                <img
-                  src="https://i0.wp.com/www.nognoginthecity.com/wp-content/uploads/2015/03/wawa-dam-rodriguez-rizal-2.jpg"
-                  alt="Your alt text"
-                  className="block w-full h-auto object-cover rounded-lg md:h-120 md:object-cover"
-                />
-              </div>
-            </Carousel>
-            <div className="flex flex-col justify-center items-start pt-2 px-2 mt-6 text-white">
-              <h2 className="text-3xl font-bold mb-2">
-                Welcome to Rodriguez Rizal
-              </h2>
-              <p className="mb-4">
-                Immerse yourself in the rich culture and stunning landscapes of
-                our city.
-              </p>
-              <Link
-                to="/#"
-                className="bg-white text-green-700 px-6 py-2 rounded-lg font-bold"
-              >
-                Discover More
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
+      <SideInfo />
 
       <div className="sm:w-full lg:w-6/12 mx-auto sm:h-auto sm:py-[30px] md:h-screen flex flex-col items-center justify-center bg-white">
         <img
@@ -187,127 +281,22 @@ const SignupPage = () => {
           src={myImage}
           alt=""
         />
-        <div className="bg-green-700 flex justify-center items-center sm:w-auto md:w-6/12 mt-5 mb-5 rounded-full text-white">
+        <div className="bg-green-700 flex justify-center items-center sm:w-auto md:w-6/12 mt-5 mb-2 rounded-full text-white">
           <h1 className="text-xs sm:text-sm text-center sm:px-5 sm:py-2 md:p-1">
             City of Rodriguez Rizal
           </h1>
         </div>
 
-        <form className="sm:w-[80%] md:w-9/12 lg:w-9/12">
-          {empty && (
-            <div
-              className="bg-red-50 border border-red-200 text-sm text-red-600 rounded-md p-4 mt-2 mb-4"
-              role="alert"
-            >
-              <span className="font-bold">Warning:</span> Please fill-out all
-              fields: {emptyFields.join(", ")}!
-            </div>
-          )}
-          {restrict && (
-            <div
-              className="bg-red-50 border border-red-200 text-sm text-red-600 rounded-md p-4 mt-2 mb-4"
-              role="alert"
-            >
-              <span className="font-bold">Warning:</span> Age must be
-              18 and above to Register.
-            </div>
-          )}
-          <h1 className="py-3 mb-3 font-bold">Step 1: Personal Information</h1>
-          <div className="flex sm:flex-col md:flex-row md:gap-4">
-            <div className="relative z-0 w-full mb-3 group">
-              <input
-                type="text"
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleChange}
-                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
-                placeholder="Enter your firstname"
-              />
-            </div>
-            <div className="relative z-0 w-full mb-3 group">
-              <input
-                type="text"
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleChange}
-                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
-                placeholder="Enter your lastname"
-              />
-            </div>
-          </div>
-          <div className="flex sm:flex-col md:flex-row md:gap-4">
-            <div className="relative z-0 w-full mb-3 group">
-              <input
-                type="text"
-                name="middleName"
-                value={formData.middleName}
-                onChange={handleChange}
-                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
-                placeholder="Enter your middle name"
-              />
-            </div>
-            <div className="relative z-0 w-full mb-3 group">
-              <input
-                type="text"
-                name="suffix"
-                value={formData.suffix}
-                onChange={handleChange}
-                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
-                placeholder="Enter your suffix (optional)"
-              />
-            </div>
-          </div>
-          <div className="flex sm:flex-col md:flex-row md:gap-4">
-            <div className="relative z-0 w-full mb-3 group">
-              <input
-                type="date"
-                name="birthday"
-                value={formData.birthday}
-                onChange={handleChange}
-                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
-              />
-            </div>
-            <div className="relative z-0 w-full mb-3 group">
-              <select
-                name="sex"
-                value={formData.sex}
-                onChange={handleChange}
-                defaultValue={""}
-                className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
-              >
-                <option value="" disabled>
-                  Select Gender
-                </option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-              </select>
-            </div>
-          </div>
-          <div className="relative z-0 w-full mb-3 group">
-            <select
-              name="religion"
-              value={formData.religion}
-              onChange={handleChange}
-              className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
-            >
-              <option disabled={formData.religion !== ""} value="">
-                Select Religion
-              </option>
-              {religions.map((religion) => (
-                <option value={religion}>{religion}</option>
-              ))}
-            </select>
-          </div>
-          <Link to="/next_signup">
-            <button
-              onClick={handleSubmit}
-              type="submit"
-              className="w-full mt-5 text-center text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-green-700 dark:hover:bg-green-800 dark:focus:ring-gray-700 dark:border-gray-700"
-            >
-              Next
-            </button>
-          </Link>
-        </form>
+        {signupPage.personal === true ? (
+          <PersonalInfo formData={formData} empty={empty} emptyFields={emptyFields} restrict={restrict} handleChange={handleChange} handleNextPage={handleNextPage} />
+        ) : null}
+        {signupPage.address === true ? (
+          <Address formData={formData} empty={empty} emptyFields={emptyFields} restrict={restrict} handleChange={handleChange} handleNextPage={handleNextPage} />
+        ) : null}
+        {signupPage.credential === true ? (
+          <AccountCredentials formData={formData} empty={empty} emptyFields={emptyFields} restrict={restrict} handleChange={handleChange} passwordError={passwordError} passwordStrengthError={passwordStrengthError} passwordMatchSuccess={passwordMatchSuccess} passwordStrengthSuccess={passwordStrengthSuccess} showError={showError} passwordStrength={passwordStrength} duplicateError={duplicateError} successReg={successReg} termsAccepted={termsAccepted} setTermsAccepted={setTermsAccepted} policyAccepted={policyAccepted} setPolicyAccepted={setPolicyAccepted} handleSubmit={handleSubmit} handleNextPage={handleNextPage} />
+        ) : null}
+
         <p className="text-sm text-black text-center mt-2">
           Already have an account?
           <span className="font-bold">

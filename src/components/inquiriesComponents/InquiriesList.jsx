@@ -2,7 +2,7 @@ import { AiOutlineEye } from "react-icons/ai";
 import { FaArrowLeft } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 
-const InquiriesList = ({ inquiries, selectedItems, checkboxHandler, setInquiry }) => {
+const InquiriesList = ({ inquiries, setInquiry }) => {
     const location = useLocation()
     const page = location.pathname.split("/")[1]
 
@@ -24,17 +24,6 @@ const InquiriesList = ({ inquiries, selectedItems, checkboxHandler, setInquiry }
     return (
         inquiries.map((item, index) => (
             <tr key={index} className="odd:bg-slate-100 text-center">
-                <td className="px-6 py-3">
-                    <div className="flex justify-center items-center">
-                        <input
-                            type="checkbox"
-                            checked={selectedItems.includes(item._id)}
-                            value={item._id}
-                            onChange={checkboxHandler}
-                            id=""
-                        />
-                    </div>
-                </td>
                 <td className="px-6 py-3">
                     <span className="text-xs sm:text-sm text-black line-clamp-2 ">
                         {item.inq_id}

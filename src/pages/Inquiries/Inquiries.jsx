@@ -33,45 +33,23 @@ const Inquiries = () => {
 
   useEffect(() => {
     const fetch = async () => {
-      const response = await axios.get(
-        `${API_LINK}/inquiries/?id=${id}&brgy=${brgy}&archived=false`
-      );
-
-      // console.log(response)
-      if (response.status === 200) setInquiries(response.data);
-      else setInquiries([]);
+      try{
+        const response = await axios.get(
+          `${API_LINK}/inquiries/?id=${id}&brgy=${brgy}&archived=false`
+        );
+  
+        // console.log(response)
+        if (response.status === 200) setInquiries(response.data.result.sort((date1, date2) => new Date(date2.createdAt) - new Date(date1.createdAt)));
+        else setInquiries([]);
+      }catch(error){
+        console.log(error)
+      }
     };
 
     fetch();
   }, []);
 
-
-  const checkboxHandler = (e) => {
-    let isSelected = e.target.checked;
-    let value = e.target.value;
-
-    if (isSelected) {
-      setSelectedItems([...selectedItems, value]);
-    } else {
-      setSelectedItems((prevData) => {
-        return prevData.filter((id) => {
-          return id !== value;
-        });
-      });
-    }
-  };
-
-  const checkAllHandler = () => {
-    if (inquiries.length === selectedItems.length) {
-      setSelectedItems([]);
-    } else {
-      const postIds = inquiries.map((item) => {
-        return item._id;
-      });
-
-      setSelectedItems(postIds);
-    }
-  };
+  console.log(inquiries)
 
   const tableHeader = [
     "Inquiry id",
@@ -125,16 +103,6 @@ const Inquiries = () => {
               {/* Table Headers */}
               <thead className="bg-custom-green-table-header border">
                 <tr>
-                  <th scope="col" className="px-6 py-4">
-                    <div className="flex justify-center items-center">
-                      <input
-                        type="checkbox"
-                        name=""
-                        onClick={checkAllHandler}
-                        id=""
-                      />
-                    </div>
-                  </th>
                   {
                     tableHeader.map((item, i) => (
                       <th
@@ -159,8 +127,6 @@ const Inquiries = () => {
               ) : null}
               <InquiriesList
                 inquiries={inquiries}
-                selectedItems={selectedItems}
-                checkboxHandler={checkboxHandler}
                 setInquiry={setInquiry}
               />
             </table>

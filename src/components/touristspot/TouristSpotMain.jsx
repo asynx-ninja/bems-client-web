@@ -9,6 +9,7 @@ import video from "../../assets/image/video.mp4";
 import Breadcrumbs from "../../components/touristspot/Breadcrumbs"
 
 
+
 const TouristSpotMain = () => {
   const [searchParams, setSearchParams] = useSearchParams()
   const tourist_id = searchParams.get("tourist_id")
@@ -104,7 +105,6 @@ const TouristSpotMain = () => {
             </div>
           </div>
         </div>
-
       </div>
     </>
   );

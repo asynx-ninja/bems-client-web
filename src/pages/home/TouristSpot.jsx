@@ -9,14 +9,17 @@ import video from "../../assets/image/video.mp4";
 import Breadcrumbs from "../../components/touristspot/Breadcrumbs"
 
 const TouristSpot = () => {
+    const brgy = "MUNICIPAL INFO";
     const [touristSpot, setTouristSpot] = useState([]);
 
     useEffect(() => {
         const fetchTouristSpot = async () => {
             try {
-                const result = await axios.get(`${API_LINK}/tourist_spot/?brgy=${"All"}&archived=false`)
+                const response = await axios.get(
+                    `${API_LINK}/tourist_spot/?brgy=${brgy}&archived=false`
+                );
 
-                setTouristSpot(result.data)
+                setTouristSpot(response.data.result)
             } catch (error) {
                 console.log(error)
             }
@@ -47,8 +50,8 @@ const TouristSpot = () => {
 
                 <div className='font-bold w-[90%] mx-auto py-5 mt-[30px] flex justify-center'>
                     <div>
-                        <p className="text-center">FAMOUS TOURIST SPOT</p>
-                        <h1 className='text-[38px] text-center'>IN <b className='text-custom-green-header'>MONTALBAN RIZAL</b></h1>
+                        <p className="text-center">FAMOUS TOURIST SPOT IN</p>
+                        <h1 className='text-[38px] text-center'><b className='text-custom-green-header'>MONTALBAN RIZAL</b></h1>
                     </div>
                 </div>
 

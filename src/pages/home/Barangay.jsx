@@ -1,14 +1,44 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import React from "react";
 import NavbarHome from "../../components/global/NavbarHome";
 import { Link } from "react-router-dom";
 import video from "../../assets/image/video.mp4";
 import headerImage from "../../assets/image/header.png";
 import Footer from "../../components/homepage/Footer";
-import logo from "../../assets/header/montalban-logo.png"
-import brgyImg from "../../assets/image/brgy-list-img.jpg"
-
+import logo from "../../assets/header/montalban-logo.png";
+import brgyImg from "../../assets/image/brgy-list-img.jpg";
+import API_LINK from "../../config/API";
+import { useSearchParams } from "react-router-dom";
+import Barangays from "../../components/homepage/Barangays";
+import axios from "axios";
 const Barangay = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [information, setInformation] = useState({});
+  const id = searchParams.get("id");
+  // const { id } = useParams();
+  console.log("ssdsds", id);
+  const [barangays, setBarangays] = useState([]);
+  const [selectedBarangay, setSelectedBarangay] = useState(null);
+  
+  useEffect(() => {
+    document.title = "Barangay Information | Barangay E-Services Management";
+    const fetchBarangays = async () => {
+      try {
+        const response = await axios.get(`${API_LINK}/brgyinfo/allinfo`);
+        setBarangays(response.data);
+      } catch (error) {
+        console.error("Error fetching barangays:", error);
+      }
+    };
+
+    fetchBarangays();
+  }, []);
+  const handleView = (barangay) => {
+    setSelectedBarangay(barangay);
+  };
+  const closeModal = () => {
+    setSelectedBarangay(null);
+  };
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 3; // Change this to your desired number of items per page
   const stats = [
@@ -38,87 +68,11 @@ const Barangay = () => {
     },
     // Add more data as needed
   ];
-  const sections = [
-    {
-      title: "Story",
-      content: (
-        <p className="mt-2 text-sm md:text-base text-gray-800 whitespace-normal dark:text-gray-400">
-          Balite, formerly Poblacion, is a barangay in the municipality of
-          Rodriguez, in the province of Rizal. Its population as determined by
-          the 2020 Census was 8,533. This represented 1.92% of the total
-          population of Rodriguez.
-        </p>
-      ),
-    },
-    {
-      title: "Mission",
-      content: (
-        <p className="mt-2 text-sm md:text-base text-gray-800 dark:text-gray-400">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam
-          ipsum fugiat possimus laborum in aut quas ratione. Omnis, id
-          distinctio!
-        </p>
-      ),
-    },
-    {
-      title: "Vision",
-      content: (
-        <p className="mt-2 text-sm md:text-base text-gray-800 dark:text-gray-400">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam
-          ipsum fugiat possimus laborum in aut quas ratione. Omnis, id
-          distinctio!
-        </p>
-      ),
-    },
-  ];
-  const data = [
-    {
-      logo: logo,
-      name: "Barangay Balite",
-      description:
-        "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos, possimus.",
-      mission:
-        "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos, possimus.",
-      vision:
-        "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos, possimus.",
-    },
-    {
-      logo: logo,
-      name: "Barangay Balite",
-      description:
-        "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos, possimus.",
-      mission:
-        "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos, possimus.",
-      vision:
-        "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos, possimus.",
-    },
-    {
-      logo: logo,
-      name: "Barangay Balite",
-      description:
-        "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos, possimus.",
-      mission:
-        "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos, possimus.",
-      vision:
-        "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos, possimus.",
-    },
-    {
-      logo: logo,
-      name: "Barangay Balite",
-      description:
-        "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos, possimus.",
-      mission:
-        "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos, possimus.",
-      vision:
-        "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos, possimus.",
-    },
-    // Add more entries as needed
-  ];
-
+  
   // Calculate the index range for the current page
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = barangays.slice(indexOfFirstItem, indexOfLastItem);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -126,19 +80,9 @@ const Barangay = () => {
 
   // Calculate the page numbers
   const pageNumbers = [];
-  for (let i = 1; i <= Math.ceil(data.length / itemsPerPage); i++) {
+  for (let i = 1; i <= Math.ceil(barangays.length / itemsPerPage); i++) {
     pageNumbers.push(i);
   }
-
-  // const [isModalOpen, setModalOpen] = useState(false);
-
-  // const openModal = () => {
-  //   setModalOpen(true);
-  // };
-
-  // const closeModal = () => {
-  //   setModalOpen(false);
-  // };
 
   return (
     <>
@@ -244,37 +188,26 @@ const Barangay = () => {
                     <table className="min-w-full rounded-b-lg divide-y divide-gray-200 dark:divide-gray-700">
                       {/* The table content */}
                       <thead>
-                        <tr className="bg-gray-300 text-left">
+                        <tr className="bg-gray-300 ">
                           <th
                             scope="col"
-                            className="px-6 py-3 text-left text-black whitespace-nowrap text-xs font-bold uppercase"
+                            className="px-6 py-3 text-center text-black whitespace-nowrap text-xs font-bold uppercase"
                           >
                             Barangay Logo
                           </th>
                           <th
                             scope="col"
-                            className="px-6 py-3 text-left whitespace-nowrap text-xs font-bold text-black uppercase"
+                            className="px-6 py-3 text-center whitespace-nowrap text-xs font-bold text-black uppercase"
                           >
                             Barangay Name
                           </th>
                           <th
                             scope="col"
-                            className="px-6 py-3 text-left whitespace-nowrap text-xs font-bold text-black uppercase"
+                            className="px-6 py-3 text-center whitespace-nowrap text-xs font-bold text-black uppercase"
                           >
                             Barangay Description
                           </th>
-                          <th
-                            scope="col"
-                            className="px-6 py-3 text-left whitespace-nowrap text-xs font-bold text-black uppercase"
-                          >
-                            Barangay Mission
-                          </th>
-                          <th
-                            scope="col"
-                            className="px-6 py-3 text-left whitespace-nowrap text-xs font-bold text-black uppercase"
-                          >
-                            Barangay Vision
-                          </th>
+
                           <th
                             scope="col"
                             className="px-6 py-3 text-left whitespace-nowrap text-xs font-bold text-black uppercase"
@@ -282,30 +215,26 @@ const Barangay = () => {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-gray-100 ">
-                        {currentItems.map((items, index) => (
-                          <tr key={index} className="bg-gray-200 text-left">
+                        {currentItems.map((barangay, idx) => (
+                          <tr key={idx} className="bg-gray-200 text-left">
                             <td className="px-6 py-4 text-sm font-medium text-gray-800 dark:text-gray-200">
                               <img
-                                className="w-[100px]"
-                                src={items.logo}
+                                className="object-contain w-full h-28"
+                                src={barangay.logo}
                                 alt=""
                               />
                             </td>
-                            <td className="px-6 whitespace-nowrap text-sm font-bold text-gray-800 dark:text-gray-200">
-                              {items.name}
+                            <td className="px-6 whitespace-nowrap uppercase text-sm font-bold text-gray-800 dark:text-gray-200">
+                              barangay {barangay.brgy}
                             </td>
-                            <td className="px-6 text-sm text-gray-800 dark:text-gray-200">
-                              {items.description}
+                            <td className="px-6 py-4 text-sm text-gray-800 line-clamp-4 text-justify dark:text-gray-200">
+                              {barangay.story}
                             </td>
-                            <td className="px-6 text-sm text-gray-800 dark:text-gray-200">
-                              {items.mission}
-                            </td>
-                            <td className="px-6 text-sm text-gray-800 dark:text-gray-200">
-                              {items.vision}
-                            </td>
+
                             <td className="px-6 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
                               <Link
                                 type="button"
+                                onClick={() => handleView({ ...barangay })}
                                 className="text-center py-2 px-2 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-green-500 text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"
                                 data-hs-overlay="#hs-vertically-centered-scrollable-modal"
                               >
@@ -314,56 +243,6 @@ const Barangay = () => {
                             </td>
                           </tr>
                         ))}
-                        <div
-                          id="hs-vertically-centered-scrollable-modal"
-                          className="hs-overlay hidden w-full sm:w-11/12 md:w-10/12 lg:w-10/12 fixed top-0 left-0 right-0 bottom-0 m-auto z-[100] overflow-x-hidden overflow-y-auto"
-                        >
-                          <div className="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:w-11/12 md:w-10/12 lg:w-8/12 m-3 sm:mx-auto h-[calc(100%-3.5rem)] min-h-[calc(100%-3.5rem)] flex items-center">
-                            <div className="max-h-full overflow-hidden flex flex-col bg-white border shadow-sm  dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
-                              <div
-                                className=" items-center lg:py-6 py-3 px-4 border-b dark:border-gray-700"
-                                style={{
-                                  background: `url(${headerImage})`,
-                                }}
-                              >
-                                <h3 className="lg:tracking-[.4rem] tracking-widest text-md lg:text-lg font-bold uppercase text-center text-white dark:text-white">
-                                  Barangay Balite Information
-                                </h3>
-                              </div>
-                              <div className="overflow-y-auto ">
-                                <div
-                                  className="flex flex-col justify-center items-center"
-                                  style={{
-                                    backgroundSize: 'cover',
-                                    backgroundImage: `url(${brgyImg})`,
-                                  }}>
-                                  <img className="w-[150px] sm:py-[25px] md:py-[50px]" src={logo} alt="" />
-                                </div>
-                                <div className="p-4 space-y-4 bg-white rounded-b-xl shadow-2xl transform transition-all duration-500 ease-in-out">
-                                  {sections.map((section, index) => (
-                                    <div key={index} className="space-y-2">
-                                      <div className="tracking-widest py-2 px-3 rounded-md text-white text-sm font-bold uppercase bg-gradient-to-r from-[#295141] to-[#408D51]">
-                                        {section.title}
-                                      </div>
-                                      <div className="text-gray-700 text-sm bg-white p-3 rounded-md shadow-md">
-                                        {section.content}
-                                      </div>
-                                    </div>
-                                  ))}
-                                </div>
-                              </div>
-                              <div className="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-gray-700">
-                                <button
-                                  type="button"
-                                  className="hs-dropdown-toggle py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm dark:bg-slate-900 dark:hover:bg-slate-800 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white dark:focus:ring-offset-gray-800"
-                                  data-hs-overlay="#hs-vertically-centered-scrollable-modal"
-                                >
-                                  Close
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
                       </tbody>
                     </table>
                     <div className="mt-4 flex justify-center">
@@ -372,10 +251,11 @@ const Barangay = () => {
                           <button
                             key={number}
                             onClick={() => handlePageChange(number)}
-                            className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${currentPage === number
+                            className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
+                              currentPage === number
                                 ? "bg-blue-500 text-white"
                                 : "border-gray-300 bg-white text-gray-500 hover:bg-gray-50"
-                              }`}
+                            }`}
                           >
                             {number}
                           </button>
@@ -390,6 +270,7 @@ const Barangay = () => {
         </div>
       </div>
       <Footer />
+      <Barangays selectedBarangay={selectedBarangay} closeModal={closeModal} />
     </>
   );
 };

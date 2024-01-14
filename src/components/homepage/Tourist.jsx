@@ -4,40 +4,22 @@ import { Link, useSearchParams, useLocation } from "react-router-dom";
 import axios from "axios";
 import API_LINK from "../../config/API";
 import "react-multi-carousel/lib/styles.css";
-import lubog1 from "../../assets/tourist-spot/lubog1.jpg"
-import lubog2 from "../../assets/tourist-spot/lubog2.jpg"
-import lubog3 from "../../assets/tourist-spot/lubog3.jpg"
-import lubog4 from "../../assets/tourist-spot/lubog4.jpg"
-import luya1 from "../../assets/tourist-spot/luya1.jpg"
-import luya2 from "../../assets/tourist-spot/luya2.jpg"
-import luya3 from "../../assets/tourist-spot/luya3.jpg"
-import luya4 from "../../assets/tourist-spot/luya4.jpg"
-import malac1 from "../../assets/tourist-spot/malac1.jpg"
-import malac2 from "../../assets/tourist-spot/malac2.jpg"
-import malac3 from "../../assets/tourist-spot/malac3.jpg"
-import malac4 from "../../assets/tourist-spot/malac4.jpg"
-import sdalaga1 from "../../assets/tourist-spot/susong-dalaga1.jpg"
-import sdalaga2 from "../../assets/tourist-spot/susong-dalaga2.jpg"
-import sdalaga3 from "../../assets/tourist-spot/susong-dalaga3.jpg"
-import sdalaga4 from "../../assets/tourist-spot/susong-dalaga4.jpg"
+import TouristSpotMain from "../touristspot/TouristSpotMain";
 
 const Tourist = () => {
-
-  const [touristSpot, setTouristSpot] = useState([]);
-
+  const brgy = "MUNICIPAL INFO";
+  const [touristspot, settouristSpot] = useState([]);
   useEffect(() => {
-    const fetchTouristSpot = async () => {
-      try {
-        const result = await axios.get(`${API_LINK}/tourist_spot/?archived=false`)
+    const fetch = async () => {
+      const response = await axios.get(
+        `${API_LINK}/tourist_spot/?brgy=${brgy}&archived=false`
+      );
+      if (response.status === 200) settouristSpot(response.data.result);
+      else settouristSpot([]);
+    };
 
-        setTouristSpot(result.data)
-      } catch (error) {
-        console.log(error)
-      }
-
-    }
-    fetchTouristSpot();
-  })
+    fetch();
+  }, []);
 
   const responsive = {
     desktop: {
@@ -81,7 +63,7 @@ const Tourist = () => {
           customRightArrow={<></>}
           className="sm:mt-12 -mt-12 md:mt-8 lg:mt-0 "
         >
-          {touristSpot.map((spot, index) => (
+          {touristspot.map((spot, index) => (
             <div className="carousel-item-container p-4 " key={index}>
               <div className="rounded-xl relative">
                 {/* Overlay */}
@@ -103,11 +85,17 @@ const Tourist = () => {
                     </button>
                   </Link>
                 </div>
-                <img
-                  className="max-h-[160px] md:max-h-[200px] w-full object-cover rounded-xl"
-                  src={spot.image[0].link}
-                  alt={spot.name}
-                />
+                {/* Check if image array exists and has elements */}
+                {spot.image && spot.image.length > 0 ? (
+                  <img
+                    className="max-h-[160px] md:max-h-[200px] w-full object-cover rounded-xl"
+                    src={spot.image[0].link} // Access the first image's link
+                    alt={spot.name}
+                  />
+                ) : (
+                  // Fallback image if no images are available
+                  <div className="max-h-[160px] md:max-h-[200px] w-full object-cover rounded-xl bg-gray-300" />
+                )}
               </div>
             </div>
           ))}

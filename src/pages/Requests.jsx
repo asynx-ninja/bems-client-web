@@ -35,7 +35,7 @@ const Requests = () => {
 
         // const getUser = await axios.get(`${API_LINK}/users/specific/${id}`);
 
-        setRequest(response.data)
+        setRequest(response.data.sort((date1, date2) => new Date(date2.createdAt) - new Date(date1.createdAt)))
 
       } catch (err) {
         console.log(err)

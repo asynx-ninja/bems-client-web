@@ -1,8 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Carousel } from "react-responsive-carousel";
 import logo from "../../assets/header/montalban-logo.png"
+import API_LINK from "../../config/API"
+import axios from "axios";
 
 const Home = () => {
+
   return (
     <>
       <div className="h-auto rounded-t-[25px]">
