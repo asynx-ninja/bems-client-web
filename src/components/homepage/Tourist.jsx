@@ -15,7 +15,7 @@ const Tourist = () => {
       const response = await axios.get(
         `${API_LINK}/tourist_spot/?brgy=${brgy}&archived=false`
       );
-      if (response.status === 200) settouristSpot(response.data);
+      if (response.status === 200) settouristSpot(response.data.result);
       else settouristSpot([]);
     };
 

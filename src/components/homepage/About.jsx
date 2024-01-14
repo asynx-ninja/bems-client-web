@@ -14,7 +14,7 @@ const About = () => {
       const response = await axios.get(
         `${API_LINK}/aboutus/?brgy=${brgy}&archived=false`
       );
-      if (response.status === 200) setAboutus(response.data);
+      if (response.status === 200) setAboutus(response.data.result);
       else setAboutus([]);
     };
 
