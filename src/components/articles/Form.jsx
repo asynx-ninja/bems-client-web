@@ -1,27 +1,24 @@
 import { Link, useSearchParams, useNavigate } from "react-router-dom";
-import Breadcrumbs from "../components/services/Breadcrumbs";
-import Content from "../components/services/Content";
-import headerImage from "../assets/image/header.png";
+import Breadcrumbs from "./Breadcrumbs";
+import Content from "./Content";
+import headerImage from "../../assets/image/header.png";
 import { useEffect, useState, React, useRef } from "react";
 import axios from "axios";
-import API_LINK from "../config/API";
-import defaultPFP from "../assets/sample-image/formPic.png";
-import defaultBanner from "../assets/image/1.png";
-import { FaCamera } from "react-icons/fa";
+import API_LINK from "../../config/API";
+import defaultBanner from "../../assets/image/1.png";
 
 // FORM DETAILS
-import PersonalDetails from "../components/serviceform/PersonalDetails";
-import OtherDetails from "../components/serviceform/OtherDetails";
+import PersonalDetails from "./eventsform/PersonalDetails";
+import OtherDetails from "./eventsform/OtherDetails";
 
-const ServicesForm = ({ props }) => {
+const Form = ({ announcement }) => {
   const fileInputRef = useRef();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
+  const event_id = searchParams.get("event_id");
   const brgy = searchParams.get("brgy");
-  const service_id = searchParams.get("service_id");
   const [detail, setDetail] = useState({});
-  const [service, setService] = useState({});
   const [userData, setUserData] = useState({});
   const [emptyFields, setEmptyFields] = useState([]);
   const [empty, setEmpty] = useState(false);
@@ -30,16 +27,14 @@ const ServicesForm = ({ props }) => {
   useEffect(() => {
     const fetchForms = async () => {
       try {
-        const service_response = await axios.get(
-          `${API_LINK}/services/specific_service/?service_id=${service_id}`
+        const event_response = await axios.get(
+          `${API_LINK}/event_form/check/?brgy=${brgy}&event_id=${event_id}`
         );
 
-        const { service_form, ...rest } = service_response.data[0];
+        const event_form = event_response.data[0];
 
-        const filter = [service_form].filter((item) => item.isActive)[0];
-
-        filter.form[0] = Object.fromEntries(
-          Object.entries(filter.form[0]).filter(
+        event_form.form[0] = Object.fromEntries(
+          Object.entries(event_form.form[0]).filter(
             ([key, value]) => value.checked === true
           )
         );
@@ -48,10 +43,9 @@ const ServicesForm = ({ props }) => {
 
         setUserData(getUser.data[0]);
 
-        filter.form[0].user_id.value = getUser.data[0].user_id;
+        event_form.form[0].user_id.value = getUser.data[0].user_id;
 
-        setService(rest);
-        setDetail(filter);
+        setDetail(event_form);
       } catch (error) {
         console.log(error);
       }
@@ -60,9 +54,10 @@ const ServicesForm = ({ props }) => {
     };
 
     fetchForms();
-  }, [service_id]);
-
-  console.log("service", service, detail);
+  }, [event_id]);
+  
+  // console.log(event_id)
+  console.log("event", detail);
 
   const checkEmptyFields = () => {
     let arr = [];
@@ -290,15 +285,6 @@ const ServicesForm = ({ props }) => {
         )
       );
 
-      // const { id_pic: _, ...newForm1 } = detail.form[0];
-
-      // const deleteFileForm2 = detail.form[1].map((item) => {
-      //   return {
-      //     ...item,
-      //     form: item.form.filter((childItem) => childItem.type !== "file"),
-      //   };
-      // });
-
       const newForm2 = detail.form[1].map((item) => {
         return {
           ...item,
@@ -321,22 +307,16 @@ const ServicesForm = ({ props }) => {
       formData.append(
         "form",
         JSON.stringify({
-          ...detail,
-          name: service.name,
-          service_type: service.type,
-          fee: service.fee,
+          event_id: announcement.event_id,
+          event_name: announcement.title,
+          brgy: detail.brgy,
+          version: detail.version,
+          form: detail.form,
         })
       );
-      
-      console.log({
-          ...detail,
-          name: service.name,
-          service_type: service.type,
-          fee: service.fee,
-        })
 
       try {
-        const response = await axios.post(`${API_LINK}/requests/`, formData);
+        const response = await axios.post(`${API_LINK}/application/`, formData);
         console.log(response);
       } catch (err) {
         console.log(err.message);
@@ -370,11 +350,11 @@ const ServicesForm = ({ props }) => {
       <img
         className=" rounded-[25px] h-[300px] object-contain"
         src={
-          service &&
-          service.collections &&
-          service.collections.banner &&
-          service.collections.banner.link !== undefined
-            ? service.collections.banner.link
+          announcement &&
+          announcement.collections &&
+          announcement.collections.banner &&
+          announcement.collections.banner.link !== undefined
+            ? announcement.collections.banner.link
             : defaultBanner
         }
         alt=""
@@ -384,11 +364,11 @@ const ServicesForm = ({ props }) => {
 
       <div className="flex flex-col">
         <div className="flex my-[10px]">
-          <Breadcrumbs serviceTitle={service && service.name} />
+          <Breadcrumbs title={announcement && announcement.title} />
         </div>
 
         <div>
-          <Content service={service} />
+          <Content announcement={announcement} />
         </div>
       </div>
 
@@ -401,7 +381,7 @@ const ServicesForm = ({ props }) => {
             Submit a request
           </Link>
           <Link
-            to={`/services/?id=${id}&brgy=${brgy}`}
+            to={`/events-list/?id=${id}&brgy=${brgy}`}
             className="flex items-center justify-center bg-custom-red sm:w-full md:w-[150px] h-[50px] sm:my-[20px] text-sm md:m-5 text-white font-medium rounded-lg hover:bg-gradient-to-r from-[#B90000] to-[#FF2828] transition duration-500 ease-in-out hover:text-custom-gold"
           >
             Back
@@ -421,7 +401,7 @@ const ServicesForm = ({ props }) => {
               className="flex justify-between items-center py-3 px-4 border-b dark:border-gray-700"
             >
               <h3 className="lg:tracking-[.2rem] tracking-widest text-md lg:text-lg font-bold uppercase text-center text-white ">
-                {service && service.name}
+                {announcement && announcement.title}
               </h3>
             </div>
 
@@ -581,4 +561,4 @@ const ServicesForm = ({ props }) => {
   );
 };
 
-export default ServicesForm;
+export default Form;

@@ -10,6 +10,7 @@ import {
   FaCommentAlt,
   FaAngleDown,
   FaAngleUp,
+  FaCalendar,
 } from "react-icons/fa";
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
@@ -77,8 +78,8 @@ const Sidebar = () => {
                 onClick={() => {
                   window.innerWidth >= 320 && window.innerWidth <= 1023
                     ? document
-                        .getQuerySelector("[data-hs-overlay-backdrop-template]")
-                        .remove()
+                      .getQuerySelector("[data-hs-overlay-backdrop-template]")
+                      .remove()
                     : null;
                 }}
                 className={
@@ -95,8 +96,8 @@ const Sidebar = () => {
                 onClick={() => {
                   window.innerWidth >= 320 && window.innerWidth <= 1023
                     ? document
-                        .getQuerySelector("[data-hs-overlay-backdrop-template]")
-                        .remove()
+                      .getQuerySelector("[data-hs-overlay-backdrop-template]")
+                      .remove()
                     : null;
                 }}
                 className="flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[#326350] transition-all ease-in-out hover:bg-gradient-to-r from-[#295141] to-[#408D51] hover:text-custom-gold"
@@ -104,6 +105,81 @@ const Sidebar = () => {
                 <FaUserAlt className="my-auto" size={"15px"} />
                 <h1 className="text-bold my-auto font-bold text-sm">ACCOUNT</h1>
               </Link>
+              <button
+                id="hs-unstyled-collapse-events"
+                data-hs-collapse="#hs-unstyled-collapse-heading-events"
+                className="hs-collapse-toggle flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[#326350] transition-all ease-in-out hover:bg-gradient-to-r from-[#295141] to-[#408D51] hover:text-custom-gold"
+                onClick={OnOpen}
+              >
+                <FaCalendar className="my-auto" size={"15px"} />
+                <h1 className="text-bold my-auto font-bold text-left w-[120px] leading-[15px] text-sm">
+                  EVENTS MANAGEMENT
+                </h1>
+
+                {isCollapse ? (
+                  <FaAngleDown
+                    id="hs-unstyled-collapse-events"
+                    data-hs-collapse="#hs-unstyled-collapse-heading-events"
+                    className="my-auto mr-[10px]"
+                    size={"15px"}
+                  />
+                ) : (
+                  <FaAngleUp
+                    id="hs-unstyled-collapse-events"
+                    data-hs-collapse="#hs-unstyled-collapse-heading-events"
+                    className="my-auto mr-[10px]"
+                    size={"15px"}
+                  />
+                )}
+              </button>
+              <div
+                id="hs-unstyled-collapse-heading-events"
+                className="hs-collapse hidden w-full overflow-hidden transition-[height] duration-300"
+                aria-labelledby="hs-unstyled-collapse"
+              >
+                <Link
+                  to={`/events-list/?id=${id}&brgy=${brgy}`}
+                  onClick={() => {
+                    window.innerWidth >= 320 && window.innerWidth <= 1023
+                      ? document
+                        .getQuerySelector(
+                          "[data-hs-overlay-backdrop-template]"
+                        )
+                        .remove()
+                      : null;
+                  }}
+                  className={
+                    "flex h-[50px] w-full my-auto pl-[60px] gap-5 text-[#326350] transition-all ease-in-out hover:bg-gradient-to-r from-[#295141] to-[#408D51] hover:text-custom-gold"
+                  }
+                >
+                  {" "}
+                  <FaCog className="my-auto" size={"15px"} />
+                  <h1 className="text-bold my-auto font-bold w-[50px]  text-sm">
+                    EVENTS
+                  </h1>
+                </Link>
+                <Link
+                  to={`/requests/?id=${id}&brgy=${brgy}&user_id=${userData.user_id}`}
+                  onClick={() => {
+                    window.innerWidth >= 320 && window.innerWidth <= 1023
+                      ? document
+                        .getQuerySelector(
+                          "[data-hs-overlay-backdrop-template]"
+                        )
+                        .remove()
+                      : null;
+                  }}
+                  className={
+                    "flex h-[50px] w-full my-auto pl-[60px] gap-5 text-[#326350] transition-all ease-in-out hover:bg-gradient-to-r from-[#295141] to-[#408D51] hover:text-custom-gold"
+                  }
+                >
+                  {" "}
+                  <FaRegListAlt className="my-auto" size={"15px"} />
+                  <h1 className="text-bold my-auto font-bold w-[50px] leading-[20px] text-sm">
+                    EVENTS REQUEST
+                  </h1>
+                </Link>
+              </div>
               <button
                 id="hs-unstyled-collapse"
                 data-hs-collapse="#hs-unstyled-collapse-heading"
@@ -141,10 +217,10 @@ const Sidebar = () => {
                   onClick={() => {
                     window.innerWidth >= 320 && window.innerWidth <= 1023
                       ? document
-                          .getQuerySelector(
-                            "[data-hs-overlay-backdrop-template]"
-                          )
-                          .remove()
+                        .getQuerySelector(
+                          "[data-hs-overlay-backdrop-template]"
+                        )
+                        .remove()
                       : null;
                   }}
                   className={
@@ -162,10 +238,10 @@ const Sidebar = () => {
                   onClick={() => {
                     window.innerWidth >= 320 && window.innerWidth <= 1023
                       ? document
-                          .getQuerySelector(
-                            "[data-hs-overlay-backdrop-template]"
-                          )
-                          .remove()
+                        .getQuerySelector(
+                          "[data-hs-overlay-backdrop-template]"
+                        )
+                        .remove()
                       : null;
                   }}
                   className={
@@ -184,8 +260,8 @@ const Sidebar = () => {
                 onClick={() => {
                   window.innerWidth >= 320 && window.innerWidth <= 1023
                     ? document
-                        .getQuerySelector("[data-hs-overlay-backdrop-template]")
-                        .remove()
+                      .getQuerySelector("[data-hs-overlay-backdrop-template]")
+                      .remove()
                     : null;
                 }}
                 className={
@@ -203,8 +279,8 @@ const Sidebar = () => {
                 onClick={() => {
                   window.innerWidth >= 320 && window.innerWidth <= 1023
                     ? document
-                        .getQuerySelector("[data-hs-overlay-backdrop-template]")
-                        .remove()
+                      .getQuerySelector("[data-hs-overlay-backdrop-template]")
+                      .remove()
                     : null;
                 }}
                 className={
@@ -249,8 +325,8 @@ const Sidebar = () => {
                 onClick={() => {
                   window.innerWidth >= 320 && window.innerWidth <= 1023
                     ? document
-                        .getQuerySelector("[data-hs-overlay-backdrop-template]")
-                        .remove()
+                      .getQuerySelector("[data-hs-overlay-backdrop-template]")
+                      .remove()
                     : null;
                 }}
                 className="flex items-center w-full gap-x-3.5 py-2 px-3 rounded-md text-sm hover:text-custom-gold1 text-gray-800 hover:bg-gradient-to-r from-[#295141] to-[#408D51] focus:ring-2 focus:ring-blue-500 font-bold text-[16px]"
@@ -262,8 +338,8 @@ const Sidebar = () => {
                 onClick={() => {
                   window.innerWidth >= 320 && window.innerWidth <= 1023
                     ? document
-                        .getQuerySelector("[data-hs-overlay-backdrop-template]")
-                        .remove()
+                      .getQuerySelector("[data-hs-overlay-backdrop-template]")
+                      .remove()
                     : null;
                 }}
                 className="flex items-center w-full gap-x-3.5 py-2 px-3 rounded-md text-sm hover:text-custom-gold1 text-gray-800 hover:bg-gradient-to-r from-[#295141] to-[#408D51] focus:ring-2 focus:ring-blue-500 font-bold text-[16px]"

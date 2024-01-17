@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { FiSearch } from "react-icons/fi";
 import { useState, useEffect } from "react";
-// import ReactPaginate from "react-paginate";
+import ReactPaginate from "react-paginate";
 import video from "../assets/image/video.mp4";
 import axios from "axios";
 import API_LINK from "../config/API";
@@ -20,6 +20,8 @@ const Requests = () => {
   const [request, setRequest] = useState([])
   const [viewRequest, setViewRequest] = useState([])
   const [selectedItems, setSelectedItems] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pageCount, setPageCount] = useState(0);
 
 
   useEffect(() => {
@@ -36,6 +38,7 @@ const Requests = () => {
         // const getUser = await axios.get(`${API_LINK}/users/specific/${id}`);
 
         setRequest(response.data.sort((date1, date2) => new Date(date2.createdAt) - new Date(date1.createdAt)))
+        setPageCount(response.data.pageCount);
 
       } catch (err) {
         console.log(err)
@@ -47,7 +50,9 @@ const Requests = () => {
 
   console.log(request)
 
-
+  const handlePageChange = ({ selected }) => {
+    setCurrentPage(selected);
+  };
 
   // console.log(viewRequest);
 
@@ -127,42 +132,22 @@ const Requests = () => {
             </table>
           </div>
 
-          <div className="py-1 px-4 border rounded-b-lg bg-custom-green-table-header">
-            <nav className="flex items-center space-x-2">
-              <a
-                className="text-gray-400 hover:text-blue-600 p-4 inline-flex items-center gap-2 font-medium rounded-md"
-                href="#"
-              >
-                <span aria-hidden="true">«</span>
-                <span className="sr-only">Previous</span>
-              </a>
-              <a
-                className="w-10 h-10 bg-custom-amber text-white p-4 inline-flex items-center text-sm font-medium rounded-full"
-                href="#"
-                aria-current="page"
-              >
-                1
-              </a>
-              <a
-                className="w-10 h-10 text-gray-400 hover:text-blue-600 p-4 inline-flex items-center text-sm font-medium rounded-full"
-                href="#"
-              >
-                2
-              </a>
-              <a
-                className="w-10 h-10 text-gray-400 hover:text-blue-600 p-4 inline-flex items-center text-sm font-medium rounded-full"
-                href="#"
-              >
-                3
-              </a>
-              <a
-                className="text-gray-400 hover:text-blue-600 p-4 inline-flex items-center gap-2 font-medium rounded-md"
-                href="#"
-              >
-                <span className="sr-only">Next</span>
-                <span aria-hidden="true">»</span>
-              </a>
-            </nav>
+          <div className="md:py-4 md:px-4 bg-[#21556d] flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3">
+            <span className="font-medium text-white sm:text-xs text-sm">
+              Showing {currentPage + 1} out of {pageCount} pages
+            </span>
+            <ReactPaginate
+              breakLabel="..."
+              nextLabel=">>"
+              onPageChange={handlePageChange}
+              pageRangeDisplayed={3}
+              pageCount={pageCount}
+              previousLabel="<<"
+              className="flex space-x-3 text-white font-bold"
+              activeClassName="text-yellow-500"
+              disabledLinkClassName="text-gray-300"
+              renderOnZeroPageCount={null}
+            />
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import { React, useEffect, useState } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import Breadcrumbs from "../components/articles/Breadcrumbs";
-import Content from "../components/articles/Content";
+import Form from "../components/articles/Form";
 import defaultBanner from "../assets/image/1.png";
 import defaultLogo from "../assets/header/side-bg.png";
 import API_LINK from "../config/API";
@@ -12,17 +12,18 @@ const Articles = () => {
   const id = searchParams.get("id");
   const brgy = searchParams.get("brgy");
   const event_id = searchParams.get("event_id");
+  const page = searchParams.get("page");
   const [announcement, setAnnouncement] = useState([]);
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         const res = await axios.get(
-          `${API_LINK}/announcement/all/?brgy=${brgy}`
+          `${API_LINK}/announcement/all/?brgy=${brgy}&page=${page}`
         );
 
-        const filtered = res.data.find(
-          (announcement) => announcement._id === event_id
+        const filtered = res.data.result.find(
+          (announcement) => announcement.event_id === event_id
         );
 
         setAnnouncement(filtered);
@@ -42,25 +43,17 @@ const Articles = () => {
       }
     };
     fetchEvents();
-  }, [brgy]);
+  }, [brgy, page]);
 
   // console.log(announcement)
 
   return (
     <div className="w-full flex flex-col sm:px-[15px] lg:px-[70px] pt-[40px]">
-      <img
-        className=" rounded-[25px] h-[300px] object-contain"
-        id="banner"
-        alt=""
-      />
 
       {/* CONTENTS */}
       <div className="flex flex-col">
-        <div className="flex mt-[20px]">
-          <Breadcrumbs title={announcement.title} />
-        </div>
         <div>
-          <Content announcement={announcement} />
+          <Form announcement={announcement} />
         </div>
       </div>
     </div>

@@ -3,13 +3,15 @@ import { FaCalendarAlt } from "react-icons/fa";
 import { useRef, useEffect } from "react";
 import { AiFillFilePdf } from "react-icons/ai";
 
-//COMPONENTS
-import ReservationModal from "./ReservationModal";
-
 const Content = ({ announcement }) => {
   const files =
     announcement && announcement.collections && announcement.collections.file !== undefined
       ? announcement.collections.file
+      : "";
+
+  const logo =
+    announcement && announcement.collections && announcement.collections.logo.link !== undefined
+      ? announcement.collections.logo.link
       : "";
 
   const dateFormat = (date) => {
@@ -21,7 +23,7 @@ const Content = ({ announcement }) => {
 
   }
 
-  console.log(announcement)
+  // console.log(announcement)
 
   return (
     <div className="flex flex-col gap-5">
@@ -36,13 +38,6 @@ const Content = ({ announcement }) => {
               {dateFormat(announcement.date)}
             </p>
           </div>
-          <button
-            type="button"
-            data-hs-overlay="#hs-modal-reservation"
-            className="border-[1.5px] text-custom-green-header border-custom-green-header rounded-full px-[15px] hover:bg-custom-green-header hover:text-white transition duration-200 ease-in-out"
-          >
-            Reserve your Slots!
-          </button>
         </div>
       </div>
 
@@ -56,6 +51,7 @@ const Content = ({ announcement }) => {
           <img
             className="w-[400px] h-[400px] sm:mx-auto lg:mx-0 object-cover rounded-[25px]"
             id="logo"
+            src={logo}
             alt=""
           />
 
@@ -76,12 +72,7 @@ const Content = ({ announcement }) => {
               ))}
           </div>
         </div>
-
       </div>
-      <ReservationModal
-        eventId={announcement._id}
-        announcement={announcement}
-      />
     </div>
   );
 };

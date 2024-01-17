@@ -30,7 +30,7 @@ const Header = () => {
         const res1 = await axios.get(
           `${API_LINK}/announcement/all/?brgy=${brgy}`
         );
-        setAnnouncements(res1.data);
+        setAnnouncements(res1.data.result);
       } catch (error) {
         console.log(error);
       }

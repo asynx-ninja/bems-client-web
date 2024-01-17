@@ -3,6 +3,7 @@ import { Carousel } from "react-responsive-carousel";
 import { useParams, useSearchParams, Link } from "react-router-dom";
 import API_LINK from "../../config/API";
 import axios from "axios";
+import ReactPaginate from "react-paginate";
 import banner from "../../assets/header/montalban-banner2.png"
 import video from "../../assets/image/video.mp4";
 import Breadcrumbs from "../../components/dashboard/Breadcrumbs"
@@ -12,22 +13,29 @@ const EventsInfo = () => {
     const id = searchParams.get("id");
     const brgy = searchParams.get("brgy");
     const [announcements, setAnnouncements] = useState([]);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [pageCount, setPageCount] = useState(0);
 
     useEffect(() => {
         const fetchEvents = async () => {
             try {
-                const res = await axios.get(
-                    `${API_LINK}/announcement/all/?brgy=${brgy}`
+                const response = await axios.get(
+                    `${API_LINK}/announcement/all/?brgy=${brgy}&page=${currentPage}`
                 );
 
-                setAnnouncements(res.data.sort((date1, date2) => new Date(date2.createdAt) - new Date(date1.createdAt)));
+                setAnnouncements(response.data.result.sort((date1, date2) => new Date(date2.createdAt) - new Date(date1.createdAt)));
+                setPageCount(response.data.pageCount);
 
             } catch (err) {
                 console.log(err);
             }
         };
         fetchEvents();
-    }, [brgy]);
+    }, [brgy, currentPage]);
+
+    const handlePageChange = ({ selected }) => {
+        setCurrentPage(selected);
+    };
 
     const dateFormat = (date) => {
         if (!date) return "";
@@ -40,7 +48,7 @@ const EventsInfo = () => {
         return new Intl.DateTimeFormat("en-US", options).format(new Date(date));
     };
 
-    // console.log(announcements)
+    console.log(announcements)
 
     return (
         <div className="mb-[50px]">
@@ -88,7 +96,7 @@ const EventsInfo = () => {
                                     </p>
                                 </div>
                                 <Link
-                                    to={`/events/?id=${id}&brgy=${brgy}&event_id=${item._id}`}
+                                    to={`/events/?id=${id}&brgy=${brgy}&event_id=${item.event_id}&page=${currentPage}`}
                                     className="bg-custom-green-button w-[150px] sm:mx-auto md:mx-0 text-white font-medium px-[25px] py-[10px] my-[25px] rounded-lg hover:bg-gradient-to-r from-[#295141] to-[#408D51] transition duration-500 ease-in-out hover:text-custom-gold"
                                 >
                                     Read More
@@ -97,6 +105,24 @@ const EventsInfo = () => {
                         </div>
                     ))}
                 </div>
+            </div>
+
+            <div className="md:py-4 md:px-4 bg-[#21556d] flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3">
+                <span className="font-medium text-white sm:text-xs text-sm">
+                    Showing {currentPage + 1} out of {pageCount} pages
+                </span>
+                <ReactPaginate
+                    breakLabel="..."
+                    nextLabel=">>"
+                    onPageChange={handlePageChange}
+                    pageRangeDisplayed={3}
+                    pageCount={pageCount}
+                    previousLabel="<<"
+                    className="flex space-x-3 text-white font-bold"
+                    activeClassName="text-yellow-500"
+                    disabledLinkClassName="text-gray-300"
+                    renderOnZeroPageCount={null}
+                />
             </div>
         </div>
     )

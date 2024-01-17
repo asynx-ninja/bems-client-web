@@ -19,7 +19,7 @@ const EventsCarousel = () => {
           `${API_LINK}/announcement/all/?brgy=${brgy}`
         );
 
-        setAnnouncements(res.data);
+        setAnnouncements(res.data.result);
       } catch (err) {
         console.log(err);
       }

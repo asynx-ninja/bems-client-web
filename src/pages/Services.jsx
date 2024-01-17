@@ -19,10 +19,10 @@ const Services = () => {
           `${API_LINK}/services/?brgy=${brgy}&archived=false&approved=Approved`
         );
 
-        console.log(response.data);
+        console.log(response.data.result);
 
-        setFilter(response.data);
-        setFilterType(response.data);
+        setFilter(response.data.result);
+        setFilterType(response.data.result);
       } catch (error) {
         console.log(error);
       }

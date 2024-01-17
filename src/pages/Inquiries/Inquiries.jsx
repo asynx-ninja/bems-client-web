@@ -5,7 +5,7 @@ import { AiOutlineStop } from "react-icons/ai";
 import { FaPlus } from "react-icons/fa";
 import { BsPrinter } from "react-icons/bs";
 import { useState, useEffect } from "react";
-// import ReactPaginate from "react-paginate";
+import ReactPaginate from "react-paginate";
 import axios from "axios";
 import API_LINK from "../../config/API";
 import { useSearchParams } from "react-router-dom";
@@ -25,7 +25,8 @@ const Inquiries = () => {
   const brgy = searchParams.get("brgy");
   const [inquiries, setInquiries] = useState([]);
   const [inquiry, setInquiry] = useState([]);
-
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pageCount, setPageCount] = useState(0);
 
   useEffect(() => {
     document.title = "Inquiries | Barangay E-Services Management";
@@ -33,21 +34,28 @@ const Inquiries = () => {
 
   useEffect(() => {
     const fetch = async () => {
-      try{
+      try {
         const response = await axios.get(
           `${API_LINK}/inquiries/?id=${id}&brgy=${brgy}&archived=false`
         );
-  
-        // console.log(response)
-        if (response.status === 200) setInquiries(response.data.result.sort((date1, date2) => new Date(date2.createdAt) - new Date(date1.createdAt)));
-        else setInquiries([]);
-      }catch(error){
+
+        if (response.status === 200) {
+          setInquiries(response.data.result.sort((date1, date2) => new Date(date2.createdAt) - new Date(date1.createdAt)))
+          setPageCount(response.data.pageCount);
+        } else {
+          setInquiries([]);
+        }
+      } catch (error) {
         console.log(error)
       }
     };
 
     fetch();
   }, []);
+
+  const handlePageChange = ({ selected }) => {
+    setCurrentPage(selected);
+  };
 
   console.log(inquiries)
 
@@ -132,42 +140,22 @@ const Inquiries = () => {
             </table>
           </div>
 
-          <div class="py-1 px-4 border rounded-b-lg bg-custom-green-table-header">
-            <nav class="flex items-center space-x-2">
-              <a
-                class="text-gray-400 hover:text-blue-600 p-4 inline-flex items-center gap-2 font-medium rounded-md"
-                href="#"
-              >
-                <span aria-hidden="true">«</span>
-                <span class="sr-only">Previous</span>
-              </a>
-              <a
-                class="w-10 h-10 bg-custom-amber text-white p-4 inline-flex items-center text-sm font-medium rounded-full"
-                href="#"
-                aria-current="page"
-              >
-                1
-              </a>
-              <a
-                class="w-10 h-10 text-gray-400 hover:text-blue-600 p-4 inline-flex items-center text-sm font-medium rounded-full"
-                href="#"
-              >
-                2
-              </a>
-              <a
-                class="w-10 h-10 text-gray-400 hover:text-blue-600 p-4 inline-flex items-center text-sm font-medium rounded-full"
-                href="#"
-              >
-                3
-              </a>
-              <a
-                class="text-gray-400 hover:text-blue-600 p-4 inline-flex items-center gap-2 font-medium rounded-md"
-                href="#"
-              >
-                <span class="sr-only">Next</span>
-                <span aria-hidden="true">»</span>
-              </a>
-            </nav>
+          <div className="md:py-4 md:px-4 bg-[#21556d] flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3">
+            <span className="font-medium text-white sm:text-xs text-sm">
+              Showing {currentPage + 1} out of {pageCount} pages
+            </span>
+            <ReactPaginate
+              breakLabel="..."
+              nextLabel=">>"
+              onPageChange={handlePageChange}
+              pageRangeDisplayed={3}
+              pageCount={pageCount}
+              previousLabel="<<"
+              className="flex space-x-3 text-white font-bold"
+              activeClassName="text-yellow-500"
+              disabledLinkClassName="text-gray-300"
+              renderOnZeroPageCount={null}
+            />
           </div>
         </div>
       </div>
