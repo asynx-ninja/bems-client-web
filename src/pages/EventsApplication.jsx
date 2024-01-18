@@ -1,6 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { FiSearch } from "react-icons/fi";
 import { useState, useEffect } from "react";
 import ReactPaginate from "react-paginate";
 import video from "../assets/image/video.mp4";
@@ -9,17 +7,16 @@ import API_LINK from "../config/API";
 import { useSearchParams } from "react-router-dom";
 
 // COMPONENTS
-import ViewRequestModal from "../components/requests/modals/ViewRequestModal";
-import RequestList from "../components/requests/RequestList";
+import ViewEventModal from "../components/articles/eventsapplication/modals/ViewEventModal";
+import EventsApplicationList from "../components/articles/eventsapplication/EventsApplicationList";
 
-const Requests = () => {
+const EventsApplication = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get("id");
   const brgy = searchParams.get("brgy");
   const user_id = searchParams.get("user_id")
-  const [request, setRequest] = useState([])
-  const [viewRequest, setViewRequest] = useState([])
-  const [selectedItems, setSelectedItems] = useState([]);
+  const [events, setEvents] = useState([])
+  const [viewEvent, setViewEvent] = useState([])
   const [currentPage, setCurrentPage] = useState(0);
   const [pageCount, setPageCount] = useState(0);
 
@@ -32,12 +29,12 @@ const Requests = () => {
     const fetch = async () => {
       try {
         const response = await axios.get(
-          `${API_LINK}/requests/specific/?user_id=${user_id}`
+          `${API_LINK}/application/specific/?user_id=${user_id}`
         );
 
         // const getUser = await axios.get(`${API_LINK}/users/specific/${id}`);
 
-        setRequest(response.data.sort((date1, date2) => new Date(date2.createdAt) - new Date(date1.createdAt)))
+        setEvents(response.data.sort((date1, date2) => new Date(date2.createdAt) - new Date(date1.createdAt)))
         setPageCount(response.data.pageCount);
 
       } catch (err) {
@@ -48,7 +45,7 @@ const Requests = () => {
     fetch();
   }, [brgy, id]);
 
-  console.log(request)
+  console.log(events)
 
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected);
@@ -56,21 +53,9 @@ const Requests = () => {
 
   // console.log(viewRequest);
 
-  const checkAllHandler = () => {
-    if (request.length === selectedItems.length) {
-      setSelectedItems([]);
-    } else {
-      const postIds = request.map((item) => {
-        return item._id;
-      });
-
-      setSelectedItems(postIds);
-    }
-  };
-
   const tableHeader = [
-    "Request Name",
-    "date requested",
+    "Events Name",
+    "Application Date",
     "status",
     "actions",
   ];
@@ -93,7 +78,7 @@ const Requests = () => {
         <div className="flex flex-col">
 
           <div className="md:mr-[20px] bg-white rounded-lg">
-            <h2 className="text-[2rem] font-bold text-green-900">REQUEST</h2>
+            <h2 className="text-[2rem] font-bold text-green-900">EVENTS APPLICATION LIST</h2>
           </div>
 
           {/* Table */}
@@ -119,20 +104,20 @@ const Requests = () => {
               {/* Table Body */}
               <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                 {
-                  request.length === 0 ?
+                  events.length === 0 ?
                     <tr>
                       <th className="pt-[50px]" rowSpan={5} colSpan={6}>
                         No Records Shown
                       </th>
                     </tr>
                     :
-                    <RequestList request={request} selectedItems={selectedItems} checkboxHandler={checkAllHandler} setViewRequest={setViewRequest} />
+                    <EventsApplicationList events={events} setViewEvent={setViewEvent} />
                 }
               </tbody>
             </table>
           </div>
 
-          <div className="md:py-4 md:px-4 bg-bg-custom-green-header flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3">
+          <div className="md:py-4 md:px-4 bg-custom-green-header flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3">
             <span className="font-medium text-white sm:text-xs text-sm">
               Showing {currentPage + 1} out of {pageCount} pages
             </span>
@@ -151,9 +136,9 @@ const Requests = () => {
           </div>
         </div>
       </div>
-      <ViewRequestModal viewRequest={viewRequest} />
+      <ViewEventModal viewEvent={viewEvent} />
     </div>
   );
 };
 
-export default Requests;
+export default EventsApplication;

@@ -159,7 +159,7 @@ const Sidebar = () => {
                   </h1>
                 </Link>
                 <Link
-                  to={`/requests/?id=${id}&brgy=${brgy}&user_id=${userData.user_id}`}
+                  to={`/events-application/?id=${id}&brgy=${brgy}&user_id=${userData.user_id}`}
                   onClick={() => {
                     window.innerWidth >= 320 && window.innerWidth <= 1023
                       ? document
@@ -176,7 +176,7 @@ const Sidebar = () => {
                   {" "}
                   <FaRegListAlt className="my-auto" size={"15px"} />
                   <h1 className="text-bold my-auto font-bold w-[50px] leading-[20px] text-sm">
-                    EVENTS REQUEST
+                    EVENTS APPLICATION
                   </h1>
                 </Link>
               </div>

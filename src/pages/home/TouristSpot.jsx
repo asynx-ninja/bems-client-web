@@ -2,6 +2,7 @@ import { React, useEffect, useState } from "react";
 import { Link, useSearchParams, useLocation } from "react-router-dom";
 import axios from "axios";
 import API_LINK from "../../config/API";
+import ReactPaginate from "react-paginate";
 
 //COMPONENTS
 import NavbarHome from "../../components/global/NavbarHome";
@@ -11,6 +12,8 @@ import Breadcrumbs from "../../components/touristspot/Breadcrumbs"
 const TouristSpot = () => {
     const brgy = "MUNICIPAL INFO";
     const [touristSpot, setTouristSpot] = useState([]);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [pageCount, setPageCount] = useState(0);
 
     useEffect(() => {
         const fetchTouristSpot = async () => {
@@ -20,6 +23,8 @@ const TouristSpot = () => {
                 );
 
                 setTouristSpot(response.data.result)
+                setPageCount(response.data.pageCount);
+
             } catch (error) {
                 console.log(error)
             }
@@ -27,6 +32,10 @@ const TouristSpot = () => {
         }
         fetchTouristSpot();
     })
+
+    const handlePageChange = ({ selected }) => {
+        setCurrentPage(selected);
+    };
 
     return (
         <>
@@ -85,6 +94,24 @@ const TouristSpot = () => {
                             </div>
                         </div>
                     ))}
+                </div>
+
+                <div className="md:py-4 md:px-4 bg-custom-green-header flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3">
+                    <span className="font-medium text-white sm:text-xs text-sm">
+                        Showing {currentPage + 1} out of {pageCount} pages
+                    </span>
+                    <ReactPaginate
+                        breakLabel="..."
+                        nextLabel=">>"
+                        onPageChange={handlePageChange}
+                        pageRangeDisplayed={3}
+                        pageCount={pageCount}
+                        previousLabel="<<"
+                        className="flex space-x-3 text-white font-bold"
+                        activeClassName="text-yellow-500"
+                        disabledLinkClassName="text-gray-300"
+                        renderOnZeroPageCount={null}
+                    />
                 </div>
             </div>
         </>

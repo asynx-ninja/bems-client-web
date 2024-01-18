@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import NewsCarousel from "../components/dashboard/NewsCarousel";
+import ReactPaginate from "react-paginate";
 import { Link, useSearchParams } from "react-router-dom";
 import video from "../assets/image/video.mp4";
 import axios from "axios";
@@ -11,6 +12,8 @@ const Services = () => {
   const id = searchParams.get("id");
   const brgy = searchParams.get("brgy");
   const [filterType, setFilterType] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pageCount, setPageCount] = useState(0);
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -23,6 +26,8 @@ const Services = () => {
 
         setFilter(response.data.result);
         setFilterType(response.data.result);
+        setPageCount(response.data.pageCount);
+
       } catch (error) {
         console.log(error);
       }
@@ -31,6 +36,10 @@ const Services = () => {
   }, [brgy]);
 
   console.log(filter);
+
+  const handlePageChange = ({ selected }) => {
+    setCurrentPage(selected);
+  };
 
   const handleOnFilter = (e) => {
     e.target.value === "all"
@@ -82,6 +91,23 @@ const Services = () => {
             </div>
           </Link>
         ))}
+      </div>
+      <div className="md:py-4 md:px-4 w-full mt-[30px] bg-custom-green-header flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3">
+        <span className="font-medium text-white sm:text-xs text-sm">
+          Showing {currentPage + 1} out of {pageCount} pages
+        </span>
+        <ReactPaginate
+          breakLabel="..."
+          nextLabel=">>"
+          onPageChange={handlePageChange}
+          pageRangeDisplayed={3}
+          pageCount={pageCount}
+          previousLabel="<<"
+          className="flex space-x-3 text-white font-bold"
+          activeClassName="text-yellow-500"
+          disabledLinkClassName="text-gray-300"
+          renderOnZeroPageCount={null}
+        />
       </div>
     </div>
   );

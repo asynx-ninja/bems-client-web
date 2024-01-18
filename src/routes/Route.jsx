@@ -29,11 +29,15 @@ import Reservation from "../pages/Reservation"
 
 // DASHBOARD SUB PAGES
 import Mobile from "../components/dashboard/Mobile";
-import EventsInfo from "../components/dashboard/EventsInfo";
+
 
 //Tourist Spot
 import TouristSpotMain from "../components/touristspot/TouristSpotMain";
 import TouristSpot from "../pages/home/TouristSpot"
+
+// EVENTS
+import EventsInfo from "../components/dashboard/EventsInfo";
+import EventsApplication from "../pages/EventsApplication";
 
 const pages = [
   {
@@ -51,6 +55,15 @@ const pages = [
       <>
         <Navbar />
         <Mobile />
+      </>
+    )
+  },
+  {
+    path: "/events-application",
+    element: (
+      <>
+        <Navbar />
+        <EventsApplication />
       </>
     )
   },

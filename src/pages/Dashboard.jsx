@@ -110,7 +110,7 @@ const Dashboard = () => {
               className='sm:w-[90px] lg:w-[120px] mt-[18px] bg-white font-medium sm:text-[10px] lg:text-[14px] py-[8px] rounded-md hover:scale-[105%] transition text-center'
             >
               <h1>
-                View Request
+                View Services
               </h1>
             </Link>
           </div>
