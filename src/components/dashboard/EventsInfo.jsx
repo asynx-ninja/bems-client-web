@@ -51,7 +51,7 @@ const EventsInfo = () => {
     console.log(announcements)
 
     return (
-        <div>
+        <div className="bg-gray-100">
             <div>
                 <div className="relative lg:h-[250px] w-full object-cover">
                     <video className="h-full w-full object-cover" autoPlay muted loop>
@@ -80,12 +80,12 @@ const EventsInfo = () => {
                     {announcements.map((item, i) => (
                         <div
                             key={i}
-                            className="sm:w-full flex sm:flex-col lg:flex-row h-auto text-left p-5 gap-5 border-t-[1px] border-t-gray-300"
+                            className="sm:w-full flex sm:flex-col lg:flex-row h-auto text-left sm:p-5 gap-5 border-b-[2px] border-b-gray-500 shadow-lg rounded-lg mb-[20px] hover:border-b-[5px] hover:border-b-custom-green-header hover:scale-105 transition-all bg-white"
                         >
                             <div>
-                                <img className="sm:w-full sm:h-full lg:w-[300px] h-[300px] rounded-md object-cover" src={item.collections.banner.link === undefined ? banner : item.collections.banner.link} alt="" />
+                                <img className="sm:w-full sm:h-[150px] md:w-[300px] h-[300px] rounded-md object-cover" src={item.collections.banner.link === undefined ? banner : item.collections.banner.link} alt="" />
                             </div>
-                            <div className="sm:w-full md:w-[70%] flex flex-col gap-3">
+                            <div className="sm:w-full lg:w-[70%] flex flex-col gap-3">
                                 <div className="my-[10px]">
                                     <h1 className="font-medium truncate">{item.title}</h1>
                                     <p className="text-gray-500">{dateFormat(item.createdAt)}</p>

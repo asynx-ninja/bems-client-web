@@ -1,6 +1,6 @@
 import OccupationList from "../../components/occupations/OccupationList";
 
-const OtherPersonalData = ({ userData, userSocials, handleUserDataChange, handleUserSocials, editButton}) => {
+const OtherPersonalData = ({ userData, userSocials, handleUserDataChange, handleUserSocials, editButton, empty}) => {
 
     return (
         <div>

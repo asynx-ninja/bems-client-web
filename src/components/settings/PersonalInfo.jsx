@@ -1,4 +1,4 @@
-const PersonalInfo = ({userData, editButton, handleUserDataChange, birthdayFormat, calculateAge}) => {
+const PersonalInfo = ({userData, editButton, handleUserDataChange, birthdayFormat, calculateAge, empty}) => {
 
     return (
         <div>
@@ -17,7 +17,9 @@ const PersonalInfo = ({userData, editButton, handleUserDataChange, birthdayForma
                         disabled={editButton}
                         type="text"
                         id="firstname"
-                        className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 bg-white"
+                        required
+                        className={empty ? "py-3 px-4 block w-full border-1 border-red-200 text-black rounded-md text-sm focus:border-red-500 focus:ring-red-500 bg-white"
+                            : "py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 bg-white"}
                         placeholder="First name"
                         value={userData.firstName || ""}
                         onChange={(e) =>
@@ -55,8 +57,8 @@ const PersonalInfo = ({userData, editButton, handleUserDataChange, birthdayForma
                         disabled={editButton}
                         id="lastName"
                         type="text"
-                        className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 bg-white"
-                        placeholder="Last name"
+                        className={empty ? "py-3 px-4 block w-full border-1 border-red-200 text-black rounded-md text-sm focus:border-red-500 focus:ring-red-500 bg-white"
+                            : "py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 bg-white"}                        placeholder="Last name"
                         aria-describedby="hs-input-helper-text"
                         value={userData.lastName || ""}
                         onChange={(e) =>
@@ -157,8 +159,8 @@ const PersonalInfo = ({userData, editButton, handleUserDataChange, birthdayForma
                         type="text"
                         disabled={editButton}
                         id="phone"
-                        className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 bg-white"
-                        placeholder="#"
+                        className={empty ? "py-3 px-4 block w-full border-1 border-red-200 text-black rounded-md text-sm focus:border-red-500 focus:ring-red-500 bg-white"
+                            : "py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 bg-white"}                        placeholder="#"
                         aria-describedby="hs-input-helper-text"
                         value={userData.contact || ""}
                         onChange={(e) =>
@@ -177,8 +179,8 @@ const PersonalInfo = ({userData, editButton, handleUserDataChange, birthdayForma
                         disabled={editButton}
                         type="email"
                         id="email"
-                        className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 bg-white"
-                        placeholder="you@example.com"
+                        className={empty ? "py-3 px-4 block w-full border-1 border-red-200 text-black rounded-md text-sm focus:border-red-500 focus:ring-red-500 bg-white"
+                            : "py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 bg-white"}                        placeholder="you@example.com"
                         aria-describedby="hs-input-helper-text"
                         value={userData.email || ""}
                         onChange={(e) =>

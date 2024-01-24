@@ -18,6 +18,7 @@ import PersonalInfo from "../components/settings/PersonalInfo";
 import AddressDetails from "../components/settings/AddressDetails";
 import OtherPersonalData from "../components/settings/OthersPersonalData";
 import Credentials from "../components/settings/Credentials";
+import Preloader from "../components/loaders/Preloader";
 
 const Settings = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -63,6 +64,14 @@ const Settings = () => {
   const [passwordStrengthError, setPasswordStrengthError] = useState(false);
   const [passwordStrengthSuccess, setPasswordStrengthSuccess] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
+  const [empty, setEmpty] = useState(false);
+  const [showError, setShowError] = useState({
+    error: false,
+    message: ""
+  });
+  const [error, setError] = useState(null);
+  const [submitClicked, setSubmitClicked] = useState(false);
+  const [updatingStatus, setUpdatingStatus] = useState(null);
 
   const handleAdd = (e) => {
     e.preventDefault();
@@ -181,6 +190,29 @@ const Settings = () => {
 
   const saveChanges = async (e) => {
     e.preventDefault()
+    setSubmitClicked(true);
+
+    if (
+      !userData.firstName ||
+      !userData.lastName ||
+      !userData.email ||
+      !userData.contact ||
+      !userData.username
+    ) {
+      setEmpty(true);
+      setShowError({
+        error: true,
+        message: "Please fill up Required information!"
+      });
+      return;
+      // Proceed with form submission...
+    } else {
+      setShowError({
+        error: false,
+        message: "Please fill up Required information!"
+      });
+      setEmpty(false);
+    }
 
     const obj = {
       firstName: userData.firstName,
@@ -241,6 +273,7 @@ const Settings = () => {
       }
 
       if (response.status === 200) {
+        console.log("Update successful:", response);
         setUserData(response.data);
         setUserAddress({
           street: response.data.address.street,
@@ -253,11 +286,21 @@ const Settings = () => {
           twitter: response.data.socials.twitter,
         });
         setEditButton(true);
+        setTimeout(() => {
+          setSubmitClicked(false);
+          setUpdatingStatus("success");
+          setTimeout(() => {
+            window.location.reload();
+          }, 3000);
+        }, 1000);
       } else {
         console.error("Update failed. Status:", response.status);
       }
     } catch (error) {
       console.error("Error saving changes:", error);
+      setSubmitClicked(false);
+      setUpdatingStatus("error");
+      setError(error.message);
     }
   };
 
@@ -344,183 +387,215 @@ const Settings = () => {
   };
 
   return (
-    <div className="">
-      <div className="flex flex-col w-full">
-        <div className="w-full relative">
-          <img
-            className="h-[200px] w-full obj object-cover bg-black opacity-[80%]"
-            src={banner}
-            alt=""
-          />
-          <div className="absolute inset-0 flex items-center justify-center bg-black transition-opacity duration-300 opacity-[50%]"></div>
-        </div>
-        <div className="flex sm:flex-col-reverse lg:flex-row-reverse sm:px-[5px] px-[20px] justify-center mb-[20px]">
-          <div className="flex flex-col sm:w-full lg:w-9/12 mx-auto">
-            <div className="flex gap-[10px] my-5 pb-[10px] border-b-[2px] border-b-gray-200 px-[10px]">
-              <button
-                name="personal"
-                onClick={handleOnActive}
-                className={
-                  activeButton.personal
-                    ? "sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-custom-green-button text-white font-medium"
-                    : "sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-white text-black font-medium transition-all ease-in-out hover:bg-custom-green-button hover:text-white"
-                }
-              >
-                Personal Info
-              </button>
-              <button
-                name="credential"
-                onClick={handleOnActive}
+    <div className="relative">
+      <div className="">
+        <div className="flex flex-col w-full">
+          <div className="w-full relative">
+            <img
+              className="h-[250px] w-full obj object-cover bg-black opacity-[80%]"
+              src={banner}
+              alt=""
+            />
+            <div className="absolute inset-0 flex items-center justify-center bg-black transition-opacity duration-300 opacity-[50%]"></div>
+          </div>
+          <div className="flex sm:flex-col-reverse lg:flex-row-reverse sm:px-[5px] px-[20px] justify-center mb-[20px]">
+            <div className="flex flex-col sm:w-full lg:w-9/12 mx-auto">
+              {
+                showError.error ?
+                  <div
+                    className="bg-red-50 border text-center border-red-200 text-sm text-red-600 rounded-md py-4 mt-2 mb-4"
+                    role="alert"
+                  >
+                    <span className="font-bold ">Warning:</span> {showError.message}
+                  </div>
+                  : null
+              }
+              <div className="flex gap-[10px] my-5 pb-[10px] border-b-[2px] border-b-gray-200 px-[10px]">
+                <button
+                  name="personal"
+                  onClick={handleOnActive}
+                  className={
+                    activeButton.personal
+                      ? "sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-custom-green-button text-white font-medium"
+                      : "sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-white text-black font-medium transition-all ease-in-out hover:bg-custom-green-button hover:text-white"
+                  }
+                >
+                  Personal Info
+                </button>
+                <button
+                  name="credential"
+                  onClick={handleOnActive}
+                  className={
+                    activeButton.credential
+                      ? "sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-custom-green-button text-white font-medium"
+                      : "sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-white text-black font-medium transition-all ease-in-out hover:bg-custom-green-button hover:text-white"
+                  }
+                >
+                  Account Info
+                </button>
+              </div>
+
+              <div className={activeButton.personal ? "block" : "hidden"}>
+                <div className="h-full w-full shadow-lg px-[30px] pb-[30px]">
+                  {/* PERSONAL DATA */}
+                  <PersonalInfo userData={userData} editButton={editButton} handleUserDataChange={handleUserDataChange} birthdayFormat={birthdayFormat} calculateAge={calculateAge} empty={empty} />
+
+                  {/* ADDRESS DETAILS */}
+                  <AddressDetails userAddress={userAddress} editButton={editButton} handleUserChangeAdd={handleUserChangeAdd} empty={empty} />
+
+                  {/* OTHER PERSONAL DATA */}
+                  <OtherPersonalData userData={userData} userSocials={userSocials} handleUserDataChange={handleUserDataChange} handleUserSocials={handleUserSocials} editButton={editButton} empty={empty} />
+
+                </div>
+              </div>
+              <div
                 className={
                   activeButton.credential
-                    ? "sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-custom-green-button text-white font-medium"
-                    : "sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-white text-black font-medium transition-all ease-in-out hover:bg-custom-green-button hover:text-white"
+                    ? "shadow-lg px-[30px] pb-[30px]"
+                    : "hidden"
                 }
               >
-                Account Info
-              </button>
-            </div>
-
-            <div className={activeButton.personal ? "block" : "hidden"}>
-              <div className="h-full w-full shadow-lg px-[30px] pb-[30px]">
-                {/* PERSONAL DATA */}
-                <PersonalInfo userData={userData} editButton={editButton} handleUserDataChange={handleUserDataChange} birthdayFormat={birthdayFormat} calculateAge={calculateAge} />
-
-                {/* ADDRESS DETAILS */}
-                <AddressDetails userAddress={userAddress} editButton={editButton} handleUserChangeAdd={handleUserChangeAdd} />
-
-                {/* OTHER PERSONAL DATA */}
-                <OtherPersonalData userData={userData} userSocials={userSocials} handleUserDataChange={handleUserDataChange} handleUserSocials={handleUserSocials} editButton={editButton} />
-
+                {/* CREDENTIALS */}
+                <Credentials userCred={userCred} handleUserChangeCred={handleUserChangeCred} editButton={editButton} message={message} passwordStrengthError={passwordStrengthError} passwordStrengthSuccess={passwordStrengthSuccess} passwordStrength={passwordStrength} empty={empty} />
               </div>
             </div>
-            <div
-              className={
-                activeButton.credential
-                  ? "shadow-lg px-[30px] pb-[30px]"
-                  : "hidden"
-              }
-            >
-              {/* CREDENTIALS */}
-              <Credentials userCred={userCred} handleUserChangeCred={handleUserChangeCred} editButton={editButton} message={message} passwordStrengthError={passwordStrengthError} passwordStrengthSuccess={passwordStrengthSuccess} passwordStrength={passwordStrength} />
-            </div>
-          </div>
-          <div className="sm:w-full lg:w-[20%] relative mt-[-105px] mb-[20px]">
-            <div className="block">
-              <div className="relative lg:w-full flex flex-col m-auto justify-center items-center">
-                <div className="absolute top-[100px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
-                  <label
-                    htmlFor="file_input"
-                    onClick={handleAdd}
-                    className={
-                      editButton
-                        ? "hidden"
-                        : "block text-transparent p-[70px] font-medium rounded-full text-sm text-center opacity-0 hover:opacity-100 transition-opacity hover:bg-[#295141] hover:bg-opacity-60 cursor-pointer"
-                    }
-                  >
-                    <FaCamera
-                      size={50}
-                      style={{ color: "#ffffff" }}
-                      className="cursor-none"
+            <div className="sm:w-full lg:w-[20%] relative mt-[-80px] mb-[20px]">
+              <div className="block">
+                <div className="relative lg:w-full flex flex-col m-auto justify-center items-center">
+                  <div className="absolute top-[75px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+                    <label
+                      htmlFor="file_input"
+                      onClick={handleAdd}
+                      className={
+                        editButton
+                          ? "hidden"
+                          : "block text-transparent p-[45px] font-medium rounded-full text-sm text-center opacity-0 hover:opacity-100 transition-opacity hover:bg-[#295141] hover:bg-opacity-60 cursor-pointer"
+                      }
+                    >
+                      <FaCamera
+                        size={50}
+                        style={{ color: "#ffffff" }}
+                        className="cursor-none"
+                      />
+                    </label>
+                    <input
+                      disabled={editButton}
+                      type="file"
+                      name="file"
+                      onChange={handleFileChange}
+                      ref={fileInputRef}
+                      accept="image/*"
+                      multiple="multiple"
+                      className="hidden"
                     />
-                  </label>
-                  <input
-                    disabled={editButton}
-                    type="file"
-                    name="file"
-                    onChange={handleFileChange}
-                    ref={fileInputRef}
-                    accept="image/*"
-                    multiple="multiple"
-                    className="hidden"
+                  </div>
+                  <img
+                    id="pfp"
+                    className="w-[150px] h-[150px] rounded-full sm:mb-3 lg:mb-0 border-[5px] border-[#295141] object-cover"
                   />
-                </div>
-                <img
-                  id="pfp"
-                  className="w-[200px] h-[200px] rounded-full sm:mb-3 lg:mb-0 border-[5px] border-[#295141] object-cover"
-                />
-                {/* <button className="relative bottom-[25px] w-[40px] h-[40px] flex justify-center items-center rounded-full bg-[#295141] text-white px-3 py-2">
+                  {/* <button className="relative bottom-[25px] w-[40px] h-[40px] flex justify-center items-center rounded-full bg-[#295141] text-white px-3 py-2">
                                     <FaCamera size={20} className="cursor-none" />
                                 </button> */}
-              </div>
-              <div className="flex flex-col justify-center items-center mt-1">
-                <h6 className="font-bold">
-                  {userData.firstName} {userData.lastName}
-                </h6>
-                <p className="text-[12px] leading-[10px]">
-                  {userData.username}
-                </p>
-              </div>
-              <div className="flex flex-col justify-center sm:w-[250px] md:w-[90%] lg:w-full items-center mx-auto mt-5 bg-custom-green-header rounded-md p-[10px]">
-                <div className="flex justify-center items-center border-b-[1px] border-white w-full pb-[10px]">
-                  <h6 className="font-bold text-white">Socials</h6>
                 </div>
-                <div className="p-[10px] flex sm:flex-col md:flex-row lg:flex-col gap-5">
-                  <button className="flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-custom-green-table-header text-white hover:p-2">
-                    <FaFacebook />
-                    <p className="text-left truncate text-[12px]">
-                      {userSocials.facebook.name}
-                    </p>
-                  </button>
-                  <button className="flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-custom-green-table-header text-white hover:p-2">
-                    <FaInstagram />
-                    <p className="text-left truncate text-[12px]">
-                      {userSocials.instagram.name}
-                    </p>
-                  </button>
-                  <button className="flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-custom-green-table-header text-white hover:p-2">
-                    <FaTwitter />
-                    <p className="text-left truncate text-[12px]">
-                      {userSocials.twitter.name}
-                    </p>
-                  </button>
-                  <button className="flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-custom-green-table-header text-white hover:p-2">
-                    <FaPhone />
-                    <p className="text-left truncate text-[12px]">
-                      {userData.contact}
-                    </p>
-                  </button>
-                  <button className=" flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-custom-green-table-header text-white hover:p-2">
-                    <FaEnvelope />
-                    <p className="text-left truncate text-[12px]">
-                      {userData.email}
-                    </p>
-                  </button>
+                <div className="flex flex-col justify-center items-center mt-1">
+                  <h6 className="font-bold">
+                    {userData.firstName} {userData.lastName}
+                  </h6>
+                  <p className="text-[12px] leading-[10px]">
+                    {userData.username}
+                  </p>
+                </div>
+                <div className="flex flex-col justify-center sm:w-[250px] md:w-[90%] lg:w-full items-center mx-auto mt-5 bg-custom-green-header rounded-md p-[10px]">
+                  <div className="flex justify-center items-center border-b-[1px] border-white w-full pb-[10px]">
+                    <h6 className="font-bold text-white">Socials</h6>
+                  </div>
+                  <div className="p-[10px] flex sm:flex-col md:flex-row lg:flex-col gap-5">
+                    {userSocials.facebook.name.length !== 0 ?
+                      <button className="flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-custom-green-table-header text-white hover:p-2">
+                        <FaFacebook />
+                        <p className="text-left truncate text-[12px]">
+                          {userSocials.facebook.name}
+                        </p>
+                      </button>
+                      : null
+                    }
+                    {userSocials.instagram.name.length !== 0 ?
+                      <button className="flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-custom-green-table-header text-white hover:p-2">
+                        <FaInstagram />
+                        <p className="text-left truncate text-[12px]">
+                          {userSocials.instagram.name}
+                        </p>
+                      </button>
+                      : null
+                    }
+                    {userSocials.twitter.name.length !== 0 ?
+                      <button className="flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-custom-green-table-header text-white hover:p-2">
+                        <FaTwitter />
+                        <p className="text-left truncate text-[12px]">
+                          {userSocials.twitter.name}
+                        </p>
+                      </button>
+                      : null
+                    }
+                    {userData.contact !== "" ?
+                      <button className="flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-custom-green-table-header text-white hover:p-2">
+                        <FaPhone />
+                        <p className="text-left truncate text-[12px]">
+                          {userData.contact}
+                        </p>
+                      </button>
+                      : null
+                    }
+                    {userData.email !== "" ?
+                      <button className=" flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-custom-green-table-header text-white hover:p-2">
+                        <FaEnvelope />
+                        <p className="text-left truncate text-[12px]">
+                          {userData.email}
+                        </p>
+                      </button>
+                      : null
+                    }
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className="mb-[20px] flex justify-center items-center gap-5">
-        {editButton ? (
-          <button
-            name="edit"
-            onClick={handleOnEdit}
-            className="bg-custom-green-button text-white font-medium px-[20px] py-[5px] rounded-md"
-          >
-            Edit
-          </button>
-        ) : (
-          <div className="flex gap-5">
+        <div className="mb-[20px] flex justify-center items-center gap-5">
+          {/* Sm to md screen loader */}
+          {editButton ? (
             <button
-              type="submit"
-              name="save"
-              onClick={saveChanges}
+              name="edit"
+              onClick={handleOnEdit}
               className="bg-custom-green-button text-white font-medium px-[20px] py-[5px] rounded-md"
             >
-              Save
+              Edit
             </button>
-            <button
-              onClick={handleOnEdit}
-              name="cancel"
-              className="bg-custom-red-button text-white font-medium px-[20px] py-[5px] rounded-md"
-            >
-              Cancel
-            </button>
-          </div>
-        )}
+          ) : (
+            <div className="flex gap-5">
+              <button
+                type="submit"
+                name="save"
+                onClick={saveChanges}
+                className="bg-custom-green-button text-white font-medium px-[20px] py-[5px] rounded-md"
+              >
+                Save
+              </button>
+              <button
+                onClick={handleOnEdit}
+                name="cancel"
+                className="bg-custom-red-button text-white font-medium px-[20px] py-[5px] rounded-md"
+              >
+                Cancel
+              </button>
+            </div>
+          )}
+        </div>
       </div>
+      {submitClicked && <Preloader updatingStatus="updating" />}
+      {updatingStatus && (
+        <Preloader updatingStatus={updatingStatus} error={error} />
+      )}
     </div>
   );
 };

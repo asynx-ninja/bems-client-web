@@ -6,6 +6,7 @@ import defaultBanner from "../assets/image/1.png";
 import defaultLogo from "../assets/header/side-bg.png";
 import API_LINK from "../config/API";
 import axios from "axios";
+import video from "../assets/image/video.mp4";
 
 const Articles = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -48,8 +49,20 @@ const Articles = () => {
   // console.log(announcement)
 
   return (
-    <div className="w-full flex flex-col sm:px-[15px] lg:px-[70px] pt-[40px]">
-
+    <div className="w-full flex flex-col">
+      <div>
+        <div className="relative lg:h-[250px] w-full object-cover">
+          <video className="h-full w-full object-cover" autoPlay muted loop>
+            <source src={video} type="video/mp4" />
+          </video>
+          <div
+            className="absolute inset-0 bg-black opacity-50"
+            style={{
+              content: "''",
+            }}
+          />
+        </div>
+      </div>
       {/* CONTENTS */}
       <div className="flex flex-col">
         <div>

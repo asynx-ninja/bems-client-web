@@ -32,12 +32,10 @@ const Requests = () => {
     const fetch = async () => {
       try {
         const response = await axios.get(
-          `${API_LINK}/requests/specific/?user_id=${user_id}`
+          `${API_LINK}/requests/specific/?user_id=${user_id}&page=${currentPage}`
         );
 
-        // const getUser = await axios.get(`${API_LINK}/users/specific/${id}`);
-
-        setRequest(response.data.sort((date1, date2) => new Date(date2.createdAt) - new Date(date1.createdAt)))
+        setRequest(response.data.result.sort((date1, date2) => new Date(date2.createdAt) - new Date(date1.createdAt)))
         setPageCount(response.data.pageCount);
 
       } catch (err) {
@@ -46,7 +44,7 @@ const Requests = () => {
     };
 
     fetch();
-  }, [brgy, id]);
+  }, [brgy, id, currentPage]);
 
   console.log(request)
 
@@ -76,15 +74,15 @@ const Requests = () => {
   ];
 
   return (
-    <div className="flex flex-col">
-      <div className="relative lg:h-[250px] w-full object-cover">
+    <div className="flex flex-col bg-gray-100">
+      <div className="relative sm:h-[200px] lg:h-[250px] w-full object-cover">
         <video className="h-full w-full object-cover" autoPlay muted loop>
           <source src={video} type="video/mp4" />
         </video>
         <div
           className="absolute inset-0 bg-black opacity-50"
           style={{
-            content: "''",
+            content: "''"
           }}
         />
       </div>
@@ -92,12 +90,12 @@ const Requests = () => {
       <div className="p-4 lg:p-10">
         <div className="flex flex-col">
 
-          <div className="md:mr-[20px] bg-white rounded-lg">
+          <div className="md:mr-[20px] rounded-lg">
             <h2 className="text-[2rem] font-bold text-green-900">REQUEST</h2>
           </div>
 
           {/* Table */}
-          <div className="overflow-x-auto sm:h-[380px] lg:h-[680px] xl:h-[700px] xxl:h-[700px] xxxl:h-[640px] border border-b-0 mt-5 rounded-t-xl">
+          <div className="overflow-x-auto sm:h-[380px] lg:h-[680px] bg-white border border-b-0 mt-5 rounded-t-xl">
             <table className="w-full divide-y divide-gray-200 ">
               {/* Table Headers */}
               <thead className="bg-custom-green-table-header border">
@@ -117,7 +115,7 @@ const Requests = () => {
               </thead>
 
               {/* Table Body */}
-              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+              <tbody>
                 {
                   request.length === 0 ?
                     <tr>
@@ -132,7 +130,7 @@ const Requests = () => {
             </table>
           </div>
 
-          <div className="md:py-4 md:px-4 bg-bg-custom-green-header flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3">
+          <div className="md:py-4 md:px-4 bg-custom-green-header flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3">
             <span className="font-medium text-white sm:text-xs text-sm">
               Showing {currentPage + 1} out of {pageCount} pages
             </span>

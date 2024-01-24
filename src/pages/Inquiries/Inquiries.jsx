@@ -21,7 +21,7 @@ import video from "../../assets/image/video.mp4";
 const Inquiries = () => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
-  const id = searchParams.get("id");
+  const user_id = searchParams.get("user_id");
   const brgy = searchParams.get("brgy");
   const [inquiries, setInquiries] = useState([]);
   const [inquiry, setInquiry] = useState([]);
@@ -36,7 +36,7 @@ const Inquiries = () => {
     const fetch = async () => {
       try {
         const response = await axios.get(
-          `${API_LINK}/inquiries/?id=${id}&brgy=${brgy}&archived=false`
+          `${API_LINK}/inquiries/?id=${user_id}&brgy=${brgy}&archived=false&page=${currentPage}`
         );
 
         if (response.status === 200) {
@@ -51,7 +51,7 @@ const Inquiries = () => {
     };
 
     fetch();
-  }, []);
+  }, [user_id, brgy, currentPage]);
 
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected);
@@ -68,8 +68,8 @@ const Inquiries = () => {
   ];
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="relative lg:h-[250px] w-full object-cover">
+    <div className="flex flex-col h-full bg-gray-100">
+      <div className="relative sm:h-[200px] lg:h-[250px] w-full object-cover">
         <video className="h-full w-full object-cover" autoPlay muted loop>
           <source src={video} type="video/mp4" />
         </video>
@@ -83,7 +83,7 @@ const Inquiries = () => {
       <div className="p-4 lg:p-10 border flex flex-col">
         <div className="w-full flex flex-col">
           <div className="flex w-full justify-between">
-            <div className="md:mr-[20px] bg-white rounded-lg">
+            <div className="md:mr-[20px] rounded-lg">
               <h2 className="text-[2rem] font-bold text-green-900">INQUIRIES</h2>
             </div>
 
@@ -106,7 +106,7 @@ const Inquiries = () => {
           </div>
 
           {/* Table */}
-          <div className="overflow-x-auto sm:h-[380px] lg:h-[680px] border border-b-0 mt-5 rounded-t-xl">
+          <div className="overflow-x-auto sm:h-[380px] lg:h-[680px] border border-b-0 mt-5 rounded-t-xl bg-white">
             <table className="w-full divide-y divide-gray-200 ">
               {/* Table Headers */}
               <thead className="bg-custom-green-table-header border">
@@ -140,7 +140,7 @@ const Inquiries = () => {
             </table>
           </div>
 
-          <div className="md:py-4 md:px-4 bg-[#21556d] flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3">
+          <div className="md:py-4 md:px-4 bg-custom-green-header flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3">
             <span className="font-medium text-white sm:text-xs text-sm">
               Showing {currentPage + 1} out of {pageCount} pages
             </span>

@@ -19,7 +19,7 @@ const Services = () => {
     const fetchServices = async () => {
       try {
         const response = await axios.get(
-          `${API_LINK}/services/?brgy=${brgy}&archived=false&approved=Approved`
+          `${API_LINK}/services/?brgy=${brgy}&archived=false&approved=Approved&page=${currentPage}`
         );
 
         console.log(response.data.result);
@@ -33,7 +33,7 @@ const Services = () => {
       }
     };
     fetchServices();
-  }, [brgy]);
+  }, [brgy, currentPage]);
 
   console.log(filter);
 
@@ -64,7 +64,7 @@ const Services = () => {
         />
       </div>
 
-      <div className='font-bold w-[90%] mx-auto py-10 mt-[30px] flex justify-center'>
+      <div className='font-bold w-[90%] mx-auto py-10 flex justify-center'>
         <h1 className='text-[38px] text-center border-b-[2px] border-custom-green-header'>OFFERED <b className='text-custom-green-header'>SERVICES</b></h1>
       </div>
 
@@ -74,7 +74,7 @@ const Services = () => {
             key={i}
             to={`/services_form/?id=${id}&brgy=${brgy}&service_id=${item.service_id}`}
           >
-            <div className="group border-[1px] border-gray-300 relative rounded-lg shadow-lg overflow-hidden transform transition duration-500 ease-in-out hover:scale-105">
+            <div className="group border-[1px] md:h-[400px] border-gray-300 relative rounded-lg shadow-lg overflow-hidden transform transition duration-500 ease-in-out hover:scale-105">
               <img
                 className="w-full h-48 object-cover"
                 src={item.collections.banner.link}

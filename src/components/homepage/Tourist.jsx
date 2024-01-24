@@ -39,6 +39,8 @@ const Tourist = () => {
     },
   };
 
+  console.log(touristspot)
+
   return (
     <div id="tourist" className="bg-white flex min-h-[400px] justify-center">
       <div

@@ -1,4 +1,4 @@
-const AddressDetails = ({ userAddress, editButton, handleUserChangeAdd }) => {
+const AddressDetails = ({ userAddress, editButton, handleUserChangeAdd, empty }) => {
 
     return (
         <div>

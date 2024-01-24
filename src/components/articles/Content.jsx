@@ -15,8 +15,14 @@ const Content = ({ announcement }) => {
       : "";
 
   const dateFormat = (date) => {
-    const newFormat = date === undefined ? "" : date.substr(0, 10);
-    return newFormat;
+    if (!date) return "";
+
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    };
+    return new Intl.DateTimeFormat("en-US", options).format(new Date(date));
   };
 
   const reqAnother = () => {
@@ -27,7 +33,7 @@ const Content = ({ announcement }) => {
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="mx-auto w-[90%]">
+      <div className="mx-auto sm:pt-[30px] md:pt-[20px] sm:w-[90%] md:w-[95%]">
         <h1 className="text-custom-green-header font-bold sm:text-center md:text-left sm:text-[24px] md:text-[36px] mx-auto">
           {announcement.title}
         </h1>
@@ -49,28 +55,32 @@ const Content = ({ announcement }) => {
 
         <div>
           <img
-            className="w-[400px] h-[400px] sm:mx-auto lg:mx-0 object-cover rounded-[25px]"
+            className="sm:w-[300px] sm:h-[200px] lg:w-[400px] lg:h-[400px] sm:mx-auto lg:mx-0 object-cover rounded-[25px]"
             id="logo"
             src={logo}
             alt=""
           />
 
-          <div className="flex flex-col w-full items-center bg-green-500 shadow-lg py-3 px-3 mt-3 rounded-lg">
-            {files &&
-              files.map((item, idx) => (
-                <div className="my-auto flex justify-start items-center">
-                  <a
-                    key={idx}
-                    href={item.link}
-                    target="_blank"
-                    className="flex gap-5 hover:text-yellow-300 text-white leading-relaxed font-bold uppercase"
-                  >
-                    <AiFillFilePdf className="my-auto" />
-                    {item.name}
-                  </a>
-                </div>
-              ))}
-          </div>
+          {
+            files.length !== 0 ?
+              <div className="flex flex-col w-full items-center bg-green-500 shadow-lg py-3 px-3 mt-3 rounded-lg">
+                {files &&
+                  files.map((item, idx) => (
+                    <div className="my-auto flex justify-start items-center">
+                      <a
+                        key={idx}
+                        href={item.link}
+                        target="_blank"
+                        className="flex gap-5 hover:text-yellow-300 text-white leading-relaxed font-bold uppercase"
+                      >
+                        <AiFillFilePdf className="my-auto" />
+                        {item.name}
+                      </a>
+                    </div>
+                  ))}
+              </div>
+              : null
+          }
         </div>
       </div>
     </div>

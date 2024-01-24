@@ -12,6 +12,7 @@ import { FaCamera } from "react-icons/fa";
 // FORM DETAILS
 import PersonalDetails from "../components/serviceform/PersonalDetails";
 import OtherDetails from "../components/serviceform/OtherDetails";
+import Preloader from "../components/loaders/Preloader";
 
 const ServicesForm = ({ props }) => {
   const fileInputRef = useRef();
@@ -26,6 +27,9 @@ const ServicesForm = ({ props }) => {
   const [emptyFields, setEmptyFields] = useState([]);
   const [empty, setEmpty] = useState(false);
   const imageRef = useRef();
+  const [error, setError] = useState(null);
+  const [submitClicked, setSubmitClicked] = useState(false);
+  const [updatingStatus, setUpdatingStatus] = useState(null);
 
   useEffect(() => {
     const fetchForms = async () => {
@@ -149,8 +153,8 @@ const ServicesForm = ({ props }) => {
       value: Object.entries(objectConstraint).find(([k]) => key === k)
         ? objectConstraint[key]
         : key === "user_id"
-        ? newData[key].value
-        : "",
+          ? newData[key].value
+          : "",
     };
 
     return newData;
@@ -268,93 +272,106 @@ const ServicesForm = ({ props }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmitClicked(true);
 
     const arr = checkEmptyFields();
 
-    if (arr.length === 0) {
-      var formData = new FormData();
+    try {
+      if (arr.length === 0) {
+        var formData = new FormData();
 
-      detail.form[1].map((item) =>
-        item.form.map(
-          (childItem) =>
-            childItem.type === "file" &&
-            formData.append(
-              "files",
-              renameFile(
-                childItem.value,
-                `${
-                  detail.form[0].lastName.value
-                } - ${childItem.display.toUpperCase()}`
+        detail.form[1].map((item) =>
+          item.form.map(
+            (childItem) =>
+              childItem.type === "file" &&
+              formData.append(
+                "files",
+                renameFile(
+                  childItem.value,
+                  `${detail.form[0].lastName.value
+                  } - ${childItem.display.toUpperCase()}`
+                )
               )
-            )
-        )
-      );
+          )
+        );
 
-      // const { id_pic: _, ...newForm1 } = detail.form[0];
+        // const { id_pic: _, ...newForm1 } = detail.form[0];
 
-      // const deleteFileForm2 = detail.form[1].map((item) => {
-      //   return {
-      //     ...item,
-      //     form: item.form.filter((childItem) => childItem.type !== "file"),
-      //   };
-      // });
+        // const deleteFileForm2 = detail.form[1].map((item) => {
+        //   return {
+        //     ...item,
+        //     form: item.form.filter((childItem) => childItem.type !== "file"),
+        //   };
+        // });
 
-      const newForm2 = detail.form[1].map((item) => {
-        return {
-          ...item,
-          form: item.form.map((childItem) => {
-            return {
-              ...childItem,
-              value:
-                childItem.type === "checkbox"
-                  ? childItem.value.join(", ")
-                  : childItem.value,
-            };
-          }),
-        };
-      });
+        const newForm2 = detail.form[1].map((item) => {
+          return {
+            ...item,
+            form: item.form.map((childItem) => {
+              return {
+                ...childItem,
+                value:
+                  childItem.type === "checkbox"
+                    ? childItem.value.join(", ")
+                    : childItem.value,
+              };
+            }),
+          };
+        });
 
-      detail.form = [detail.form[0], newForm2];
+        detail.form = [detail.form[0], newForm2];
 
-      console.log("new detail", detail);
+        console.log("new detail", detail);
 
-      formData.append(
-        "form",
-        JSON.stringify({
+        formData.append(
+          "form",
+          JSON.stringify({
+            ...detail,
+            name: service.name,
+            service_type: service.type,
+            fee: service.fee,
+          })
+        );
+
+        console.log({
           ...detail,
           name: service.name,
           service_type: service.type,
           fee: service.fee,
         })
-      );
-      
-      console.log({
-          ...detail,
-          name: service.name,
-          service_type: service.type,
-          fee: service.fee,
-        })
 
-      try {
         const response = await axios.post(`${API_LINK}/requests/`, formData);
         console.log(response);
-      } catch (err) {
-        console.log(err.message);
+
+        if (response.status === 200) {
+          HSOverlay.close(document.getElementById("hs-full-screen-modal"));
+          HSOverlay.open(
+            document.getElementById("hs-toggle-between-modals-second-modal")
+          );
+          setTimeout(() => {
+            setSubmitClicked(false);
+            setUpdatingStatus("success");
+            setTimeout(() => {
+              window.location.reload();
+            }, 3000);
+          }, 1000);
+        } else {
+          console.log(err.message);
+        }
+
+        // generatePDF();
+
+        // for (var pair of formData.entries()) {
+        //   console.log(pair[0] + ", " + pair[1]);
+        // }
+      } else {
+        setEmptyFields(arr);
+        setEmpty(true);
       }
-
-      // generatePDF();
-
-      // for (var pair of formData.entries()) {
-      //   console.log(pair[0] + ", " + pair[1]);
-      // }
-
-      HSOverlay.close(document.getElementById("hs-full-screen-modal"));
-      HSOverlay.open(
-        document.getElementById("hs-toggle-between-modals-second-modal")
-      );
-    } else {
-      setEmptyFields(arr);
-      setEmpty(true);
+    } catch (err) {
+      setSubmitClicked(false);
+      setUpdatingStatus("error");
+      console.log(err)
     }
   };
 
@@ -366,14 +383,14 @@ const ServicesForm = ({ props }) => {
   };
 
   return (
-    <div className="w-full flex flex-col sm:px-[15px] lg:px-[70px] pt-[40px] mb-[30px]">
+    <div className="w-full flex flex-col lg:px-[70px] pt-[40px] pb-[30px] bg-gray-100">
       <img
-        className=" rounded-[25px] h-[300px] object-contain"
+        className=" rounded-[25px] w-full sm:h-[200px] lg:h-[300px] object-contain"
         src={
           service &&
-          service.collections &&
-          service.collections.banner &&
-          service.collections.banner.link !== undefined
+            service.collections &&
+            service.collections.banner &&
+            service.collections.banner.link !== undefined
             ? service.collections.banner.link
             : defaultBanner
         }
@@ -383,7 +400,7 @@ const ServicesForm = ({ props }) => {
       {/* CONTENTS */}
 
       <div className="flex flex-col">
-        <div className="flex my-[10px]">
+        <div className="flex my-[40px]">
           <Breadcrumbs serviceTitle={service && service.name} />
         </div>
 
@@ -519,7 +536,7 @@ const ServicesForm = ({ props }) => {
                   handleOtherDetail={handleOtherDetail}
                   emptyFields={emptyFields}
                 />
-                
+
               </form>
             </div>
             <div className="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-gray-700">
@@ -543,7 +560,7 @@ const ServicesForm = ({ props }) => {
       </div>
       <div
         id="hs-toggle-between-modals-second-modal"
-        className="hs-overlay hidden w-full h-full fixed top-0 left-0 z-[60] overflow-x-visible overflow-y-auto"
+        className="hs-overlay hidden w-full h-full fixed top-20 left-0 z-[60] overflow-x-visible overflow-y-auto"
       >
         <div className="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all lg:max-w-lg md:w-10/12 w-8/12 m-3 sm:mx-auto flex flex-col items-center">
           <img
@@ -577,6 +594,10 @@ const ServicesForm = ({ props }) => {
           </div>
         </div>
       </div>
+      {submitClicked && <Preloader updatingStatus="updating" />}
+      {updatingStatus && (
+        <Preloader updatingStatus={updatingStatus} error={error} />
+      )}
     </div>
   );
 };

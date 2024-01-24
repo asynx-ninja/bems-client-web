@@ -34,7 +34,7 @@ const EventsApplication = () => {
 
         // const getUser = await axios.get(`${API_LINK}/users/specific/${id}`);
 
-        setEvents(response.data.sort((date1, date2) => new Date(date2.createdAt) - new Date(date1.createdAt)))
+        setEvents(response.data.result.sort((date1, date2) => new Date(date2.createdAt) - new Date(date1.createdAt)))
         setPageCount(response.data.pageCount);
 
       } catch (err) {

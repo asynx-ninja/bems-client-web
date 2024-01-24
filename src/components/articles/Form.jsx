@@ -10,6 +10,7 @@ import defaultBanner from "../../assets/image/1.png";
 // FORM DETAILS
 import PersonalDetails from "./eventsform/PersonalDetails";
 import OtherDetails from "./eventsform/OtherDetails";
+import Preloader from "../loaders/Preloader";
 
 const Form = ({ announcement }) => {
   const fileInputRef = useRef();
@@ -23,6 +24,9 @@ const Form = ({ announcement }) => {
   const [emptyFields, setEmptyFields] = useState([]);
   const [empty, setEmpty] = useState(false);
   const imageRef = useRef();
+  const [error, setError] = useState(null);
+  const [submitClicked, setSubmitClicked] = useState(false);
+  const [updatingStatus, setUpdatingStatus] = useState(null);
 
   useEffect(() => {
     const fetchForms = async () => {
@@ -55,7 +59,7 @@ const Form = ({ announcement }) => {
 
     fetchForms();
   }, [event_id]);
-  
+
   // console.log(event_id)
   console.log("event", detail);
 
@@ -144,8 +148,8 @@ const Form = ({ announcement }) => {
       value: Object.entries(objectConstraint).find(([k]) => key === k)
         ? objectConstraint[key]
         : key === "user_id"
-        ? newData[key].value
-        : "",
+          ? newData[key].value
+          : "",
     };
 
     return newData;
@@ -263,78 +267,92 @@ const Form = ({ announcement }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmitClicked(true);
 
     const arr = checkEmptyFields();
 
-    if (arr.length === 0) {
-      var formData = new FormData();
+    try {
+      if (arr.length === 0) {
+        var formData = new FormData();
 
-      detail.form[1].map((item) =>
-        item.form.map(
-          (childItem) =>
-            childItem.type === "file" &&
-            formData.append(
-              "files",
-              renameFile(
-                childItem.value,
-                `${
-                  detail.form[0].lastName.value
-                } - ${childItem.display.toUpperCase()}`
+        detail.form[1].map((item) =>
+          item.form.map(
+            (childItem) =>
+              childItem.type === "file" &&
+              formData.append(
+                "files",
+                renameFile(
+                  childItem.value,
+                  `${detail.form[0].lastName.value
+                  } - ${childItem.display.toUpperCase()}`
+                )
               )
-            )
-        )
-      );
+          )
+        );
 
-      const newForm2 = detail.form[1].map((item) => {
-        return {
-          ...item,
-          form: item.form.map((childItem) => {
-            return {
-              ...childItem,
-              value:
-                childItem.type === "checkbox"
-                  ? childItem.value.join(", ")
-                  : childItem.value,
-            };
-          }),
-        };
-      });
+        const newForm2 = detail.form[1].map((item) => {
+          return {
+            ...item,
+            form: item.form.map((childItem) => {
+              return {
+                ...childItem,
+                value:
+                  childItem.type === "checkbox"
+                    ? childItem.value.join(", ")
+                    : childItem.value,
+              };
+            }),
+          };
+        });
 
-      detail.form = [detail.form[0], newForm2];
+        detail.form = [detail.form[0], newForm2];
 
-      console.log("new detail", detail);
+        console.log("new detail", detail);
 
-      formData.append(
-        "form",
-        JSON.stringify({
-          event_id: announcement.event_id,
-          event_name: announcement.title,
-          brgy: detail.brgy,
-          version: detail.version,
-          form: detail.form,
-        })
-      );
+        formData.append(
+          "form",
+          JSON.stringify({
+            event_id: announcement.event_id,
+            event_name: announcement.title,
+            brgy: detail.brgy,
+            version: detail.version,
+            form: detail.form,
+          })
+        );
 
-      try {
         const response = await axios.post(`${API_LINK}/application/`, formData);
         console.log(response);
-      } catch (err) {
-        console.log(err.message);
+
+        if (response.status === 200) {
+          HSOverlay.close(document.getElementById("hs-full-screen-modal"));
+          HSOverlay.open(
+            document.getElementById("hs-toggle-between-modals-second-modal")
+          );
+          setTimeout(() => {
+            setSubmitClicked(false);
+            setUpdatingStatus("success");
+            setTimeout(() => {
+              window.location.reload();
+            }, 3000);
+          }, 1000);
+        } else {
+          console.error("Update failed. Status:", response.status);
+        }
+
+        // generatePDF();
+
+        // for (var pair of formData.entries()) {
+        //   console.log(pair[0] + ", " + pair[1]);
+        // }
+      } else {
+        setEmptyFields(arr);
+        setEmpty(true);
       }
-
-      // generatePDF();
-
-      // for (var pair of formData.entries()) {
-      //   console.log(pair[0] + ", " + pair[1]);
-      // }
-
-      HSOverlay.close(document.getElementById("hs-full-screen-modal"));
-      HSOverlay.open(
-        document.getElementById("hs-toggle-between-modals-second-modal")
-      );
-    } else {
-      setEmptyFields(arr);
-      setEmpty(true);
+    } catch (err) {
+      setSubmitClicked(false);
+      setUpdatingStatus("error");
+      setError(error.message);
+      console.log(err)
     }
   };
 
@@ -346,24 +364,11 @@ const Form = ({ announcement }) => {
   };
 
   return (
-    <div className="w-full flex flex-col sm:px-[15px] lg:px-[70px] pt-[40px] mb-[30px]">
-      <img
-        className=" rounded-[25px] h-[300px] object-contain"
-        src={
-          announcement &&
-          announcement.collections &&
-          announcement.collections.banner &&
-          announcement.collections.banner.link !== undefined
-            ? announcement.collections.banner.link
-            : defaultBanner
-        }
-        alt=""
-      />
-
+    <div className="w-full flex flex-col sm:px-[15px] lg:px-[70px] pt-[10px] mb-[30px]">
       {/* CONTENTS */}
 
       <div className="flex flex-col">
-        <div className="flex my-[10px]">
+        <div className="flex">
           <Breadcrumbs title={announcement && announcement.title} />
         </div>
 
@@ -378,7 +383,7 @@ const Form = ({ announcement }) => {
             data-hs-overlay="#hs-full-screen-modal"
             className="flex items-center justify-center text-center bg-green-700 sm:w-full md:w-[150px] sm:my-[5px] md:m-5 h-[50px] text-sm text-white font-medium rounded-lg hover:bg-gradient-to-r from-[#295141] to-[#408D51] transition duration-500 ease-in-out hover:text-custom-gold"
           >
-            Submit a request
+            Submit an Application
           </Link>
           <Link
             to={`/events-list/?id=${id}&brgy=${brgy}`}
@@ -499,7 +504,7 @@ const Form = ({ announcement }) => {
                   handleOtherDetail={handleOtherDetail}
                   emptyFields={emptyFields}
                 />
-                
+
               </form>
             </div>
             <div className="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-gray-700">
@@ -523,7 +528,7 @@ const Form = ({ announcement }) => {
       </div>
       <div
         id="hs-toggle-between-modals-second-modal"
-        className="hs-overlay hidden w-full h-full fixed top-0 left-0 z-[60] overflow-x-visible overflow-y-auto"
+        className="hs-overlay hidden w-full h-full fixed top-20 left-0 z-[60] overflow-x-visible overflow-y-auto"
       >
         <div className="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all lg:max-w-lg md:w-10/12 w-8/12 m-3 sm:mx-auto flex flex-col items-center">
           <img
@@ -536,12 +541,9 @@ const Form = ({ announcement }) => {
                 Success!
               </h3>
               <p className="mt-1 text-gray-800 lg:px-12 px-4 lg:text-lg text-xs">
-                Please note that you can only "
-                <span className="text-green-500 font-bold">Edit</span>" or "
-                <span className="text-red-500 font-bold">Delete</span>" your
-                request in “
-                <span className="text-yellow-500 font-bold">Pending</span>"
-                stage.
+                You can see your Evalutaion Application in"
+                <span className="text-green-500 font-bold">Events Application </span>
+                Menu.
               </p>
               <div className="flex justify-center pt-5">
                 <button
@@ -557,6 +559,10 @@ const Form = ({ announcement }) => {
           </div>
         </div>
       </div>
+      {submitClicked && <Preloader updatingStatus="waiting" />}
+      {updatingStatus && (
+        <Preloader updatingStatus={updatingStatus} error={error} />
+      )}
     </div>
   );
 };

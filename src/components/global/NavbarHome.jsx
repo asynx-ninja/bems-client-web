@@ -57,7 +57,7 @@ const NavbarHome = () => {
             <div className="flex-justify-end items-baseline space-x-3 md:text-[12px] lg:text-[16px]">
               <Links
                 to="/"
-                className="text-white uppercase hover:bg-gray-700 hover:text-white px-2 py-2 rounded-md text-md"
+                className="text-white uppercase hover:bg-custom-green-header px-2 py-2 rounded-md text-md hover:text-custom-gold1"
               >
                 Home
               </Links>
@@ -65,7 +65,7 @@ const NavbarHome = () => {
                 <button
                   // value={"about"}
                   // onClick={OnNav}
-                  className="text-white uppercase hover:bg-gray-700 hover:text-white px-2 py-2 rounded-md text-md"
+                  className="text-white uppercase hover:bg-custom-green-header px-2 py-2 rounded-md text-md hover:text-custom-gold1"
                 >
                   About us{" "}
                 </button>
@@ -74,20 +74,20 @@ const NavbarHome = () => {
                 <button
                   // value={"services"}
                   // onClick={OnNav}
-                  className="text-white uppercase hover:bg-gray-700 hover:text-white px-2 py-2 rounded-md text-md"
+                  className="text-white uppercase hover:bg-custom-green-header px-2 py-2 rounded-md text-md hover:text-custom-gold1"
                 >
                   Services
                 </button>
               </Links>
               <Links
                 to="/tourist-spot-list"
-                className="text-white uppercase hover:bg-gray-700 hover:text-white px-2 py-2 rounded-md text-md"
+                className="text-white uppercase hover:bg-custom-green-header px-2 py-2 rounded-md text-md hover:text-custom-gold1"
               >
                 Tourist Spot
               </Links>
               <Link
                 to="/barangay"
-                className="text-white uppercase hover:bg-gray-700 hover:text-white px-2 py-2 rounded-md text-md"
+                className="text-white uppercase hover:bg-custom-green-header px-2 py-2 rounded-md text-md hover:text-custom-gold1"
               >
                 List of Barangay
               </Link>
@@ -170,7 +170,7 @@ const NavbarHome = () => {
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
           <Link
             to="/"
-            className="text-black-300 hover:bg-gray-700 w-full text-left hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            className="text-black-300 hover:bg-custom-green-header w-full text-left hover:text-custom-gold1 block px-3 py-2 rounded-md text-base font-medium"
           >
             Home
           </Link>
@@ -178,7 +178,7 @@ const NavbarHome = () => {
             <button
               // value={"about"}
               // onClick={OnNav}
-              className="text-black-300 hover:bg-gray-700 w-full text-left hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+              className="text-black-300 hover:bg-custom-green-header w-full text-left hover:text-custom-gold1 block px-3 py-2 rounded-md text-base font-medium"
             >
               About us
             </button>
@@ -187,26 +187,26 @@ const NavbarHome = () => {
             <button
               // value={"services"}
               // onClick={OnNav}
-              className="text-black-300 hover:bg-gray-700 w-full text-left hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+              className="text-black-300 hover:bg-custom-green-header w-full text-left hover:text-custom-gold1 block px-3 py-2 rounded-md text-base font-medium"
             >
               Services
             </button>
           </Links>
           <Links
             to="/tourist-spot-list"
-            className="text-black-300 hover:bg-gray-700 w-full text-left hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            className="text-black-300 hover:bg-custom-green-header w-full text-left hover:text-custom-gold1 block px-3 py-2 rounded-md text-base font-medium"
           >
             Tourist Spot
           </Links>
           <Link
             to="/barangay"
-            className="text-black-300 hover:bg-gray-700 w-full text-left hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            className="text-black-300 hover:bg-custom-green-header w-full text-left hover:text-custom-gold1 block px-3 py-2 rounded-md text-base font-medium"
           >
             List of Barangay
           </Link>
           <Link
             to="/login"
-            className="text-black-300 hover:bg-gray-700 w-full text-left hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            className="text-black-300 hover:bg-custom-green-header w-full text-left hover:text-custom-gold1 block px-3 py-2 rounded-md text-base font-medium"
           >
             Login
           </Link>

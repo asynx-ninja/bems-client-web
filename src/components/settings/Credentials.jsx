@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
-const Credentials = ({ userCred, handleUserChangeCred, editButton, message, passwordStrengthError, passwordStrengthSuccess, passwordStrength  }) => {
+const Credentials = ({ userCred, handleUserChangeCred, editButton, message, passwordStrengthError, passwordStrengthSuccess, passwordStrength, empty }) => {
     const [changePass, setChangePass] = useState(false);
     const [newpasswordShown, setNewPasswordShown] = useState(false);
-    const [oldpasswordShown, setOldPasswordShown] = useState(false); 
+    const [oldpasswordShown, setOldPasswordShown] = useState(false);
 
     const toggleOldPassword = (e) => {
         setOldPasswordShown(!oldpasswordShown);
@@ -51,8 +51,8 @@ const Credentials = ({ userCred, handleUserChangeCred, editButton, message, pass
                     type="text"
                     disabled={editButton}
                     id="username"
-                    className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 bg-white"
-                    placeholder="username"
+                    className={empty ? "py-3 px-4 block w-full border-1 border-red-200 text-black rounded-md text-sm focus:border-red-500 focus:ring-red-500 bg-white"
+                        : "py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 bg-white"} placeholder="username"
                     aria-describedby="hs-input-helper-text"
                     value={userCred.username || ""}
                     onChange={(e) =>

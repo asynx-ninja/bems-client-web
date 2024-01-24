@@ -19,7 +19,7 @@ const Barangay = () => {
   console.log("ssdsds", id);
   const [barangays, setBarangays] = useState([]);
   const [selectedBarangay, setSelectedBarangay] = useState(null);
-  
+
   useEffect(() => {
     document.title = "Barangay Information | Barangay E-Services Management";
     const fetchBarangays = async () => {
@@ -68,7 +68,7 @@ const Barangay = () => {
     },
     // Add more data as needed
   ];
-  
+
   // Calculate the index range for the current page
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -133,53 +133,12 @@ const Barangay = () => {
             </div>
           </div>
 
-          <div className="px-4 md:px-8 mt-12 md:mt-20 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {stats.map((item, index) => (
-              <div
-                key={index}
-                className="text-center flex flex-col bg-white border shadow-sm rounded-xl dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[0.7]"
-              >
-                <div className="p-4 md:p-5">
-                  <h3 className="text-lg sm:leading-5 md:leading-none sm:text-[16px] md:text-xl uppercase font-bold mb-4 text-green-800 dark:text-white">
-                    {item.title}
-                  </h3>
-                  <span className="font-bold text-green-800 sm:text-[24px] md:text-5xl dark:text-gray-400">
-                    {item.value}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-
           {/* table */}
           <div className="mt-12 px-4 md:px-8">
             <div className="w-full h-auto bg-green-800 p-4 sm:p-2 md:p-4 flex flex-col md:flex-row items-center justify-between rounded-lg">
               <h6 className="text-white mb-2 md:mb-0 font-bold uppercase">
                 List of Barangays
               </h6>
-              <div className="flex items-center">
-                <input
-                  className="w-full sm:w-60 md:w-96 h-8 px-4 md:px-8 text-base text-gray-700 placeholder-gray-600 border rounded-lg focus:shadow-outline"
-                  type="search"
-                  placeholder="Search"
-                />
-                <button>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 ml-2 text-white"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                    />
-                  </svg>
-                </button>
-              </div>
             </div>
             <div className="py-2 mb-16 flex flex-col">
               <div className="-m-1.5 overflow-x-auto">
@@ -227,8 +186,10 @@ const Barangay = () => {
                             <td className="px-6 whitespace-nowrap uppercase text-sm font-bold text-gray-800 dark:text-gray-200">
                               barangay {barangay.brgy}
                             </td>
-                            <td className="px-6 py-4 text-sm text-gray-800 line-clamp-4 text-justify dark:text-gray-200">
-                              {barangay.story}
+                            <td className="h-full text-center">
+                              <p className="px-6 items-center text-sm my-auto text-gray-800 line-clamp-4 text-justify dark:text-gray-200">
+                                {barangay.story}
+                              </p>
                             </td>
 
                             <td className="px-6 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
@@ -251,11 +212,10 @@ const Barangay = () => {
                           <button
                             key={number}
                             onClick={() => handlePageChange(number)}
-                            className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
-                              currentPage === number
-                                ? "bg-blue-500 text-white"
-                                : "border-gray-300 bg-white text-gray-500 hover:bg-gray-50"
-                            }`}
+                            className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${currentPage === number
+                              ? "bg-blue-500 text-white"
+                              : "border-gray-300 bg-white text-gray-500 hover:bg-gray-50"
+                              }`}
                           >
                             {number}
                           </button>

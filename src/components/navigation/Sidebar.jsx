@@ -12,12 +12,14 @@ import {
   FaAngleUp,
   FaCalendar,
 } from "react-icons/fa";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useLocation } from "react-router-dom";
 import axios from "axios";
 import defaultPFP from "../../assets/sample-image/default-pfp.png";
 import API_LINK from "../../config/API";
 
 const Sidebar = () => {
+  const location = useLocation()
+  const page = location.pathname.split("/")[1];
   const [isCollapse, onCollapse] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get("id");
@@ -60,7 +62,7 @@ const Sidebar = () => {
 
       <div
         id="hs-overlay-basic"
-        className="hs-overlay hs-overlay-open:translate-x-0 -translate-x-full transition-all duration-300 transform hidden absolute top-0 left-0 bottom-0 z-[100] bg-white w-64 scrollbar-y h-full"
+        className="hs-overlay hs-overlay-open:translate-x-0 -translate-x-full transition-all duration-300 transform hidden absolute top-0 left-0 bottom-0 z-[100] bg-white w-64 scrollbar-y h-full overflow-x-auto"
       >
         <div className="h-full flex flex-col justify-between">
           <div className="space-y-5">
@@ -83,7 +85,8 @@ const Sidebar = () => {
                     : null;
                 }}
                 className={
-                  "flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[#326350] transition-all ease-in-out hover:bg-gradient-to-r from-[#295141] to-[#408D51] hover:text-custom-gold"
+                  page === "dashboard" ? "flex h-[50px] w-full my-auto pl-[30px] gap-5 bg-[#326350] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[#295141] to-[#408D51]"
+                  : "flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[#326350] transition-all ease-in-out hover:bg-gradient-to-r from-[#295141] to-[#408D51] hover:text-custom-gold"
                 }
               >
                 <FaChartPie className="my-auto" size={"15px"} />
@@ -100,8 +103,10 @@ const Sidebar = () => {
                       .remove()
                     : null;
                 }}
-                className="flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[#326350] transition-all ease-in-out hover:bg-gradient-to-r from-[#295141] to-[#408D51] hover:text-custom-gold"
-              >
+                className={
+                  page === "settings" ? "flex h-[50px] w-full my-auto pl-[30px] gap-5 bg-[#326350] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[#295141] to-[#408D51]"
+                  : "flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[#326350] transition-all ease-in-out hover:bg-gradient-to-r from-[#295141] to-[#408D51] hover:text-custom-gold"
+                }              >
                 <FaUserAlt className="my-auto" size={"15px"} />
                 <h1 className="text-bold my-auto font-bold text-sm">ACCOUNT</h1>
               </Link>
@@ -149,7 +154,8 @@ const Sidebar = () => {
                       : null;
                   }}
                   className={
-                    "flex h-[50px] w-full my-auto pl-[60px] gap-5 text-[#326350] transition-all ease-in-out hover:bg-gradient-to-r from-[#295141] to-[#408D51] hover:text-custom-gold"
+                    page === "events-list" ? "flex h-[50px] w-full my-auto pl-[60px] gap-5 bg-[#326350] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[#295141] to-[#408D51]"
+                    : "flex h-[50px] w-full my-auto pl-[60px] gap-5 text-[#326350] transition-all ease-in-out hover:bg-gradient-to-r from-[#295141] to-[#408D51] hover:text-custom-gold"
                   }
                 >
                   {" "}
@@ -170,7 +176,8 @@ const Sidebar = () => {
                       : null;
                   }}
                   className={
-                    "flex h-[50px] w-full my-auto pl-[60px] gap-5 text-[#326350] transition-all ease-in-out hover:bg-gradient-to-r from-[#295141] to-[#408D51] hover:text-custom-gold"
+                    page === "events-application" ? "flex h-[50px] w-full my-auto pl-[60px] gap-5 bg-[#326350] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[#295141] to-[#408D51]"
+                    : "flex h-[50px] w-full my-auto pl-[60px] gap-5 text-[#326350] transition-all ease-in-out hover:bg-gradient-to-r from-[#295141] to-[#408D51] hover:text-custom-gold"
                   }
                 >
                   {" "}
@@ -224,7 +231,8 @@ const Sidebar = () => {
                       : null;
                   }}
                   className={
-                    "flex h-[50px] w-full my-auto pl-[60px] gap-5 text-[#326350] transition-all ease-in-out hover:bg-gradient-to-r from-[#295141] to-[#408D51] hover:text-custom-gold"
+                    page === "services" ? "flex h-[50px] w-full my-auto pl-[60px] gap-5 bg-[#326350] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[#295141] to-[#408D51]"
+                    : "flex h-[50px] w-full my-auto pl-[60px] gap-5 text-[#326350] transition-all ease-in-out hover:bg-gradient-to-r from-[#295141] to-[#408D51] hover:text-custom-gold"
                   }
                 >
                   {" "}
@@ -245,7 +253,8 @@ const Sidebar = () => {
                       : null;
                   }}
                   className={
-                    "flex h-[50px] w-full my-auto pl-[60px] gap-5 text-[#326350] transition-all ease-in-out hover:bg-gradient-to-r from-[#295141] to-[#408D51] hover:text-custom-gold"
+                    page === "requests" ? "flex h-[50px] w-full my-auto pl-[60px] gap-5 bg-[#326350] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[#295141] to-[#408D51]"
+                    : "flex h-[50px] w-full my-auto pl-[60px] gap-5 text-[#326350] transition-all ease-in-out hover:bg-gradient-to-r from-[#295141] to-[#408D51] hover:text-custom-gold"
                   }
                 >
                   {" "}
@@ -265,8 +274,9 @@ const Sidebar = () => {
                     : null;
                 }}
                 className={
-                  "flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[#326350] transition-all ease-in-out hover:bg-gradient-to-r from-[#295141] to-[#408D51] hover:text-custom-gold"
-                }
+                  page === "barangay-info" ? "flex h-[50px] w-full my-auto pl-[30px] gap-5 bg-[#326350] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[#295141] to-[#408D51]"
+                  : "flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[#326350] transition-all ease-in-out hover:bg-gradient-to-r from-[#295141] to-[#408D51] hover:text-custom-gold"
+                } 
               >
                 {" "}
                 <FaInfo className="my-auto" size={"15px"} />
@@ -275,7 +285,7 @@ const Sidebar = () => {
                 </h1>
               </Link>
               <Link
-                to={`/inquiries/?id=${id}&brgy=${brgy}`}
+                to={`/inquiries/?id=${id}&brgy=${brgy}&user_id=${userData.user_id}`}
                 onClick={() => {
                   window.innerWidth >= 320 && window.innerWidth <= 1023
                     ? document
@@ -284,8 +294,9 @@ const Sidebar = () => {
                     : null;
                 }}
                 className={
-                  "flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[#326350] hover:bg-gradient-to-r from-[#295141] to-[#408D51] hover:text-custom-gold"
-                }
+                  page === "inquiries" ? "flex h-[50px] w-full my-auto pl-[30px] gap-5 bg-[#326350] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[#295141] to-[#408D51]"
+                  : "flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[#326350] transition-all ease-in-out hover:bg-gradient-to-r from-[#295141] to-[#408D51] hover:text-custom-gold"
+                } 
               >
                 {" "}
                 <FaCommentAlt className="my-auto" size={"15px"} />
@@ -321,7 +332,7 @@ const Sidebar = () => {
               aria-labelledby="hs-dropdown-profile"
             >
               <Link
-                to={`/inquiries/?id=${id}&brgy=${brgy}`}
+                to={`/settings/?id=${id}&brgy=${brgy}`}
                 onClick={() => {
                   window.innerWidth >= 320 && window.innerWidth <= 1023
                     ? document
@@ -331,7 +342,7 @@ const Sidebar = () => {
                 }}
                 className="flex items-center w-full gap-x-3.5 py-2 px-3 rounded-md text-sm hover:text-custom-gold1 text-gray-800 hover:bg-gradient-to-r from-[#295141] to-[#408D51] focus:ring-2 focus:ring-blue-500 font-bold text-[16px]"
               >
-                E-Mails
+                Settings
               </Link>
               <Link
                 to="/"

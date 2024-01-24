@@ -42,18 +42,18 @@ const Dashboard = () => {
   return (
     <div className='flex flex-col'>
 
-      <div className='font-bold w-[90%] mx-auto py-10 mt-[30px] flex justify-between'>
+      <div className='font-bold w-[90%] mx-auto sm:pb-10 md:py-10 mt-[30px] flex justify-center'>
         <div>
-          <p className='text-[20px] leading-[1px]'>HI, <b className='text-custom-green-header'>{userData.firstName}!</b> WELCOME TO </p>
-          <h1 className='text-[38px]'>BARANGAY <b className='text-custom-green-header'>E-SERVICES</b> APPLICATION</h1>
+          <p className='text-[20px] text-center leading-[30px]'>HI, <b className='text-custom-green-header'>{userData.firstName}!</b> WELCOME TO </p>
+          <h1 className='text-[38px] sm:text-center lg:text-left leading-[35px]'>BARANGAY <b className='text-custom-green-header'>E-SERVICES</b> APPLICATION</h1>
         </div>
       </div>
 
-      <div className='w-[90%] mx-auto mb-[50px] border-t-[1px] border-t-gray-300 p-5 gap-5 grid sm:grid-1 md:grid-cols-2'>
+      <div className='w-[90%] mx-auto mb-[50px] border-t-[1px] border-t-gray-300 sm:pt-5 md:p-5 gap-5 grid sm:grid-1 md:grid-cols-2'>
 
-        <div className='bg-[#208b3a] px-5 pt-5 flex flex-row sm:h-auto lg:h-[260px] justify-center rounded-md hover:scale-[105%] transition'>
+        <div className='bg-[#208b3a] sm:px-3 md:px-5 pt-5 flex flex-row sm:h-auto lg:h-[260px] justify-center rounded-md hover:scale-[105%] transition'>
           <div className='flex flex-col py-5 w-[50%] justify-center'>
-            <h1 className='text-white font-bold sm:text-[12px] lg:text-[20px] x:text-[28px] sm:leading-3 md:leading-4 lg:leading-5 x:leading-7'>GET UPDATES AT BAGONG MONTALBAN MOBILE APP</h1>
+            <h1 className='text-white font-bold sm:text-[14px] lg:text-[20px] x:text-[28px] sm:leading-4 lg:leading-5 x:leading-7'>GET UPDATES AT BAGONG MONTALBAN MOBILE APP</h1>
             <Link
               to={`/mobile/?id=${id}&brgy=${brgy}`}
               className='sm:w-[90px] lg:w-[120px] mt-[18px] bg-white font-medium sm:text-[10px] lg:text-[14px] py-[8px] rounded-md hover:scale-[105%] transition text-center'
@@ -68,9 +68,9 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className='bg-[#7251b5] px-5 pt-5 flex flex-row sm:h-auto lg:h-[260px] justify-center rounded-md hover:scale-[105%] transition'>
+        <div className='bg-[#7251b5] sm:px-3 md:px-5 pt-5 flex flex-row sm:h-auto lg:h-[260px] justify-center rounded-md hover:scale-[105%] transition'>
           <div className='flex flex-col py-5 w-[50%] justify-center'>
-            <h1 className='text-white font-bold sm:text-[12px] lg:text-[20px] x:text-[28px] sm:leading-3 md:leading-4 lg:leading-5 x:leading-7'>GET TO KNOW MY BARANGAY</h1>
+            <h1 className='text-white font-bold sm:text-[14px] lg:text-[20px] x:text-[28px] md:leading-4 lg:leading-5 x:leading-7'>GET TO KNOW MY BARANGAY</h1>
             <Link
               to={`/barangay-info/?id=${id}&brgy=${brgy}`}
               className='sm:w-[90px] lg:w-[120px] mt-[18px] bg-white font-medium sm:text-[10px] lg:text-[14px] py-[8px] rounded-md hover:scale-[105%] transition text-center'
@@ -85,9 +85,9 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className='bg-[#f9a620] px-5 pt-5 flex flex-row sm:h-auto lg:h-[260px]  justify-center rounded-md hover:scale-[105%] transition'>
+        <div className='bg-[#f9a620] sm:px-3 md:px-5 pt-5 flex flex-row sm:h-auto lg:h-[260px]  justify-center rounded-md hover:scale-[105%] transition'>
           <div className='flex flex-col py-5 w-[50%] justify-center'>
-            <h1 className='text-white font-bold sm:text-[12px] lg:text-[20px] x:text-[28px] sm:leading-3 md:leading-4 lg:leading-5 x:leading-7'>COME AND PARTICIPATE EVENTS HERE</h1>
+            <h1 className='text-white font-bold sm:text-[14px] lg:text-[20px] x:text-[28px] md:leading-4 lg:leading-5 x:leading-7'>COME AND PARTICIPATE EVENTS HERE</h1>
             <Link
               to={`/events-list/?id=${id}&brgy=${brgy}`}
               className='sm:w-[90px] lg:w-[120px] mt-[18px] bg-white font-medium sm:text-[10px] lg:text-[14px] py-[8px] rounded-md hover:scale-[105%] transition text-center'
@@ -102,9 +102,9 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className='bg-[#ff477e] px-5 pt-5 flex flex-row sm:h-auto lg:h-[260px]  justify-center rounded-md hover:scale-[105%] transition'>
+        <div className='bg-[#ff477e] sm:px-3 md:px-5 pt-5 flex flex-row sm:h-auto lg:h-[260px]  justify-center rounded-md hover:scale-[105%] transition'>
           <div className='flex flex-col py-5 w-[50%] justify-center'>
-            <h1 className='text-white font-bold sm:text-[12px] lg:text-[20px] x:text-[28px] sm:leading-3 md:leading-4 lg:leading-5 x:leading-7'>MAKE REQUEST FAST AND EASY!</h1>
+            <h1 className='text-white font-bold sm:text-[14px] lg:text-[20px] x:text-[28px] md:leading-4 lg:leading-5 x:leading-7'>MAKE REQUEST FAST AND EASY!</h1>
             <Link
               to={`/services/?id=${id}&brgy=${brgy}`}
               className='sm:w-[90px] lg:w-[120px] mt-[18px] bg-white font-medium sm:text-[10px] lg:text-[14px] py-[8px] rounded-md hover:scale-[105%] transition text-center'
@@ -119,9 +119,9 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className='bg-[#0077b6] px-5 pt-5 flex flex-row sm:h-auto lg:h-[260px] justify-center rounded-md hover:scale-[105%] transition'>
+        <div className='bg-[#0077b6] sm:px-3 md:px-5 pt-5 flex flex-row sm:h-auto lg:h-[260px] justify-center rounded-md hover:scale-[105%] transition'>
           <div className='flex flex-col py-5 w-[50%] justify-center'>
-            <h1 className='text-white font-bold sm:text-[12px] lg:text-[20px] x:text-[28px] sm:leading-3 md:leading-4 lg:leading-5 x:leading-7'>TRACK YOUR FILES IN REQUESTED SERVICE</h1>
+            <h1 className='text-white font-bold sm:text-[14px] lg:text-[20px] x:text-[28px] md:leading-4 lg:leading-5 x:leading-7'>TRACK YOUR FILES IN REQUESTED SERVICE</h1>
             <Link
               to={`/requests/?id=${id}&brgy=${brgy}&user_id=${userData.user_id}`}
               className='sm:w-[90px] lg:w-[120px] mt-[18px] bg-white font-medium sm:text-[10px] lg:text-[14px] py-[8px] rounded-md hover:scale-[105%] transition text-center'
@@ -136,9 +136,9 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className='bg-[#d00000] px-5 pt-5 flex flex-row sm:h-auto lg:h-[260px] justify-center rounded-md hover:scale-[105%] transition'>
+        <div className='bg-[#d00000] sm:px-3 md:px-5 pt-5 flex flex-row sm:h-auto lg:h-[260px] justify-center rounded-md hover:scale-[105%] transition'>
           <div className='flex flex-col py-5 w-[50%] justify-center'>
-            <h1 className='text-white font-bold sm:text-[12px] lg:text-[20px] x:text-[28px] sm:leading-3 md:leading-4 lg:leading-5 x:leading-7'>GOT A QUERIES? TALK TO US!</h1>
+            <h1 className='text-white font-bold sm:text-[14px] lg:text-[20px] x:text-[28px] md:leading-4 lg:leading-5 x:leading-7'>GOT A QUERIES? TALK TO US!</h1>
             <Link
               to={`/inquiries/?id=${id}&brgy=${brgy}`}
               className='sm:w-[90px] lg:w-[120px] mt-[18px] bg-white font-medium sm:text-[10px] lg:text-[14px] py-[8px] rounded-md hover:scale-[105%] transition text-center'

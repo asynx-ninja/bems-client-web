@@ -55,7 +55,7 @@ const Breadcrumbs = ({ serviceTitle }) => {
           </div>
         </li>
         <li aria-current="page">
-          <div className="flex items-center">
+          <div className="flex items-center sm:w-[100px] md:w-full">
             <svg
               className="w-3 h-3 mx-1 text-gray-400"
               aria-hidden="true"

@@ -5,14 +5,17 @@ import Dropbox from "./Dropbox";
 import API_LINK from "../../../config/API";
 import axios from "axios";
 
+import Preloader from "../../loaders/Preloader";
+
 const ComposeModal = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const fileInputRef = useRef();
-  const id = searchParams.get("id");
+  const user_id = searchParams.get("user_id");
   const brgy = searchParams.get("brgy");
   const [upload, setUpload] = useState(false);
   const [createFiles, setCreateFiles] = useState([]);
   const [composeMessage, setComposeMessage] = useState({
+    user_id: user_id,
     name: "",
     email: "",
     compose: {
@@ -24,6 +27,9 @@ const ComposeModal = () => {
     },
     brgy: brgy,
   })
+  const [error, setError] = useState(null);
+  const [submitClicked, setSubmitClicked] = useState(false);
+  const [updatingStatus, setUpdatingStatus] = useState(null);
 
   const handleAdd = (e) => {
     e.preventDefault();
@@ -67,6 +73,7 @@ const ComposeModal = () => {
 
   const handleOnSend = async (e) => {
     e.preventDefault();
+    setSubmitClicked(true);
 
     try {
       var formData = new FormData()
@@ -77,10 +84,21 @@ const ComposeModal = () => {
       }
 
       const response = await axios.post(`${API_LINK}/inquiries/`, formData)
+      console.log(response)
 
-      // console.log(response)
-
-      window.location.reload()
+      if (response.status === 200) {
+        setTimeout(() => {
+          setSubmitClicked(false);
+          setUpdatingStatus("success");
+          setTimeout(() => {
+            window.location.reload();
+          }, 3000);
+        }, 1000);
+      } else {
+        setSubmitClicked(false);
+        setUpdatingStatus("error");
+        setError(error.message);
+      }
     } catch (error) {
       console.log(error)
     }
@@ -248,6 +266,10 @@ const ComposeModal = () => {
           </div>
         </div>
       </div>
+      {submitClicked && <Preloader updatingStatus="waiting" />}
+      {updatingStatus && (
+        <Preloader updatingStatus={updatingStatus} error={error} />
+      )}
     </div>
   );
 }

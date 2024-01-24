@@ -169,7 +169,7 @@ const Header = () => {
                 aria-labelledby="hs-dropdown-profile"
               >
                 <Link
-                  to={`/inquiries/?id=${id}&brgy=${brgy}`}
+                  to={`/settings/?id=${id}&brgy=${brgy}`}
                   onClick={() => {
                     window.innerWidth >= 320 && window.innerWidth <= 1023
                       ? document
@@ -181,7 +181,7 @@ const Header = () => {
                   }}
                   className="flex items-center w-full gap-x-3.5 py-2 px-3 rounded-md text-sm hover:text-custom-gold1 text-gray-800 hover:bg-gradient-to-r from-[#295141] to-[#408D51] focus:ring-2 focus:ring-blue-500 "
                 >
-                  E-Mails
+                  Settings
                 </Link>
                 <Link
                   to="/"
