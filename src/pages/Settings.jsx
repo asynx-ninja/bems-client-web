@@ -247,7 +247,6 @@ const Settings = () => {
       // CHANGE USER CREDENTIALS
 
       if (activeButton.credential === true && userCred.oldPass !== "") {
-        setSubmitClicked(true);
         // CHANGE USERNAME
         if (userCred.username !== userData.username) {
           changeCredentials(
@@ -270,7 +269,40 @@ const Settings = () => {
 
       } else if (activeButton.personal === true) {
         setSubmitClicked(true);
-        saveToBack(obj)
+        try {
+          var formData = new FormData();
+          formData.append("users", JSON.stringify(obj));
+          formData.append("file", pfp);
+          const response = await axios.patch(`${API_LINK}/users/?doc_id=${id}`, formData);
+
+          if (response.status === 200) {
+            console.log("Update successful:", response);
+            setUserData(response.data);
+            setUserAddress({
+              street: response.data.address.street,
+              brgy: response.data.address.brgy,
+              city: response.data.address.city,
+            });
+            setUserSocials({
+              facebook: response.data.socials.facebook,
+              instagram: response.data.socials.instagram,
+              twitter: response.data.socials.twitter,
+            });
+            setEditButton(true);
+            setTimeout(() => {
+              setSubmitClicked(false);
+              setUpdatingStatus("success");
+              setTimeout(() => {
+                window.location.reload();
+              }, 3000);
+            }, 1000);
+
+          } else {
+            console.error("Update failed. Status:", response.status);
+          }
+        } catch (error) {
+          console.log(error)
+        }
       } else {
         setShowError({
           error: true,
@@ -285,42 +317,6 @@ const Settings = () => {
       setError(error.message);
     }
   };
-
-  const saveToBack = async (obj) => {
-    try {
-      var formData = new FormData();
-      formData.append("users", JSON.stringify(obj));
-      formData.append("file", pfp);
-      const response = await axios.patch(`${API_LINK}/users/?doc_id=${id}`, formData);
-
-      if (response.status === 200) {
-        console.log("Update successful:", response);
-        setUserData(response.data);
-        setUserAddress({
-          street: response.data.address.street,
-          brgy: response.data.address.brgy,
-          city: response.data.address.city,
-        });
-        setUserSocials({
-          facebook: response.data.socials.facebook,
-          instagram: response.data.socials.instagram,
-          twitter: response.data.socials.twitter,
-        });
-        setEditButton(true);
-        setTimeout(() => {
-          setSubmitClicked(false);
-          setUpdatingStatus("success");
-          setTimeout(() => {
-            window.location.reload();
-          }, 3000);
-        }, 1000);
-      } else {
-        console.error("Update failed. Status:", response.status);
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
 
   const changeCredentials = async (
     oldUsername,
@@ -339,6 +335,7 @@ const Settings = () => {
       );
 
       if (response.status === 200) {
+        setSubmitClicked(true);
         await axios.patch(`${API_LINK}/auth/${id}`, user);
         setMessage({
           display: true,
@@ -351,6 +348,14 @@ const Settings = () => {
           oldPass: "",
           newPass: "",
         });
+        setEditButton(true);
+        setTimeout(() => {
+          setSubmitClicked(false);
+          setUpdatingStatus("success");
+          setTimeout(() => {
+            window.location.reload();
+          }, 3000);
+        }, 1000);
       }
     } catch (err) {
       setMessage({
@@ -401,10 +406,6 @@ const Settings = () => {
       setEditButton(false);
     } else {
       setEditButton(true);
-      setShowError({
-        error: false,
-        message: ""
-      });
     }
   };
 
