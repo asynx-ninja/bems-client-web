@@ -62,7 +62,7 @@ const Sidebar = () => {
 
       <div
         id="hs-overlay-basic"
-        className="hs-overlay hs-overlay-open:translate-x-0 -translate-x-full transition-all duration-300 transform hidden absolute top-0 left-0 bottom-0 z-[100] bg-white w-64 scrollbar-y h-full overflow-x-auto"
+        className="hs-overlay hs-overlay-open:translate-x-0 -translate-x-full transition-all duration-300 transform hidden fixed top-0 left-0 bottom-0 z-[100] bg-white w-64 scrollbar-y h-full overflow-x-auto"
       >
         <div className="h-full flex flex-col justify-between">
           <div className="space-y-5">

@@ -1,50 +1,30 @@
 import React from 'react'
 import mobile from "../../assets/image/mobile.png"
-import reliable from "../../assets/services/reliable.png";
-import userFriendly from "../../assets/services/user-friendly.png";
-import secure from "../../assets/services/secure.png";
-import transparency from "../../assets/services/transparency.png";
-import fastTransaction from "../../assets/services/fast-transaction.png";
-import backup from "../../assets/services/backup.png";
 import video from "../../assets/image/video.mp4";
+import { useState, useEffect } from "react";
+import API_LINK from "../../config/API";
+import axios from "axios";
 
 import Breadcrumbs from "../../components/dashboard/Breadcrumbs"
 import Home from "../homepage/Home"
 
 const Mobile = () => {
 
-    const services = [
-        {
-            title: "Reliable",
-            description: "Description for Service 1 goes here.",
-            imageUrl: reliable,
-        },
-        {
-            title: "User-friendly",
-            description: "Description for Service 2 goes here.",
-            imageUrl: userFriendly,
-        },
-        {
-            title: "Secure",
-            description: "Description for Service 3 goes here.",
-            imageUrl: secure,
-        },
-        {
-            title: "Transparency",
-            description: "Description for Service 3 goes here.",
-            imageUrl: transparency,
-        },
-        {
-            title: "Fast Transaction",
-            description: "Description for Service 3 goes here.",
-            imageUrl: fastTransaction,
-        },
-        {
-            title: "Data backup",
-            description: "Description for Service 3 goes here.",
-            imageUrl: backup,
-        },
-    ];
+    const brgy = "MUNICIPAL INFO";
+    const [servicesinfo, setServicesInfo] = useState([]);
+
+    useEffect(() => {
+        const fetch = async () => {
+            const response = await axios.get(
+                `${API_LINK}/services_info/?brgy=${brgy}&archived=false`
+            );
+            console.log("aaa", response.data)
+            if (response.status === 200) setServicesInfo(response.data.result);
+            else setServicesInfo([]);
+        };
+
+        fetch();
+    }, []);
 
     return (
 
@@ -102,7 +82,7 @@ const Mobile = () => {
                 </section>
 
                 <div
-                    className="sm:pt-[30px] md:pt-[60px] w-[90%] justify-center items-center mx-auto flex flex-col gap-4 border-t-[1px] border-t-gray-300"
+                    className="sm:pt-[30px] md:pt-[60px] md:w-[90%] justify-center items-center mx-auto flex flex-col gap-4 border-t-[1px] border-t-gray-300"
                 >
                     {/* Hero Section */}
                     <section className="">
@@ -118,23 +98,23 @@ const Mobile = () => {
 
                     {/* Service Cards */}
                     <section className="mt-4 mb-10">
-                        <div className="container md:mx-auto sm:px-5 md:px-6 grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-8 w-full">
-                            {services.map((service, index) => (
+                        <div className="md:mx-auto sm:px-0 md:px-6 grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-8 w-full">
+                            {servicesinfo.map((service, index) => (
                                 <div
                                     key={index}
                                     className="bg-white rounded-lg md:w-full shadow-md overflow-hidden"
                                 >
                                     <img
-                                        src={service.imageUrl}
-                                        alt={service.title}
+                                        src={service.icon.link}
+                                        alt={service.name}
                                         className="lg:w-24 w-auto mx-auto h-24 md:h-32 lg:h-24 object-cover"
                                     />
                                     <div className="p-2 sm:p-3 md:p-4">
-                                        <h2 className="text-sm sm:text-lg md:text-xl sm:leading-6 md:leading-none font-bold mb-2">
-                                            {service.title}
+                                        <h2 className="text-sm sm:text-sm md:text-xl sm:leading-6 md:leading-none font-bold mb-2">
+                                            {service.name}
                                         </h2>
                                         <p className="text-gray-600 sm:text-[14px] md:text-[18px]">
-                                            {service.description}
+                                            {service.details}
                                         </p>
                                     </div>
                                 </div>

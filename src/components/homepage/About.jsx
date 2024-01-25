@@ -23,7 +23,7 @@ const About = () => {
   return (
     <div
       id="about"
-      className=" text-gray-900 sm:pt-[70px] md:pt-40 pt-20 container mx-auto gap-14 sm:pb-[90px]"
+      className="text-gray-900 sm:pt-[70px] md:pt-40 pt-20 mx-auto gap-14 sm:pb-[90px]"
     >
       <section className="pt-6 mb-24 sm:px-[20px] md:px-0">
         <div className="mx-auto sm:px-0 lg:px-12">
@@ -51,7 +51,7 @@ const About = () => {
                       {item.details}
                     </p>
                   </div>
-                  <div className="w-0 md:w-0 lg:w-1/2 p-6 hidden sm:hidden md:hidden lg:block">
+                  <div className="w-0 md:w-0 lg:w-1/2 p-6 hidden sm:hidden lg:block">
                     <div className="h-64  rounded-md">
                       <img
                         className="h-64 w-full object-contain"
@@ -64,7 +64,7 @@ const About = () => {
               ) : (
                 <>
                   {/* Image on the left, text on the right */}
-                  <div className="w-0 md:w-0 lg:w-1/2 p-6 hidden sm:hidden md:hidden lg:block">
+                  <div className="w-0 md:w-0 lg:w-1/2 p-6 hidden sm:hidden lg:block">
                     <div className="h-64  rounded-md">
                       <img
                         className="h-64 w-full object-contain"
