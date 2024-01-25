@@ -23,6 +23,8 @@ const ViewEventModal = ({ viewEvent }) => {
     date: "",
   });
 
+  console.log(viewEvent)
+
   useEffect(() => {
     setFiles(viewEvent.length === 0 ? [] : viewEvent.file);
   }, [viewEvent]);
@@ -40,6 +42,8 @@ const ViewEventModal = ({ viewEvent }) => {
       setViewFiles([]);
     }
   }, [viewEvent]);
+
+  console.log(newMessage)
 
   // Initialize with the last index expanded
   useEffect(() => {
@@ -107,14 +111,14 @@ const ViewEventModal = ({ viewEvent }) => {
 
     try {
       const obj = {
-        sender: newMessage.sender,
+        sender: "Resident",
         message: newMessage.message,
         status: viewEvent.status,
         isRepliable: false,
         date: new Date(),
         folder_id: viewEvent.folder_id,
-        last_sender: viewEvent.response[viewEvent.response.length - 1],
-        last_array: viewEvent.response.length - 1
+        last_sender: viewEvent.response.length === 0 ? newMessage.sender : viewEvent.response[viewEvent.response.length - 1],
+        last_array: viewEvent.response.length === 0 ? 0 : viewEvent.response.length - 1
       };
       var formData = new FormData();
       formData.append("response", JSON.stringify(obj));

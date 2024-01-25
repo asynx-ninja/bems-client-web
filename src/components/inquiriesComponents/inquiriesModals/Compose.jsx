@@ -30,6 +30,10 @@ const ComposeModal = () => {
   const [error, setError] = useState(null);
   const [submitClicked, setSubmitClicked] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState(null);
+  const [showError, setShowError] = useState({
+    error: false,
+    message: ""
+  });
 
   const handleAdd = (e) => {
     e.preventDefault();
@@ -73,6 +77,24 @@ const ComposeModal = () => {
 
   const handleOnSend = async (e) => {
     e.preventDefault();
+
+    if (!composeMessage.name ||
+      !composeMessage.email ||
+      !composeMessage.compose.to
+    ) {
+      setShowError({
+        error: true,
+        message: "Please fill up Required information!"
+      });
+      return;
+      // Proceed with form submission...
+    } else {
+      setShowError({
+        error: false,
+        message: ""
+      });
+    }
+
     setSubmitClicked(true);
 
     try {
@@ -126,6 +148,16 @@ const ComposeModal = () => {
                 </h3>
               </div>
               <div className="mt-5 h-[400px] overflow-y-auto overflow-x-hidden">
+                {
+                  showError.error ?
+                    <div
+                      className="bg-red-50 border text-center border-red-200 text-sm text-red-600 rounded-md py-4 mt-2 mb-4"
+                      role="alert"
+                    >
+                      <span className="font-bold ">Warning:</span> {showError.message}
+                    </div>
+                    : null
+                }
                 <form>
                   <div className="flex flex-col lg:flex-row">
                     <div className="mb-4 px-4 w-full">
@@ -250,7 +282,6 @@ const ComposeModal = () => {
                   type="button"
                   onClick={handleOnSend}
                   className="h-[2.5rem] w-[9.5rem] py-1 px-6 inline-flex justify-center items-center gap-2 rounded-md borde text-sm font-base bg-teal-900 text-white shadow-sm align-middle"
-                  data-hs-overlay="#hs-modal-compose"
                 >
                   Send
                 </button>

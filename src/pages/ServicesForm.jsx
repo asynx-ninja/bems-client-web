@@ -272,7 +272,6 @@ const ServicesForm = ({ props }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitClicked(true);
 
     const arr = checkEmptyFields();
 
@@ -344,6 +343,7 @@ const ServicesForm = ({ props }) => {
         console.log(response);
 
         if (response.status === 200) {
+          setSubmitClicked(true);
           HSOverlay.close(document.getElementById("hs-full-screen-modal"));
           HSOverlay.open(
             document.getElementById("hs-toggle-between-modals-second-modal")

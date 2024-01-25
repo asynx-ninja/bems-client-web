@@ -267,8 +267,6 @@ const Form = ({ announcement }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitClicked(true);
-
     const arr = checkEmptyFields();
 
     try {
@@ -324,6 +322,7 @@ const Form = ({ announcement }) => {
         console.log(response);
 
         if (response.status === 200) {
+          setSubmitClicked(true);
           HSOverlay.close(document.getElementById("hs-full-screen-modal"));
           HSOverlay.open(
             document.getElementById("hs-toggle-between-modals-second-modal")

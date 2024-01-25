@@ -190,7 +190,6 @@ const Settings = () => {
 
   const saveChanges = async (e) => {
     e.preventDefault()
-    setSubmitClicked(true);
 
     if (
       !userData.firstName ||
@@ -245,32 +244,54 @@ const Settings = () => {
     };
 
     try {
+      // CHANGE USER CREDENTIALS
+
+      if (activeButton.credential === true && userCred.oldPass !== "") {
+        setSubmitClicked(true);
+        // CHANGE USERNAME
+        if (userCred.username !== userData.username) {
+          changeCredentials(
+            userData.username,
+            userCred.username,
+            userCred.oldPass,
+            userCred.newPass
+          );
+        }
+
+        // CHANGE PASSWORD
+        if (userCred.newPass !== "") {
+          changeCredentials(
+            userData.username,
+            userCred.username,
+            userCred.oldPass,
+            userCred.newPass
+          );
+        }
+
+      } else if (activeButton.personal === true) {
+        setSubmitClicked(true);
+        saveToBack(obj)
+      } else {
+        setShowError({
+          error: true,
+          message: "Please fill up Required information!"
+        });
+      }
+
+    } catch (error) {
+      console.error("Error saving changes:", error);
+      setSubmitClicked(false);
+      setUpdatingStatus("error");
+      setError(error.message);
+    }
+  };
+
+  const saveToBack = async (obj) => {
+    try {
       var formData = new FormData();
       formData.append("users", JSON.stringify(obj));
       formData.append("file", pfp);
       const response = await axios.patch(`${API_LINK}/users/?doc_id=${id}`, formData);
-
-      // CHANGE USER CREDENTIALS
-
-      // CHANGE USERNAME
-      if (userCred.username !== userData.username) {
-        changeCredentials(
-          userData.username,
-          userCred.username,
-          userCred.oldPass,
-          userCred.newPass
-        );
-      }
-
-      // CHANGE PASSWORD
-      if (userCred.newPass !== "") {
-        changeCredentials(
-          userData.username,
-          userCred.username,
-          userCred.oldPass,
-          userCred.newPass
-        );
-      }
 
       if (response.status === 200) {
         console.log("Update successful:", response);
@@ -297,12 +318,9 @@ const Settings = () => {
         console.error("Update failed. Status:", response.status);
       }
     } catch (error) {
-      console.error("Error saving changes:", error);
-      setSubmitClicked(false);
-      setUpdatingStatus("error");
-      setError(error.message);
+      console.log(error)
     }
-  };
+  }
 
   const changeCredentials = async (
     oldUsername,
@@ -383,6 +401,10 @@ const Settings = () => {
       setEditButton(false);
     } else {
       setEditButton(true);
+      setShowError({
+        error: false,
+        message: ""
+      });
     }
   };
 

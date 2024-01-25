@@ -98,64 +98,68 @@ const Header = () => {
               </button>
 
               <div
-                className="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 sm:w-[320px] md:w-[400px] hidden z-[100] min-w-[15rem] bg-white shadow-md rounded-lg p-2 pb-[20px]"
+                className="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 sm:w-[320px] md:w-[400px] hidden z-[100] min-w-[15rem] "
                 aria-labelledby="hs-dropdown-notification"
               >
-                <div className="py-[10px] px-[5px] border-b-[1px] border-custom-gray">
-                  <h1 className="font-medium text-[18px] my-auto">
-                    Notifications
-                  </h1>
-                </div>
-
-                {/* NOTIFICATION LIST */}
-
-                {announcement.map((item, i) => (
-                  <div
-                    key={i}
-                    className="border-b-[1px] hover:bg-gray-100 border-gray-100"
-                  >
-                    <Link
-                      to={`/events/?id=${id}&brgy=${brgy}&event_id=${item._id}`}
-                      className="w-full px-[5px] bg-white cursor-pointer"
-                    >
-                      <div className="flex justify-between px-[10px] text-sm bg-transparent">
-                        <h1 className="font-medium w-[200px] truncate">
-                          {item.title}
-                        </h1>
-                        <h1 className="text-gray-400">
-                          {dateFormat(item.date)}
-                        </h1>
-                      </div>
-                      <p className="bg-transparent px-[10px] py-[5px] w-[280px] text-sm truncate">
-                        {item.details}
-                      </p>
-                    </Link>
+                <div
+                  className="mt-[-35px] bg-white h-[500px] shadow-md rounded-lg p-2 pb-[20px] overflow-scroll"
+                >
+                  <div className="py-[10px] px-[5px] border-b-[1px] border-custom-gray">
+                    <h1 className="font-medium text-[18px] my-auto">
+                      Notifications
+                    </h1>
                   </div>
-                ))}
 
-                <div className="w-full flex justify-center">
-                  <Link
-                    to="/article"
-                    onClick={() => {
-                      window.innerWidth >= 320 && window.innerWidth <= 1023
-                        ? document
+                  {/* NOTIFICATION LIST */}
+
+                  {announcement.map((item, i) => (
+                    <div
+                      key={i}
+                      className="border-b-[1px] hover:bg-gray-100 border-gray-100"
+                    >
+                      <Link
+                        to={`/events/?id=${id}&brgy=${brgy}&event_id=${item._id}`}
+                        className="w-full px-[5px] bg-white cursor-pointer"
+                      >
+                        <div className="flex justify-between px-[10px] text-sm bg-transparent">
+                          <h1 className="font-medium w-[200px] truncate">
+                            {item.title}
+                          </h1>
+                          <h1 className="text-gray-400">
+                            {dateFormat(item.date)}
+                          </h1>
+                        </div>
+                        <p className="bg-transparent px-[10px] py-[5px] w-[280px] text-sm truncate">
+                          {item.details}
+                        </p>
+                      </Link>
+                    </div>
+                  ))}
+
+                  <div className="w-full flex justify-center">
+                    <Link
+                      to="/article"
+                      onClick={() => {
+                        window.innerWidth >= 320 && window.innerWidth <= 1023
+                          ? document
                             .getQuerySelector(
                               "[data-hs-overlay-backdrop-template]"
                             )
                             .remove()
-                        : null;
-                    }}
-                    className="text-center mt-[10px] text-[12px]"
-                  >
-                    See more
-                  </Link>
+                          : null;
+                      }}
+                      className="text-center mt-[10px] text-[12px]"
+                    >
+                      See more
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
 
             {/* PROFILE DROP DOWN */}
 
-            <div className="hs-dropdown bg-white w-[40px] h-[40px] rounded-[100%] my-auto sm:hidden md:flex">
+            <div className="hs-dropdown bg-white w-[40px] h-[40px] rounded-[100%] relative my-auto sm:hidden md:flex">
               <button id="hs-dropdown-profile">
                 <img
                   id="headerPFP"
@@ -165,39 +169,43 @@ const Header = () => {
               </button>
 
               <div
-                className="hs-dropdown-menu transition-[opacity,margin] font-medium duration hs-dropdown-open:opacity-100 relative hs-dropdown-open:z-[100] opacity-0 w-56 hidden z-[63] mt-2 min-w-[15rem] bg-white shadow-md rounded-lg p-2"
+                className="hs-dropdown-menu transition-[opacity] duration hs-dropdown-open:opacity-100 absolute hs-dropdown-open:z-[100] opacity-0 w-56 hidden z-[63] min-w-[15rem]"
                 aria-labelledby="hs-dropdown-profile"
               >
-                <Link
-                  to={`/settings/?id=${id}&brgy=${brgy}`}
-                  onClick={() => {
-                    window.innerWidth >= 320 && window.innerWidth <= 1023
-                      ? document
+                <div
+                  className="mt-[-35px] font-medium bg-white shadow-md rounded-lg p-2"
+                >
+                  <Link
+                    to={`/settings/?id=${id}&brgy=${brgy}`}
+                    onClick={() => {
+                      window.innerWidth >= 320 && window.innerWidth <= 1023
+                        ? document
                           .getQuerySelector(
                             "[data-hs-overlay-backdrop-template]"
                           )
                           .remove()
-                      : null;
-                  }}
-                  className="flex items-center w-full gap-x-3.5 py-2 px-3 rounded-md text-sm hover:text-custom-gold1 text-gray-800 hover:bg-gradient-to-r from-[#295141] to-[#408D51] focus:ring-2 focus:ring-blue-500 "
-                >
-                  Settings
-                </Link>
-                <Link
-                  to="/"
-                  onClick={() => {
-                    window.innerWidth >= 320 && window.innerWidth <= 1023
-                      ? document
+                        : null;
+                    }}
+                    className="flex items-center w-full gap-x-3.5 py-2 px-3 rounded-md text-sm hover:text-custom-gold1 text-gray-800 hover:bg-gradient-to-r from-[#295141] to-[#408D51] focus:ring-2 focus:ring-blue-500 "
+                  >
+                    Profile
+                  </Link>
+                  <Link
+                    to="/"
+                    onClick={() => {
+                      window.innerWidth >= 320 && window.innerWidth <= 1023
+                        ? document
                           .getQuerySelector(
                             "[data-hs-overlay-backdrop-template]"
                           )
                           .remove()
-                      : null;
-                  }}
-                  className="flex items-center w-full gap-x-3.5 py-2 px-3 rounded-md text-sm hover:text-custom-gold1 text-gray-800 hover:bg-gradient-to-r from-[#295141] to-[#408D51] focus:ring-2 focus:ring-blue-500 "
-                >
-                  Sign-Out
-                </Link>
+                        : null;
+                    }}
+                    className="flex items-center w-full gap-x-3.5 py-2 px-3 rounded-md text-sm hover:text-custom-gold1 text-gray-800 hover:bg-gradient-to-r from-[#295141] to-[#408D51] focus:ring-2 focus:ring-blue-500 "
+                  >
+                    Sign-Out
+                  </Link>
+                </div>
               </div>
             </div>
           </div>

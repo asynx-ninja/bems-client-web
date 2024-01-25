@@ -68,13 +68,7 @@ const Mobile = () => {
                                     Introducing <b className='text-custom-green-header'>Bagong Montalban</b> Mobile App
                                 </h1>
                                 <p className="mt-4 sm:text-[14px] md:text-[18px] text-black sm:text-center lg:text-left">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                                    enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                                    nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                                    in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                                    nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                                    sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                    Bagong Montalban App is an electronic governance application that provides access to various government services such as business, permitting, requests and assistances, tourism, employment, health, and emergency services. With the app, local citizens will be able to apply  for permits, licenses, and clearances, request assistance and support from the government, and access important information related to government services. This means that there will be no more long queues, delays, or red tape, as everything will be available at the touch of a button.
                                 </p>
                             </div>
                         </div>

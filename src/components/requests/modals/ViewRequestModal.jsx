@@ -113,8 +113,8 @@ const ViewRequestModal = ({ viewRequest }) => {
         isRepliable: false,
         date: new Date(),
         folder_id: viewRequest.folder_id,
-        last_sender: viewRequest.response[viewRequest.response.length - 1],
-        last_array: viewRequest.response.length - 1
+        last_sender: viewRequest.response.length === 0 ? newMessage.sender : viewRequest.response[viewRequest.response.length - 1],
+        last_array: viewRequest.response.length === 0 ? 0 : viewRequest.response.length - 1
       };
       var formData = new FormData();
       formData.append("response", JSON.stringify(obj));

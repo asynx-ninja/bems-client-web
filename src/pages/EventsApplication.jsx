@@ -29,7 +29,7 @@ const EventsApplication = () => {
     const fetch = async () => {
       try {
         const response = await axios.get(
-          `${API_LINK}/application/specific/?user_id=${user_id}`
+          `${API_LINK}/application/specific/?user_id=${user_id}&page=${currentPage}`
         );
 
         // const getUser = await axios.get(`${API_LINK}/users/specific/${id}`);
@@ -43,7 +43,7 @@ const EventsApplication = () => {
     };
 
     fetch();
-  }, [brgy, id]);
+  }, [brgy, id, currentPage]);
 
   console.log(events)
 
@@ -51,7 +51,7 @@ const EventsApplication = () => {
     setCurrentPage(selected);
   };
 
-  // console.log(viewRequest);
+  console.log(viewEvent);
 
   const tableHeader = [
     "Events Name",

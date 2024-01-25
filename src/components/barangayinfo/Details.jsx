@@ -56,11 +56,11 @@ const Details = () => {
           </div>
 
           {/* DESCRIPTION */}
-          <div className="flex pb-[20px] w-[90%] mx-auto sm:mt-[50px] md:mt-[80px] justify-between sm:flex-col lg:flex-row gap-5">
+          <div className="flex pb-[20px] w-[90%] mx-auto sm:mt-[50px] md:mt-[80px] justify-between sm:flex-col-reverse lg:flex-row gap-5">
             <textarea
             disabled
             value={info.story}
-            className="sm:w-full sm:h-[400px] lg:h-auto lg:w-[60%] text-black border-0 bg-transparent resize-none">
+            className="sm:w-full sm:h-full lg:h-auto lg:w-[60%] text-black border-0 bg-transparent resize-none">
               {info.story}
             </textarea>
 

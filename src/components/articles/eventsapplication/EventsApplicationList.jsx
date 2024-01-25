@@ -46,6 +46,13 @@ const EventsApplicationList = ({ events, setViewEvent }) => {
                                 </span>
                             </div>
                         )}
+                        {item.status === "Paid" && (
+                            <div className="flex w-full items-center justify-center bg-green-500 m-2 rounded-lg">
+                                <span className="text-xs sm:text-sm font-bold text-white p-3 mx-5">
+                                    PAID
+                                </span>
+                            </div>
+                        )}
                         {item.status === "Rejected" && (
                             <div className="flex w-full items-center justify-center bg-red-800 m-2 rounded-lg">
                                 <span className="text-xs sm:text-sm font-bold text-white p-3 mx-5">

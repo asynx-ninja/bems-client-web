@@ -179,7 +179,7 @@ const Credentials = ({ userCred, handleUserChangeCred, editButton, message, pass
                 <button
                     className={
                         changePass
-                            ? "bg-custom-green-button text-white mx-auto w-[200px] font-medium px-[20px] py-[5px] rounded-md"
+                            ? "bg-blue-600 text-white mx-auto w-[200px] font-medium px-[20px] py-[5px] rounded-md"
                             : "hidden"
                     }
                     onClick={() => setChangePass(!changePass)}
@@ -190,7 +190,7 @@ const Credentials = ({ userCred, handleUserChangeCred, editButton, message, pass
                     className={
                         changePass
                             ? "hidden"
-                            : "bg-custom-green-button text-white mx-auto w-[200px] font-medium px-[20px] py-[5px] rounded-md"
+                            : "bg-blue-600 text-white mx-auto w-[200px] font-medium px-[20px] py-[5px] rounded-md"
                     }
                     onClick={() => setChangePass(!changePass)}
                 >
