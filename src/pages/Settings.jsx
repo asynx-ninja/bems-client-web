@@ -17,7 +17,8 @@ import banner from "../assets/image/1.png";
 import PersonalInfo from "../components/settings/PersonalInfo";
 import AddressDetails from "../components/settings/AddressDetails";
 import OtherPersonalData from "../components/settings/OthersPersonalData";
-import Credentials from "../components/settings/Credentials";
+import Username from "../components/settings/Username";
+import Password from "../components/settings/Password";
 import Preloader from "../components/loaders/Preloader";
 
 const Settings = () => {
@@ -26,7 +27,8 @@ const Settings = () => {
   const fileInputRef = useRef();
   const [activeButton, setActiveButton] = useState({
     personal: true,
-    credential: false,
+    username: false,
+    password: false
   });
   const [editButton, setEditButton] = useState(true);
   const [pfp, setPfp] = useState();
@@ -246,7 +248,7 @@ const Settings = () => {
     try {
       // CHANGE USER CREDENTIALS
 
-      if (activeButton.credential === true && userCred.oldPass !== "") {
+      if (activeButton.username === true && userCred.oldPass !== "") {
         // CHANGE USERNAME
         if (userCred.username !== userData.username) {
           changeCredentials(
@@ -256,7 +258,7 @@ const Settings = () => {
             userCred.newPass
           );
         }
-
+      } else if (activeButton.password === true && userCred.oldPass !== "") {
         // CHANGE PASSWORD
         if (userCred.newPass !== "") {
           changeCredentials(
@@ -266,7 +268,6 @@ const Settings = () => {
             userCred.newPass
           );
         }
-
       } else if (activeButton.personal === true) {
         setSubmitClicked(true);
         try {
@@ -391,12 +392,20 @@ const Settings = () => {
     if (e.target.name === "personal") {
       setActiveButton({
         personal: true,
-        credential: false,
+        username: false,
+        password: false
       });
-    } else {
+    } else if (e.target.name === "username") {
       setActiveButton({
         personal: false,
-        credential: true,
+        username: true,
+        password: false
+      });
+    } else if (e.target.name === "password") {
+      setActiveButton({
+        personal: false,
+        username: false,
+        password: true
       });
     }
   };
@@ -446,7 +455,7 @@ const Settings = () => {
                   Personal Info
                 </button>
                 <button
-                  name="credential"
+                  name="username"
                   onClick={handleOnActive}
                   className={
                     activeButton.credential
@@ -454,7 +463,18 @@ const Settings = () => {
                       : "sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-white text-black font-medium transition-all ease-in-out hover:bg-custom-green-button hover:text-white"
                   }
                 >
-                  Account Info
+                  Change Username
+                </button>
+                <button
+                  name="password"
+                  onClick={handleOnActive}
+                  className={
+                    activeButton.credential
+                      ? "sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-custom-green-button text-white font-medium"
+                      : "sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-white text-black font-medium transition-all ease-in-out hover:bg-custom-green-button hover:text-white"
+                  }
+                >
+                  Change Password
                 </button>
               </div>
 
@@ -473,13 +493,23 @@ const Settings = () => {
               </div>
               <div
                 className={
-                  activeButton.credential
+                  activeButton.username
                     ? "shadow-lg px-[30px] pb-[30px]"
                     : "hidden"
                 }
               >
                 {/* CREDENTIALS */}
-                <Credentials userCred={userCred} handleUserChangeCred={handleUserChangeCred} editButton={editButton} message={message} passwordStrengthError={passwordStrengthError} passwordStrengthSuccess={passwordStrengthSuccess} passwordStrength={passwordStrength} empty={empty} />
+                <Username userCred={userCred} handleUserChangeCred={handleUserChangeCred} editButton={editButton} message={message} passwordStrengthError={passwordStrengthError} passwordStrengthSuccess={passwordStrengthSuccess} passwordStrength={passwordStrength} empty={empty} />
+              </div>
+              <div
+                className={
+                  activeButton.password
+                    ? "shadow-lg px-[30px] pb-[30px]"
+                    : "hidden"
+                }
+              >
+                {/* CREDENTIALS */}
+                <Password userCred={userCred} handleUserChangeCred={handleUserChangeCred} editButton={editButton} message={message} passwordStrengthError={passwordStrengthError} passwordStrengthSuccess={passwordStrengthSuccess} passwordStrength={passwordStrength} empty={empty} />
               </div>
             </div>
             <div className="sm:w-full lg:w-[20%] relative mt-[-80px] mb-[20px]">

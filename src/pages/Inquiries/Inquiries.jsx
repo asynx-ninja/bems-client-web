@@ -16,6 +16,7 @@ import ViewMessage from "../../components/inquiriesComponents/inquiriesModals/Vi
 import ComposeModal from "../../components/inquiriesComponents/inquiriesModals/Compose";
 import InquiriesList from "../../components/inquiriesComponents/InquiriesList";
 import video from "../../assets/image/video.mp4";
+import no_data from "../../assets/image/no-data.png"
 
 
 const Inquiries = () => {
@@ -129,6 +130,7 @@ const Inquiries = () => {
               {inquiries.length === 0 ? (
                 <tr>
                   <th className="pt-[50px]" rowSpan={5} colSpan={7}>
+                    <img className="w-[150px] mx-auto" src={no_data}  alt="" />
                     No Records Shown
                   </th>
                 </tr>

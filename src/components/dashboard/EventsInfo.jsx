@@ -7,6 +7,7 @@ import ReactPaginate from "react-paginate";
 import banner from "../../assets/header/montalban-banner2.png"
 import video from "../../assets/image/video.mp4";
 import Breadcrumbs from "../../components/dashboard/Breadcrumbs"
+import no_data from "../../assets/image/no-data.png"
 
 const EventsInfo = () => {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -104,6 +105,14 @@ const EventsInfo = () => {
                             </div>
                         </div>
                     ))}
+                    {
+                        announcements.length === 0 ?
+                            <div className="flex flex-col my-[80px]">
+                                <img className="w-[150px] mx-auto" src={no_data} alt="" />
+                                <p className="mx-auto">No Records Shown</p>
+                            </div>
+                            : null
+                    }
                 </div>
             </div>
 

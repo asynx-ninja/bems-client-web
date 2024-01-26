@@ -9,6 +9,7 @@ import { useSearchParams } from "react-router-dom";
 // COMPONENTS
 import ViewEventModal from "../components/articles/eventsapplication/modals/ViewEventModal";
 import EventsApplicationList from "../components/articles/eventsapplication/EventsApplicationList";
+import no_data from "../assets/image/no-data.png"
 
 const EventsApplication = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -106,7 +107,8 @@ const EventsApplication = () => {
                 {
                   events.length === 0 ?
                     <tr>
-                      <th className="pt-[50px]" rowSpan={5} colSpan={6}>
+                      <th className="pt-[50px]" rowSpan={5} colSpan={7}>
+                        <img className="w-[150px] mx-auto" src={no_data} alt="" />
                         No Records Shown
                       </th>
                     </tr>

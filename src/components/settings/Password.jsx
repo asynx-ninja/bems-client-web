@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
-const Credentials = ({ userCred, handleUserChangeCred, editButton, message, passwordStrengthError, passwordStrengthSuccess, passwordStrength, empty }) => {
-    const [changePass, setChangePass] = useState(false);
+const Password = ({ userCred, handleUserChangeCred, editButton, message, passwordStrengthError, passwordStrengthSuccess, passwordStrength, empty }) => {
     const [newpasswordShown, setNewPasswordShown] = useState(false);
     const [oldpasswordShown, setOldPasswordShown] = useState(false);
 
@@ -40,26 +39,6 @@ const Credentials = ({ userCred, handleUserChangeCred, editButton, message, pass
                     </p>
                 </div>
             </div>
-            <div className={!changePass ? "flex flex-col" : "hidden"}>
-                <label
-                    htmlFor="username"
-                    className="block sm:text-xs lg:text-sm font-medium mb-2"
-                >
-                    Username
-                </label>
-                <input
-                    type="text"
-                    disabled={editButton}
-                    id="username"
-                    className={empty ? "py-3 px-4 block w-full border-1 border-red-200 text-black rounded-md text-sm focus:border-red-500 focus:ring-red-500 bg-white"
-                        : "py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 bg-white"} placeholder="username"
-                    aria-describedby="hs-input-helper-text"
-                    value={userCred.username || ""}
-                    onChange={(e) =>
-                        handleUserChangeCred("username", e.target.value)
-                    }
-                />
-            </div>
 
             <div className="relative z-0">
                 <label
@@ -95,7 +74,7 @@ const Credentials = ({ userCred, handleUserChangeCred, editButton, message, pass
                     )}
                 </button>
             </div>
-            <div className={changePass ? "flex flex-col" : "hidden"}>
+            <div className={"flex flex-col"}>
                 <div className="relative z-0">
                     <label
                         htmlFor="newpass"
@@ -175,30 +154,8 @@ const Credentials = ({ userCred, handleUserChangeCred, editButton, message, pass
                     )}
                 </div>
             </div>
-            <div className={editButton ? "hidden" : "mx-auto"}>
-                <button
-                    className={
-                        changePass
-                            ? "bg-blue-600 text-white mx-auto w-[200px] font-medium px-[20px] py-[5px] rounded-md"
-                            : "hidden"
-                    }
-                    onClick={() => setChangePass(!changePass)}
-                >
-                    Change Username
-                </button>
-                <button
-                    className={
-                        changePass
-                            ? "hidden"
-                            : "bg-blue-600 text-white mx-auto w-[200px] font-medium px-[20px] py-[5px] rounded-md"
-                    }
-                    onClick={() => setChangePass(!changePass)}
-                >
-                    Change Password
-                </button>
-            </div>
         </div>
     )
 }
 
-export default Credentials
+export default Password

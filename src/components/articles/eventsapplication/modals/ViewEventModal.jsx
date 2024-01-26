@@ -33,6 +33,8 @@ const ViewEventModal = ({ viewEvent }) => {
     if (viewEvent && viewEvent.response && viewEvent.response.length !== 0) {
       const lastResponse = viewEvent.response[viewEvent.response.length - 1];
 
+      console.log(lastResponse)
+
       if (lastResponse.file && lastResponse.file.length > 0) {
         setViewFiles(lastResponse.file);
       } else {
@@ -104,6 +106,8 @@ const ViewEventModal = ({ viewEvent }) => {
   const handleOnUpload = () => {
     setUpload(!upload);
   };
+
+  console.log(viewEvent)
 
   const handleOnSend = async (e) => {
     e.preventDefault();

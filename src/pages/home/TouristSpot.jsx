@@ -3,6 +3,7 @@ import { Link, useSearchParams, useLocation } from "react-router-dom";
 import axios from "axios";
 import API_LINK from "../../config/API";
 import ReactPaginate from "react-paginate";
+import no_data from "../../assets/image/no-data.png"
 
 //COMPONENTS
 import NavbarHome from "../../components/global/NavbarHome";
@@ -94,6 +95,14 @@ const TouristSpot = () => {
                             </div>
                         </div>
                     ))}
+                    {
+                        touristSpot.length === 0 ?
+                            <div className="flex flex-col my-[80px]">
+                                <img className="w-[150px] mx-auto" src={no_data} alt="" />
+                                <p className="mx-auto">No Records Shown</p>
+                            </div>
+                            : null
+                    }
                 </div>
 
                 <div className="md:py-4 md:px-4 bg-custom-green-header flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3">

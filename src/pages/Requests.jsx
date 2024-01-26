@@ -11,6 +11,7 @@ import { useSearchParams } from "react-router-dom";
 // COMPONENTS
 import ViewRequestModal from "../components/requests/modals/ViewRequestModal";
 import RequestList from "../components/requests/RequestList";
+import no_data from "../assets/image/no-data.png"
 
 const Requests = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -119,7 +120,8 @@ const Requests = () => {
                 {
                   request.length === 0 ?
                     <tr>
-                      <th className="pt-[50px]" rowSpan={5} colSpan={6}>
+                      <th className="pt-[50px]" rowSpan={5} colSpan={7}>
+                        <img className="w-[150px] mx-auto" src={no_data} alt="" />
                         No Records Shown
                       </th>
                     </tr>

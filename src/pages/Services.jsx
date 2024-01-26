@@ -5,6 +5,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import video from "../assets/image/video.mp4";
 import axios from "axios";
 import API_LINK from "../config/API";
+import no_data from "../assets/image/no-data.png"
 
 const Services = () => {
   const [filter, setFilter] = useState([]);
@@ -91,6 +92,15 @@ const Services = () => {
             </div>
           </Link>
         ))}
+
+        {
+          filterType.length === 0 ?
+            <div className="flex flex-col my-[80px]">
+              <img className="w-[150px] mx-auto" src={no_data} alt="" />
+              <p className="mx-auto">No Records Shown</p>
+            </div>
+            : null
+        }
       </div>
       <div className="md:py-4 md:px-4 w-full mt-[30px] bg-custom-green-header flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3">
         <span className="font-medium text-white sm:text-xs text-sm">
