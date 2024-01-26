@@ -56,7 +56,7 @@ const Details = () => {
           </div>
 
           {/* DESCRIPTION */}
-          <div className="flex pb-[20px] w-[90%] mx-auto sm:mt-[50px] md:mt-[80px] justify-between sm:flex-col-reverse lg:flex-row gap-5">
+          <div className="flex pb-[20px] w-[90%] mx-auto sm:mt-[50px] md:mt-[80px] justify-between sm:flex-col-reverse md:flex-row gap-5">
             <textarea
             disabled
             value={info.story}
@@ -65,7 +65,7 @@ const Details = () => {
             </textarea>
 
             <img
-              className="w-[400px] sm:h-[200px] lg:h-[400px] sm:mx-auto lg:mx-0 object-cover rounded-[25px]"
+              className="w-[400px] sm:h-[200px] md:h-[400px] sm:mx-auto lg:mx-0 object-cover"
               src={info.banner.link !== "" ? info.banner.link : null}
               alt=""
             />

@@ -41,6 +41,13 @@ const ComposeModal = () => {
     fileInputRef.current.click();
   };
 
+  const handleOnClose = () => {
+    setShowError({
+      error: false,
+      message: ""
+    })
+  }
+
   const handleOnUpload = () => {
     setUpload(!upload);
   };
@@ -172,7 +179,8 @@ const ComposeModal = () => {
                         id="title"
                         onChange={handleOnCompose}
                         name="name"
-                        className="w-full p-2 border border-gray-300 rounded focus:border-green-500 focus:ring-green-500"
+                        className={showError.error ? "w-full p-2 border border-red-300 rounded focus:border-red-500 focus:ring-red-500"
+                          : "w-full p-2 border border-gray-300 rounded focus:border-green-500 focus:ring-green-500"}
                       />
                     </div>
                     <div className="mb-4 px-4 w-full">
@@ -187,7 +195,8 @@ const ComposeModal = () => {
                         id="title"
                         onChange={handleOnCompose}
                         name="email"
-                        className="w-full p-2 border border-gray-300 rounded focus:border-green-500 focus:ring-green-500"
+                        className={showError.error ? "w-full p-2 border border-red-300 rounded focus:border-red-500 focus:ring-red-500"
+                          : "w-full p-2 border border-gray-300 rounded focus:border-green-500 focus:ring-green-500"}
                       />
                     </div>
                   </div>
@@ -204,7 +213,8 @@ const ComposeModal = () => {
                       id="title"
                       name="subject"
                       onChange={handleOnCompose}
-                      className="w-full p-2 border border-gray-300 rounded focus:border-green-500 focus:ring-green-500"
+                      className={showError.error ? "w-full p-2 border border-red-300 rounded focus:border-red-500 focus:ring-red-500"
+                        : "w-full p-2 border border-gray-300 rounded focus:border-green-500 focus:ring-green-500"}
                     />
                   </div>
 
@@ -219,7 +229,8 @@ const ComposeModal = () => {
                       id="title"
                       name="to"
                       onChange={handleOnCompose}
-                      className="w-full p-2 border border-gray-300 rounded focus:border-green-500 focus:ring-green-500"
+                      className={showError.error ? "w-full p-2 border border-red-300 rounded focus:border-red-500 focus:ring-red-500"
+                        : "w-full p-2 border border-gray-300 rounded focus:border-green-500 focus:ring-green-500"}
                     >
                       <option value="" selected disabled>-- Select Recipient --</option>
                       <option value="Admin">Admin</option>
@@ -239,7 +250,8 @@ const ComposeModal = () => {
                       name="message"
                       onChange={handleOnCompose}
                       rows="4"
-                      className="w-full p-2 border border-gray-300 rounded focus:border-green-500 focus:ring-green-500"
+                      className={showError.error ? "w-full p-2 border border-red-300 rounded focus:border-red-500 focus:ring-red-500"
+                        : "w-full p-2 border border-gray-300 rounded focus:border-green-500 focus:ring-green-500"}
                     />
                   </div>
                   <div className="m-[10px] w-full">
@@ -287,6 +299,7 @@ const ComposeModal = () => {
                 </button>
                 <button
                   type="button"
+                  onClick={handleOnClose}
                   className="h-[2.5rem] w-[9.5rem] py-1 px-6 inline-flex justify-center items-center gap-2 rounded-md border text-sm font-base bg-pink-800 text-white shadow-sm align-middle"
                   data-hs-overlay="#hs-modal-compose"
                 >

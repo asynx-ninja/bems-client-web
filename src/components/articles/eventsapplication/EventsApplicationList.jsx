@@ -39,10 +39,10 @@ const EventsApplicationList = ({ events, setViewEvent }) => {
 
                 <td className="px-6 py-3">
                     <div className="flex justify-center items-center">
-                        {item.status === "Transaction Completed" && (
+                        {item.status === "Application Completed" && (
                             <div className="flex w-full items-center justify-center bg-green-500 m-2 rounded-lg">
                                 <span className="text-xs sm:text-sm font-bold text-white p-3 mx-5">
-                                    TRANSACTION COMPLETED
+                                    APPLICATION COMPLETED
                                 </span>
                             </div>
                         )}
