@@ -8,12 +8,12 @@ import { IoIosAttach } from "react-icons/io";
 import { IoSend } from "react-icons/io5";
 import Dropbox from "./Dropbox";
 import ViewDropbox from "./ViewDropbox";
+import Preloader from "../../loaders/Preloader";
 // import EditDropbox from "./EditDropbox";
 
 const ViewRequestModal = ({ viewRequest }) => {
   const [reply, setReply] = useState(false);
   const [upload, setUpload] = useState(false);
-  const [expandedIndexes, setExpandedIndexes] = useState([]);
   const [files, setFiles] = useState([]);
   const [createFiles, setCreateFiles] = useState([]);
   const [viewFiles, setViewFiles] = useState([]);
@@ -22,6 +22,9 @@ const ViewRequestModal = ({ viewRequest }) => {
     message: "",
     date: "",
   });
+  const [error, setError] = useState(null);
+  const [submitClicked, setSubmitClicked] = useState(false);
+  const [updatingStatus, setUpdatingStatus] = useState(null);
 
   useEffect(() => {
     setFiles(viewRequest.length === 0 ? [] : viewRequest.file);
@@ -41,23 +44,7 @@ const ViewRequestModal = ({ viewRequest }) => {
     }
   }, [viewRequest]);
 
-  // Initialize with the last index expanded
-  useEffect(() => {
-    const lastIndex = 0;
-    setExpandedIndexes([lastIndex]);
-  }, [viewRequest.response]);
-
   const fileInputRef = useRef();
-
-  const handleToggleClick = (index) => {
-    if (expandedIndexes.includes(index)) {
-      // Collapse the clicked div
-      setExpandedIndexes((prev) => prev.filter((i) => i !== index));
-    } else {
-      // Expand the clicked div
-      setExpandedIndexes((prev) => [...prev, index]);
-    }
-  };
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -104,14 +91,15 @@ const ViewRequestModal = ({ viewRequest }) => {
   const handleOnSend = async (e) => {
     e.preventDefault();
     console.log(newMessage);
-
+    setSubmitClicked(true);
+    
     try {
       const obj = {
-        sender: newMessage.sender,
+        sender: "Resident",
         message: newMessage.message,
         status: viewRequest.status,
-        isRepliable: false,
         date: new Date(),
+        isRepliable: false,
         folder_id: viewRequest.folder_id,
         last_sender: viewRequest.response.length === 0 ? newMessage.sender : viewRequest.response[viewRequest.response.length - 1],
         last_array: viewRequest.response.length === 0 ? 0 : viewRequest.response.length - 1
@@ -123,11 +111,24 @@ const ViewRequestModal = ({ viewRequest }) => {
       }
 
       const response = await axios.patch(
-        `${API_LINK}/requests/?req_id=${viewRequest._id}&user_type=${"Residentpnpm run dev"}`,
+        `${API_LINK}/requests/?req_id=${viewRequest._id}&user_type=${"Resident"}`,
         formData
       );
 
-      window.location.reload();
+      if (response.status === 200) {
+        setTimeout(() => {
+          setSubmitClicked(false);
+          setUpdatingStatus("success");
+          setTimeout(() => {
+            window.location.reload();
+          }, 3000);
+        }, 1000);
+      } else {
+        setSubmitClicked(false);
+        setUpdatingStatus("error");
+        setError(error.message);
+      }
+
     } catch (error) {
       console.log(error);
     }
@@ -249,148 +250,132 @@ const ViewRequestModal = ({ viewRequest }) => {
                     (viewRequest.response.sort((a, b) => new Date(b.date) - new Date(a.date))).map((responseItem, index) => (
                       <div
                         key={index}
-                        className={`flex flex-col lg:flex-row h-16 mb-2 border rounded-xl ${expandedIndexes.includes(index)
-                          ? "h-auto border-b"
-                          : ""
-                          }`}
-                        onClick={() => handleToggleClick(index)}
+                        className={responseItem.sender === "Resident" ? "flex flex-col justify-end items-end mb-5 w-full h-auto" : "flex flex-col justify-start items-start mb-5 w-full h-auto"}
                       >
-                        {!expandedIndexes.includes(index) ? (
-                          <div className="flex flex-col w-full px-2 md:px-4 py-2">
-                            <div className="flex flex-row w-full justify-between">
-                              <p className="text-[14px] md:text-sm font-medium uppercase">
-                                {responseItem.sender === "Resident" ?
-                                  responseItem.sender
-                                  :
-                                  <p className="text-[14px] md:text-sm font-medium uppercase">
-                                    Processed by: {responseItem.sender}
-                                  </p>
-                                }
-                              </p>
-                              <p className="text-[10px] md:text-xs text-right text-xs">
-                                {DateFormat(responseItem.date) || ""}
+                        <div
+                          className="flex flex-col items-end mb-5 h-auto"
+                        >
+                          <div
+                            className="flex flex-row w-full justify-between"
+                          >
+                            <div className="flex flex-col md:flex-row md:items-center">
+                              <p className="text-[14px] text-black md:text-sm font-medium uppercase ">
+                                {responseItem.sender}
                               </p>
                             </div>
-                            <p className="text-[10px] md:text-xs">
-                              {responseItem.message}
-                            </p>
                           </div>
-                        ) : (
                           <div
-                            className="flex flex-col w-full px-2 md:px-4 py-2"
+                            className="flex flex-col rounded-xl bg-custom-green-button w-full px-2 md:px-4 py-2"
                             onClick={(e) => e.stopPropagation()}
                           >
-                            <div
-                              className="flex flex-row w-full justify-between"
-                              onClick={() => handleToggleClick(index)}
-                            >
-                              <div className="flex flex-col md:flex-row md:items-center">
-                                <p className="text-[14px] md:text-sm font-medium uppercase ">
-                                  {responseItem.sender}
-                                </p>
-                              </div>
-                              <p className="text-[10px] md:text-xs text-right text-xs">
-                                {DateFormat(responseItem.date) || ""}
-                              </p>
-                            </div>
-                            <div className="w-full py-4 h-full md:px-2">
-                              <div className="w-full border h-full rounded-xl p-5">
-                                <p className="text-[10px] md:text-xs">
+                            <div className="w-full h-full">
+                              <div className="w-full h-full rounded-xl p-1">
+                                <p className="text-[10px] text-white md:text-xs">
                                   {responseItem.message}
                                 </p>
                               </div>
                             </div>
-                            <ViewDropbox
-                              viewFiles={responseItem.file || []}
-                              setViewFiles={setViewFiles}
-                            />
-                            {index === 0 && (
-                              <div className="flex flex-row items-center">
-                                {
-                                  responseItem.isRepliable === false ?
-                                    null
-                                    :
-                                    <button
-                                      type="button"
-                                      className="h-8 w-full lg:w-32 py-1 px-2 gap-2 mt-4 rounded-full borde text-sm font-base bg-teal-900 text-white shadow-sm"
-                                      onClick={handleOnReply}
-                                      hidden={reply}
-                                    >
-                                      REPLY
-                                    </button>
-                                }
-                                {!reply ? (
-                                  <div></div>
-                                ) : (
-                                  <div className="relative w-full mt-4 mx-2">
-                                    <div className="relative w-full">
-                                      <textarea
-                                        id="message"
-                                        name="message"
-                                        onChange={handleChange}
-                                        className="p-4 pb-12 block w-full border-gray-200 rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none border"
-                                        placeholder="Input response..."
-                                      ></textarea>
+                          </div>
+                          {
+                            !responseItem.file ?
+                              null
+                              :
+                              <div className="flex flex-col rounded-xl bg-custom-green-button w-full mt-2 px-2 md:px-4 py-2">
+                                <ViewDropbox
+                                  viewFiles={responseItem.file || []}
+                                  setViewFiles={setViewFiles}
+                                />
+                              </div>
+                          }
+                          <p className="text-[10px] md:text-xs mt-[5px] text-black text-right text-xs">
+                            {DateFormat(responseItem.date) || ""}
+                          </p>
+                        </div>
+                        {index === viewRequest.response.length - 1 ?
+                          <div className="flex flex-row items-center w-full">
+                            {
+                              responseItem.isRepliable === false ?
+                                null
+                                :
+                                <button
+                                  type="button"
+                                  className="h-8 w-full lg:w-32 py-1 px-2 gap-2 mt-4 rounded-full borde text-sm font-base bg-custom-green-header text-white shadow-sm"
+                                  onClick={handleOnReply}
+                                  hidden={reply}
+                                >
+                                  REPLY
+                                </button>
+                            }
+                            {!reply ? (
+                              <div></div>
+                            ) : (
+                              <div className="relative w-full mt-4 mx-2">
+                                <div className="relative w-full">
+                                  <textarea
+                                    id="message"
+                                    name="message"
+                                    onChange={handleChange}
+                                    className="p-4 pb-12 block w-full border-gray-200 rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none border"
+                                    placeholder="Input response..."
+                                  ></textarea>
 
-                                      <div className="absolute bottom-px inset-x-px p-2 rounded-b-md bg-white">
-                                        <div className="flex justify-between items-center">
-                                          <div className="flex items-center">
-                                            <input
-                                              type="file"
-                                              name="file"
-                                              onChange={(e) =>
-                                                handleFileChange(e)
-                                              }
-                                              ref={fileInputRef}
-                                              accept=".xlsx,.xls,.doc,.docx,.ppt,.pptx,.txt,.pdf"
-                                              multiple="multiple"
-                                              className="hidden"
-                                            />
-                                            <button
-                                              id="button"
-                                              onClick={
-                                                handleAdd || handleOnUpload
-                                              }
-                                              className="mt-2 rounded-xl px-3 py-1 hover:bg-gray-300 focus:shadow-outline focus:outline-none"
-                                            >
-                                              <IoIosAttach size={24} />
-                                            </button>
-                                          </div>
+                                  <div className="absolute bottom-px inset-x-px p-2 rounded-b-md bg-white">
+                                    <div className="flex justify-between items-center">
+                                      <div className="flex items-center">
+                                        <input
+                                          type="file"
+                                          name="file"
+                                          onChange={(e) =>
+                                            handleFileChange(e)
+                                          }
+                                          ref={fileInputRef}
+                                          accept=".xlsx,.xls,.doc,.docx,.ppt,.pptx,.txt,.pdf"
+                                          multiple="multiple"
+                                          className="hidden"
+                                        />
+                                        <button
+                                          id="button"
+                                          onClick={
+                                            handleAdd || handleOnUpload
+                                          }
+                                          className="mt-2 rounded-xl px-3 py-1 hover:bg-gray-300 focus:shadow-outline focus:outline-none"
+                                        >
+                                          <IoIosAttach size={24} />
+                                        </button>
+                                      </div>
 
-                                          <div className="flex items-center gap-x-1">
-                                            <button
-                                              type="submit"
-                                              onClick={handleOnSend}
-                                              className="inline-flex flex-shrink-0 justify-center items-center w-28 rounded-lg text-white py-1 px-6 gap-2 bg-cyan-700"
-                                            >
-                                              <span>SEND</span>
-                                              <IoSend
-                                                size={18}
-                                                className="flex-shrink-0"
-                                              />
-                                            </button>
-                                          </div>
-                                        </div>
+                                      <div className="flex items-center gap-x-1">
+                                        <button
+                                          type="submit"
+                                          onClick={handleOnSend}
+                                          className="inline-flex flex-shrink-0 justify-center items-center w-28 rounded-lg text-white py-1 px-6 gap-2 bg-cyan-700"
+                                        >
+                                          <span>SEND</span>
+                                          <IoSend
+                                            size={18}
+                                            className="flex-shrink-0"
+                                          />
+                                        </button>
                                       </div>
                                     </div>
-                                    {!upload ? (
-                                      // Render Dropbox only when there are uploaded files
-                                      createFiles.length > 0 && (
-                                        <Dropbox
-                                          createFiles={createFiles}
-                                          setCreateFiles={setCreateFiles}
-                                          handleFileChange={handleFileChange}
-                                        />
-                                      )
-                                    ) : (
-                                      <div></div>
-                                    )}
                                   </div>
+                                </div>
+                                {!upload ? (
+                                  // Render Dropbox only when there are uploaded files
+                                  createFiles.length > 0 && (
+                                    <Dropbox
+                                      createFiles={createFiles}
+                                      setCreateFiles={setCreateFiles}
+                                      handleFileChange={handleFileChange}
+                                    />
+                                  )
+                                ) : (
+                                  <div></div>
                                 )}
                               </div>
                             )}
                           </div>
-                        )}
+                          : null}
                       </div>
                     ))}
                 </form>
@@ -417,6 +402,10 @@ const ViewRequestModal = ({ viewRequest }) => {
           </div>
         </div>
       </div>
+      {submitClicked && <Preloader updatingStatus="waiting" />}
+      {updatingStatus && (
+        <Preloader updatingStatus={updatingStatus} error={error} />
+      )}
     </div>
   );
 }

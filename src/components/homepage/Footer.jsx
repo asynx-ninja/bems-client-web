@@ -6,8 +6,28 @@ import {
   faInstagram,
 } from "@fortawesome/free-brands-svg-icons";
 import { Link } from "react-router-dom";
+import API_LINK from "../../config/API";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 const Footer = () => {
+  
+  const [aboutus, setAboutus] = useState([]);
+  const brgy = "MUNICIPAL INFO";
+  useEffect(() => {
+    const fetch = async () => {
+      const response = await axios.get(
+        `${API_LINK}/aboutus/?brgy=${brgy}&archived=false`
+      );
+      if (response.status === 200) setAboutus(response.data.result);
+      else setAboutus(response.data.result[0]);
+    };
+
+    fetch();
+  }, []);
+
+  console.log(aboutus)
+
   return (
     <div data-aos="" className="container-fluid w-full">
       <footer className="bg-[#295141] text-white py-8">
@@ -16,8 +36,7 @@ const Footer = () => {
             <div className="w-full md:w-1/3">
               <h4 className="uppercase font-bold mt-5 sm:text-[14px] md:text-[18px]">About us</h4>
               <p className="sm:text-[12px] md:text-[16px]">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                {aboutus.details}
               </p>
             </div>
             <div className="w-full md:w-1/3 mt-5">

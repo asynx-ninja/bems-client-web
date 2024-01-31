@@ -118,7 +118,7 @@ const Header = () => {
                       className="border-b-[1px] hover:bg-gray-100 border-gray-100"
                     >
                       <Link
-                        to={`/events/?id=${id}&brgy=${brgy}&event_id=${item._id}`}
+                        to={`/events/?id=${id}&brgy=${brgy}&event_id=${item.event_id}&page=${0}`}
                         className="w-full px-[5px] bg-white cursor-pointer"
                       >
                         <div className="flex justify-between px-[10px] text-sm bg-transparent">
@@ -138,7 +138,7 @@ const Header = () => {
 
                   <div className="w-full flex justify-center">
                     <Link
-                      to="/article"
+                      to={`/events-list/?id=${id}&brgy=${brgy}`}
                       onClick={() => {
                         window.innerWidth >= 320 && window.innerWidth <= 1023
                           ? document

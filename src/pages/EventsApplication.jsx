@@ -46,13 +46,13 @@ const EventsApplication = () => {
     fetch();
   }, [brgy, id, currentPage]);
 
-  console.log(events)
+  // console.log(events)
 
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected);
   };
 
-  console.log(viewEvent);
+  // console.log(viewEvent);
 
   const tableHeader = [
     "Events Name",

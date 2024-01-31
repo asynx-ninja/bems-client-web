@@ -71,7 +71,7 @@ const ViewDropbox = ({ viewFiles, setViewFiles }) => {
             </div>
           )}
           <section className="h-full overflow-auto p-1 w-full flex flex-col">
-            <h1 className="pb-2 text-sm font-medium text-gray-700">
+            <h1 className="pb-2 text-sm font-medium text-white">
               Files Attached:
             </h1>
             <ul id="gallery" className="flex flex-1 flex-wrap -m-1">
@@ -84,7 +84,7 @@ const ViewDropbox = ({ viewFiles, setViewFiles }) => {
                   >
                     <article
                       tabIndex={0}
-                      className="group w-full h-full rounded-md focus:outline-none focus:shadow-outline elative bg-gray-100 cursor-pointer relative shadow-sm"
+                      className="group w-[100px] h-full rounded-md focus:outline-none focus:shadow-outline elative bg-gray-100 cursor-pointer relative shadow-sm"
                     >
                       <img
                         alt="upload preview"
