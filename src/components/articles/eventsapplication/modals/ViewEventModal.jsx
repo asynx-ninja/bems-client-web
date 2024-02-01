@@ -94,6 +94,15 @@ const ViewEventModal = ({ viewEvent }) => {
     setUpload(!upload);
   };
 
+  const getType = (type) => {
+    switch (type) {
+      case "MUNISIPYO":
+        return "Municipality";
+      default:
+        return "Barangay";
+    }
+  };
+
   // console.log(viewEvent)
 
   const handleOnSend = async (e) => {
@@ -124,6 +133,7 @@ const ViewEventModal = ({ viewEvent }) => {
       );
 
       if (response.status === 200) {
+
         setTimeout(() => {
           setSubmitClicked(false);
           setUpdatingStatus("success");
@@ -131,6 +141,7 @@ const ViewEventModal = ({ viewEvent }) => {
             window.location.reload();
           }, 3000);
         }, 1000);
+
       } else {
         setSubmitClicked(false);
         setUpdatingStatus("error");

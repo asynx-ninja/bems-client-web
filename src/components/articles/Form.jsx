@@ -6,6 +6,7 @@ import { useEffect, useState, React, useRef } from "react";
 import axios from "axios";
 import API_LINK from "../../config/API";
 import defaultBanner from "../../assets/image/1.png";
+import moment from "moment";
 
 // FORM DETAILS
 import PersonalDetails from "./eventsform/PersonalDetails";
@@ -61,7 +62,7 @@ const Form = ({ announcement }) => {
   }, [event_id]);
 
   // console.log(event_id)
-  console.log("event", detail);
+  // console.log("event", detail);
 
   const checkEmptyFields = () => {
     let arr = [];
@@ -265,6 +266,15 @@ const Form = ({ announcement }) => {
   //   }
   // };
 
+  const getType = (type) => {
+    switch (type) {
+      case "MUNISIPYO":
+        return "Municipality";
+      default:
+        return "Barangay";
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const arr = checkEmptyFields();
@@ -318,24 +328,75 @@ const Form = ({ announcement }) => {
           })
         );
 
-        const response = await axios.post(`${API_LINK}/application/`, formData);
-        console.log(response);
+        const folderResponse = await axios.get(
+          `${API_LINK}/folder/specific/?brgy=${userData.address.brgy}`
+        );
 
-        if (response.status === 200) {
-          setSubmitClicked(true);
-          HSOverlay.close(document.getElementById("hs-full-screen-modal"));
-          HSOverlay.open(
-            document.getElementById("hs-toggle-between-modals-second-modal")
+        if (folderResponse.status === 200) {
+
+          const response = await axios.post(
+            `${API_LINK}/application/?app_folder_id=${folderResponse.data[0].application}`,
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }
           );
-          setTimeout(() => {
-            setSubmitClicked(false);
-            setUpdatingStatus("success");
-            setTimeout(() => {
-              window.location.reload();
-            }, 3000);
-          }, 1000);
-        } else {
-          console.error("Update failed. Status:", response.status);
+
+          if (response.status === 200) {
+
+            const notify = {
+              category: "Many",
+              compose: {
+                subject: `APPLICATION - ${announcement.title}`,
+                message: `A user has submitted an event application form for the event of ${announcement.title
+                  }.\n\n
+              
+              Application Details:\n
+              - Name: ${`${userData.lastName}, ${userData.firstName}`}\n
+              - Event Applied: ${announcement.title}\n
+              - Application ID: ${response.data.application_id}\n
+              - Date Created: ${moment(response.data.createdAt).format(
+                    "MMM. DD, YYYY h:mm a"
+                  )}\n\n
+              Please update this application as you\'ve seen this notification!\n\n
+              Thank you!!`,
+                go_to: "Application",
+              },
+              target: { user_id: userData.user_id, area: announcement.brgy },
+              type: getType(announcement.brgy),
+              banner: announcement.collections.banner,
+              logo: announcement.collections.logo,
+            };
+
+            const result = await axios.post(
+              `${API_LINK}/notification/`,
+              notify,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+
+            if (result.status === 200) {
+              setSubmitClicked(true);
+              HSOverlay.close(document.getElementById("hs-full-screen-modal"));
+              HSOverlay.open(
+                document.getElementById("hs-toggle-between-modals-second-modal")
+              );
+              setTimeout(() => {
+                setSubmitClicked(false);
+                setUpdatingStatus("success");
+                setTimeout(() => {
+                  window.location.reload();
+                }, 3000);
+              }, 1000);
+            }
+          } else {
+            console.error("Update failed. Status:", response.status);
+          }
         }
 
         // generatePDF();
@@ -350,7 +411,7 @@ const Form = ({ announcement }) => {
     } catch (err) {
       setSubmitClicked(false);
       setUpdatingStatus("error");
-      setError(error.message);
+      // setError(error.message);
       console.log(err)
     }
   };

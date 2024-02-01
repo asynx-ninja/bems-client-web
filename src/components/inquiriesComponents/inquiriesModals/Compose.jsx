@@ -1,17 +1,20 @@
-import { React, useState, useRef } from "react";
+import { React, useState, useRef, useEffect } from "react";
 import { IoIosAttach } from "react-icons/io";
 import { useSearchParams } from "react-router-dom";
 import Dropbox from "./Dropbox";
 import API_LINK from "../../../config/API";
 import axios from "axios";
+import moment from 'moment'
 
 import Preloader from "../../loaders/Preloader";
 
 const ComposeModal = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const fileInputRef = useRef();
+  const id = searchParams.get("id");
   const user_id = searchParams.get("user_id");
   const brgy = searchParams.get("brgy");
+  const [userData, setUserData] = useState({});
   const [upload, setUpload] = useState(false);
   const [createFiles, setCreateFiles] = useState([]);
   const [composeMessage, setComposeMessage] = useState({
@@ -34,6 +37,20 @@ const ComposeModal = () => {
     error: false,
     message: ""
   });
+
+  useEffect(() => {
+    const fetchForms = async () => {
+      try {
+        const getUser = await axios.get(`${API_LINK}/users/specific/${id}`);
+        setUserData(getUser.data[0]);
+      } catch (error) {
+        console.log(error);
+      }
+      // imageRef.current.src = defaultPFP;
+    };
+
+    fetchForms();
+  }, []);
 
   const handleAdd = (e) => {
     e.preventDefault();
@@ -80,6 +97,14 @@ const ComposeModal = () => {
 
   }
 
+  const getType = (type) => {
+    switch (type) {
+      case "MUNISIPYO":
+        return "Municipality";
+      default:
+        return "Barangay";
+    }
+  };
   // console.log(composeMessage)
 
   const handleOnSend = async (e) => {
@@ -112,22 +137,99 @@ const ComposeModal = () => {
         formData.append("files", createFiles[i])
       }
 
-      const response = await axios.post(`${API_LINK}/inquiries/`, formData)
-      console.log(response)
+      const folderResponse = await axios.get(
+        `${API_LINK}/folder/specific/?brgy=${userData.address.brgy}`
+      );
 
-      if (response.status === 200) {
-        setTimeout(() => {
+      if (folderResponse.status == 200) {
+
+        const response = await axios.post(
+          `${API_LINK}/inquiries/?inq_folder_id=${folderResponse.data[0].inquiries}`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
+        if (response.status === 200) {
+
+          const notify = {
+            category: "Many",
+            compose: {
+              subject: `INQUIRY - ${`${userData.lastName}, ${userData.firstName}`}`,
+              message: `A user has submitted an inquiry!\n
+              \n
+              Inquiry Details:\n
+              - Subject: ${response.data.compose.subject}\n
+              - Message: ${response.data.compose.message}\n
+              - Date Created: ${moment(response.data.createdAt).format(
+                "MMM. DD, YYYY h:mm a"
+              )}\n
+              \n
+              Please update this inquiry!\n
+              \n
+              Thank you!!`,
+              go_to: "Inquiries",
+            },
+            target: {
+              user_id: userData.user_id,
+              area:
+                response.data.compose.to === "Admin"
+                  ? "Municipality"
+                  : "Barangay",
+            },
+            type:
+              response.data.compose.to === "Admin"
+                ? "Municipality"
+                : "Barangay",
+            banner: {
+              link: "https://drive.google.com/thumbnail?id=1v009xuRjSNW8OGUyHbAYTJt3ynxjhtGW&sz=w1000",
+              name: "inquiries_banner.jpg",
+              id: "1SM_QPFb_NmyMTLdsjtEd-2M6ersJhBUc",
+            },
+            logo: {
+              link: "https://drive.google.com/thumbnail?id=1sh24YL7RQY_cHLcTZ_G3GXCG18Y6_JAL&sz=w1000",
+              name: "inquiries_logo.png",
+              id: "1SM_QPFb_NmyMTLdsjtEd-2M6ersJhBUc",
+            },
+          };
+
+          try {
+
+            const result = await axios.post(
+              `${API_LINK}/notification/`,
+              notify,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+
+            if (result.status === 200) {
+              setTimeout(() => {
+                setSubmitClicked(false);
+                setUpdatingStatus("success");
+                setTimeout(() => {
+                  window.location.reload();
+                }, 3000);
+              }, 1000);
+            }
+
+          } catch (err) {
+            console.log(err)
+          }
+
+        } else {
           setSubmitClicked(false);
-          setUpdatingStatus("success");
-          setTimeout(() => {
-            window.location.reload();
-          }, 3000);
-        }, 1000);
-      } else {
-        setSubmitClicked(false);
-        setUpdatingStatus("error");
-        setError(error.message);
+          setUpdatingStatus("error");
+          setError(error.message);
+        }
+
       }
+
     } catch (error) {
       console.log(error)
     }

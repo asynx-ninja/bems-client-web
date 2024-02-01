@@ -88,11 +88,20 @@ const ViewRequestModal = ({ viewRequest }) => {
     setUpload(!upload);
   };
 
+  const getType = (type) => {
+    switch (type) {
+      case "MUNISIPYO":
+        return "Municipality";
+      default:
+        return "Barangay";
+    }
+  };
+
   const handleOnSend = async (e) => {
     e.preventDefault();
     console.log(newMessage);
     setSubmitClicked(true);
-    
+
     try {
       const obj = {
         sender: "Resident",
@@ -116,6 +125,7 @@ const ViewRequestModal = ({ viewRequest }) => {
       );
 
       if (response.status === 200) {
+
         setTimeout(() => {
           setSubmitClicked(false);
           setUpdatingStatus("success");
@@ -123,6 +133,7 @@ const ViewRequestModal = ({ viewRequest }) => {
             window.location.reload();
           }, 3000);
         }, 1000);
+
       } else {
         setSubmitClicked(false);
         setUpdatingStatus("error");

@@ -8,6 +8,7 @@ import API_LINK from "../config/API";
 import defaultPFP from "../assets/sample-image/formPic.png";
 import defaultBanner from "../assets/image/1.png";
 import { FaCamera } from "react-icons/fa";
+import moment from "moment";
 
 // FORM DETAILS
 import PersonalDetails from "../components/serviceform/PersonalDetails";
@@ -66,7 +67,7 @@ const ServicesForm = ({ props }) => {
     fetchForms();
   }, [service_id]);
 
-  console.log("service", service, detail);
+  // console.log("service", service, detail);
 
   const checkEmptyFields = () => {
     let arr = [];
@@ -270,6 +271,15 @@ const ServicesForm = ({ props }) => {
   //   }
   // };
 
+  const getType = (type) => {
+    switch (type) {
+      case "MUNISIPYO":
+        return "Municipality";
+      default:
+        return "Barangay";
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -332,31 +342,81 @@ const ServicesForm = ({ props }) => {
           })
         );
 
-        console.log({
-          ...detail,
-          name: service.name,
-          service_type: service.type,
-          fee: service.fee,
-        })
+        const folderResponse = await axios.get(
+          `${API_LINK}/folder/specific/?brgy=${userData.address.brgy}`
+        );
 
-        const response = await axios.post(`${API_LINK}/requests/`, formData);
-        console.log(response);
+        if (folderResponse.status === 200) {
 
-        if (response.status === 200) {
-          setSubmitClicked(true);
-          HSOverlay.close(document.getElementById("hs-full-screen-modal"));
-          HSOverlay.open(
-            document.getElementById("hs-toggle-between-modals-second-modal")
-          );
-          setTimeout(() => {
-            setSubmitClicked(false);
-            setUpdatingStatus("success");
-            setTimeout(() => {
-              window.location.reload();
-            }, 3000);
-          }, 1000);
-        } else {
-          console.log(err.message);
+          const response = await axios.post(`${API_LINK}/requests/?request_folder_id=${folderResponse.data[0].request}`, formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          });
+
+          if (response.status === 200) {
+
+            const notify = {
+              category: "Many",
+              compose: {
+                subject: `REQUEST - ${service.name}`,
+                message: `A user has submitted an service request form for the service of ${service.name
+                  }.\n
+              \n
+              Request Details:\n
+              - Name: ${`${userData.lastName}, ${userData.firstName}`}\n
+              - Service Applied: ${service.name}\n
+              - Request ID: ${response.data.req_id}\n
+              - Date Created: ${moment(response.data.createdAt).format(
+                    "MMM. DD, YYYY h:mm a"
+                  )}\n
+              \n
+              Please update this service request!\n
+              \n
+              Thank you!!`,
+                go_to: "Requests",
+              },
+              target: { user_id: userData.user_id, area: userData.address.brgy },
+              type: getType(service.brgy),
+              banner: service.collections.banner,
+              logo: service.collections.logo,
+            };
+
+            try {
+
+              const result = await axios.post(
+                `${API_LINK}/notification/`,
+                notify,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                }
+              );
+
+              if (result.status === 200) {
+                setSubmitClicked(true);
+                HSOverlay.close(document.getElementById("hs-full-screen-modal"));
+                HSOverlay.open(
+                  document.getElementById("hs-toggle-between-modals-second-modal")
+                );
+                setTimeout(() => {
+                  setSubmitClicked(false);
+                  setUpdatingStatus("success");
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 3000);
+                }, 1000);
+              }
+
+            } catch (err) {
+              console.log(err)
+            }
+
+          } else {
+            console.log(err.message);
+          }
+
         }
 
         // generatePDF();

@@ -37,7 +37,7 @@ const Dashboard = () => {
     fetch();
   }, [id]);
 
-  console.log(userData)
+  // console.log(userData)
 
   return (
     <div className='flex flex-col'>

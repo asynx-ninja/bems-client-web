@@ -5,12 +5,17 @@ import axios from "axios";
 import defaultPFP from "../../assets/sample-image/default-pfp.png";
 import API_LINK from "../../config/API";
 
+
+import Notification from "../notification/Notification";
+import ViewNotification from "../notification/viewNotification";
+
 const Header = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get("id");
   const brgy = searchParams.get("brgy");
   const [userData, setUserData] = useState([]);
-  const [announcement, setAnnouncements] = useState([]);
+  const [notification, setNotification] = useState([]);
+  const [viewNotif, setViewNotif] = useState([]);
 
   useEffect(() => {
     const fetch = async () => {
@@ -27,16 +32,23 @@ const Header = () => {
           setError("Invalid username or password");
         }
 
-        const res1 = await axios.get(
-          `${API_LINK}/announcement/all/?brgy=${brgy}`
+        const userResponse = await axios.get(`${API_LINK}/users/specific/${id}`);
+        if (res.status === 200) {
+          setUserData(userResponse.data[0]);
+        }
+        const response = await axios.get(
+          `${API_LINK}/notification/?user_id=${userData.user_id}&area=${brgy}&type=Resident`
         );
-        setAnnouncements(res1.data.result);
+        setNotification(response.data)
+
       } catch (error) {
         console.log(error);
       }
     };
     fetch();
   }, [id]);
+
+  console.log(notification)
 
   const dateFormat = (date) => {
     const birthdate = date === undefined ? "" : date.substr(0, 10);
@@ -112,29 +124,7 @@ const Header = () => {
 
                   {/* NOTIFICATION LIST */}
 
-                  {announcement.map((item, i) => (
-                    <div
-                      key={i}
-                      className="border-b-[1px] hover:bg-gray-100 border-gray-100"
-                    >
-                      <Link
-                        to={`/events/?id=${id}&brgy=${brgy}&event_id=${item.event_id}&page=${0}`}
-                        className="w-full px-[5px] bg-white cursor-pointer"
-                      >
-                        <div className="flex justify-between px-[10px] text-sm bg-transparent">
-                          <h1 className="font-medium w-[200px] truncate">
-                            {item.title}
-                          </h1>
-                          <h1 className="text-gray-400">
-                            {dateFormat(item.date)}
-                          </h1>
-                        </div>
-                        <p className="bg-transparent px-[10px] py-[5px] w-[280px] text-sm truncate">
-                          {item.details}
-                        </p>
-                      </Link>
-                    </div>
-                  ))}
+                  <Notification notification={notification} setViewNotif={setViewNotif} />
 
                   <div className="w-full flex justify-center">
                     <Link
@@ -211,6 +201,7 @@ const Header = () => {
           </div>
         </div>
       </nav>
+      <ViewNotification viewNotif={viewNotif} userData={userData} />
     </div>
   );
 };
