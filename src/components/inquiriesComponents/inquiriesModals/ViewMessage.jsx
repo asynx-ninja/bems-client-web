@@ -8,21 +8,42 @@ import { IoSend } from "react-icons/io5";
 import Dropbox from "./Dropbox";
 import ViewDropbox from "./ViewDropbox";
 import Preloader from "../../loaders/Preloader";
+import { useSearchParams } from "react-router-dom";
 
 const ViewMessage = ({ inquiry, setInquiry }) => {
   // console.log(inquiry.folder_id);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const id = searchParams.get("id");
+  const [userData, setUserData] = useState({})
   const [reply, setReply] = useState(false);
   const [upload, setUpload] = useState(false);
   const [files, setFiles] = useState([]);
   const [createFiles, setCreateFiles] = useState([]);
   const [viewFiles, setViewFiles] = useState([]);
   const [newMessage, setNewMessage] = useState({
-    sender: "Resident",
+    sender: '',
     message: "",
     date: new Date(),
   });
   const [submitClicked, setSubmitClicked] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await axios.get(`${API_LINK}/users/specific/${id}`);
+        setUserData(res.data[0])
+        setNewMessage({
+          sender: `${res.data[0].firstName.toUpperCase()} ${res.data[0].lastName.toUpperCase()}`,
+          message: "",
+          date: new Date(),
+        })
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchUser()
+  }, [id])
 
   useEffect(() => {
     setFiles(inquiry.length === 0 ? [] : inquiry.compose.file);
@@ -55,6 +76,8 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
   const handleOnReply = () => {
     setReply(!reply);
   };
+
+  // console.log(newMessage)
 
   const handleOnUpload = () => {
     setUpload(!upload);
@@ -95,7 +118,7 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
 
     try {
       const obj = {
-        sender: newMessage.sender,
+        sender: `${userData.firstName.toUpperCase()} ${userData.lastName.toUpperCase()}`,
         message: newMessage.message,
         date: newMessage.date,
         folder_id: inquiry.folder_id,
@@ -110,7 +133,7 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
         `${API_LINK}/inquiries/?inq_id=${inquiry._id}`,
         formData
       );
-    
+
       if (response.status === 200) {
         setTimeout(() => {
           setSubmitClicked(false);
@@ -317,10 +340,10 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
                     ) : null}
                     {inquiry &&
                       inquiry.response &&
-                      (inquiry.response.sort((a, b) => new Date(a.date) - new Date(b.date))).map((responseItem, index) => (
+                      inquiry.response.map((responseItem, index) => (
                         <div
                           key={index}
-                          className={responseItem.sender === "Resident" ? "flex flex-col justify-end items-end mb-5 w-full h-auto" : "flex flex-col justify-start items-start mb-5 w-full h-auto"}
+                          className={responseItem.sender === `${userData.firstName.toUpperCase()} ${userData.lastName.toUpperCase()}` || responseItem.sender === "Resident" ? "flex flex-col justify-end items-end mb-5 w-full h-auto" : "flex flex-col justify-start items-start mb-5 w-full h-auto"}
                         >
                           <div
                             className="flex flex-col items-end mb-5 h-auto"
@@ -334,18 +357,22 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
                                 </p>
                               </div>
                             </div>
-                            <div
-                              className="flex flex-col rounded-xl bg-custom-green-button w-full px-2 md:px-4 py-2"
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              <div className="w-full h-full">
-                                <div className="w-full h-full rounded-xl p-1">
-                                  <p className="text-[10px] text-white md:text-xs">
-                                    {responseItem.message}
-                                  </p>
+                            {
+                              responseItem.message !== "" ?
+                                <div
+                                  className="flex flex-col rounded-xl bg-custom-green-button w-full px-2 md:px-4 py-2"
+                                  onClick={(e) => e.stopPropagation()}
+                                >
+                                  <div className="w-full h-full">
+                                    <div className="w-full h-full rounded-xl p-1">
+                                      <p className="text-[10px] text-white md:text-xs">
+                                        {responseItem.message}
+                                      </p>
+                                    </div>
+                                  </div>
                                 </div>
-                              </div>
-                            </div>
+                                : null
+                            }
                             {
                               !responseItem.file ?
                                 null

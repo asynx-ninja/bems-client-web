@@ -46,10 +46,10 @@ const Emailverify = () => {
 
         console.log(encodedEmail)
 
-        setTimeout(()=> {
-          navigate(`/code_verify/${encodedEmail}`)
-        }, 3000)
-        setTimeout(navigate(`/pin/${encodedEmail}`), 3000);
+        // setTimeout(()=> {
+        //   navigate(`/code_verify/${encodedEmail}`)
+        // }, 3000)
+        // setTimeout(navigate(`/pin/${encodedEmail}`), 3000);
       }
     } catch (error) {
       setResponse({
@@ -148,7 +148,7 @@ const Emailverify = () => {
         <form action="" className="sm:w-[80%] md:w-8/12 lg:w-8/12">
           <div className="relative z-0 w-full mb-3 group">
             <label
-              for="input-label"
+              htmlFor="input-label"
               className="block text-sm font-medium mb-2 dark:text-black"
             >
               Email

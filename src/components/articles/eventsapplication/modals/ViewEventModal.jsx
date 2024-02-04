@@ -9,18 +9,22 @@ import { IoSend } from "react-icons/io5";
 import Dropbox from "./Dropbox";
 import ViewDropbox from "./ViewDropbox";
 import Preloader from "../../../loaders/Preloader";
+import { useSearchParams } from "react-router-dom";
 // import EditDropbox from "./EditDropbox";
 
 const ViewEventModal = ({ viewEvent }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const id = searchParams.get("id");
+  const [userData, setUserData] = useState({})
   const [reply, setReply] = useState(false);
   const [upload, setUpload] = useState(false);
   const [files, setFiles] = useState([]);
   const [createFiles, setCreateFiles] = useState([]);
   const [viewFiles, setViewFiles] = useState([]);
   const [newMessage, setNewMessage] = useState({
-    sender: "Resident",
+    sender: '',
     message: "",
-    date: "",
+    date: new Date(),
   });
   const [error, setError] = useState(null);
   const [submitClicked, setSubmitClicked] = useState(false);
@@ -31,6 +35,23 @@ const ViewEventModal = ({ viewEvent }) => {
   useEffect(() => {
     setFiles(viewEvent.length === 0 ? [] : viewEvent.file);
   }, [viewEvent]);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await axios.get(`${API_LINK}/users/specific/${id}`);
+        setUserData(res.data[0])
+        setNewMessage({
+          sender: `${res.data[0].firstName.toUpperCase()} ${res.data[0].lastName.toUpperCase()}`,
+          message: "",
+          date: new Date(),
+        })
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchUser()
+  }, [id])
 
   useEffect(() => {
     if (viewEvent && viewEvent.response && viewEvent.response.length !== 0) {
@@ -112,14 +133,14 @@ const ViewEventModal = ({ viewEvent }) => {
 
     try {
       const obj = {
-        sender: "Resident",
+        sender: `${userData.firstName.toUpperCase()} ${userData.lastName.toUpperCase()}`,
         message: newMessage.message,
         status: viewEvent.status,
         isRepliable: false,
         date: new Date(),
         folder_id: viewEvent.folder_id,
         last_sender: viewEvent.response.length === 0 ? newMessage.sender : viewEvent.response[viewEvent.response.length - 1],
-        last_array: viewEvent.response.length === 0 ? 0 : viewEvent.response.length - 1
+        last_array: viewEvent.response.length > 0 ? viewEvent.response.length - 1 : 0
       };
       var formData = new FormData();
       formData.append("response", JSON.stringify(obj));
@@ -266,10 +287,10 @@ const ViewEventModal = ({ viewEvent }) => {
                   ) : null}
                   {viewEvent &&
                     viewEvent.response &&
-                    (viewEvent.response.sort((a, b) => new Date(a.date) - new Date(b.date))).map((responseItem, index) => (
+                    viewEvent.response.map((responseItem, index) => (
                       <div
                         key={index}
-                        className={responseItem.sender === "Resident" ? "flex flex-col justify-end items-end mb-5 w-full h-auto" : "flex flex-col justify-start items-start mb-5 w-full h-auto"}
+                        className={responseItem.sender === `${userData.firstName.toUpperCase()} ${userData.lastName.toUpperCase()}` || responseItem.sender === "Resident" ? "flex flex-col justify-end items-end mb-5 w-full h-auto" : "flex flex-col justify-start items-start mb-5 w-full h-auto"}
                       >
                         <div
                           className="flex flex-col items-end mb-5 h-auto"
@@ -283,18 +304,22 @@ const ViewEventModal = ({ viewEvent }) => {
                               </p>
                             </div>
                           </div>
-                          <div
-                            className="flex flex-col rounded-xl bg-custom-green-button w-full px-2 md:px-4 py-2"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <div className="w-full h-full">
-                              <div className="w-full h-full rounded-xl p-1">
-                                <p className="text-[10px] text-white md:text-xs">
-                                  {responseItem.message}
-                                </p>
+                          {
+                            responseItem.message !== "" ?
+                              <div
+                                className="flex flex-col rounded-xl bg-custom-green-button w-full px-2 md:px-4 py-2"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                <div className="w-full h-full">
+                                  <div className="w-full h-full rounded-xl p-1">
+                                    <p className="text-[10px] text-white md:text-xs">
+                                      {responseItem.message}
+                                    </p>
+                                  </div>
+                                </div>
                               </div>
-                            </div>
-                          </div>
+                              : null
+                          }
                           {
                             !responseItem.file ?
                               null

@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import { useSearchParams } from "react-router-dom";
 import defaultPFP from "../assets/sample-image/default-pfp.png";
 import {
   FaCamera,
@@ -8,7 +9,6 @@ import {
   FaTwitter,
   FaInstagram,
 } from "react-icons/fa";
-import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import API_LINK from "../config/API";
 import banner from "../assets/image/1.png";
@@ -31,7 +31,7 @@ const Settings = () => {
     password: false
   });
   const [editButton, setEditButton] = useState(true);
-  const [pfp, setPfp] = useState();
+  const [pfp, setPfp] = useState("");
   const [userAddress, setUserAddress] = useState({
     street: "",
     brgy: "",
@@ -487,7 +487,7 @@ const Settings = () => {
                   <AddressDetails userAddress={userAddress} editButton={editButton} handleUserChangeAdd={handleUserChangeAdd} empty={empty} />
 
                   {/* OTHER PERSONAL DATA */}
-                  <OtherPersonalData userData={userData} userSocials={userSocials} handleUserDataChange={handleUserDataChange} handleUserSocials={handleUserSocials} editButton={editButton} empty={empty} />
+                  <OtherPersonalData userData={userData} userSocials={userSocials} handleUserDataChange={handleUserDataChange} handleUserSocials={handleUserSocials} editButton={editButton} />
 
                 </div>
               </div>

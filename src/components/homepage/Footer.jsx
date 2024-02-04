@@ -26,7 +26,7 @@ const Footer = () => {
     fetch();
   }, []);
 
-  console.log(aboutus)
+  // console.log(aboutus)
 
   return (
     <div data-aos="" className="container-fluid w-full">

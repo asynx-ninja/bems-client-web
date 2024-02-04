@@ -6,6 +6,7 @@ const OccupationList = ({
   handleUserDataChange,
   occupation,
   editButton,
+  userData
 }) => {
   const location = useLocation();
   const page = location.pathname.split("/")[1];
@@ -13,7 +14,7 @@ const OccupationList = ({
   return (
     <select
       className="form-control dropdown py-3 px-4 block w-full text-black border-gray-200 rounded-md text-sm focus:border-green-500 focus:ring-green-500 dark:bg-white dark:border-gray-700"
-      defaultValue={occupation}
+      value={page === "settings" ? userData.occupation || "" : occupation || ""}
       disabled={page === "settings" ? editButton : false}
       id="occupation"
       name="occupation"
@@ -23,7 +24,7 @@ const OccupationList = ({
           : handleChange
       }
     >
-      <option value="" disabled>
+      <option disabled>
         -- select occupation --
       </option>
       <optgroup label="Healthcare Practitioners and Technical Occupations:">

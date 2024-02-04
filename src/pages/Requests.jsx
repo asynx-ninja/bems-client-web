@@ -24,7 +24,6 @@ const Requests = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [pageCount, setPageCount] = useState(0);
 
-
   useEffect(() => {
     document.title = "Service Request | Barangay E-Services Management";
   }, []);
@@ -47,7 +46,7 @@ const Requests = () => {
     fetch();
   }, [brgy, id, currentPage]);
 
-  console.log(request)
+  // console.log(request)
 
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected);

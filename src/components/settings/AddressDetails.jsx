@@ -43,7 +43,7 @@ const AddressDetails = ({ userAddress, editButton, handleUserChangeAdd, empty })
                         }
                         className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 bg-white"
                     >
-                        <option selected>{userAddress.brgy}</option>
+                        <option>{userAddress.brgy}</option>
                         <option>Balite</option>
                         <option>Burgos</option>
                         <option>Geronimo</option>
@@ -75,7 +75,7 @@ const AddressDetails = ({ userAddress, editButton, handleUserChangeAdd, empty })
                         }
                         className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 bg-white"
                     >
-                        <option selected>Montalban</option>
+                        <option >Montalban</option>
                     </select>
                 </div>
             </div>

@@ -334,7 +334,7 @@ const ComposeModal = () => {
                       className={showError.error ? "w-full p-2 border border-red-300 rounded focus:border-red-500 focus:ring-red-500"
                         : "w-full p-2 border border-gray-300 rounded focus:border-green-500 focus:ring-green-500"}
                     >
-                      <option value="" selected disabled>-- Select Recipient --</option>
+                      <option value="" disabled>-- Select Recipient --</option>
                       <option value="Admin">Admin</option>
                       <option value="Staff">Staff</option>
                     </select>
@@ -357,7 +357,7 @@ const ComposeModal = () => {
                     />
                   </div>
                   <div className="m-[10px] w-full">
-                    <div class="flex items-center">
+                    <div className="flex items-center">
                       <input
                         type="file"
                         name="file"
@@ -394,6 +394,7 @@ const ComposeModal = () => {
               <div className="flex justify-center items-center gap-x-2 py-3 px-6 dark:border-gray-700">
                 <button
                   type="button"
+                  data-hs-overlay="#hs-modal-compose"
                   onClick={handleOnSend}
                   className="h-[2.5rem] w-[9.5rem] py-1 px-6 inline-flex justify-center items-center gap-2 rounded-md borde text-sm font-base bg-teal-900 text-white shadow-sm align-middle"
                 >

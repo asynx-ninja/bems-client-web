@@ -13,9 +13,13 @@ const InquiriesList = ({ inquiries, setInquiry }) => {
             year: "numeric",
             month: "short",
             day: "numeric",
+            hour: "numeric",
+            minute: "numeric"
         };
         return new Intl.DateTimeFormat("en-US", options).format(new Date(date));
     };
+
+    // console.log(inquiries)
 
     const handleView = (item) => {
         setInquiry(item);
@@ -26,15 +30,13 @@ const InquiriesList = ({ inquiries, setInquiry }) => {
             <tr key={index} className="odd:bg-slate-100 text-center">
                 <td className="px-6 py-3">
                     <span className="text-xs sm:text-sm text-black line-clamp-2 ">
-                        {item.inq_id}
+                        {item.compose.subject}
                     </span>
                 </td>
                 <td className="px-6 py-3">
-                    <div className="flex justify-center items-center">
-                        <span className="text-xs sm:text-sm text-black  line-clamp-2 ">
-                            {item.email}
-                        </span>
-                    </div>
+                    <span className="text-xs sm:text-sm text-black line-clamp-2 ">
+                        {item.compose.to}
+                    </span>
                 </td>
                 <td className="px-6 py-3">
                     <div className="flex justify-center items-center">

@@ -11,7 +11,6 @@ import API_LINK from "../../config/API";
 import { useSearchParams } from "react-router-dom";
 
 // COMPONENTS
-import ArchiveInquiryModal from "../../components/inquiriesComponents/inquiriesModals/ArchivedInquiryModal";
 import ViewMessage from "../../components/inquiriesComponents/inquiriesModals/ViewMessage";
 import ComposeModal from "../../components/inquiriesComponents/inquiriesModals/Compose";
 import InquiriesList from "../../components/inquiriesComponents/InquiriesList";
@@ -23,6 +22,7 @@ const Inquiries = () => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const user_id = searchParams.get("user_id");
+  const id = searchParams.get("id");
   const brgy = searchParams.get("brgy");
   const [inquiries, setInquiries] = useState([]);
   const [inquiry, setInquiry] = useState([]);
@@ -58,11 +58,11 @@ const Inquiries = () => {
     setCurrentPage(selected);
   };
 
-  console.log(inquiries)
+  // console.log(inquiries)
 
   const tableHeader = [
-    "Inquiry id",
-    "e-mail",
+    "subject",
+    "to",
     "date",
     "status",
     "actions",
@@ -70,7 +70,7 @@ const Inquiries = () => {
 
   return (
     <div className="flex flex-col h-full bg-gray-100">
-      <div className="relative sm:h-[200px] lg:h-[250px] w-full object-cover">
+      <div className="relative h-[250px] w-full object-cover">
         <video className="h-full w-full object-cover" autoPlay muted loop>
           <source src={video} type="video/mp4" />
         </video>
@@ -125,20 +125,23 @@ const Inquiries = () => {
                   }
                 </tr>
               </thead>
-
-              {/* Table Body */}
-              {inquiries.length === 0 ? (
-                <tr>
-                  <th className="pt-[50px]" rowSpan={5} colSpan={7}>
-                    <img className="w-[150px] mx-auto" src={no_data}  alt="" />
-                    No Records Shown
-                  </th>
-                </tr>
-              ) : null}
-              <InquiriesList
-                inquiries={inquiries}
-                setInquiry={setInquiry}
-              />
+              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                {/* Table Body */}
+                {
+                  inquiries.length === 0 ?
+                    <tr>
+                      <th className="pt-[50px]" rowSpan={5} colSpan={7}>
+                        <img className="w-[150px] mx-auto" src={no_data} alt="" />
+                        No Records Shown
+                      </th>
+                    </tr>
+                    :
+                    <InquiriesList
+                      inquiries={inquiries}
+                      setInquiry={setInquiry}
+                    />
+                }
+              </tbody>
             </table>
           </div>
 
@@ -162,7 +165,6 @@ const Inquiries = () => {
         </div>
       </div>
       <ComposeModal />
-      <ArchiveInquiryModal selectedItems={selectedItems} />
       <ViewMessage inquiry={inquiry} setInquiry={setInquiry} />
     </div>
   );

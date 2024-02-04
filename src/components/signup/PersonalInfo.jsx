@@ -17,6 +17,13 @@ const PersonalInfo = ({ formData, empty, emptyFields, restrict, handleChange, ha
         // Add more religions here...
     ];
 
+    const civil_status = [
+        "Single",
+        "Married",
+        "Divorced",
+        "Widowed"
+    ]
+
     return (
         <div className="sm:w-[80%] md:w-9/12 lg:w-9/12">
             {empty && (
@@ -43,7 +50,7 @@ const PersonalInfo = ({ formData, empty, emptyFields, restrict, handleChange, ha
                     <input
                         type="text"
                         name="firstName"
-                        value={formData.firstName}
+                        value={formData.firstName || ""}
                         onChange={handleChange}
                         className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
                         placeholder="Enter your firstname"
@@ -53,7 +60,7 @@ const PersonalInfo = ({ formData, empty, emptyFields, restrict, handleChange, ha
                     <input
                         type="text"
                         name="lastName"
-                        value={formData.lastName}
+                        value={formData.lastName || ""}
                         onChange={handleChange}
                         className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
                         placeholder="Enter your lastname"
@@ -65,7 +72,7 @@ const PersonalInfo = ({ formData, empty, emptyFields, restrict, handleChange, ha
                     <input
                         type="text"
                         name="middleName"
-                        value={formData.middleName}
+                        value={formData.middleName || ""}
                         onChange={handleChange}
                         className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
                         placeholder="Enter your middle name"
@@ -75,7 +82,7 @@ const PersonalInfo = ({ formData, empty, emptyFields, restrict, handleChange, ha
                     <input
                         type="text"
                         name="suffix"
-                        value={formData.suffix}
+                        value={formData.suffix || ""}
                         onChange={handleChange}
                         className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
                         placeholder="Enter your suffix (optional)"
@@ -87,7 +94,7 @@ const PersonalInfo = ({ formData, empty, emptyFields, restrict, handleChange, ha
                     <input
                         type="date"
                         name="birthday"
-                        value={formData.birthday}
+                        value={formData.birthday || ""}
                         onChange={handleChange}
                         className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
                     />
@@ -95,9 +102,8 @@ const PersonalInfo = ({ formData, empty, emptyFields, restrict, handleChange, ha
                 <div className="relative z-0 w-full mb-3 group">
                     <select
                         name="sex"
-                        value={formData.sex}
+                        value={formData.sex || ""}
                         onChange={handleChange}
-                        defaultValue={""}
                         className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
                     >
                         <option value="" disabled>
@@ -108,20 +114,37 @@ const PersonalInfo = ({ formData, empty, emptyFields, restrict, handleChange, ha
                     </select>
                 </div>
             </div>
-            <div className="relative z-0 w-full mb-3 group">
-                <select
-                    name="religion"
-                    value={formData.religion}
-                    onChange={handleChange}
-                    className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
-                >
-                    <option disabled={formData.religion !== ""} value="">
-                        Select Religion
-                    </option>
-                    {religions.map((religion) => (
-                        <option value={religion}>{religion}</option>
-                    ))}
-                </select>
+            <div className="flex sm:flex-col md:flex-row md:gap-4">
+                <div className="relative z-0 w-full mb-3 group">
+                    <select
+                        name="religion"
+                        value={formData.religion || ""}
+                        onChange={handleChange}
+                        className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
+                    >
+                        <option value="">
+                            Select Religion
+                        </option>
+                        {religions.map((religion, i) => (
+                            <option key={i} value={religion}>{religion}</option>
+                        ))}
+                    </select>
+                </div>
+                <div className="relative z-0 w-full mb-3 group">
+                    <select
+                        name="civil_status"
+                        value={formData.civil_status || ""}
+                        onChange={handleChange}
+                        className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
+                    >
+                        <option value="">
+                            Civil Status
+                        </option>
+                        {civil_status.map((civil, i) => (
+                            <option key={i} value={civil}>{civil}</option>
+                        ))}
+                    </select>
+                </div>
             </div>
             <button
                 onClick={handleNextPage}

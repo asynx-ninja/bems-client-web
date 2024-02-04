@@ -8,6 +8,8 @@ const Content = ({ service }) => {
       ? service.collections.file
       : "";
 
+  // console.log(service)
+
   return (
     <div className="flex flex-col gap-5 sm:px-2 md:px-5">
       {/* DESCRIPTION */}
@@ -24,7 +26,7 @@ const Content = ({ service }) => {
 
           <div className="flex flex-col">
             <img
-              className="w-full lg:w-[400px] sm:h-[200px] lg:h-[400px] object-cover rounded-lg"
+              className="w-full lg:w-[400px] mx-auto sm:h-[200px] lg:h-[400px] object-cover rounded-lg"
               src={
                 service &&
                   service.collections &&

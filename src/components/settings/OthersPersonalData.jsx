@@ -1,6 +1,28 @@
 import OccupationList from "../../components/occupations/OccupationList";
 
-const OtherPersonalData = ({ userData, userSocials, handleUserDataChange, handleUserSocials, editButton, empty}) => {
+const OtherPersonalData = ({ userData, userSocials, handleUserDataChange, handleUserSocials, editButton }) => {
+
+    const religions = [
+        "Roman Catholic",
+        "Islam",
+        "Iglesia ni Cristo",
+        "Philippine Independent Church (Aglipayan)",
+        "Seventh-day Adventist",
+        "Bible Baptist Church",
+        "United Church of Christ in the Philippines",
+        "Jehovah Witnesses",
+        "Church of Christ",
+        "Born Again",
+        "Other Religous Affiliation",
+        // Add more religions here...
+    ];
+
+    const civil_status = [
+        "Single",
+        "Married",
+        "Divorced",
+        "Widowed"
+    ]
 
     return (
         <div>
@@ -21,8 +43,57 @@ const OtherPersonalData = ({ userData, userSocials, handleUserDataChange, handle
                                 handleUserDataChange={handleUserDataChange}
                                 occupation={userData.occ}
                                 editButton={editButton}
+                                userData={userData}
                             />
                         </div>
+                    </div>
+                    <div>
+                        <label
+                            htmlFor="occupation"
+                            className="block sm:text-xs lg:text-sm font-medium mb-2"
+                        >
+                            Religion
+                        </label>
+                        <select
+                            disabled={editButton}
+                            name="religion"
+                            value={userData.religion || ""}
+                            onChange={(e) =>
+                                handleUserDataChange("religion", e.target.value)
+                            }
+                            className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
+                        >
+                            <option disabled>
+                                Select Religion
+                            </option>
+                            {religions.map((item, i) => (
+                                <option key={i} >{item}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div>
+                        <label
+                            htmlFor="occupation"
+                            className="block sm:text-xs lg:text-sm font-medium mb-2"
+                        >
+                            Civil Status
+                        </label>
+                        <select
+                            disabled={editButton}
+                            name="civil_status"
+                            value={userData.civil_status || ""}
+                            onChange={(e) =>
+                                handleUserDataChange("civil_status", e.target.value)
+                            }
+                            className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
+                        >
+                            <option disabled>
+                                Select Religion
+                            </option>
+                            {civil_status.map((civil, i) => (
+                                <option key={i} >{civil}</option>
+                            ))}
+                        </select>
                     </div>
                     <div>
                         <label className="block sm:text-xs lg:text-sm font-medium mb-2">
@@ -35,8 +106,8 @@ const OtherPersonalData = ({ userData, userSocials, handleUserDataChange, handle
                                 id="isHeadYes"
                                 name="isHead"
                                 type="radio"
-                                value={1}
-                                checked={userData.isHead}
+                                // value={1}
+                                checked={userData.isHead || ""}
                                 onChange={(e) => handleUserDataChange("isHead", true)}
                             />
                             <label htmlFor="male" className="ml-2">
@@ -48,8 +119,8 @@ const OtherPersonalData = ({ userData, userSocials, handleUserDataChange, handle
                                 id="isHeadNo"
                                 name="isHead"
                                 type="radio"
-                                value={0}
-                                checked={!userData.isHead}
+                                // value={0}
+                                checked={!userData.isHead  || ""}
                                 onChange={(e) =>
                                     handleUserDataChange("isHead", false)
                                 }
@@ -68,8 +139,8 @@ const OtherPersonalData = ({ userData, userSocials, handleUserDataChange, handle
                                 id="isVoterYes"
                                 name="isVoter"
                                 type="radio"
-                                value={1}
-                                checked={userData.isVoter}
+                                // value={1}
+                                checked={userData.isVoter || ""}
                                 onChange={(e) =>
                                     handleUserDataChange("isVoter", true)
                                 }
@@ -83,8 +154,8 @@ const OtherPersonalData = ({ userData, userSocials, handleUserDataChange, handle
                                 id="isVoterNo"
                                 name="isVoter"
                                 type="radio"
-                                value={0}
-                                checked={!userData.isVoter}
+                                // value={0}
+                                checked={!userData.isVoter || ""}
                                 onChange={(e) =>
                                     handleUserDataChange("isVoter", false)
                                 }
@@ -124,7 +195,7 @@ const OtherPersonalData = ({ userData, userSocials, handleUserDataChange, handle
                                 }}
                                 className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 bg-white"
                                 aria-describedby="hs-input-helper-text"
-                                placeholder="Enter your Facebook Link"
+                                placeholder="Enter your Facebook Name"
                             />
                         </div>
                         <div>
@@ -163,7 +234,7 @@ const OtherPersonalData = ({ userData, userSocials, handleUserDataChange, handle
                             <input
                                 id="instagram-name"
                                 type="text"
-                                value={userSocials.instagram.name || ""}
+                                value={userSocials.instagram.name || "" }
                                 disabled={editButton}
                                 onChange={(e) => {
                                     handleUserSocials(
@@ -174,7 +245,7 @@ const OtherPersonalData = ({ userData, userSocials, handleUserDataChange, handle
                                 }}
                                 className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 bg-white"
                                 aria-describedby="hs-input-helper-text"
-                                placeholder="Enter your Facebook Link"
+                                placeholder="Enter your Instagram Name"
                             />
                         </div>
                         <div>
@@ -198,7 +269,7 @@ const OtherPersonalData = ({ userData, userSocials, handleUserDataChange, handle
                                 }}
                                 className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 bg-white"
                                 aria-describedby="hs-input-helper-text"
-                                placeholder="Enter your Facebook Link"
+                                placeholder="Enter your Instagram Link"
                             />
                         </div>
                     </div>
@@ -224,7 +295,7 @@ const OtherPersonalData = ({ userData, userSocials, handleUserDataChange, handle
                                 }}
                                 className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 bg-white"
                                 aria-describedby="hs-input-helper-text"
-                                placeholder="Enter your Facebook Link"
+                                placeholder="Enter your Twitter Name"
                             />
                         </div>
                         <div>
@@ -248,7 +319,7 @@ const OtherPersonalData = ({ userData, userSocials, handleUserDataChange, handle
                                 }}
                                 className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 bg-white"
                                 aria-describedby="hs-input-helper-text"
-                                placeholder="Enter your Facebook Link"
+                                placeholder="Enter your Twitter Link"
                             />
                         </div>
                     </div>

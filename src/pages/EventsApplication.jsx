@@ -63,7 +63,7 @@ const EventsApplication = () => {
 
   return (
     <div className="flex flex-col">
-      <div className="relative lg:h-[250px] w-full object-cover">
+      <div className="relative h-[250px] w-full object-cover">
         <video className="h-full w-full object-cover" autoPlay muted loop>
           <source src={video} type="video/mp4" />
         </video>

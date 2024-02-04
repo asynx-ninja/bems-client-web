@@ -4,6 +4,8 @@ import API_LINK from "../../config/API";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 
+import BrgyOfficials from "./BrgyOfficials";
+
 const Details = () => {
   const [searchParams] = useSearchParams();
   const brgy = searchParams.get("brgy");
@@ -16,10 +18,10 @@ const Details = () => {
     },
   });
 
+
   useEffect(() => {
     const fetch = async () => {
       const response = await axios.get(`${API_LINK}/brgyinfo/?brgy=${brgy}`);
-
       setInfo(response.data[0]);
       // console.log(response.data[0])
     };
@@ -56,11 +58,11 @@ const Details = () => {
           </div>
 
           {/* DESCRIPTION */}
-          <div className="flex pb-[20px] w-[90%] mx-auto sm:mt-[50px] md:mt-[80px] justify-between sm:flex-col-reverse md:flex-row gap-5">
+          <div className="flex pb-[20px] sm:w-[90%] lg:w-[1000px] mx-auto sm:mt-[50px] md:mt-[80px] justify-between sm:flex-col-reverse md:flex-row gap-5">
             <textarea
-            disabled
-            value={info.story}
-            className="sm:w-full sm:h-full lg:h-auto lg:w-[60%] text-black border-0 bg-transparent resize-none">
+              disabled
+              value={info.story}
+              className="sm:w-full sm:h-full lg:h-auto lg:w-[60%] text-black border-0 bg-transparent resize-none">
               {info.story}
             </textarea>
 
@@ -72,7 +74,7 @@ const Details = () => {
           </div>
 
           {/* MISSION VISION */}
-          <div className="flex pb-[20px] border-t-2 pt-[20px] border-b-2 border-gray-400 w-[90%] mx-auto sm:mt-[50px] md:mt-[80px] justify-between sm:flex-col lg:flex-row gap-5">
+          <div className="flex pb-[20px] sm:w-[90%] lg:w-[1000px] border-t-2 pt-[20px] border-b-2 border-gray-400 mx-auto sm:mt-[50px] md:mt-[80px] justify-between sm:flex-col lg:flex-row gap-5">
             <div className="sm:w-full lg:w-[50%]">
               <h6 className="font-bold bg-custom-green-header text-[24px] sm:text-center md:text-left md:pl-[15px] text-white">
                 MISSION
@@ -91,6 +93,20 @@ const Details = () => {
               </p>
             </div>
           </div>
+
+          <div className="mt-[50px] mx-auto sm:w-[90%] lg:w-[1000px]">
+            <div className="container mx-auto text-center py-[30px]">
+              <p className="sm:text-[14px] md:text-[18px] font-bold uppercase">
+                Meet Our
+              </p>
+              <h1 className="sm:text-[24px] md:text-4xl font-bold mb-4 text-custom-green-header uppercase">
+                Barangay Officials
+              </h1>
+            </div>
+
+            <BrgyOfficials />
+          </div>
+
         </div>
       </div>
     </>

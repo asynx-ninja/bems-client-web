@@ -4,7 +4,7 @@ import { FaBars, FaBell } from "react-icons/fa";
 import axios from "axios";
 import defaultPFP from "../../assets/sample-image/default-pfp.png";
 import API_LINK from "../../config/API";
-
+import moment from "moment";
 
 import Notification from "../notification/Notification";
 import ViewNotification from "../notification/viewNotification";
@@ -13,42 +13,56 @@ const Header = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get("id");
   const brgy = searchParams.get("brgy");
-  const [userData, setUserData] = useState([]);
+  const [userData, setUserData] = useState({});
   const [notification, setNotification] = useState([]);
   const [viewNotif, setViewNotif] = useState([]);
+  const [unread, setUnread] = useState(0)
 
   useEffect(() => {
-    const fetch = async () => {
-      try {
-        const res = await axios.get(`${API_LINK}/users/specific/${id}`);
-        if (res.status === 200) {
-          setUserData(res.data[0]);
-          var pfpSrc = document.getElementById("headerPFP");
-          pfpSrc.src =
-            res.data[0].profile.link !== ""
-              ? res.data[0].profile.link
-              : defaultPFP;
-        } else {
-          setError("Invalid username or password");
-        }
-
-        const userResponse = await axios.get(`${API_LINK}/users/specific/${id}`);
-        if (res.status === 200) {
-          setUserData(userResponse.data[0]);
-        }
-        const response = await axios.get(
-          `${API_LINK}/notification/?user_id=${userData.user_id}&area=${brgy}&type=Resident`
-        );
-        setNotification(response.data)
-
-      } catch (error) {
-        console.log(error);
-      }
-    };
     fetch();
-  }, [id]);
+  }, []);
 
-  console.log(notification)
+  const fetch = async () => {
+    try {
+      const res = await axios.get(`${API_LINK}/users/specific/${id}`);
+      if (res.status === 200) {
+        setUserData(res.data[0]);
+        var pfpSrc = document.getElementById("headerPFP");
+        pfpSrc.src =
+          res.data[0].profile.link !== ""
+            ? res.data[0].profile.link
+            : defaultPFP;
+      } else {
+        setError("Invalid username or password");
+      }
+
+      const response = await axios.get(
+        `${API_LINK}/notification/?user_id=${res.data[0].user_id}&area=${brgy}&type=Resident`
+      );
+
+      const read = response.data.filter((item) =>
+        item.read_by.filter(item1 => item1.readerId = id))
+
+      const emptyRead = response.data.filter((item) =>
+        item.read_by.length === 0)
+
+      if (response.data.length === read.length) {
+        setUnread(response.data.length - (read.length - emptyRead.length))
+      } else {
+        setUnread(response.data.length - read.length)
+      }
+
+      if (response.status === 200) {
+        // console.log(response.data)
+        setNotification((response.data.sort((a, b) => b.createdAt - a.createdAt)))
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // console.log(unread)
 
   const dateFormat = (date) => {
     const birthdate = date === undefined ? "" : date.substr(0, 10);
@@ -57,7 +71,7 @@ const Header = () => {
 
   return (
     <div>
-      <nav className="h-[70px] bg-gradient-to-r from-[#295141] relative z-[50] to-[#408D51] flex w-full drop-shadow-[0_35px_35px_rgba(0,0,0,0.10)]">
+      <nav className="h-[70px] bg-gradient-to-r from-[#295141] to-[#408D51] relative z-[50] flex w-full drop-shadow-[0_35px_35px_rgba(0,0,0,0.10)]">
         <div className=' flex bg-[url("/header-bg.png")] my-auto justify-between w-full h-full pr-[20px]'>
           <div className="flex gap-5 overflow-hidden">
             <div className="mr-[30px] sm:hidden md:flex">
@@ -104,45 +118,34 @@ const Header = () => {
             <div className="hs-dropdown my-auto">
               <button
                 id="hs-dropdown-notification"
-                className="flex w-[40px] h-[40px] text-white focus:text-custom-gold"
+                className="flex w-[40px] relative h-[40px] text-white focus:text-custom-gold"
               >
                 <FaBell className="m-auto" size={"20px"} />
+                {
+                  unread === 0 ?
+                    null
+                    :
+                    <div class="absolute inline-flex items-center justify-center w-5 h-5 text-[10px] font-bold text-white bg-red-500 border-2 rounded-full top-[-5px] right-0">{unread}</div>
+                }
               </button>
 
               <div
-                className="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 sm:w-[320px] md:w-[400px] hidden z-[100] min-w-[15rem] "
+                className="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 sm:w-[320px] md:w-[450px] hidden z-[100] min-w-[15rem] "
                 aria-labelledby="hs-dropdown-notification"
               >
                 <div
-                  className="mt-[-35px] bg-white h-[500px] shadow-md rounded-lg p-2 pb-[20px] overflow-scroll"
+                  className="mt-[-50px] bg-white h-[500px] shadow-md rounded-lg p-2 pb-[20px]"
                 >
-                  <div className="py-[10px] px-[5px] border-b-[1px] border-custom-gray">
+                  <div className="py-[10px] px-[5px] border-b-[1px] border-custom-gray flex justify-between">
                     <h1 className="font-medium text-[18px] my-auto">
-                      Notifications
+                      Notifications ({unread})
                     </h1>
                   </div>
 
                   {/* NOTIFICATION LIST */}
 
-                  <Notification notification={notification} setViewNotif={setViewNotif} />
+                  <Notification notification={notification} setViewNotif={setViewNotif} fetch={fetch} />
 
-                  <div className="w-full flex justify-center">
-                    <Link
-                      to={`/events-list/?id=${id}&brgy=${brgy}`}
-                      onClick={() => {
-                        window.innerWidth >= 320 && window.innerWidth <= 1023
-                          ? document
-                            .getQuerySelector(
-                              "[data-hs-overlay-backdrop-template]"
-                            )
-                            .remove()
-                          : null;
-                      }}
-                      className="text-center mt-[10px] text-[12px]"
-                    >
-                      See more
-                    </Link>
-                  </div>
                 </div>
               </div>
             </div>

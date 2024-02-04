@@ -23,7 +23,7 @@ const Address = ({ formData, empty, emptyFields, restrict, handleChange, handleN
                     <input
                         type="number"
                         name="contact"
-                        value={formData.contact}
+                        value={formData.contact || ""}
                         onChange={handleChange}
                         className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
                         placeholder="Contact number"
@@ -39,7 +39,7 @@ const Address = ({ formData, empty, emptyFields, restrict, handleChange, handleN
                     </label>
                     <select
                         name="civil_status"
-                        value={formData.civil_status}
+                        value={formData.civil_status || ""}
                         onChange={handleChange}
                         className="py-3 px-4 block w-full text-black border-gray-200 rounded-md text-sm focus:border-green-500 focus:ring-green-500 dark:bg-white dark:border-gray-700"
                     >
@@ -77,7 +77,7 @@ const Address = ({ formData, empty, emptyFields, restrict, handleChange, handleN
                     </label>
                     <select
                         name="brgy"
-                        value={formData.brgy}
+                        value={formData.brgy || ""}
                         onChange={handleChange}
                         className="py-3 px-4 block w-full text-black border-gray-200 rounded-md text-sm focus:border-green-500 focus:ring-green-500 dark:bg-white dark:border-gray-700"
                     >
@@ -104,7 +104,7 @@ const Address = ({ formData, empty, emptyFields, restrict, handleChange, handleN
                     type="text"
                     id="input-label"
                     name="street"
-                    value={formData.street}
+                    value={formData.street || ""}
                     onChange={handleChange}
                     className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 "
                     placeholder="Enter your address line"

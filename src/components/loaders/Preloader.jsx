@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import errorImg from "../../assets/image/Error.png"
 
 function Preloader({ updatingStatus, error }) {
     const textPrompts = {
@@ -24,9 +25,16 @@ function Preloader({ updatingStatus, error }) {
     }, [updatingStatus]);
 
     return (
-        <div className="fixed bottom-0 right-0 mb-10 md:mr-10 z-[80] ">
+        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mb-10 md:mr-10 z-[90] h-screen w-full bg-black bg-opacity-[20%]">
             {updatingStatus === "error" ? (
-                <div className="w-80 rounded-xl shadow-lg" role="alert">
+                <div
+                    className="w-[300px] fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col h-[200px] bg-white border-[1px] border-custom-green-header rounded-xl shadow-lg"
+                    role="alert"
+                >
+                    <img
+                        className="h-auto w-[90px] z-10 absolute top-[-40px] left-[35%]"
+                        src={errorImg}
+                    ></img>
                     <div className="flex flex-row bg-[#e05353]  items-center p-3 rounded-xl space-x-3">
                         <div className="flex flex-row w-full">
                             <div className="flex space-x-1.5 items-center">
@@ -40,14 +48,22 @@ function Preloader({ updatingStatus, error }) {
                 </div>
             ) : (
                 <div
-                    className="w-80 bg-custom-green-header border border-gray-200 rounded-xl shadow-lg"
+                    className="w-[300px] fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col h-[200px] bg-white border-[1px] border-custom-green-header rounded-xl shadow-lg"
                     role="alert"
                 >
-                    <div className="flex items-center p-4 space-x-3">
+                    {
+                        loadingText === "Successful!" ?
+                            <img
+                                className="h-auto w-[90px] z-10 absolute top-[-40px] left-[35%]"
+                                src="https://img.icons8.com/?size=256&id=IFyb9G1c6yAC&format=png"
+                            ></img>
+                            : null
+                    }
+                    <div className="flex mx-auto items-center p-4 space-x-3 relative m-auto">
                         <div role="status" className="inline">
                             <svg
                                 aria-hidden="true"
-                                className="w-4 h-4 text-[#414141] animate-spin fill-[#08fcf0]"
+                                className="w-[40px] h-[40px] text-[#414141] animate-spin fill-[#08fcf0]"
                                 viewBox="0 0 100 101"
                                 fill="none"
                                 xmlns="http://www.w3.org/2000/svg"
@@ -63,7 +79,7 @@ function Preloader({ updatingStatus, error }) {
                             </svg>
                             <span className="sr-only">Loading...</span>
                         </div>
-                        <span className="text-white">{loadingText}</span>
+                        <span className="text-black font-medium text-[18px]">{loadingText}</span>
                     </div>
                 </div>
             )}

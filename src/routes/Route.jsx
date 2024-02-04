@@ -25,7 +25,6 @@ import Requests from "../pages/Requests";
 import Inquiries from "../pages/Inquiries/Inquiries";
 import Services from "../pages/Services";
 import ServicesForm from "../pages/ServicesForm";
-import Reservation from "../pages/Reservation"
 
 // DASHBOARD SUB PAGES
 import Mobile from "../components/dashboard/Mobile";
@@ -82,15 +81,6 @@ const pages = [
       <>
         <Navbar />
         <Events />
-      </>
-    ),
-  },
-  {
-    path: "/reservation",
-    element: (
-      <>
-        <Navbar />
-        <Reservation />
       </>
     ),
   },

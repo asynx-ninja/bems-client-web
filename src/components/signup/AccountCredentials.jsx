@@ -59,7 +59,7 @@ const AccountCredentials = ({ formData, empty, emptyFields, restrict, handleChan
                     required
                     type="text"
                     name="username"
-                    value={formData.username}
+                    value={formData.username || ""}
                     onChange={handleChange}
                     className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
                     placeholder="Enter your username"
@@ -69,7 +69,7 @@ const AccountCredentials = ({ formData, empty, emptyFields, restrict, handleChan
                 <input
                     type="email"
                     name="email"
-                    value={formData.email}
+                    value={formData.email || ""}
                     onChange={handleChange}
                     className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
                     placeholder="Enter your email"
@@ -80,7 +80,7 @@ const AccountCredentials = ({ formData, empty, emptyFields, restrict, handleChan
                     <input
                         type={passwordShown ? "text" : "password"}
                         name="password"
-                        value={formData.password}
+                        value={formData.password || ""}
                         onChange={handleChange}
                         className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
                         placeholder="Enter password"
@@ -101,7 +101,7 @@ const AccountCredentials = ({ formData, empty, emptyFields, restrict, handleChan
                     <input
                         type={repasswordShown ? "text" : "password"}
                         name="confirmPassword"
-                        value={formData.confirmPassword}
+                        value={formData.confirmPassword || ""}
                         onChange={handleChange}
                         className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
                         placeholder="Re-enter password"

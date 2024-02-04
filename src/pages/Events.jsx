@@ -29,16 +29,12 @@ const Articles = () => {
 
         setAnnouncement(filtered);
 
-        var banner = document.getElementById("banner");
-        banner.src =
-          filtered.collections.banner.link !== ""
-            ? filtered.collections.banner.link
-            : defaultBanner;
         var logo = document.getElementById("logo");
         logo.src =
           filtered.collections.logo.link !== ""
             ? filtered.collections.logo.link
             : defaultLogo;
+
       } catch (err) {
         console.log(err);
       }
@@ -51,7 +47,7 @@ const Articles = () => {
   return (
     <div className="w-full flex flex-col">
       <div>
-        <div className="relative lg:h-[250px] w-full object-cover">
+        <div className="relative h-[250px] w-full object-cover">
           <video className="h-full w-full object-cover" autoPlay muted loop>
             <source src={video} type="video/mp4" />
           </video>

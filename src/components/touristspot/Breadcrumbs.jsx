@@ -11,17 +11,17 @@ const Breadcrumbs = ({ touristInfo }) => {
 
   return (
     <nav
-      class="flex sm:px-0 md:px-5 py-3 text-black rounded-lg "
+      className="flex sm:px-0 md:px-5 py-3 text-black rounded-lg "
       aria-label="Breadcrumb"
     >
-      <ol class="inline-flex items-center space-x-1 md:space-x-3">
-        <li class="inline-flex items-center">
+      <ol className="inline-flex items-center space-x-1 md:space-x-3">
+        <li className="inline-flex items-center">
           <Link
             to="/"
-            class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-green-500 dark:text-gray-400 dark:hover:text-white"
+            className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-green-500 dark:text-gray-400 dark:hover:text-white"
           >
             <svg
-              class="w-3 h-3 mr-2.5"
+              className="w-3 h-3 mr-2.5"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -33,9 +33,9 @@ const Breadcrumbs = ({ touristInfo }) => {
           </Link>
         </li>
         <li>
-          <div class="flex items-center">
+          <div className="flex items-center">
             <svg
-              class="w-3 h-3 mx-1 text-gray-400"
+              className="w-3 h-3 mx-1 text-gray-400"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -51,16 +51,16 @@ const Breadcrumbs = ({ touristInfo }) => {
             </svg>
             <Link
               to="/tourist-spot-list"
-              class="ml-1 text-sm font-medium text-gray-700 hover:text-green-500 md:ml-2 dark:text-gray-400 dark:hover:text-white"
+              className="ml-1 text-sm font-medium text-gray-700 hover:text-green-500 md:ml-2 dark:text-gray-400 dark:hover:text-white"
             >
               Tourist Spots
             </Link>
           </div>
         </li>
         <li aria-current="page">
-          <div class="flex items-center">
+          <div className="flex items-center">
             <svg
-              class="w-3 h-3 mx-1 text-gray-400"
+              className="w-3 h-3 mx-1 text-gray-400"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -68,13 +68,13 @@ const Breadcrumbs = ({ touristInfo }) => {
             >
               <path
                 stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 d="m1 9 4-4-4-4"
               />
             </svg>
-            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">
+            <span className="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">
               {
                 title === "tourist-spot-list" ? "" : touristInfo.name
               }

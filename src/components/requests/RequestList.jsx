@@ -13,6 +13,8 @@ const RequestList = ({ request, selectedItems, checkboxHandler, setViewRequest }
             year: "numeric",
             month: "short",
             day: "numeric",
+            hour: "numeric",
+            minute: "numeric"
         };
         return new Intl.DateTimeFormat("en-US", options).format(new Date(date));
     };

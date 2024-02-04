@@ -7,7 +7,7 @@ const ViewNotification = ({ viewNotif, userData }) => {
     const id = searchParams.get("id");
     const brgy = searchParams.get("brgy");
 
-    console.log(viewNotif)
+    // console.log(viewNotif)
 
     return (
         <div>
@@ -91,6 +91,28 @@ const ViewNotification = ({ viewNotif, userData }) => {
                                     }
                                     {
                                         viewNotif.length !== 0 && viewNotif.compose.go_to === "Inquiries" ?
+                                            <Link
+                                                to={`/inquiries/?id=${id}&brgy=${brgy}&user_id=${userData.user_id}`}
+                                                className="h-[2.5rem] flex w-full py-1 px-6 gap-2 rounded-md borde text-sm font-base bg-custom-green-button text-white shadow-sm"
+                                                data-hs-overlay="#hs-modal-viewNotification"
+                                            >
+                                                <h1 className='m-auto'>Go to {viewNotif.length === 0 ? "" : viewNotif.compose.go_to}</h1>
+                                            </Link>
+                                            : null
+                                    }
+                                    {
+                                        viewNotif.length !== 0 && viewNotif.compose.go_to === "Requests" ?
+                                            <Link
+                                                to={`/inquiries/?id=${id}&brgy=${brgy}&user_id=${userData.user_id}`}
+                                                className="h-[2.5rem] flex w-full py-1 px-6 gap-2 rounded-md borde text-sm font-base bg-custom-green-button text-white shadow-sm"
+                                                data-hs-overlay="#hs-modal-viewNotification"
+                                            >
+                                                <h1 className='m-auto'>Go to {viewNotif.length === 0 ? "" : viewNotif.compose.go_to}</h1>
+                                            </Link>
+                                            : null
+                                    }
+                                    {
+                                        viewNotif.length !== 0 && viewNotif.compose.go_to === "Application" ?
                                             <Link
                                                 to={`/inquiries/?id=${id}&brgy=${brgy}&user_id=${userData.user_id}`}
                                                 className="h-[2.5rem] flex w-full py-1 px-6 gap-2 rounded-md borde text-sm font-base bg-custom-green-button text-white shadow-sm"

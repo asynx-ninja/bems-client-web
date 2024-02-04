@@ -63,7 +63,7 @@ const Username = ({ userCred, handleUserChangeCred, editButton, message, passwor
 
             <div className="relative z-0">
                 <label
-                    htmlFor="oldpass"
+                    htmlFor="useroldpass"
                     className="block sm:text-xs lg:text-sm font-medium mb-2"
                 >
                     Enter your old password
@@ -71,7 +71,7 @@ const Username = ({ userCred, handleUserChangeCred, editButton, message, passwor
                 <input
                     type={oldpasswordShown ? "text" : "password"}
                     disabled={editButton}
-                    id="oldpass"
+                    id="useroldpass"
                     className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 bg-white"
                     placeholder="password"
                     aria-describedby="hs-input-helper-text"

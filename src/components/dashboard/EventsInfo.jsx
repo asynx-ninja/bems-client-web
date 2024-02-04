@@ -49,7 +49,7 @@ const EventsInfo = () => {
         return new Intl.DateTimeFormat("en-US", options).format(new Date(date));
     };
 
-    console.log(announcements)
+    // console.log(announcements)
 
     return (
         <div className="bg-gray-100">

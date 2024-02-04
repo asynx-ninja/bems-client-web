@@ -1,22 +1,33 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
+import errorimg from "../assets/header/Error 404.png"
+import errorart from "../assets/header/errorart.png"
+
 const Error404 = () => {
 
-  
+
   return (
-  
-    <div className="bg-gray-900 text-white min-h-screen flex flex-col items-center justify-center">
-    <div className="text-center">
-      <h1 className="text-6xl font-extrabold text-red-500 mb-4">ERROR 404</h1>
-      <h1 className="text-3xl font-extrabold text-red-500 mb-8">Page Not Found</h1>
-      <Link
-        to="/"
-        className="inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-3 rounded-full transition duration-300"
-      >
-        Go back to the homepage
-      </Link>
+
+    <div className="py-[50px] bg-gradient-to-r from-custom-gold1 to-gray-400 text-white min-h-screen items-center flex flex-col justify-center">
+      <div className='m-auto grid sm:grid-cols-1 lg:grid-cols-2 items-center justify-center gap-5'>
+        <div className="flex flex-col text-center mx-auto rounded-md sm:w-[300px] lg:w-[500px] sm:p-[25px] lg:p-[50px] bg-custom-green-header">
+          <h1 className="text-3xl font-extrabold text-white mb-8 uppercase font-bold">The page you are looking for does not exist</h1>
+          <Link
+            to="/"
+            className="inline-block bg-custom-green-button hover:bg-gradient-to-r from-custom-gold1 to-[#408D51] hover:scale-105 text-white font-semibold px-6 py-3 rounded-full transition duration-300"
+          >
+            Go back to the homepage
+          </Link>
+        </div>
+        <div className='mx-auto'>
+          <img
+            className='sm:w-[250px] sm:h-[250px] md:w-[500px] md:h-[500px]'
+            src={errorart}
+            alt=""
+          />
+        </div>
+      </div>
     </div>
-  </div>
   )
 }
 

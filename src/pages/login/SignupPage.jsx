@@ -120,7 +120,7 @@ const SignupPage = () => {
     }
   }
 
-  console.log(formData)
+  // console.log(formData)
 
   const checkEmptyFields = () => {
     let arr = [];

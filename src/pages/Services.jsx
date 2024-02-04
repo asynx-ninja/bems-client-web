@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import NewsCarousel from "../components/dashboard/NewsCarousel";
 import ReactPaginate from "react-paginate";
 import { Link, useSearchParams } from "react-router-dom";
 import video from "../assets/image/video.mp4";
@@ -23,7 +22,7 @@ const Services = () => {
           `${API_LINK}/services/?brgy=${brgy}&archived=false&approved=Approved&page=${currentPage}`
         );
 
-        console.log(response.data.result);
+        // console.log(response.data.result);
 
         setFilter(response.data.result);
         setFilterType(response.data.result);
@@ -36,7 +35,7 @@ const Services = () => {
     fetchServices();
   }, [brgy, currentPage]);
 
-  console.log(filter);
+  // console.log(filter);
 
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected);
@@ -53,7 +52,7 @@ const Services = () => {
   return (
     <div className="flex flex-col items-center">
 
-      <div className="relative lg:h-[250px] w-full object-cover">
+      <div className="relative h-[250px] w-full object-cover">
         <video className="h-full w-full object-cover" autoPlay muted loop>
           <source src={video} type="video/mp4" />
         </video>

@@ -31,6 +31,7 @@ const ServicesForm = ({ props }) => {
   const [error, setError] = useState(null);
   const [submitClicked, setSubmitClicked] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState(null);
+  const [noForm, setNoForm] = useState(false)
 
   useEffect(() => {
     const fetchForms = async () => {
@@ -39,24 +40,33 @@ const ServicesForm = ({ props }) => {
           `${API_LINK}/services/specific_service/?service_id=${service_id}`
         );
 
-        const { service_form, ...rest } = service_response.data[0];
+        // console.log(service_response.data[0].service_form.isActive)
 
-        const filter = [service_form].filter((item) => item.isActive)[0];
+        if (service_response.data[0].service_form.isActive === true) {
+          const { service_form, ...rest } = service_response.data[0];
 
-        filter.form[0] = Object.fromEntries(
-          Object.entries(filter.form[0]).filter(
-            ([key, value]) => value.checked === true
-          )
-        );
+          const filter = [service_form].filter((item) => item.isActive)[0];
 
-        const getUser = await axios.get(`${API_LINK}/users/specific/${id}`);
+          filter.form[0] = Object.fromEntries(
+            Object.entries(filter.form[0]).filter(
+              ([key, value]) => value.checked === true
+            )
+          );
 
-        setUserData(getUser.data[0]);
+          const getUser = await axios.get(`${API_LINK}/users/specific/${id}`);
 
-        filter.form[0].user_id.value = getUser.data[0].user_id;
+          setUserData(getUser.data[0]);
 
-        setService(rest);
-        setDetail(filter);
+          filter.form[0].user_id.value = getUser.data[0].user_id;
+
+          setNoForm(false)
+          setService(rest);
+          setDetail(filter);
+        } else {
+          setNoForm(true)
+          setService(service_response.data[0])
+        }
+
       } catch (error) {
         console.log(error);
       }
@@ -471,12 +481,14 @@ const ServicesForm = ({ props }) => {
 
       <div className="w-[90%] mx-auto flex items-center px-6 lg:px-0">
         <div className="flex mx-auto sm:flex-row md:flex-row w-full items-center gap-4 justify-center">
-          <Link
+          <button
+            disabled={noForm === true}
             data-hs-overlay="#hs-full-screen-modal"
-            className="flex items-center justify-center text-center bg-green-700 sm:w-full md:w-[150px] sm:my-[5px] md:m-5 h-[50px] text-sm text-white font-medium rounded-lg hover:bg-gradient-to-r from-[#295141] to-[#408D51] transition duration-500 ease-in-out hover:text-custom-gold"
+            className={noForm === true ? "flex items-center justify-center text-center bg-gray-400 sm:w-full md:w-[150px] sm:my-[5px] md:m-5 h-[50px] text-sm text-white font-medium rounded-lg"
+              : "flex items-center justify-center text-center bg-green-700 sm:w-full md:w-[150px] sm:my-[5px] md:m-5 h-[50px] text-sm text-white font-medium rounded-lg hover:bg-gradient-to-r from-[#295141] to-[#408D51] transition duration-500 ease-in-out hover:text-custom-gold"}
           >
             Submit a request
-          </Link>
+          </button>
           <Link
             to={`/services/?id=${id}&brgy=${brgy}`}
             className="flex items-center justify-center bg-custom-red sm:w-full md:w-[150px] h-[50px] sm:my-[20px] text-sm md:m-5 text-white font-medium rounded-lg hover:bg-gradient-to-r from-[#B90000] to-[#FF2828] transition duration-500 ease-in-out hover:text-custom-gold"
@@ -614,42 +626,6 @@ const ServicesForm = ({ props }) => {
               >
                 Submit
               </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        id="hs-toggle-between-modals-second-modal"
-        className="hs-overlay hidden w-full h-full fixed top-20 left-0 z-[60] overflow-x-visible overflow-y-auto"
-      >
-        <div className="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all lg:max-w-lg md:w-10/12 w-8/12 m-3 sm:mx-auto flex flex-col items-center">
-          <img
-            className="h-auto w-[100px] lg:w-[150px] -mb-[50px] lg:-mb-[75px] z-10"
-            src="https://img.icons8.com/?size=256&id=IFyb9G1c6yAC&format=png"
-          ></img>
-          <div className="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7] pt-12">
-            <div className="pb-4 px-4 overflow-y-auto mt-0 lg:mt-8 text-center">
-              <h3 className="font-bold lg:text-2xl text-sm text-green-800 ">
-                Success!
-              </h3>
-              <p className="mt-1 text-gray-800 lg:px-12 px-4 lg:text-lg text-xs">
-                Please note that you can only "
-                <span className="text-green-500 font-bold">Edit</span>" or "
-                <span className="text-red-500 font-bold">Delete</span>" your
-                request in “
-                <span className="text-yellow-500 font-bold">Pending</span>"
-                stage.
-              </p>
-              <div className="flex justify-center pt-5">
-                <button
-                  type="button"
-                  className="hs-dropdown-toggle bg-green-600 inline-flex justify-center items-center h-8 w-20 p-2 rounded-md text-gray-500 hover:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-white transition-all text-xs dark:focus:ring-gray-700 dark:focus:ring-offset-gray-800"
-                  data-hs-overlay="#hs-toggle-between-modals-second-modal"
-                  data-hs-overlay-close=""
-                >
-                  <span className="text-white font-bold text-center">OK</span>
-                </button>
-              </div>
             </div>
           </div>
         </div>

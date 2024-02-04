@@ -16,7 +16,7 @@ const Barangay = () => {
   const [information, setInformation] = useState({});
   const id = searchParams.get("id");
   // const { id } = useParams();
-  console.log("ssdsds", id);
+  // console.log("ssdsds", id);
   const [barangays, setBarangays] = useState([]);
   const [selectedBarangay, setSelectedBarangay] = useState(null);
 
