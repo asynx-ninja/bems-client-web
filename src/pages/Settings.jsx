@@ -551,7 +551,7 @@ const Settings = () => {
                                 </button> */}
                 </div>
                 <div className="flex flex-col justify-center items-center mt-1">
-                  <h6 className="font-bold">
+                  <h6 className="font-bold text-center">
                     {userData.firstName} {userData.lastName}
                   </h6>
                   <p className="text-[12px] leading-[10px]">
