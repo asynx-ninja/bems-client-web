@@ -29,13 +29,13 @@ const ViewNotification = ({ viewNotif, userData }) => {
                         </div>
 
                         <div className='flex flex-col w-full p-5 overflow-y-auto'>
-                            <div className='flex gap-5 mb-5 justify-end items-end'>
+                            <div className='grid sm:grid-cols-1 md:grid-cols-2 gap-5 mb-5 justify-end items-end'>
                                 <img src={viewNotif &&
                                     viewNotif.logo &&
                                     viewNotif.logo.link !== undefined
                                     ? viewNotif.logo.link
-                                    : defaultLogo} className='w-[50%]' alt="" />
-                                <div>
+                                    : defaultLogo} className='mx-auto w-[300px]' alt="" />
+                                <div className='sm:mx-auto md:mx-0'>
                                     <h1 className='font-bold'>{viewNotif.length === 0 ? "" : viewNotif.compose.subject}</h1>
                                 </div>
                             </div>
