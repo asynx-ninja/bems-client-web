@@ -13,6 +13,27 @@ const EditDropbox = ({ files, setFiles }) => {
     setIsDragging(false);
   };
 
+  const checkExtension = (item) => {
+    const fileExtension = item.split('.').pop().toLowerCase();
+
+    return fileExtension
+  }
+
+  const checkImage = (item) => {
+    const fileExtension = checkExtension(item.name)
+
+    if (fileExtension === 'jpg' ||
+      fileExtension === 'png' ||
+      fileExtension === 'jpeg' ||
+      fileExtension === 'gif' ||
+      fileExtension === 'bmp') {
+
+      return true
+    } else {
+      return false
+    }
+  }
+
   const dragOverHandler = (e) => {
     e.preventDefault();
     e.target.classList.add("drag-over");
@@ -82,25 +103,56 @@ const EditDropbox = ({ files, setFiles }) => {
                     key={idx}
                     onClick={() => handleFileClick(file)}
                   >
-                    <article
-                      tabIndex={0}
-                      className="group w-full h-full rounded-md focus:outline-none focus:shadow-outline elative bg-gray-100 cursor-pointer relative shadow-sm"
-                    >
-                      <img
-                        alt="upload preview"
-                        className="img-preview hidden w-full h-full sticky object-cover rounded-md bg-fixed"
-                      />
-                      <section className="flex flex-col rounded-md text-xs break-words w-full h-full z-20 absolute top-0 py-2 px-3">
-                        <h1 className="flex-1 group-hover:text-blue-800 line-clamp-1">
-                          {file.name}
-                        </h1>
-                        <div className="flex">
-                          <span className="p-1 text-blue-800">
-                            <i>{/* SVG code */}</i>
-                          </span>
-                        </div>
-                      </section>
-                    </article>
+                    {
+                      checkImage(file) === true ?
+                        <article
+                          tabIndex={0}
+                          className="group w-[80px] h-[80px] object-cover rounded-md focus:outline-none focus:shadow-outline elative bg-gray-100 cursor-pointer relative shadow-sm"
+                        >
+                          <a
+                            href={file.link}
+                          >
+                            <img
+                              className="w-[150px] h-[150px] object-cover rounded-md"
+                              src={file.link}
+                              alt="" />
+                          </a>
+                        </article>
+                        :
+                        <article
+                          tabIndex={0}
+                          className="group w-[80px] h-[80px] rounded-md focus:outline-none focus:shadow-outline elative bg-gray-100 cursor-pointer relative shadow-sm"
+                        >
+                          <img
+                            alt="upload preview"
+                            className="img-preview hidden w-full h-full sticky object-cover rounded-md bg-fixed"
+                          />
+                          <section className="flex flex-col relative rounded-md text-xs break-words w-full h-full z-20 top-0 py-2 px-3">
+                            <a
+                              href={file.link}
+                              target="_blank"
+                              className="flex-1 group-hover:text-blue-800 line-clamp-1"
+                            >
+                              {file.name}
+                            </a>
+                            <div className="flex absolute right-0 left-0 top-0 bottom-0 opacity-50">
+                              <span className="p-1 text-blue-800 m-auto">
+                                <i>
+                                  <svg
+                                    className="fill-current w-[50px] h-[50px] pt-1"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width={24}
+                                    height={24}
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path d="M15 2v5h5v15h-16v-20h11zm1-2h-14v24h20v-18l-6-6z" />
+                                  </svg>
+                                </i>
+                              </span>
+                            </div>
+                          </section>
+                        </article>
+                    }
                   </li>
                 ))
               ) : (

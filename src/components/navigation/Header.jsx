@@ -125,7 +125,7 @@ const Header = () => {
                   unread === 0 ?
                     null
                     :
-                    <div class="absolute inline-flex items-center justify-center w-5 h-5 text-[10px] font-bold text-white bg-red-500 border-2 rounded-full top-[-5px] right-0">{unread}</div>
+                    <div className="absolute inline-flex items-center justify-center w-5 h-5 text-[10px] font-bold text-white bg-red-500 border-2 rounded-full top-[-5px] right-0">{unread}</div>
                 }
               </button>
 

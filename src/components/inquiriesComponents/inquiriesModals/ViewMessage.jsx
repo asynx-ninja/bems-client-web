@@ -28,6 +28,8 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
   const [submitClicked, setSubmitClicked] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState(null);
 
+  // console.log(inquiry)
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -191,7 +193,7 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
                       id="title"
                       name="title"
                       className="shadow appearance-none border w-full py-2 px-3 text-sm text-black rounded-lg focus:border-green-500 focus:ring-green-500 focus:outline-none focus:shadow-outline"
-                      value={inquiry && inquiry.name}
+                      value={inquiry && inquiry.name || ""}
                       disabled
                     />
                   </div>
@@ -207,7 +209,7 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
                       id="title"
                       name="title"
                       className="shadow appearance-none border w-full py-2 px-3 text-sm text-black rounded-lg focus:border-green-500 focus:ring-green-500 focus:outline-none focus:shadow-outline"
-                      value={inquiry && inquiry.email}
+                      value={inquiry && inquiry.email || ""}
                       disabled
                     />
                   </div>
@@ -226,7 +228,7 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
                       id="title"
                       name="title"
                       className="shadow appearance-none border w-full py-2 px-3 text-sm text-black rounded-lg focus:border-green-500 focus:ring-green-500 focus:outline-none focus:shadow-outline"
-                      value={inquiry && inquiry?.compose?.subject}
+                      value={inquiry && inquiry?.compose?.subject  || ""}
                       disabled
                     />
                   </div>
@@ -262,7 +264,7 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
                     name="details"
                     rows="4"
                     className="shadow appearance-none border w-full h-full py-2 px-3 text-sm text-black rounded-lg focus:border-green-500 focus:ring-green-500 focus:outline-none focus:shadow-outline"
-                    value={inquiry && inquiry?.compose?.message}
+                    value={inquiry && inquiry?.compose?.message || ""}
                     disabled
                   />
                 </div>

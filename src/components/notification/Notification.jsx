@@ -99,7 +99,7 @@ const Notification = ({ notification, setViewNotif, fetch }) => {
                     >
                         {
                             getUnseen(item.read_by) === true ?
-                                <div class="absolute inline-flex items-center justify-center w-3 h-3 text-[10px] font-bold text-white bg-red-500 border-2 rounded-full top-0 right-0"></div>
+                                <div className="absolute inline-flex items-center justify-center w-3 h-3 text-[10px] font-bold text-white bg-red-500 border-2 rounded-full top-0 right-0"></div>
                                 : null
                         }
                         <div

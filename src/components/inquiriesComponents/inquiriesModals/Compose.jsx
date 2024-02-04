@@ -112,7 +112,8 @@ const ComposeModal = () => {
 
     if (!composeMessage.name ||
       !composeMessage.email ||
-      !composeMessage.compose.to
+      !composeMessage.compose.to || 
+      !composeMessage.compose.subject
     ) {
       setShowError({
         error: true,
@@ -330,11 +331,12 @@ const ComposeModal = () => {
                     <select
                       id="title"
                       name="to"
+                      value={composeMessage.compose.to || ""}
                       onChange={handleOnCompose}
                       className={showError.error ? "w-full p-2 border border-red-300 rounded focus:border-red-500 focus:ring-red-500"
                         : "w-full p-2 border border-gray-300 rounded focus:border-green-500 focus:ring-green-500"}
                     >
-                      <option value="" disabled>-- Select Recipient --</option>
+                      <option value='' disabled>-- Select Recipient --</option>
                       <option value="Admin">Admin</option>
                       <option value="Staff">Staff</option>
                     </select>
