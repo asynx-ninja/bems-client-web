@@ -113,7 +113,7 @@ const EditDropbox = ({ files, setFiles }) => {
                             href={file.link}
                           >
                             <img
-                              className="w-[150px] h-[150px] object-cover rounded-md"
+                              className="w-[80px] h-[80px] object-cover rounded-md"
                               src={file.link}
                               alt="" />
                           </a>
