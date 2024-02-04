@@ -29,6 +29,7 @@ const ViewEventModal = ({ viewEvent }) => {
   const [error, setError] = useState(null);
   const [submitClicked, setSubmitClicked] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState(null);
+  const [errMsg, setErrMsg] = useState(false)
 
   // console.log(viewEvent)
 
@@ -129,6 +130,13 @@ const ViewEventModal = ({ viewEvent }) => {
   const handleOnSend = async (e) => {
     e.preventDefault();
     console.log(newMessage);
+
+    if (newMessage.message || createFiles) {
+      setErrMsg(true)
+
+      return
+    }
+
     setSubmitClicked(true);
 
     try {
@@ -225,7 +233,14 @@ const ViewEventModal = ({ viewEvent }) => {
               <div className="flex flex-col p-2">
                 <form>
                   {!viewEvent.response || viewEvent.response.length === 0 ? (
-                    <div className="flex flex-row items-center">
+                    <div className="flex flex-col items-center">
+                      {
+                        errMsg ? (
+                          <div className="w-[100%] bg-red-500 rounded-md mb-[10px] flex">
+                            <p className="py-[10px] text-[12px] px-[20px] text-white font-medium">Please enter a message or insert a file!</p>
+                          </div>
+                        ) : null
+                      }
                       <div className="relative w-full mt-4 mx-2">
                         <div className="relative w-full">
                           <textarea
@@ -354,6 +369,13 @@ const ViewEventModal = ({ viewEvent }) => {
                               <div></div>
                             ) : (
                               <div className="relative w-full mt-4 mx-2">
+                                {
+                                  errMsg ? (
+                                    <div className="w-[100%] bg-red-500 rounded-md mb-[10px] flex">
+                                      <p className="py-[10px] text-[12px] px-[20px] text-white font-medium">Please enter a message or insert a file!</p>
+                                    </div>
+                                  ) : null
+                                }
                                 <div className="relative w-full">
                                   <textarea
                                     id="message"
@@ -439,6 +461,7 @@ const ViewEventModal = ({ viewEvent }) => {
                 type="button"
                 className="py-1 px-6 inline-flex justify-center items-center gap-2 rounded-md border text-sm font-base bg-custom-red-button text-white shadow-sm align-middle"
                 data-hs-overlay="#hs-viewRequest-modal"
+                onClick={() => setErrMsg(false)}
               >
                 CANCEL
               </button>

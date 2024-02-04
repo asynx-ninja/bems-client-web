@@ -13,24 +13,27 @@ const Notification = ({ notification, setViewNotif, fetch }) => {
     const id = searchParams.get("id");
     const brgy = searchParams.get("brgy");
 
-    const readNotif = async (item) => {
+    const readNotif = async (notif) => {
         try {
-            const checkRead = await axios.get(`${API_LINK}/notification/check/?user_id=${id}&notification_id=${item._id}`)
+            const checkRead = await axios.get(`${API_LINK}/notification/check/?user_id=${id}&notification_id=${notif._id}`)
 
-            // console.log(checkRead.data.read_by[0].readerId)
+            const isRead = checkRead.data.read_by.some((item) => item.readerId === id);
 
-            if (checkRead.data.read_by.length === 0 || checkRead.data.read_by[0].readerId !== id) {
-                const response = await axios.patch(`${API_LINK}/notification/?notification_id=${item._id}`, { readerId: id })
+            if (!isRead) {
+                try {
+                    const response = await axios.patch(`${API_LINK}/notification/?notification_id=${notif._id}`, { readerId: id })
 
-                if (response.status === 200) {
-                    console.log('You read a Notification!')
+                    console.log(response.data)
+
+                    if (response.status === 200) {
+                        fetch()
+                        console.log('You read a Notification!')
+                    }
+                } catch (error) {
+                    console.log(error)
                 }
-
-                // console.log(item)
             }
-
-            fetch()
-            setViewNotif(item)
+            setViewNotif(notif)
 
         } catch (err) {
             console.log(err)
@@ -60,16 +63,18 @@ const Notification = ({ notification, setViewNotif, fetch }) => {
         return timeAgo
     };
 
-    const getUnseen = (item) => {
-        if (item.length !== 0) {
-            const check = item.find((read) => read.readerId = id)
+    const getUnseen = (item, id) => {
+        if (item.length > 0) {
+            const check = item.find((read) => read.readerId === id)
 
-            if (check.length === 0) {
-                return true
-            } else {
+            // console.log(check)
+
+            if (check) {
                 return false
+            } else {
+                return true
             }
-        }else{
+        } else {
             return true
         }
     }
@@ -83,6 +88,8 @@ const Notification = ({ notification, setViewNotif, fetch }) => {
             return 'border-l-[1px] border-l-custom-green-header'
         } else if (item === "Services") {
             return 'border-l-[1px] border-l-red-400'
+        }  else if (item === "Inquiries") {
+            return 'border-l-[1px] border-l-purple-400'
         }
     }
 
@@ -98,7 +105,7 @@ const Notification = ({ notification, setViewNotif, fetch }) => {
                         onClick={() => readNotif(item)}
                     >
                         {
-                            getUnseen(item.read_by) === true ?
+                            getUnseen(item.read_by, id) === true ?
                                 <div className="absolute inline-flex items-center justify-center w-3 h-3 text-[10px] font-bold text-white bg-red-500 border-2 rounded-full top-0 right-0"></div>
                                 : null
                         }

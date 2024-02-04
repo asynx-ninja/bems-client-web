@@ -21,6 +21,7 @@ const Emailverify = () => {
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
+    const resident = "Resident"
 
     if (!email) {
       setResponse({
@@ -33,23 +34,25 @@ const Emailverify = () => {
     }
 
     try {
-      const res = await axios.patch(`${API_LINK}/auth/send_pin/${email}`, {type: "Resident"})
+      const res = await axios.patch(
+        `${API_LINK}/auth/send_pin/${email}`,
+        { type: resident })
+
       const encodedEmail = btoa(email);
 
       if (res.status === 200) {
-        console.log(res)
+        // console.log(res)
         setResponse({
           success: true,
           error: false,
           message: "Code has been successfully sent to your Email!"
         })
 
-        console.log(encodedEmail)
+        // console.log(encodedEmail)
 
-        // setTimeout(()=> {
-        //   navigate(`/code_verify/${encodedEmail}`)
-        // }, 3000)
-        // setTimeout(navigate(`/pin/${encodedEmail}`), 3000);
+        setTimeout(()=> {
+          navigate(`/code_verify/${encodedEmail}`)
+        }, 3000)
       }
     } catch (error) {
       setResponse({
@@ -156,6 +159,7 @@ const Emailverify = () => {
             <input
               type="email"
               id="input-label"
+              value={email || ""}
               onChange={handleOnChange}
               className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 "
               placeholder="Enter your registered email"

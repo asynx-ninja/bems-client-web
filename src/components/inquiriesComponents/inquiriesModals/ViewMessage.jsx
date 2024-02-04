@@ -27,6 +27,7 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
   });
   const [submitClicked, setSubmitClicked] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState(null);
+  const [errMsg, setErrMsg] = useState(false)
 
   // console.log(inquiry)
 
@@ -116,6 +117,13 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
   const handleOnSend = async (e) => {
     e.preventDefault();
     console.log(newMessage);
+
+    if (newMessage.message || createFiles) {
+      setErrMsg(true)
+
+      return
+    }
+
     setSubmitClicked(true);
 
     try {
@@ -228,7 +236,7 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
                       id="title"
                       name="title"
                       className="shadow appearance-none border w-full py-2 px-3 text-sm text-black rounded-lg focus:border-green-500 focus:ring-green-500 focus:outline-none focus:shadow-outline"
-                      value={inquiry && inquiry?.compose?.subject  || ""}
+                      value={inquiry && inquiry?.compose?.subject || ""}
                       disabled
                     />
                   </div>
@@ -277,7 +285,14 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
                   </b>
                   <form>
                     {!inquiry.response || inquiry.response.length === 0 ? (
-                      <div className="flex flex-row items-center">
+                      <div className="flex flex-col items-center">
+                        {
+                          errMsg ? (
+                            <div className="w-[100%] bg-red-500 rounded-md mb-[10px] flex">
+                              <p className="py-[10px] text-[12px] px-[20px] text-white font-medium">Please enter a message or insert a file!</p>
+                            </div>
+                          ) : null
+                        }
                         <div className="relative w-full mt-4 mx-2">
                           <div className="relative w-full">
                             <textarea
@@ -409,6 +424,13 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
                                 <div></div>
                               ) : (
                                 <div className="relative w-full mt-4 mx-2">
+                                  {
+                                    errMsg ? (
+                                      <div className="w-[100%] bg-red-500 rounded-md mb-[10px] flex">
+                                        <p className="py-[10px] text-[12px] px-[20px] text-white font-medium">Please enter a message or insert a file!</p>
+                                      </div>
+                                    ) : null
+                                  }
                                   <div className="relative w-full">
                                     <textarea
                                       id="message"

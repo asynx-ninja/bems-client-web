@@ -29,6 +29,8 @@ const ViewRequestModal = ({ viewRequest }) => {
   const [error, setError] = useState(null);
   const [submitClicked, setSubmitClicked] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState(null);
+  const [errMsg, setErrMsg] = useState(false)
+
 
   useEffect(() => {
     setFiles(viewRequest.length === 0 ? [] : viewRequest.file);
@@ -121,6 +123,13 @@ const ViewRequestModal = ({ viewRequest }) => {
   const handleOnSend = async (e) => {
     e.preventDefault();
     console.log(newMessage);
+
+    if (newMessage.message || createFiles) {
+      setErrMsg(true)
+
+      return
+    }
+
     setSubmitClicked(true);
 
     try {
@@ -219,7 +228,14 @@ const ViewRequestModal = ({ viewRequest }) => {
               <div className="flex flex-col p-2">
                 <form>
                   {!viewRequest.response || viewRequest.response.length === 0 ? (
-                    <div className="flex flex-row items-center">
+                    <div className="flex flex-col items-center">
+                      {
+                        errMsg ? (
+                          <div className="w-[100%] bg-red-500 rounded-md mb-[10px] flex">
+                            <p className="py-[10px] text-[12px] px-[20px] text-white font-medium">Please enter a message or insert a file!</p>
+                          </div>
+                        ) : null
+                      }
                       <div className="relative w-full mt-4 mx-2">
                         <div className="relative w-full">
                           <textarea
@@ -348,6 +364,13 @@ const ViewRequestModal = ({ viewRequest }) => {
                               <div></div>
                             ) : (
                               <div className="relative w-full mt-4 mx-2">
+                                {
+                                  errMsg ? (
+                                    <div className="w-[100%] bg-red-500 rounded-md mb-[10px] flex">
+                                      <p className="py-[10px] text-[12px] px-[20px] text-white font-medium">Please enter a message or insert a file!</p>
+                                    </div>
+                                  ) : null
+                                }
                                 <div className="relative w-full">
                                   <textarea
                                     id="message"

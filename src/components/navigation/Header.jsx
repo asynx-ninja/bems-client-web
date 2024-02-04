@@ -40,19 +40,21 @@ const Header = () => {
         `${API_LINK}/notification/?user_id=${res.data[0].user_id}&area=${brgy}&type=Resident`
       );
 
-      const read = response.data.filter((item) =>
-        item.read_by.filter(item1 => item1.readerId = id))
-
-      const emptyRead = response.data.filter((item) =>
-        item.read_by.length === 0)
-
-      if (response.data.length === read.length) {
-        setUnread(response.data.length - (read.length - emptyRead.length))
-      } else {
-        setUnread(response.data.length - read.length)
-      }
+      // console.log(response.data)
 
       if (response.status === 200) {
+        const read = response.data.filter((item) =>
+          item.read_by.some(item1 => item1.readerId === id)
+        );
+
+        const emptyRead = response.data.filter((item) =>
+          item.read_by.length === 0)
+
+        if (response.data.length === read.length) {
+          setUnread(response.data.length - (read.length - emptyRead.length))
+        } else {
+          setUnread(response.data.length - read.length)
+        }
         // console.log(response.data)
         setNotification((response.data.sort((a, b) => b.createdAt - a.createdAt)))
       }

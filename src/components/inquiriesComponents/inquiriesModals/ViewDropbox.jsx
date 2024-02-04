@@ -139,13 +139,13 @@ const ViewDropbox = ({ viewFiles, setViewFiles }) => {
                       checkImage(file) === true ?
                         <article
                           tabIndex={0}
-                          className="group w-[150px] h-[150px] object-cover rounded-md focus:outline-none focus:shadow-outline elative bg-gray-100 cursor-pointer relative shadow-sm"
+                          className="group sm:w-[80px] sm:h-[80px] lg:w-[150px] lg:h-[150px] object-cover rounded-md focus:outline-none focus:shadow-outline elative bg-gray-100 cursor-pointer relative shadow-sm"
                         >
                           <a
                             href={file.link}
                           >
                             <img
-                              className="w-[150px] h-[150px] object-cover rounded-md"
+                              className="sm:w-[80px] sm:h-[80px] lg:w-[150px] lg:h-[150px] object-cover rounded-md"
                               src={file.link}
                               alt="" />
                           </a>
@@ -153,7 +153,7 @@ const ViewDropbox = ({ viewFiles, setViewFiles }) => {
                         :
                         <article
                           tabIndex={0}
-                          className="group w-[150px] h-[150px] rounded-md focus:outline-none focus:shadow-outline elative bg-gray-100 cursor-pointer relative shadow-sm"
+                          className="group sm:w-[80px] sm:h-[80px] lg:w-[150px] lg:h-[150px] rounded-md focus:outline-none focus:shadow-outline elative bg-gray-100 cursor-pointer relative shadow-sm"
                         >
                           <img
                             alt="upload preview"
@@ -171,7 +171,7 @@ const ViewDropbox = ({ viewFiles, setViewFiles }) => {
                               <span className="p-1 text-blue-800 m-auto">
                                 <i>
                                   <svg
-                                    className="fill-current w-[80px] h-[80px] pt-1"
+                                    className="fill-current sm:w-[45px] sm:h-[45px] lg:w-[80px] lg:h-[80px] pt-1"
                                     xmlns="http://www.w3.org/2000/svg"
                                     width={24}
                                     height={24}
