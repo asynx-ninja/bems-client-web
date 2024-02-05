@@ -131,7 +131,7 @@ const ViewEventModal = ({ viewEvent }) => {
     e.preventDefault();
     console.log(newMessage);
 
-    if (newMessage.message || createFiles) {
+    if (newMessage.message || createFiles.length === 0) {
       setErrMsg(true)
 
       return
