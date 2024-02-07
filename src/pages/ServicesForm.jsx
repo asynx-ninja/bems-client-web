@@ -22,6 +22,7 @@ const ServicesForm = ({ props }) => {
   const id = searchParams.get("id");
   const brgy = searchParams.get("brgy");
   const service_id = searchParams.get("service_id");
+  const page = searchParams.get("page");
   const [detail, setDetail] = useState({});
   const [service, setService] = useState({});
   const [userData, setUserData] = useState({});
@@ -37,38 +38,49 @@ const ServicesForm = ({ props }) => {
     const fetchForms = async () => {
       try {
         const service_response = await axios.get(
-          `${API_LINK}/services/specific_service/?service_id=${service_id}`
+          `${API_LINK}/services/specific_service/?brgy=${brgy}&service_id=${service_id}`
         );
 
-        // console.log(service_response.data[0].service_form.isActive)
+        const response = await axios.get(
+          `${API_LINK}/services/?brgy=${brgy}&archived=false&approved=Approved&page=${page}`
+        );
 
-        if (service_response.data[0].service_form.isActive === true) {
-          const { service_form, ...rest } = service_response.data[0];
+        if (service_response.data[0]) {
+          if (service_response.data[0].service_form.isActive === true) {
+            const { service_form, ...rest } = service_response.data[0];
 
-          const filter = [service_form].filter((item) => item.isActive)[0];
+            const filter = [service_form].filter((item) => item.isActive)[0];
 
-          filter.form[0] = Object.fromEntries(
-            Object.entries(filter.form[0]).filter(
-              ([key, value]) => value.checked === true
-            )
-          );
+            filter.form[0] = Object.fromEntries(
+              Object.entries(filter.form[0]).filter(
+                ([key, value]) => value.checked === true
+              )
+            );
 
-          const getUser = await axios.get(`${API_LINK}/users/specific/${id}`);
+            const getUser = await axios.get(`${API_LINK}/users/specific/${id}`);
 
-          setUserData(getUser.data[0]);
+            setUserData(getUser.data[0]);
 
-          filter.form[0].user_id.value = getUser.data[0].user_id;
+            filter.form[0].user_id.value = getUser.data[0].user_id;
 
-          setNoForm(false)
-          setService(rest);
-          setDetail(filter);
+            setNoForm(false)
+            setService(rest);
+            setDetail(filter);
+          } else {
+            setNoForm(true)
+            setService(service_response.data[0])
+          }
         } else {
-          setNoForm(true)
-          setService(service_response.data[0])
+          try {
+            setNoForm(true)
+            setService(response.data.result.find(item => item.service_id === service_id))
+          } catch (err) {
+            console.log(err)
+          }
         }
 
       } catch (error) {
-        console.log(error);
+        setNoForm(true)
       }
 
       // imageRef.current.src = defaultPFP;
@@ -479,7 +491,17 @@ const ServicesForm = ({ props }) => {
         </div>
       </div>
 
-      <div className="w-[90%] mx-auto flex items-center px-6 lg:px-0">
+      <div className="w-[90%] mx-auto flex flex-col items-center px-6 lg:px-0">
+        {
+          noForm ?
+            <div
+              className="bg-red-50 border text-center border-red-200 text-sm text-red-600 rounded-md p-4 mb-4"
+              role="alert"
+            >
+              No Service Form Attached to this Service.
+            </div>
+            : null
+        }
         <div className="flex mx-auto sm:flex-row md:flex-row w-full items-center gap-4 justify-center">
           <button
             disabled={noForm === true}

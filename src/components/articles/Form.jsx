@@ -37,9 +37,9 @@ const Form = ({ announcement }) => {
           `${API_LINK}/event_form/check/?brgy=${brgy}&event_id=${event_id}`
         );
 
-        if(event_response.data.length === 0){
+        if (event_response.data.length === 0) {
           setNoForm(true)
-        } else{
+        } else {
           setNoForm(false)
         }
 
@@ -452,9 +452,19 @@ const Form = ({ announcement }) => {
         </div>
       </div>
 
-      <div className="w-[90%] mx-auto flex items-center px-6 lg:px-0">
+      <div className="w-[90%] mx-auto flex flex-col items-center px-6 lg:px-0">
+        {
+          noForm ?
+            <div
+              className="bg-red-50 border text-center border-red-200 text-sm text-red-600 rounded-md p-4 mb-4"
+              role="alert"
+            >
+              No Service Form Attached to this Service.
+            </div>
+            : null
+        }
         <div className="flex mx-auto sm:flex-row md:flex-row w-full items-center gap-4 justify-center">
-        <button
+          <button
             disabled={noForm === true}
             data-hs-overlay="#hs-full-screen-modal"
             className={noForm === true ? "flex items-center justify-center text-center bg-gray-400 sm:w-full md:w-[150px] sm:my-[5px] md:m-5 h-[50px] text-sm text-white font-medium rounded-lg"

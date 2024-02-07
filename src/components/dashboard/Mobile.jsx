@@ -10,7 +10,7 @@ import Home from "../homepage/Home"
 
 const Mobile = () => {
 
-    const brgy = "MUNICIPAL INFO";
+    const brgy = "MUNISIPYO";
     const [servicesinfo, setServicesInfo] = useState([]);
 
     useEffect(() => {
