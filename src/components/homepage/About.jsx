@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 
 const About = () => {
   const [aboutus, setAboutus] = useState([]);
-  const brgy = "MUNICIPAL INFO";
+  const brgy = "MUNISIPYO";
   useEffect(() => {
     const fetch = async () => {
       const response = await axios.get(

@@ -28,6 +28,11 @@ const EventsApplicationList = ({ events, setViewEvent }) => {
             <tr key={idx} className="odd:bg-slate-100 text-center">
                 <td className="px-6 py-3">
                     <span className="text-xs sm:text-sm text-black line-clamp-2 uppercase">
+                        {item.application_id}
+                    </span>
+                </td>
+                <td className="px-6 py-3">
+                    <span className="text-xs sm:text-sm text-black line-clamp-2 uppercase">
                         {item.event_name}
                     </span>
                 </td>

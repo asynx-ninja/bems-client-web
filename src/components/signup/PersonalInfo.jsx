@@ -114,38 +114,6 @@ const PersonalInfo = ({ formData, empty, emptyFields, restrict, handleChange, ha
                     </select>
                 </div>
             </div>
-            <div className="flex sm:flex-col md:flex-row md:gap-4">
-                <div className="relative z-0 w-full mb-3 group">
-                    <select
-                        name="religion"
-                        value={formData.religion || ""}
-                        onChange={handleChange}
-                        className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
-                    >
-                        <option value="">
-                            Select Religion
-                        </option>
-                        {religions.map((religion, i) => (
-                            <option key={i} value={religion}>{religion}</option>
-                        ))}
-                    </select>
-                </div>
-                <div className="relative z-0 w-full mb-3 group">
-                    <select
-                        name="civil_status"
-                        value={formData.civil_status || ""}
-                        onChange={handleChange}
-                        className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
-                    >
-                        <option value="">
-                            Civil Status
-                        </option>
-                        {civil_status.map((civil, i) => (
-                            <option key={i} value={civil}>{civil}</option>
-                        ))}
-                    </select>
-                </div>
-            </div>
             <button
                 onClick={handleNextPage}
                 type="submit"

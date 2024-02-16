@@ -118,7 +118,7 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
     e.preventDefault();
     console.log(newMessage);
 
-    if (newMessage.message || createFiles.length === 0) {
+    if (newMessage.message === "" && createFiles.length === 0) {
       setErrMsg(true)
 
       return

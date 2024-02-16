@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import myImage from "../../assets/image/rizallogo2.png";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -9,6 +9,7 @@ import SideInfo from "../../components/signup/SideInfo";
 import PersonalInfo from "../../components/signup/PersonalInfo";
 import Address from "../../components/signup/Address";
 import AccountCredentials from "../../components/signup/AccountCredentials";
+import Verification from "../../components/signup/Verification";
 
 const SignupPage = () => {
   const [passwordError, setPasswordError] = useState(false);
@@ -28,6 +29,7 @@ const SignupPage = () => {
     personal: true,
     address: false,
     credential: false,
+    verification: false,
   })
   const [formData, setFormData] = useState({
     firstName: "",
@@ -51,8 +53,34 @@ const SignupPage = () => {
     password: "",
     type: "Resident",
   });
+  const filePrimeIDRef = useRef()
+  const fileSecIDRef = useRef()
 
   const navigate = useNavigate();
+
+  const handleFileChange = (e) => {
+    e.preventDefault();
+
+    if (e.target.id === "primary_input") {
+      var primary = document.getElementById("primary");
+      primary.src = URL.createObjectURL(e.target.files[0]);
+      primary.onload = function () {
+        URL.revokeObjectURL(primary.src); // free memory
+      };
+      // setGovID({
+      //     primary: e.target.files[0],
+      // });
+    } else if (e.target.id = "secondary_input") {
+      var secondary = document.getElementById("secondary");
+      secondary.src = URL.createObjectURL(e.target.files[0]);
+      secondary.onload = function () {
+        URL.revokeObjectURL(secondary.src); // free memory
+      };
+      // setGovID({
+      //     secondary: e.target.files[0]
+      // })
+    }
+  };
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -104,18 +132,28 @@ const SignupPage = () => {
         personal: true,
         address: false,
         credential: false,
+        verification: false
       })
     } else if (e.target.name === "Address") {
       setSignupPage({
         personal: false,
         address: true,
         credential: false,
+        verification: false
       })
     } else if (e.target.name === "Credentials") {
       setSignupPage({
         personal: false,
         address: false,
         credential: true,
+        verification: false
+      })
+    } else if (e.target.name === "Verification") {
+      setSignupPage({
+        personal: false,
+        address: false,
+        credential: false,
+        verification: true
       })
     }
   }
@@ -292,6 +330,9 @@ const SignupPage = () => {
         ) : null}
         {signupPage.address === true ? (
           <Address formData={formData} empty={empty} emptyFields={emptyFields} restrict={restrict} handleChange={handleChange} handleNextPage={handleNextPage} />
+        ) : null}
+        {signupPage.verification === true ? (
+          <Verification formData={formData} empty={empty} emptyFields={emptyFields} restrict={restrict} handleChange={handleChange} passwordError={passwordError} passwordStrengthError={passwordStrengthError} passwordMatchSuccess={passwordMatchSuccess} passwordStrengthSuccess={passwordStrengthSuccess} showError={showError} passwordStrength={passwordStrength} duplicateError={duplicateError} successReg={successReg} termsAccepted={termsAccepted} setTermsAccepted={setTermsAccepted} policyAccepted={policyAccepted} setPolicyAccepted={setPolicyAccepted} handleSubmit={handleSubmit} handleNextPage={handleNextPage} />
         ) : null}
         {signupPage.credential === true ? (
           <AccountCredentials formData={formData} empty={empty} emptyFields={emptyFields} restrict={restrict} handleChange={handleChange} passwordError={passwordError} passwordStrengthError={passwordStrengthError} passwordMatchSuccess={passwordMatchSuccess} passwordStrengthSuccess={passwordStrengthSuccess} showError={showError} passwordStrength={passwordStrength} duplicateError={duplicateError} successReg={successReg} termsAccepted={termsAccepted} setTermsAccepted={setTermsAccepted} policyAccepted={policyAccepted} setPolicyAccepted={setPolicyAccepted} handleSubmit={handleSubmit} handleNextPage={handleNextPage} />

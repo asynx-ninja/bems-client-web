@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FiSearch } from "react-icons/fi";
+import { FaSearch } from "react-icons/fa";
 import { AiOutlineStop } from "react-icons/ai";
 import { FaPlus } from "react-icons/fa";
 import { BsPrinter } from "react-icons/bs";
@@ -28,6 +28,9 @@ const Inquiries = () => {
   const [inquiry, setInquiry] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [pageCount, setPageCount] = useState(0);
+  const [sortBy, setSortBy] = useState([])
+  const [SortByName, setSortByName] = useState("all")
+  const [searchID, setSearchID] = useState("")
 
   useEffect(() => {
     document.title = "Inquiries | Barangay E-Services Management";
@@ -37,12 +40,17 @@ const Inquiries = () => {
     const fetch = async () => {
       try {
         const response = await axios.get(
-          `${API_LINK}/inquiries/?id=${user_id}&brgy=${brgy}&archived=false&page=${currentPage}`
+          `${API_LINK}/inquiries/?id=${user_id}&brgy=${brgy}&to=${SortByName}&inq_id=${searchID}&archived=false&page=${currentPage}`
         );
 
         if (response.status === 200) {
           setInquiries(response.data.result.sort((date1, date2) => new Date(date2.createdAt) - new Date(date1.createdAt)))
           setPageCount(response.data.pageCount);
+
+          let uniqueInquiries = new Set(
+            response.data.all.map((item) => item.compose.to));
+          let arr = [...uniqueInquiries].sort();
+          setSortBy(arr);
         } else {
           setInquiries([]);
         }
@@ -52,15 +60,28 @@ const Inquiries = () => {
     };
 
     fetch();
-  }, [user_id, brgy, currentPage]);
+  }, [user_id, brgy, SortByName, searchID, currentPage]);
 
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected);
   };
 
+  const handleRequestFilter = (selectedType) => {
+    setSortByName(selectedType);
+  };
+
+  const handleResetFilter = () => {
+    setSortByName("all");
+  };
+
+  const handleOnSearch = (e) => {
+    setSearchID(e.target.value.toUpperCase())
+  }
+
   // console.log(inquiries)
 
   const tableHeader = [
+    "Inquiry ID",
     "subject",
     "to",
     "date",
@@ -102,6 +123,75 @@ const Inquiries = () => {
                 >
                   Compose
                 </span>
+              </button>
+            </div>
+          </div>
+
+          <div className="mt-5 sw-full flex flex-row justify-between items-center">
+            {/* Events Application Type Sort */}
+            <div className="hs-dropdown relative inline-flex sm:[--placement:bottom] md:[--placement:bottom-left]">
+              <button
+                id="hs-dropdown"
+                type="button"
+                className="bg-custom-green-header h-[40px] sm:w-full md:w-full sm:mt-2 md:mt-0 text-white hs-dropdown-toggle py-1 px-5 inline-flex justify-center items-center gap-2 rounded-md  font-medium shadow-sm align-middle transition-all text-sm  "
+              >
+                TO
+                <svg
+                  // className={`hs-dropdown-open:rotate-${sortOrder === "asc" ? "180" : "0"
+                  //   } w-2.5 h-2.5 text-white`}
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M2 5L8.16086 10.6869C8.35239 10.8637 8.64761 10.8637 8.83914 10.6869L15 5"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </button>
+              <ul
+                className="bg-[#f8f8f8] border-2 border-[#ffb13c] hs-dropdown-menu w-72 transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden z-10  shadow-xl rounded-xl p-2 "
+                aria-labelledby="hs-dropdown"
+              >
+                <a
+                  onClick={handleResetFilter}
+                  className="flex items-center font-medium uppercase gap-x-3.5 py-2 px-2 text-sm text-black hover:bg-[#b3c5cc] hover:text-gray-800 hover:rounded-[12px] focus:ring-2 focus:ring-blue-500"
+                  href="#"
+                >
+                  RESET FILTERS
+                </a>
+                <hr className="border-[#4e4e4e] my-1" />
+                <div className="flex flex-col scrollbarWidth scrollbarTrack scrollbarHover scrollbarThumb overflow-y-scroll h-44">
+                  {sortBy.map((event_name, index) => (
+                    <a
+                      key={index}
+                      onClick={() => handleRequestFilter(event_name)}
+                      className="flex items-center font-medium uppercase gap-x-3.5 py-2 px-3 rounded-xl text-sm text-black hover:bg-[#b3c5cc] hover:text-gray-800 focus:ring-2 focus:ring-blue-500"
+                      href="#"
+                    >
+                      {event_name}
+                    </a>
+                  ))}
+                </div>
+              </ul>
+            </div>
+
+            {/* SEARCH */}
+            <div className="flex gap-2">
+              <input
+                className="rounded-lg uppercase"
+                type="text"
+                placeholder="Search..."
+                onChange={handleOnSearch}
+              />
+              <button
+                className="rounded-xl bg-custom-green-header w-[40px] h-[40px] justify-center items-center text-white"
+              >
+                <FaSearch className="w-full" />
               </button>
             </div>
           </div>

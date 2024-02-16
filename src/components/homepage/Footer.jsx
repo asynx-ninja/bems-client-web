@@ -13,13 +13,14 @@ import { useEffect, useState } from "react";
 const Footer = () => {
   
   const [aboutus, setAboutus] = useState([]);
-  const brgy = "MUNICIPAL INFO";
+  const brgy = "MUNISIPYO";
   useEffect(() => {
     const fetch = async () => {
       const response = await axios.get(
         `${API_LINK}/aboutus/?brgy=${brgy}&archived=false`
       );
-      if (response.status === 200) setAboutus(response.data.result);
+      // console.log(response.data.result[0])
+      if (response.status === 200) setAboutus(response.data.result[0]);
       else setAboutus(response.data.result[0]);
     };
 

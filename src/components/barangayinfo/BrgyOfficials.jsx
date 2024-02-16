@@ -15,7 +15,7 @@ const BrgyOfficials = () => {
 
     useEffect(() => {
         const getPositionByOrder = (a, b) => {
-            const positionsOrder = ['Barangay Chairman', 'Counsilor', 'Barangay Kagawad', 'SK Chairman', 'SK Kagawad', 'Secretary', 'Treasurer'  ];
+            const positionsOrder = ['Barangay Chairman', 'Counsilor', 'Barangay Kagawad', 'SK Chairman', 'SK Kagawad', 'Secretary', 'Assistant Secretary', 'Treasurer'  ];
             return positionsOrder.indexOf(a.position) - positionsOrder.indexOf(b.position);
         }
         const getOfficials = async () => {

@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import defaultPFP from "../assets/sample-image/default-pfp.png";
+import sampleID from "../assets/image/sampleID.png"
 import {
   FaCamera,
   FaFacebook,
@@ -19,19 +20,28 @@ import AddressDetails from "../components/settings/AddressDetails";
 import OtherPersonalData from "../components/settings/OthersPersonalData";
 import Username from "../components/settings/Username";
 import Password from "../components/settings/Password";
+import GovernmentID from "../components/settings/GovernmentID";
 import Preloader from "../components/loaders/Preloader";
 
 const Settings = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get("id");
+  const brgy = searchParams.get("brgy");
   const fileInputRef = useRef();
+  const filePrimeIDRef = useRef()
+  const fileSecIDRef = useRef()
   const [activeButton, setActiveButton] = useState({
     personal: true,
     username: false,
-    password: false
+    password: false,
+    govID: false
   });
   const [editButton, setEditButton] = useState(true);
   const [pfp, setPfp] = useState("");
+  const [govID, setGovID] = useState({
+    primary: "",
+    secondary: ""
+  })
   const [userAddress, setUserAddress] = useState({
     street: "",
     brgy: "",
@@ -77,19 +87,52 @@ const Settings = () => {
 
   const handleAdd = (e) => {
     e.preventDefault();
-    fileInputRef.current.click();
+
+    if (e.target.id === "primeID") {
+      filePrimeIDRef.current.click();
+    } else if (e.target.id === "secID") {
+      fileSecIDRef.current.click();
+    } else if (e.target.id === "profPic") {
+      fileInputRef.current.click();
+    }
+
   };
+
+  const handleProfileChange = (e) => {
+    e.preventDefault()
+
+    var profile = document.getElementById("pfp");
+    profile.src = URL.createObjectURL(e.target.files[0]);
+    profile.onload = function () {
+      URL.revokeObjectURL(profile.src); // free memory
+    };
+
+    setPfp(e.target.files[0]);
+
+  }
 
   const handleFileChange = (e) => {
     e.preventDefault();
 
-    setPfp(e.target.files[0]);
-
-    var output = document.getElementById("pfp");
-    output.src = URL.createObjectURL(e.target.files[0]);
-    output.onload = function () {
-      URL.revokeObjectURL(output.src); // free memory
-    };
+    if (e.target.id === "primary_input") {
+      var primary = document.getElementById("primary");
+      primary.src = URL.createObjectURL(e.target.files[0]);
+      primary.onload = function () {
+        URL.revokeObjectURL(primary.src); // free memory
+      };
+      // setGovID({
+      //     primary: e.target.files[0],
+      // });
+    } else if (e.target.id = "secondary_input") {
+      var secondary = document.getElementById("secondary");
+      secondary.src = URL.createObjectURL(e.target.files[0]);
+      secondary.onload = function () {
+        URL.revokeObjectURL(secondary.src); // free memory
+      };
+      // setGovID({
+      //     secondary: e.target.files[0]
+      // })
+    }
   };
 
   useEffect(() => {
@@ -127,6 +170,13 @@ const Settings = () => {
             res.data[0].profile.link !== ""
               ? res.data[0].profile.link
               : defaultPFP;
+          var primaryID = document.getElementById("primary");
+          primaryID.src = sampleID;
+          var secondary = document.getElementById("secondary");
+          secondary.src = sampleID;
+          // res.data[0].profile.link !== ""
+          //   ? res.data[0].profile.link
+          //   : defaultPFP;
         } else {
           setError("Invalid username or password");
         }
@@ -274,33 +324,40 @@ const Settings = () => {
           var formData = new FormData();
           formData.append("users", JSON.stringify(obj));
           formData.append("file", pfp);
-          const response = await axios.patch(`${API_LINK}/users/?doc_id=${id}`, formData);
+          const res_folder = await axios.get(
+            `${API_LINK}/folder/specific/?brgy=${brgy}`
+          );
 
-          if (response.status === 200) {
-            console.log("Update successful:", response);
-            setUserData(response.data);
-            setUserAddress({
-              street: response.data.address.street,
-              brgy: response.data.address.brgy,
-              city: response.data.address.city,
-            });
-            setUserSocials({
-              facebook: response.data.socials.facebook,
-              instagram: response.data.socials.instagram,
-              twitter: response.data.socials.twitter,
-            });
-            setEditButton(true);
-            setTimeout(() => {
-              setSubmitClicked(false);
-              setUpdatingStatus("success");
+          if (res_folder.status === 200) {
+            const response = await axios.patch(`${API_LINK}/users/?doc_id=${id}&folder_id=${res_folder.data[0].pfp}`, formData);
+
+            if (response.status === 200) {
+              console.log("Update successful:", response);
+              setUserData(response.data);
+              setUserAddress({
+                street: response.data.address.street,
+                brgy: response.data.address.brgy,
+                city: response.data.address.city,
+              });
+              setUserSocials({
+                facebook: response.data.socials.facebook,
+                instagram: response.data.socials.instagram,
+                twitter: response.data.socials.twitter,
+              });
+              setEditButton(true);
               setTimeout(() => {
-                window.location.reload();
-              }, 3000);
-            }, 1000);
+                setSubmitClicked(false);
+                setUpdatingStatus("success");
+                setTimeout(() => {
+                  window.location.reload();
+                }, 3000);
+              }, 1000);
 
-          } else {
-            console.error("Update failed. Status:", response.status);
+            } else {
+              console.error("Update failed. Status:", response.status);
+            }
           }
+
         } catch (error) {
           console.log(error)
         }
@@ -393,19 +450,29 @@ const Settings = () => {
       setActiveButton({
         personal: true,
         username: false,
-        password: false
+        password: false,
+        govID: false
       });
     } else if (e.target.name === "username") {
       setActiveButton({
         personal: false,
         username: true,
-        password: false
+        password: false,
+        govID: false
       });
     } else if (e.target.name === "password") {
       setActiveButton({
         personal: false,
         username: false,
-        password: true
+        password: true,
+        govID: false
+      });
+    } else if (e.target.name === "governmentID") {
+      setActiveButton({
+        personal: false,
+        username: false,
+        password: false,
+        govID: true
       });
     }
   };
@@ -442,7 +509,7 @@ const Settings = () => {
                   </div>
                   : null
               }
-              <div className="flex gap-[10px] my-5 pb-[10px] border-b-[2px] border-b-gray-200 px-[10px]">
+              <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-[10px] my-5 pb-[10px] border-b-[2px] border-b-gray-200 px-[10px]">
                 <button
                   name="personal"
                   onClick={handleOnActive}
@@ -458,7 +525,7 @@ const Settings = () => {
                   name="username"
                   onClick={handleOnActive}
                   className={
-                    activeButton.credential
+                    activeButton.username
                       ? "sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-custom-green-button text-white font-medium"
                       : "sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-white text-black font-medium transition-all ease-in-out hover:bg-custom-green-button hover:text-white"
                   }
@@ -469,12 +536,23 @@ const Settings = () => {
                   name="password"
                   onClick={handleOnActive}
                   className={
-                    activeButton.credential
+                    activeButton.password
                       ? "sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-custom-green-button text-white font-medium"
                       : "sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-white text-black font-medium transition-all ease-in-out hover:bg-custom-green-button hover:text-white"
                   }
                 >
                   Change Password
+                </button>
+                <button
+                  name="governmentID"
+                  onClick={handleOnActive}
+                  className={
+                    activeButton.govID
+                      ? "sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-custom-green-button text-white font-medium"
+                      : "sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-white text-black font-medium transition-all ease-in-out hover:bg-custom-green-button hover:text-white"
+                  }
+                >
+                  Verification
                 </button>
               </div>
 
@@ -511,6 +589,16 @@ const Settings = () => {
                 {/* CREDENTIALS */}
                 <Password userCred={userCred} handleUserChangeCred={handleUserChangeCred} editButton={editButton} message={message} passwordStrengthError={passwordStrengthError} passwordStrengthSuccess={passwordStrengthSuccess} passwordStrength={passwordStrength} empty={empty} />
               </div>
+              <div
+                className={
+                  activeButton.govID
+                    ? "shadow-lg px-[30px] pb-[30px]"
+                    : "hidden"
+                }
+              >
+                {/* CREDENTIALS */}
+                <GovernmentID userData={userData} editButton={editButton} handleFileChange={handleFileChange} handleAdd={handleAdd} empty={empty} filePrimeIDRef={filePrimeIDRef} fileSecIDRef={fileSecIDRef} />
+              </div>
             </div>
             <div className="sm:w-full lg:w-[20%] relative mt-[-80px] mb-[20px]">
               <div className="block">
@@ -518,6 +606,7 @@ const Settings = () => {
                   <div className="absolute top-[75px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
                     <label
                       htmlFor="file_input"
+                      id="profPic"
                       onClick={handleAdd}
                       className={
                         editButton
@@ -534,8 +623,9 @@ const Settings = () => {
                     <input
                       disabled={editButton}
                       type="file"
+                      id="file_input"
                       name="file"
-                      onChange={handleFileChange}
+                      onChange={handleProfileChange}
                       ref={fileInputRef}
                       accept="image/*"
                       multiple="multiple"

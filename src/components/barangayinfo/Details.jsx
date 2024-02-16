@@ -58,19 +58,23 @@ const Details = () => {
           </div>
 
           {/* DESCRIPTION */}
-          <div className="flex pb-[20px] sm:w-[90%] lg:w-[1000px] mx-auto sm:mt-[50px] md:mt-[80px] justify-between sm:flex-col-reverse md:flex-row gap-5">
+          <div className="pb-[20px] sm:w-[90%] lg:w-[1000px] mx-auto sm:mt-[50px] md:mt-[30px] grid grid-cols-1 gap-5">
+
+            <div className="w-full">
+              <img
+                className="w-full sm:h-[200px] md:h-[400px] rounded-md sm:mx-auto lg:mx-0 object-cover"
+                src={info.banner.link !== "" ? info.banner.link : null}
+                alt=""
+              />
+            </div>
+
             <textarea
               disabled
               value={info.story}
-              className="sm:w-full sm:h-full lg:h-auto lg:w-[60%] text-black border-0 bg-transparent resize-none">
+              className="w-[90%] text-black border-0 bg-transparent resize-none">
               {info.story}
             </textarea>
 
-            <img
-              className="w-[400px] sm:h-[200px] md:h-[400px] sm:mx-auto lg:mx-0 object-cover"
-              src={info.banner.link !== "" ? info.banner.link : null}
-              alt=""
-            />
           </div>
 
           {/* MISSION VISION */}

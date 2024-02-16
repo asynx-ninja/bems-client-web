@@ -24,7 +24,7 @@ const EventsInfo = () => {
                     `${API_LINK}/announcement/all/?brgy=${brgy}&page=${currentPage}`
                 );
 
-                setAnnouncements(response.data.result.sort((date1, date2) => new Date(date2.createdAt) - new Date(date1.createdAt)));
+                setAnnouncements(response.data.result);
                 setPageCount(response.data.pageCount);
 
             } catch (err) {
@@ -45,6 +45,8 @@ const EventsInfo = () => {
             year: "numeric",
             month: "short",
             day: "numeric",
+            hour: "numeric",
+            minute: "numeric"
         };
         return new Intl.DateTimeFormat("en-US", options).format(new Date(date));
     };

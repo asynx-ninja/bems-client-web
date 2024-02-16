@@ -29,15 +29,19 @@ const ViewNotification = ({ viewNotif, userData }) => {
                         </div>
 
                         <div className='flex flex-col w-full p-5 overflow-y-auto'>
-                            <div className='grid sm:grid-cols-1 md:grid-cols-2 gap-5 mb-5 justify-end items-end'>
-                                <img src={viewNotif &&
-                                    viewNotif.logo &&
-                                    viewNotif.logo.link !== undefined
-                                    ? viewNotif.logo.link
-                                    : defaultLogo} className='mx-auto w-[300px]' alt="" />
-                                <div className='sm:mx-auto md:mx-0'>
-                                    <h1 className='font-bold'>{viewNotif.length === 0 ? "" : viewNotif.compose.subject}</h1>
-                                </div>
+                            <div
+                                className="items-center py-[100px] px-4 border-b relative mb-5"
+                                style={{
+                                    backgroundImage: `url(${viewNotif && viewNotif.logo && viewNotif.logo.link !== undefined ? viewNotif.logo.link : defaultLogo})`,
+                                    backgroundPosition: 'center',
+                                    backgroundSize: 'cover',
+                                }}
+                            >
+                                <div className="absolute inset-0 bg-black opacity-50"></div>
+                                {/* Content */}
+                                <h3 className="lg:tracking-[.4rem] tracking-widest text-md lg:text-lg font-bold uppercase text-center text-white dark:text-white relative z-10">
+                                    {viewNotif.length === 0 ? "" : viewNotif.compose.subject}
+                                </h3>
                             </div>
 
                             <div className='flex flex-col'>
@@ -48,7 +52,7 @@ const ViewNotification = ({ viewNotif, userData }) => {
                                     <textarea
                                         disabled
                                         value={viewNotif.length === 0 ? "" : viewNotif.compose.message}
-                                        className="sm:w-full h-[500px] w-full text-black border-0 bg-transparent resize-none"
+                                        className="sm:w-full h-[500px] w-full text-black border-0 bg-transparent resize-none whitespace-pre-line"
                                     >
                                         {viewNotif.length === 0 ? "" : viewNotif.compose.message}
                                     </textarea>

@@ -5,6 +5,10 @@ import { HashLink as Links } from "react-router-hash-link";
 import { FaAngleUp } from "react-icons/fa";
 
 const NavbarHome = () => {
+  const location = useLocation()
+  const page = location.pathname.split("/")[1];
+  const hash = location.hash.split("#")[1];
+  const current = page === "" ? hash : page
   const [isOpen, setIsOpen] = useState(false);
 
   const hrefggleNavbar = () => {
@@ -65,7 +69,8 @@ const NavbarHome = () => {
                 <button
                   // value={"about"}
                   // onClick={OnNav}
-                  className="text-white uppercase hover:bg-custom-green-header px-2 py-2 rounded-md text-md hover:text-custom-gold1"
+                  className={current === "about" ? "text-custom-gold1 bg-custom-green-header uppercase px-2 py-2 rounded-md text-md"
+                    : "text-white uppercase hover:bg-custom-green-header px-2 py-2 rounded-md text-md hover:text-custom-gold1"}
                 >
                   About us{" "}
                 </button>
@@ -74,20 +79,23 @@ const NavbarHome = () => {
                 <button
                   // value={"services"}
                   // onClick={OnNav}
-                  className="text-white uppercase hover:bg-custom-green-header px-2 py-2 rounded-md text-md hover:text-custom-gold1"
+                  className={current === "services" ? "text-custom-gold1 bg-custom-green-header uppercase px-2 py-2 rounded-md text-md"
+                    : "text-white uppercase hover:bg-custom-green-header px-2 py-2 rounded-md text-md hover:text-custom-gold1"}
                 >
                   Services
                 </button>
               </Links>
               <Links
                 to="/tourist-spot-list"
-                className="text-white uppercase hover:bg-custom-green-header px-2 py-2 rounded-md text-md hover:text-custom-gold1"
+                className={current === "tourist-spot-list" ? "text-custom-gold1 bg-custom-green-header uppercase px-2 py-2 rounded-md text-md"
+                  : "text-white uppercase hover:bg-custom-green-header px-2 py-2 rounded-md text-md hover:text-custom-gold1"}
               >
                 Tourist Spot
               </Links>
               <Link
                 to="/barangay"
-                className="text-white uppercase hover:bg-custom-green-header px-2 py-2 rounded-md text-md hover:text-custom-gold1"
+                className={current === "barangay" ? "text-custom-gold1 bg-custom-green-header uppercase px-2 py-2 rounded-md text-md"
+                  : "text-white uppercase hover:bg-custom-green-header px-2 py-2 rounded-md text-md hover:text-custom-gold1"}
               >
                 List of Barangay
               </Link>

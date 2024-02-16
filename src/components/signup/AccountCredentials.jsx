@@ -53,7 +53,7 @@ const AccountCredentials = ({ formData, empty, emptyFields, restrict, handleChan
                 </div>
             )}
 
-            <h1 className="py-3 mb-3 font-bold">Step 3: Credentials</h1>
+            <h1 className="py-3 mb-3 font-bold">Step 4: Credentials</h1>
             <div className="relative z-0 w-full mb-3 group">
                 <input
                     required
@@ -230,7 +230,7 @@ const AccountCredentials = ({ formData, empty, emptyFields, restrict, handleChan
             <div className='flex gap-5'>
                 <button
                     onClick={handleNextPage}
-                    name='Address'
+                    name='Verification'
                     className="w-full mt-5 text-center text-black hover:text-white border-[1px] bg-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-green-700 dark:hover:bg-green-800 dark:focus:ring-gray-700 dark:border-gray-700"
                 >
                     Back

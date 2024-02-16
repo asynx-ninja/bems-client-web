@@ -30,6 +30,11 @@ const InquiriesList = ({ inquiries, setInquiry }) => {
             <tr key={index} className="odd:bg-slate-100 text-center">
                 <td className="px-6 py-3">
                     <span className="text-xs sm:text-sm text-black line-clamp-2 ">
+                        {item.inq_id}
+                    </span>
+                </td>
+                <td className="px-6 py-3">
+                    <span className="text-xs sm:text-sm text-black line-clamp-2 ">
                         {item.compose.subject}
                     </span>
                 </td>

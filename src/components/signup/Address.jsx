@@ -32,7 +32,7 @@ const Address = ({ formData, empty, emptyFields, restrict, handleChange, handleN
 
                 <div className="relative z-0 w-full mb-3 group">
                     <label
-                        for="input-label"
+                        htmlFor="input-label"
                         className="block sr-only  text-sm font-medium mb-2 dark:text-black"
                     >
                         Barangay
@@ -43,7 +43,7 @@ const Address = ({ formData, empty, emptyFields, restrict, handleChange, handleN
                         onChange={handleChange}
                         className="py-3 px-4 block w-full text-black border-gray-200 rounded-md text-sm focus:border-green-500 focus:ring-green-500 dark:bg-white dark:border-gray-700"
                     >
-                        <option selected disabled={formData.civil_status !== ""}>
+                        <option value="" disabled>
                             Civil Status
                         </option>
                         <option>Single</option>
@@ -63,14 +63,15 @@ const Address = ({ formData, empty, emptyFields, restrict, handleChange, handleN
                 <div className="relative z-0 w-full mb-3 group">
                     <select
                         disabled
+                        value={"Montalban"}
                         className="py-3 px-4 block w-full text-black border-gray-200 rounded-md text-sm focus:border-green-500 focus:ring-green-500 dark:bg-white dark:border-gray-700"
                     >
-                        <option selected>Montalban</option>
+                        <option value={"Montalban"}>Montalban</option>
                     </select>
                 </div>
                 <div className="relative z-0 w-full mb-3 group">
                     <label
-                        for="input-label"
+                        htmlFor="input-label"
                         className="block sr-only  text-sm font-medium mb-2 dark:text-black"
                     >
                         Barangay
@@ -81,7 +82,7 @@ const Address = ({ formData, empty, emptyFields, restrict, handleChange, handleN
                         onChange={handleChange}
                         className="py-3 px-4 block w-full text-black border-gray-200 rounded-md text-sm focus:border-green-500 focus:ring-green-500 dark:bg-white dark:border-gray-700"
                     >
-                        <option selected disabled={formData.brgy !== ""}>
+                        <option value="" disabled>
                             Select Barangay
                         </option>
                         <option>Balite</option>
@@ -116,7 +117,7 @@ const Address = ({ formData, empty, emptyFields, restrict, handleChange, handleN
             <div className="flex md:flex-row sm:flex-col sm:gap-5 mb-3 mt-3 px-2 md:gap-x-20 lg:gap-x-20 justify-between">
                 <div className="relative z-0 w-full group">
                     <label
-                        for="input-label"
+                        htmlFor="input-label"
                         className="block text-xs font-medium mb-2 dark:text-black"
                     >
                         Are you a head of your household?
@@ -160,7 +161,7 @@ const Address = ({ formData, empty, emptyFields, restrict, handleChange, handleN
 
                 <div className="relative z-0 w-full group ml-auto">
                     <label
-                        for="input-label"
+                        htmlFor="input-label"
                         className="block text-xs font-medium mb-2 dark:text-black"
                     >
                         Are you a registered voter on Rodriguez Rizal?
@@ -213,7 +214,7 @@ const Address = ({ formData, empty, emptyFields, restrict, handleChange, handleN
                 <button
                     onClick={handleNextPage}
                     type="submit"
-                    name='Credentials'
+                    name='Verification'
                     className="w-full mt-5 text-center text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-green-700 dark:hover:bg-green-800 dark:focus:ring-gray-700 dark:border-gray-700"
                 >
                     Next

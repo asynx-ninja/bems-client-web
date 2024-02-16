@@ -28,6 +28,11 @@ const RequestList = ({ request, selectedItems, checkboxHandler, setViewRequest }
             <tr key={idx} className="odd:bg-slate-100 text-center">
                 <td className="px-6 py-3">
                     <span className="text-xs sm:text-sm text-black line-clamp-2 uppercase">
+                        {item.req_id}
+                    </span>
+                </td>
+                <td className="px-6 py-3">
+                    <span className="text-xs sm:text-sm text-black line-clamp-2 uppercase">
                         {item.service_name}
                     </span>
                 </td>
