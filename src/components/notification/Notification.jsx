@@ -5,8 +5,6 @@ import API_LINK from '../../config/API';
 import axios from 'axios';
 import moment from 'moment';
 
-import ViewNotification from './viewNotification';
-
 const Notification = ({ notification, setViewNotif, fetch }) => {
     // console.log(notification)
     const [searchParams, setSearchParams] = useSearchParams();
