@@ -38,6 +38,9 @@ import TouristSpot from "../pages/home/TouristSpot"
 import EventsInfo from "../components/dashboard/EventsInfo";
 import EventsApplication from "../pages/EventsApplication";
 
+// BLOTTER
+import Blotter from "../pages/Blotter";
+
 const pages = [
   {
     path: "/dashboard",
@@ -54,6 +57,15 @@ const pages = [
       <>
         <Navbar />
         <Mobile />
+      </>
+    )
+  },
+  {
+    path: "/blotter",
+    element: (
+      <>
+        <Navbar />
+        <Blotter />
       </>
     )
   },

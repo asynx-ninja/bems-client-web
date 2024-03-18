@@ -31,6 +31,8 @@ const Inquiries = () => {
   const [sortBy, setSortBy] = useState([])
   const [SortByName, setSortByName] = useState("all")
   const [searchID, setSearchID] = useState("")
+  const [getAll, setGetAll] = useState([])
+  const [info, setInfo] = useState({});
 
   useEffect(() => {
     document.title = "Inquiries | Barangay E-Services Management";
@@ -39,13 +41,21 @@ const Inquiries = () => {
   useEffect(() => {
     const fetch = async () => {
       try {
+        const brgyInfo = await axios.get(`${API_LINK}/brgyinfo/?brgy=${brgy}`);
+        if (brgyInfo.status === 200) {
+          setInfo(brgyInfo.data[0]);
+        } else {
+          setInfo({})
+        }
+
         const response = await axios.get(
-          `${API_LINK}/inquiries/?id=${user_id}&brgy=${brgy}&to=${SortByName}&inq_id=${searchID}&archived=false&page=${currentPage}`
+          `${API_LINK}/inquiries/?id=${user_id}&brgy=${brgy}&to=${SortByName}&archived=false&page=${currentPage}`
         );
 
         if (response.status === 200) {
           setInquiries(response.data.result.sort((date1, date2) => new Date(date2.createdAt) - new Date(date1.createdAt)))
           setPageCount(response.data.pageCount);
+          setGetAll(response.data.all)
 
           let uniqueInquiries = new Set(
             response.data.all.map((item) => item.compose.to));
@@ -60,7 +70,7 @@ const Inquiries = () => {
     };
 
     fetch();
-  }, [user_id, brgy, SortByName, searchID, currentPage]);
+  }, [user_id, brgy, SortByName, currentPage]);
 
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected);
@@ -75,7 +85,11 @@ const Inquiries = () => {
   };
 
   const handleOnSearch = (e) => {
-    setSearchID(e.target.value.toUpperCase())
+    const getSearch = getAll.filter((item) =>
+      item.inq_id.toUpperCase()
+        .includes(e.target.value.toUpperCase()))
+
+    setInquiries(getSearch)
   }
 
   // console.log(inquiries)
@@ -114,7 +128,7 @@ const Inquiries = () => {
               <button
                 type="button"
                 data-hs-overlay="#hs-modal-compose"
-                className="hs-tooltip-toggle flex justify-center items-center rounded-lg bg-custom-green-header text-white font-medium text-sm text-center w-[100px] h-[50px]"
+                className={`hs-tooltip-toggle flex justify-center items-center rounded-lg bg-custom-green-header text-white font-medium text-sm text-center w-[100px] h-[50px]`}
               >
                 <FaPlus size={24} style={{ color: "#ffffff" }} />
                 <span
@@ -135,7 +149,7 @@ const Inquiries = () => {
                 type="button"
                 className="bg-custom-green-header h-[40px] sm:w-full md:w-full sm:mt-2 md:mt-0 text-white hs-dropdown-toggle py-1 px-5 inline-flex justify-center items-center gap-2 rounded-md  font-medium shadow-sm align-middle transition-all text-sm  "
               >
-                TO
+                TO {SortByName !== "all" ? SortByName.toUpperCase() : ""}
                 <svg
                   // className={`hs-dropdown-open:rotate-${sortOrder === "asc" ? "180" : "0"
                   //   } w-2.5 h-2.5 text-white`}
@@ -200,7 +214,7 @@ const Inquiries = () => {
           <div className="overflow-x-auto sm:h-[380px] lg:h-[680px] border border-b-0 mt-5 rounded-t-xl bg-white">
             <table className="w-full divide-y divide-gray-200 ">
               {/* Table Headers */}
-              <thead className="bg-custom-green-table-header border">
+              <thead className={`bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] border`}>
                 <tr>
                   {
                     tableHeader.map((item, i) => (
@@ -235,7 +249,7 @@ const Inquiries = () => {
             </table>
           </div>
 
-          <div className="md:py-4 md:px-4 bg-custom-green-header flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3">
+          <div className={`md:py-4 md:px-4 bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3`}>
             <span className="font-medium text-white sm:text-xs text-sm">
               Showing {currentPage + 1} out of {pageCount} pages
             </span>

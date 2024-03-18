@@ -161,20 +161,7 @@ const Login = () => {
                 )}
               </button>
             </div>
-            <div className="relative z-0 w-full mb-3 group flex items-center justify-between">
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  id="remember-me"
-                  className="mr-2 text-green-500 focus:border-green-500 focus:ring-green-500"
-                />
-                <label
-                  htmlFor="remember-me"
-                  className="sm:text-[12px] md:text-sm text-black dark:text-black-400"
-                >
-                  Remember Me
-                </label>
-              </div>
+            <div className="relative z-0 w-full mb-3 group flex items-center justify-end">
               <Link
                 className="sm:text-[12px] md:text-sm text-sm text-black font-bold"
                 to="/email_verify"

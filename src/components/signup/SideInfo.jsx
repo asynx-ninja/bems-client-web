@@ -7,7 +7,7 @@ const SideInfo = () => {
 
     return (
         <div
-            className="sm:hidden lg:flex flex-col justify-center items-center w-6/12 hidden"
+            className="sm:hidden lg:flex flex-col h-auto justify-center items-center w-6/12 hidden"
             style={{
                 background:
                     "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.template.net/99413/nature-forest-background-3b296.jpg')",

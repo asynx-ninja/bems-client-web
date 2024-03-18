@@ -5,11 +5,10 @@ import axios from 'axios';
 import API_LINK from '../../config/API';
 import defaultPFP from "../../assets/sample-image/default-pfp.png";
 
-const BrgyOfficials = () => {
-    const [searchParams] = useSearchParams();
-    const brgy = searchParams.get("brgy");
+const MunicipalOfficials = () => {
+    const brgy = "MUNISIPYO";
     const [officials, setOfficials] = useState([])
-    const [brgyChairman, setBrgyChairman] = useState([])
+    const [cityMayor, setCityMayor] = useState([])
     const [currentPage, setCurrentPage] = useState(0);
     const [pageCount, setPageCount] = useState(0);
     const [info, setInfo] = useState({
@@ -23,29 +22,29 @@ const BrgyOfficials = () => {
 
     useEffect(() => {
         const getPositionByOrder = (a, b) => {
-            const positionsOrder = ['Barangay Chairman', 'Counsilor', 'Barangay Kagawad', 'Secretary', 'Assistant Secretary', 'Treasurer', 'SK Chairman', 'SK Kagawad', 'SK Secretary', 'SK Treasurer'];
+            const positionsOrder = ['City Mayor', 'Vice Mayor', 'Barangay Kagawad', 'Secretary', 'Assistant Secretary', 'Treasurer', 'SK Chairman', 'SK Kagawad', 'SK Secretary', 'SK Treasurer'];
             return positionsOrder.indexOf(a.position) - positionsOrder.indexOf(b.position);
         }
         const getOfficials = async () => {
             try {
-                const response = await axios.get(`${API_LINK}/brgyinfo/?brgy=${brgy}`);
+                const response = await axios.get(`${API_LINK}/mofficials/?brgy=${brgy}`);
                 setInfo(response.data[0]);
 
-                const brgy_official = await axios.get(`${API_LINK}/brgyofficial/?brgy=${brgy}&page=${currentPage}&archived=${false}&position=${"ALL"}`);
+                const m_official = await axios.get(`${API_LINK}/mofficials/?brgy=${brgy}&page=${currentPage}&archived=${false}&position=${"ALL"}`);
 
-                const brgy_chairman = brgy_official.data.result.filter((item) => item.position === "Barangay Chairman")
+                const city_mayor = m_official.data.result.filter((item) => item.position === "City Mayor")
 
-                var chairman = document.getElementById("chairman");
-                chairman.src =
-                    brgy_chairman[0] && brgy_chairman[0].picture && brgy_chairman[0].picture.link !== undefined
-                        ? brgy_chairman[0].picture.link
+                var mayor = document.getElementById("mayor");
+                mayor.src =
+                    city_mayor[0] && city_mayor[0].picture && city_mayor[0].picture.link !== undefined
+                        ? city_mayor[0].picture.link
                         : defaultPFP;
 
-                const filtered = brgy_official.data.result.filter((item) => item.position !== "Barangay Chairman")
+                const filtered = m_official.data.result.filter((item) => item.position !== "City Mayor")
 
-                setBrgyChairman(brgy_chairman[0])
+                setCityMayor(city_mayor[0])
                 setOfficials(filtered.sort(getPositionByOrder))
-                setPageCount(brgy_official.data.pageCount);
+                setPageCount(m_official.data.pageCount);
             } catch (error) {
                 console.log(error)
             }
@@ -57,29 +56,39 @@ const BrgyOfficials = () => {
         setCurrentPage(selected);
     };
 
-    // console.log(brgyChairman)
+    // console.log(cityMayor)
 
     return (
-        <div className='w-full flex flex-col'>
-            <div className='w-full mx-auto mt-[100px] mb-[20px]'>
+        <div className='w-[80%] mx-auto flex flex-col'>
+            <section className="">
+                <div className="container mx-auto text-center">
+                    <h1 className="sm:text-[24px] md:text-4xl font-bold mb-4">
+                        Meet Our Municipal Officials
+                    </h1>
+                    {/* <p className="sm:text-[14px] md:text-[18px]">
+                        Explore our range of premium services
+                    </p> */}
+                </div>
+            </section>
+            <div className='w-full mx-auto mt-[150px] mb-[20px]'>
                 <div
-                    className={`rounded-xl w-[300px] mx-auto bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}] relative z-[50] flex transition-all border-b-[0px] border-b-gray-400 hover:border-b-[5px] hover:scale-105`}
+                    className={`rounded-xl w-[300px] mx-auto bg-gradient-to-r from-custom-green-header to-custom-green-button relative z-[50] flex transition-all border-b-[0px] border-b-gray-400 hover:border-b-[5px] hover:scale-105`}
                 >
                     <div className='bg-[url("/header-bg.png")] w-[300px] relative flex flex-col p-5 rounded-xl mx-auto transition-all'>
                         <div
-                            className={`mx-auto absolute top-[-70px] rounded-full border-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] border-[5px] left-[72px]`}
+                            className={`mx-auto absolute top-[-70px] rounded-full border-custom-green-header border-[5px] left-[72px]`}
                         >
                             <img
-                                className='w-[150px] h-[150px] rounded-full'
-                                id='chairman'
+                                className='w-[150px] h-[150px] rounded-full bg-white'
+                                id='mayor'
                                 alt="" />
                         </div>
                         <div className='flex flex-col mt-[80px] justify-center items-center'>
                             <h1 className='text-center text-white font-bold uppercase'>
-                                {brgyChairman.lastName}, {brgyChairman.firstName} {brgyChairman.suffix}
+                                {cityMayor.lastName}, {cityMayor.firstName} {cityMayor.suffix}
                             </h1>
                             <p className='text-center text-[14px] text-white uppercase'>
-                                {brgyChairman.position}
+                                {cityMayor.position}
                             </p>
                         </div>
                     </div>
@@ -90,13 +99,13 @@ const BrgyOfficials = () => {
                     officials.map((item, i) => (
                         <div key={i} className='flex flex-col mt-[100px]'>
                             <div
-                                className={`bg-[url("/header-bg.png")] w-[300px] relative flex flex-col p-5 rounded-xl mx-auto bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] transition-all border-b-[0px] border-b-gray-400 hover:border-b-[5px] hover:scale-105`}
+                                className={`bg-[url("/header-bg.png")] w-[300px] relative flex flex-col p-5 rounded-xl mx-auto bg-custom-green-header transition-all border-b-[0px] border-b-gray-400 hover:border-b-[5px] hover:scale-105`}
                             >
                                 <div
-                                    className={`mx-auto absolute top-[-70px] rounded-full border-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] border-[5px] left-[72px]`}
+                                    className={`mx-auto absolute top-[-70px] rounded-full border-custom-green-header border-[5px] left-[72px]`}
                                 >
                                     <img
-                                        className='w-[150px] h-[150px] rounded-full'
+                                        className='w-[150px] h-[150px] rounded-full bg-white'
                                         src={item.picture.link}
                                         alt="" />
                                 </div>
@@ -136,4 +145,4 @@ const BrgyOfficials = () => {
     )
 }
 
-export default BrgyOfficials
+export default MunicipalOfficials

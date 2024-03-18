@@ -11,6 +11,7 @@ import Dropbox from "./Dropbox";
 import ViewDropbox from "./ViewDropbox";
 import Preloader from "../../../loaders/Preloader";
 import { useSearchParams } from "react-router-dom";
+import moment from "moment";
 // import EditDropbox from "./EditDropbox";
 
 const ViewEventModal = ({ viewEvent }) => {
@@ -54,7 +55,7 @@ const ViewEventModal = ({ viewEvent }) => {
       }
     }
     fetchUser()
-  }, [id])
+  }, [id, viewEvent])
 
   useEffect(() => {
     if (viewEvent && viewEvent.response && viewEvent.response.length !== 0) {
@@ -160,29 +161,70 @@ const ViewEventModal = ({ viewEvent }) => {
       );
 
       if (res_folder.status === 200) {
-        for (let i = 0; i < createFiles.length; i++) {
-          formData.append("files", createFiles[i]);
-        }
 
-        const response = await axios.patch(
-          `${API_LINK}/application/?app_id=${viewEvent._id}&?event_folder_id=${res_folder.data[0].events}&user_type=${"Resident"}`,
-          formData
+        const getEvent = await axios.get(
+          `${API_LINK}/announcement/specific/?brgy=${brgy}&archived=false&event_id=${viewEvent.event_id}`
         );
 
-        if (response.status === 200) {
+        const notify = {
+          category: "Many",
+          compose: {
+            subject: `APPLICATION - ${viewEvent.event_name}`,
+            message: `A user has replied to an event application for the event of ${viewEvent.event_name
+              }.\n\n
+          
+          Application Details:\n
+          - Name: ${`${userData.lastName}, ${userData.firstName}`}\n
+          - Event Applied: ${viewEvent.event_name}\n
+          - Application ID: ${viewEvent.application_id}\n
+          - Date Created: ${moment(viewEvent.createdAt).format(
+                "MMM. DD, YYYY h:mm a"
+              )}\n\n 
+          Please update this application as you\'ve seen this notification!\n\n
+          Thank you!!`,
+            go_to: "Application",
+          },
+          target: { user_id: userData.user_id, area: viewEvent.brgy },
+          type: getType(viewEvent.brgy),
+          banner: getEvent.result.collections.banner,
+          logo: getEvent.result.collections.logo,
+        };
 
-          setTimeout(() => {
-            setSubmitClicked(false);
-            setUpdatingStatus("success");
+        const result = await axios.post(
+          `${API_LINK}/notification/`,
+          notify,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (result.status === 200) {
+          for (let i = 0; i < createFiles.length; i++) {
+            formData.append("files", createFiles[i]);
+          }
+
+          const response = await axios.patch(
+            `${API_LINK}/application/?app_id=${viewEvent._id}&?event_folder_id=${res_folder.data[0].events}&user_type=${"Resident"}`,
+            formData
+          );
+
+          if (response.status === 200) {
+
             setTimeout(() => {
-              window.location.reload();
-            }, 3000);
-          }, 1000);
+              setSubmitClicked(false);
+              setUpdatingStatus("success");
+              setTimeout(() => {
+                window.location.reload();
+              }, 3000);
+            }, 1000);
 
-        } else {
-          setSubmitClicked(false);
-          setUpdatingStatus("error");
-          setError(error.message);
+          } else {
+            setSubmitClicked(false);
+            setUpdatingStatus("error");
+            setError(error.message);
+          }
         }
       }
 
@@ -301,7 +343,7 @@ const ViewEventModal = ({ viewEvent }) => {
                                 </div>
                               </div>
                             </div>
-                            {!upload ? (
+                            {upload ? (
                               // Render Dropbox only when there are uploaded files
                               createFiles.length > 0 && (
                                 <Dropbox

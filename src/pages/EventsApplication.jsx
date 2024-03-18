@@ -23,7 +23,8 @@ const EventsApplication = () => {
   const [pageCount, setPageCount] = useState(0);
   const [sortBy, setSortBy] = useState([])
   const [SortByName, setSortByName] = useState("all")
-  const [searchID, setSearchID] = useState("")
+  const [getAll, setGetAll] = useState([])
+  const [info, setInfo] = useState({});
 
   useEffect(() => {
     document.title = "Service Request | Barangay E-Services Management";
@@ -32,8 +33,15 @@ const EventsApplication = () => {
   useEffect(() => {
     const fetch = async () => {
       try {
+        const brgyInfo = await axios.get(`${API_LINK}/brgyinfo/?brgy=${brgy}`);
+        if (brgyInfo.status === 200) {
+          setInfo(brgyInfo.data[0]);
+        } else {
+          setInfo({})
+        }
+
         const response = await axios.get(
-          `${API_LINK}/application/specific/?user_id=${user_id}&event_name=${SortByName}&application_id=${searchID}&page=${currentPage}`
+          `${API_LINK}/application/specific/?user_id=${user_id}&event_name=${SortByName}&page=${currentPage}`
         );
 
         // const getUser = await axios.get(`${API_LINK}/users/specific/${id}`);
@@ -41,6 +49,7 @@ const EventsApplication = () => {
         if (response.status === 200) {
           setEvents(response.data.result)
           setPageCount(response.data.pageCount);
+          setGetAll(response.data.all)
 
           let uniqueServiceNames = new Set(
             response.data.all.map((item) => item.event_name));
@@ -54,9 +63,9 @@ const EventsApplication = () => {
     };
 
     fetch();
-  }, [brgy, id, SortByName, searchID, currentPage]);
+  }, [brgy, id, SortByName, currentPage]);
 
-  // console.log(events)
+  // console.log(getAll)
 
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected);
@@ -71,7 +80,11 @@ const EventsApplication = () => {
   };
 
   const handleOnSearch = (e) => {
-    setSearchID(e.target.value.toUpperCase())
+    const getSearch = getAll.filter((item) =>
+      item.application_id.toUpperCase()
+        .includes(e.target.value.toUpperCase()))
+
+    setEvents(getSearch)
   }
 
   const tableHeader = [
@@ -109,9 +122,9 @@ const EventsApplication = () => {
               <button
                 id="hs-dropdown"
                 type="button"
-                className="bg-custom-green-header h-[40px] sm:w-full md:w-full sm:mt-2 md:mt-0 text-white hs-dropdown-toggle py-1 px-5 inline-flex justify-center items-center gap-2 rounded-md  font-medium shadow-sm align-middle transition-all text-sm  "
+                className={`bg-custom-green-header h-[40px] sm:w-full md:w-full sm:mt-2 md:mt-0 text-white hs-dropdown-toggle py-1 px-5 inline-flex justify-center items-center gap-2 rounded-md  font-medium shadow-sm align-middle transition-all text-sm  `}
               >
-                EVENT NAME
+                {SortByName !== "all" ? SortByName.toUpperCase() : "EVENT NAME"}
                 <svg
                   // className={`hs-dropdown-open:rotate-${sortOrder === "asc" ? "180" : "0"
                   //   } w-2.5 h-2.5 text-white`}
@@ -176,7 +189,7 @@ const EventsApplication = () => {
           <div className="overflow-x-auto sm:h-[380px] lg:h-[680px] xl:h-[700px] xxl:h-[700px] xxxl:h-[640px] border border-b-0 mt-5 rounded-t-xl">
             <table className="w-full divide-y divide-gray-200 ">
               {/* Table Headers */}
-              <thead className="bg-custom-green-table-header border">
+              <thead className={`bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] border`}>
                 <tr>
                   {
                     tableHeader.map((item, i) => (
@@ -209,7 +222,7 @@ const EventsApplication = () => {
             </table>
           </div>
 
-          <div className="md:py-4 md:px-4 bg-custom-green-header flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3">
+          <div className={`md:py-4 md:px-4 bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3`}>
             <span className="font-medium text-white sm:text-xs text-sm">
               Showing {currentPage + 1} out of {pageCount} pages
             </span>

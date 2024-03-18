@@ -88,7 +88,7 @@ const OtherPersonalData = ({ userData, userSocials, handleUserDataChange, handle
                             className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500"
                         >
                             <option disabled>
-                                Select Religion
+                                Select Civil Status
                             </option>
                             {civil_status.map((civil, i) => (
                                 <option key={i} >{civil}</option>

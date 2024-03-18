@@ -9,10 +9,13 @@ import {
   FaPhone,
   FaTwitter,
   FaInstagram,
+  FaCameraRetro
 } from "react-icons/fa";
 import axios from "axios";
 import API_LINK from "../config/API";
 import banner from "../assets/image/1.png";
+import Webcam from "react-webcam";
+import moment from "moment";
 
 // COMPONENTS 
 import PersonalInfo from "../components/settings/PersonalInfo";
@@ -24,12 +27,16 @@ import GovernmentID from "../components/settings/GovernmentID";
 import Preloader from "../components/loaders/Preloader";
 
 const Settings = () => {
+  const WebcamComponent = () => <Webcam />;
+  const [viewerVisible, setViewerVisible] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [capturedImage, setCapturedImage] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get("id");
   const brgy = searchParams.get("brgy");
   const fileInputRef = useRef();
-  const filePrimeIDRef = useRef()
-  const fileSecIDRef = useRef()
+  const fileInputPrimaryIDRef = useRef()
+  const fileInputSecondaryIDRef = useRef()
   const [activeButton, setActiveButton] = useState({
     personal: true,
     username: false,
@@ -84,19 +91,121 @@ const Settings = () => {
   const [error, setError] = useState(null);
   const [submitClicked, setSubmitClicked] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState(null);
+  const [info, setInfo] = useState({});
+  const [verification, setVerification] = useState({
+    primary_file: "",
+    primary_id: "",
+    secondary_file: "",
+    secondary_id: "",
+    selfie: "",
+  })
+  const [totalProcessedFiles, setTotalProcessedFiles] = useState({
+    primary: 0,
+    secondary: 0
+  })
 
-  const handleAdd = (e) => {
+  const WebcamCapture = () => {
+    const webcamRef = React.useRef(null);
+    const [capturedImage, setCapturedImage] = useState(null);
+
+    const capture = React.useCallback(
+      async (e) => {
+        e.preventDefault(); // Prevent the default behavior
+        const imageSrc = webcamRef.current.getScreenshot();
+        setCapturedImage(imageSrc);
+
+        try {
+          const response = await fetch(imageSrc);
+          const file = await response.blob();
+
+          // Use the existing Blob for selfie with data:image/jpeg;base64 format
+          let selfieFile = new File(
+            [file],
+            `${userData.lastName}, ${userData.firstName} - SELFIE`,
+            {
+              type: "image/jpeg",
+              size: file.size,
+              uri: `data:image/jpeg;base64,${imageSrc.split(",")[1]}`,
+            }
+          );
+
+          console.log("selfieFile: ", selfieFile);
+
+          setUserData((prev) => ({
+            ...prev,
+            verification: {
+              ...prev.verification,
+              selfie: selfieFile
+            }
+          }))
+
+        } catch (error) {
+          console.error("Error fetching image:", error);
+        }
+      },
+      [webcamRef]
+    );
+
+    return (
+      <>
+        <div className="relative">
+          <Webcam
+            audio={false}
+            height={400}
+            ref={webcamRef}
+            screenshotFormat="image/jpeg"
+            width={600}
+            className="rounded-xl mx-auto"
+          />
+          <button
+            onClick={capture}
+            className="h-12 w-12 py-1 px-2 rounded-full border text-sm font-base bg-teal-900 text-white shadow-sm absolute bottom-4 left-1/2 transform -translate-x-1/2"
+          >
+            <div className="flex items-center justify-center">
+              <FaCameraRetro size={20} />
+            </div>
+          </button>
+        </div>
+        {capturedImage && (
+          <img
+            src={capturedImage}
+            alt="Captured Photo"
+            className="w-full h-full px-2 py-2 object-cover rounded-xl mt-2"
+          />
+        )}
+      </>
+    );
+  }
+
+  const handleFileChange = (field, e) => {
     e.preventDefault();
+    const files = e.target.files;
 
-    if (e.target.id === "primeID") {
-      filePrimeIDRef.current.click();
-    } else if (e.target.id === "secID") {
-      fileSecIDRef.current.click();
-    } else if (e.target.id === "profPic") {
-      fileInputRef.current.click();
-    }
+    setVerification((prevVerification) => ({
+      ...prevVerification,
+      [field]: prevVerification[field] === null ? files : [...prevVerification[field], ...files],
+    }));
 
+    setUserData((prev) => ({
+      ...prev,
+      verification: {
+        ...prev.verification,
+        [field]: prev.verification[field] === null ? files : [...prev.verification[field], ...files]
+      }
+    }))
   };
+
+  const handleAdd = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleAddPrimaryID = () => {
+    fileInputPrimaryIDRef.current.click();
+  };
+
+  const handleAddSecondaryID = () => {
+    fileInputSecondaryIDRef.current.click();
+  }
 
   const handleProfileChange = (e) => {
     e.preventDefault()
@@ -111,33 +220,17 @@ const Settings = () => {
 
   }
 
-  const handleFileChange = (e) => {
-    e.preventDefault();
-
-    if (e.target.id === "primary_input") {
-      var primary = document.getElementById("primary");
-      primary.src = URL.createObjectURL(e.target.files[0]);
-      primary.onload = function () {
-        URL.revokeObjectURL(primary.src); // free memory
-      };
-      // setGovID({
-      //     primary: e.target.files[0],
-      // });
-    } else if (e.target.id = "secondary_input") {
-      var secondary = document.getElementById("secondary");
-      secondary.src = URL.createObjectURL(e.target.files[0]);
-      secondary.onload = function () {
-        URL.revokeObjectURL(secondary.src); // free memory
-      };
-      // setGovID({
-      //     secondary: e.target.files[0]
-      // })
-    }
-  };
+  console.log(userData)
 
   useEffect(() => {
     const fetch = async () => {
       try {
+        const brgyInfo = await axios.get(`${API_LINK}/brgyinfo/?brgy=${brgy}`);
+        if (brgyInfo.status === 200) {
+          setInfo(brgyInfo.data[0]);
+        } else {
+          setInfo({})
+        }
         const res = await axios.get(`${API_LINK}/users/specific/${id}`);
         if (res.status === 200) {
           setUserData(res.data[0]);
@@ -170,10 +263,6 @@ const Settings = () => {
             res.data[0].profile.link !== ""
               ? res.data[0].profile.link
               : defaultPFP;
-          var primaryID = document.getElementById("primary");
-          primaryID.src = sampleID;
-          var secondary = document.getElementById("secondary");
-          secondary.src = sampleID;
           // res.data[0].profile.link !== ""
           //   ? res.data[0].profile.link
           //   : defaultPFP;
@@ -296,8 +385,12 @@ const Settings = () => {
     };
 
     try {
-      // CHANGE USER CREDENTIALS
 
+      const res_folder = await axios.get(
+        `${API_LINK}/folder/specific/?brgy=${brgy}`
+      );
+
+      // CHANGE USER CREDENTIALS
       if (activeButton.username === true && userCred.oldPass !== "") {
         // CHANGE USERNAME
         if (userCred.username !== userData.username) {
@@ -324,9 +417,6 @@ const Settings = () => {
           var formData = new FormData();
           formData.append("users", JSON.stringify(obj));
           formData.append("file", pfp);
-          const res_folder = await axios.get(
-            `${API_LINK}/folder/specific/?brgy=${brgy}`
-          );
 
           if (res_folder.status === 200) {
             const response = await axios.patch(`${API_LINK}/users/?doc_id=${id}&folder_id=${res_folder.data[0].pfp}`, formData);
@@ -360,6 +450,116 @@ const Settings = () => {
 
         } catch (error) {
           console.log(error)
+        }
+      } else if (activeButton.govID === true) {
+        setSubmitClicked(true);
+        try {
+          var formData = new FormData()
+
+          const [primarySaved, primaryUpload] =
+            userData.verification.primary_file.reduce(
+              ([a, b], elem) => {
+                return elem.hasOwnProperty("link")
+                  ? [[...a, elem], b]
+                  : [a, [...b, elem]];
+              },
+              [[], []]
+            );
+
+          const [secondarySaved, secondaryUpload] =
+            userData.verification.secondary_file.reduce(
+              ([a, b], elem) => {
+                return elem.hasOwnProperty("link")
+                  ? [[...a, elem], b]
+                  : [a, [...b, elem]];
+              },
+              [[], []]
+            );
+
+          formData.append("primarySaved", JSON.stringify(primarySaved));
+          formData.append("secondarySaved", JSON.stringify(secondarySaved));
+          formData.append("oldVerification", JSON.stringify(userData.verification));
+          formData.append("newVerification", JSON.stringify(verification));
+
+          if (!userData.verification.selfie.hasOwnProperty("link")) {
+            // Use the existing Blob for selfie
+            let selfieFile = new File(
+              [userData.verification.selfie],
+              `${userData.lastName}, ${userData.firstName} - SELFIE`,
+              {
+                type: "image/jpeg",
+                size: userData.verification.selfie.size,
+                uri: userData.verification.selfie.uri,
+              }
+            );
+
+            formData.append("files", selfieFile);
+          }
+
+          if (primaryUpload.length > 0) {
+            for (let i = 0; i < primaryUpload.length; i += 1) {
+              let file = {
+                name: `${userData.lastName}, ${userData.firstName
+                  } - PRIMARY ID ${moment(new Date()).format("MMDDYYYYHHmmss")}`,
+                size: primaryUpload[i].size,
+                type: primaryUpload[i].type,
+                uri: primaryUpload[i].uri,
+              };
+
+              console.log("check file: ", file);
+
+              formData.append(
+                "files",
+                new File([primaryUpload[i]], file.name, { type: file.type })
+              );
+            }
+          }
+
+          if (secondaryUpload.length > 0)
+            for (let i = 0; i < secondaryUpload.length; i += 1) {
+              let file = {
+                name: `${userData.lastName}, ${userData.firstName
+                  } - SECONDARY ID ${moment(new Date()).format(
+                    "MMDDYYYYHHmmss"
+                  )}`,
+                uri: secondaryUpload[i].uri,
+                type: secondaryUpload[i].type,
+                size: secondaryUpload[i].size,
+              };
+
+              formData.append(
+                "files",
+                new File([secondaryUpload[i]], file.name, { type: file.type })
+              );
+            }
+
+          const response = await axios.patch(
+            `${API_LINK}/users/verification/?doc_id=${userData._id}&user_id=${userData.user_id}&root_folder=${res_folder.data[0].verification}`,
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
+
+          if (response.status === 200) {
+            console.log("Update successful:", response);
+            setEditButton(true);
+            setTimeout(() => {
+              setSubmitClicked(false);
+              setUpdatingStatus("success");
+              setTimeout(() => {
+                window.location.reload();
+              }, 3000);
+            }, 1000);
+
+          } else {
+            console.error("Update failed. Status:", response.status);
+          }
+
+        } catch (err) {
+          console.log(err)
         }
       } else {
         setShowError({
@@ -496,6 +696,9 @@ const Settings = () => {
               alt=""
             />
             <div className="absolute inset-0 flex items-center justify-center bg-black transition-opacity duration-300 opacity-[50%]"></div>
+            <div className={ userData.isApproved !== "Verified" ? "bg-gray-400 absolute bottom-[10px] right-[10px] text-white font-medium px-4 py-1 rounded-2xl" : "bg-custom-green-button absolute bottom-[10px] right-[10px] text-white font-medium px-4 py-1 rounded-2xl"}>
+              <h1>{userData.isApproved}</h1>
+            </div>
           </div>
           <div className="flex sm:flex-col-reverse lg:flex-row-reverse sm:px-[5px] px-[20px] justify-center mb-[20px]">
             <div className="flex flex-col sm:w-full lg:w-9/12 mx-auto">
@@ -597,7 +800,7 @@ const Settings = () => {
                 }
               >
                 {/* CREDENTIALS */}
-                <GovernmentID userData={userData} editButton={editButton} handleFileChange={handleFileChange} handleAdd={handleAdd} empty={empty} filePrimeIDRef={filePrimeIDRef} fileSecIDRef={fileSecIDRef} />
+                <GovernmentID userData={userData} setUserData={setUserData} editButton={editButton} handleAddPrimaryID={handleAddPrimaryID} handleAddSecondaryID={handleAddSecondaryID} fileInputPrimaryIDRef={fileInputPrimaryIDRef} fileInputSecondaryIDRef={fileInputSecondaryIDRef} handleFileChange={handleFileChange} totalProcessedFiles={totalProcessedFiles} setTotalProcessedFiles={setTotalProcessedFiles} WebcamCapture={WebcamCapture} setViewerVisible={setViewerVisible} setSelectedImage={setSelectedImage} setCapturedImage={setCapturedImage} />
               </div>
             </div>
             <div className="sm:w-full lg:w-[20%] relative mt-[-80px] mb-[20px]">
@@ -611,7 +814,7 @@ const Settings = () => {
                       className={
                         editButton
                           ? "hidden"
-                          : "block text-transparent p-[45px] font-medium rounded-full text-sm text-center opacity-0 hover:opacity-100 transition-opacity hover:bg-[#295141] hover:bg-opacity-60 cursor-pointer"
+                          : `block text-transparent p-[45px] font-medium rounded-full text-sm text-center opacity-0 hover:opacity-100 transition-opacity hover:bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] hover:bg-opacity-60 cursor-pointer`
                       }
                     >
                       <FaCamera
@@ -634,7 +837,7 @@ const Settings = () => {
                   </div>
                   <img
                     id="pfp"
-                    className="w-[150px] h-[150px] rounded-full sm:mb-3 lg:mb-0 border-[5px] border-[#295141] object-cover"
+                    className={`w-[150px] h-[150px] rounded-full sm:mb-3 lg:mb-0 border-[5px] border-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] object-cover`}
                   />
                   {/* <button className="relative bottom-[25px] w-[40px] h-[40px] flex justify-center items-center rounded-full bg-[#295141] text-white px-3 py-2">
                                     <FaCamera size={20} className="cursor-none" />
@@ -648,13 +851,14 @@ const Settings = () => {
                     {userData.username}
                   </p>
                 </div>
-                <div className="flex flex-col justify-center sm:w-[250px] md:w-[90%] lg:w-full items-center mx-auto mt-5 bg-custom-green-header rounded-md p-[10px]">
+                <div className={`flex flex-col justify-center sm:w-[250px] md:w-[90%] lg:w-full items-center mx-auto mt-5 bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] rounded-md p-[10px]`}>
                   <div className="flex justify-center items-center border-b-[1px] border-white w-full pb-[10px]">
                     <h6 className="font-bold text-white">Socials</h6>
                   </div>
                   <div className="p-[10px] flex sm:flex-col md:flex-row lg:flex-col gap-5">
                     {userSocials.facebook.name.length !== 0 ?
-                      <button className="flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-custom-green-table-header text-white hover:p-2">
+                      <button
+                        className={`flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] text-white hover:p-2`}>
                         <FaFacebook />
                         <p className="text-left truncate text-[12px]">
                           {userSocials.facebook.name}
@@ -663,7 +867,8 @@ const Settings = () => {
                       : null
                     }
                     {userSocials.instagram.name.length !== 0 ?
-                      <button className="flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-custom-green-table-header text-white hover:p-2">
+                      <button
+                        className={`flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] text-white hover:p-2`}>
                         <FaInstagram />
                         <p className="text-left truncate text-[12px]">
                           {userSocials.instagram.name}
@@ -672,7 +877,8 @@ const Settings = () => {
                       : null
                     }
                     {userSocials.twitter.name.length !== 0 ?
-                      <button className="flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-custom-green-table-header text-white hover:p-2">
+                      <button
+                        className={`flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] text-white hover:p-2`}>
                         <FaTwitter />
                         <p className="text-left truncate text-[12px]">
                           {userSocials.twitter.name}
@@ -681,7 +887,8 @@ const Settings = () => {
                       : null
                     }
                     {userData.contact !== "" ?
-                      <button className="flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-custom-green-table-header text-white hover:p-2">
+                      <button
+                        className={`flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] text-white hover:p-2`}>
                         <FaPhone />
                         <p className="text-left truncate text-[12px]">
                           {userData.contact}
@@ -690,7 +897,8 @@ const Settings = () => {
                       : null
                     }
                     {userData.email !== "" ?
-                      <button className=" flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-custom-green-table-header text-white hover:p-2">
+                      <button
+                        className={`flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] text-white hover:p-2`}>
                         <FaEnvelope />
                         <p className="text-left truncate text-[12px]">
                           {userData.email}

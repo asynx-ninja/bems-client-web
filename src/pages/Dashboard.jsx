@@ -16,6 +16,8 @@ import AboutDetails from './../assets/dashboard/items/AboutDetails.png'
 import Inquire from './../assets/dashboard/items/Inquire.png'
 import Request from './../assets/dashboard/items/Request.png'
 import BrgyInfo from './../assets/dashboard/items/BrgyInfo.png'
+import Blotter from './../assets/dashboard/items/Blotter.png'
+import Application from './../assets/dashboard/items/Application.png'
 
 const Dashboard = () => {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -102,7 +104,24 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className='bg-[#ff477e] sm:px-3 md:px-5 pt-5 flex flex-row sm:h-auto lg:h-[260px]  justify-center rounded-md hover:scale-[105%] transition'>
+        <div className='bg-[#5e60ce] sm:px-3 md:px-5 pt-5 flex flex-row sm:h-auto lg:h-[260px]  justify-center rounded-md hover:scale-[105%] transition'>
+          <div className='flex flex-col py-5 w-[50%] justify-center'>
+            <h1 className='text-white font-bold sm:text-[18px] lg:text-[20px] x:text-[28px] sm:leading-none md:leading-4 lg:leading-5 x:leading-7'>TRACK APPLIED EVENTS HERE</h1>
+            <Link
+              to={`/events-application/?id=${id}&brgy=${brgy}`}
+              className='sm:w-[90px] lg:w-[120px] mt-[18px] bg-white font-medium sm:text-[10px] lg:text-[14px] py-[8px] rounded-md hover:scale-[105%] transition text-center'
+            >
+              <h1>
+                View Application
+              </h1>
+            </Link>
+          </div>
+          <div className='w-[50%] flex flex-col justify-end sm:items-center md:items-end'>
+            <img src={Application} width={250} height={250} alt="" />
+          </div>
+        </div>
+
+        <div className='bg-[#0077b6] sm:px-3 md:px-5 pt-5 flex flex-row sm:h-auto lg:h-[260px]  justify-center rounded-md hover:scale-[105%] transition'>
           <div className='flex flex-col py-5 w-[50%] justify-center'>
             <h1 className='text-white font-bold sm:text-[18px] lg:text-[20px] x:text-[28px] sm:leading-none md:leading-4 lg:leading-5 x:leading-7'>MAKE REQUEST FAST AND EASY!</h1>
             <Link
@@ -119,7 +138,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className='bg-[#0077b6] sm:px-3 md:px-5 pt-5 flex flex-row sm:h-auto lg:h-[260px] justify-center rounded-md hover:scale-[105%] transition'>
+        <div className='bg-[#ff477e] sm:px-3 md:px-5 pt-5 flex flex-row sm:h-auto lg:h-[260px] justify-center rounded-md hover:scale-[105%] transition'>
           <div className='flex flex-col py-5 w-[50%] justify-center'>
             <h1 className='text-white font-bold sm:text-[18px] lg:text-[20px] x:text-[28px] sm:leading-none md:leading-4 lg:leading-5 x:leading-7'>TRACK YOUR FILES IN REQUESTED SERVICE</h1>
             <Link
@@ -133,6 +152,23 @@ const Dashboard = () => {
           </div>
           <div className='w-[50%] flex flex-col justify-end sm:items-center md:items-end'>
             <img src={Services} width={250} height={250} alt="" />
+          </div>
+        </div>
+
+        <div className='bg-[#006d77] sm:px-3 md:px-5 pt-5 flex flex-row sm:h-auto lg:h-[260px] justify-center rounded-md hover:scale-[105%] transition'>
+          <div className='flex flex-col py-5 w-[50%] justify-center'>
+            <h1 className='text-white font-bold sm:text-[18px] lg:text-[20px] x:text-[28px] sm:leading-none md:leading-4 lg:leading-5 x:leading-7'>SEE LATEST BLOTTER RECORDS</h1>
+            <Link
+              to={`/blotter/?id=${id}&brgy=${brgy}&user_id=${userData.user_id}`}
+              className='sm:w-[90px] lg:w-[120px] mt-[18px] bg-white font-medium sm:text-[10px] lg:text-[14px] py-[8px] rounded-md hover:scale-[105%] transition text-center'
+            >
+              <h1>
+                View Records
+              </h1>
+            </Link>
+          </div>
+          <div className='w-[50%] flex flex-col justify-end sm:items-center md:items-end'>
+            <img src={Blotter} width={250} height={250} alt="" />
           </div>
         </div>
 

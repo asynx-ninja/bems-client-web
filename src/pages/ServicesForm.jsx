@@ -502,11 +502,21 @@ const ServicesForm = ({ props }) => {
             </div>
             : null
         }
+        {
+          userData.isApproved !== "Verified" ?
+            <div
+              className="bg-red-50 border px-5 text-center border-red-200 text-sm text-red-600 rounded-md py-4 mt-2 mb-4"
+              role="alert"
+            >
+              <span className="font-bold ">Warning: Your account is not eligible to request a Services, please complete you account information.</span>
+            </div>
+            : null
+        }
         <div className="flex mx-auto sm:flex-row md:flex-row w-full items-center gap-4 justify-center">
           <button
-            disabled={noForm === true}
+            disabled={noForm === true || userData.isApproved !== "Verified"}
             data-hs-overlay="#hs-full-screen-modal"
-            className={noForm === true ? "flex items-center justify-center text-center bg-gray-400 sm:w-full md:w-[150px] sm:my-[5px] md:m-5 h-[50px] text-sm text-white font-medium rounded-lg"
+            className={noForm === true || userData.isApproved !== "Verified" ? "flex items-center justify-center text-center bg-gray-400 sm:w-full md:w-[150px] sm:my-[5px] md:m-5 h-[50px] text-sm text-white font-medium rounded-lg"
               : "flex items-center justify-center text-center bg-green-700 sm:w-full md:w-[150px] sm:my-[5px] md:m-5 h-[50px] text-sm text-white font-medium rounded-lg hover:bg-gradient-to-r from-[#295141] to-[#408D51] transition duration-500 ease-in-out hover:text-custom-gold"}
           >
             Submit a request

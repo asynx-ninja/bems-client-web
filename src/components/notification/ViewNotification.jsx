@@ -2,7 +2,7 @@ import React from 'react'
 import { Link, useSearchParams } from 'react-router-dom';
 import defaultLogo from "../../assets/header/side-bg.png";
 
-const ViewNotification = ({ viewNotif, userData }) => {
+const ViewNotification = ({ viewNotif, userData, info }) => {
     const [searchParams] = useSearchParams();
     const id = searchParams.get("id");
     const brgy = searchParams.get("brgy");
@@ -19,7 +19,7 @@ const ViewNotification = ({ viewNotif, userData }) => {
                 <div className="hs-overlay-open:opacity-100 hs-overlay-open:duration-500 px-3 py-5 md:px-5 opacity-0 transition-all w-full h-auto">
                     <div className="flex flex-col bg-white shadow-sm rounded-t-3xl rounded-b-3xl w-full h-full md:max-w-xl lg:max-w-2xl xxl:max-w-3xl mx-auto max-h-screen">
                         {/* Header */}
-                        <div className="py-5 px-3 flex justify-between items-center bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-custom-green-button to-custom-green-header overflow-hidden rounded-t-2xl">
+                        <div className={`py-5 px-3 flex justify-between items-center bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}] overflow-hidden rounded-t-2xl`}>
                             <h3
                                 className="font-bold text-white mx-auto md:text-xl text-center"
                                 style={{ letterSpacing: "0.3em" }}
@@ -107,7 +107,7 @@ const ViewNotification = ({ viewNotif, userData }) => {
                                     {
                                         viewNotif.length !== 0 && viewNotif.compose.go_to === "Requests" ?
                                             <Link
-                                                to={`/inquiries/?id=${id}&brgy=${brgy}&user_id=${userData.user_id}`}
+                                                to={`/requests/?id=${id}&brgy=${brgy}&user_id=${userData.user_id}`}
                                                 className="h-[2.5rem] flex w-full py-1 px-6 gap-2 rounded-md borde text-sm font-base bg-custom-green-button text-white shadow-sm"
                                                 data-hs-overlay="#hs-modal-viewNotification"
                                             >
@@ -118,7 +118,17 @@ const ViewNotification = ({ viewNotif, userData }) => {
                                     {
                                         viewNotif.length !== 0 && viewNotif.compose.go_to === "Application" ?
                                             <Link
-                                                to={`/inquiries/?id=${id}&brgy=${brgy}&user_id=${userData.user_id}`}
+                                                to={`/events-application/?id=${id}&brgy=${brgy}&user_id=${userData.user_id}`}
+                                                className="h-[2.5rem] flex w-full py-1 px-6 gap-2 rounded-md borde text-sm font-base bg-custom-green-button text-white shadow-sm"
+                                                data-hs-overlay="#hs-modal-viewNotification"
+                                            >
+                                                <h1 className='m-auto'>Go to {viewNotif.length === 0 ? "" : viewNotif.compose.go_to}</h1>
+                                            </Link>
+                                            : null
+                                    }{
+                                        viewNotif.length !== 0 && viewNotif.compose.go_to === "Patawag" ?
+                                            <Link
+                                                to={`/blotter/?id=${id}&brgy=${brgy}&user_id=${userData.user_id}`}
                                                 className="h-[2.5rem] flex w-full py-1 px-6 gap-2 rounded-md borde text-sm font-base bg-custom-green-button text-white shadow-sm"
                                                 data-hs-overlay="#hs-modal-viewNotification"
                                             >

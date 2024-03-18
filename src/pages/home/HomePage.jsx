@@ -6,6 +6,7 @@ import Home from "../../components/homepage/Home";
 import About from "../../components/homepage/About";
 import Services from "../../components/homepage/Services";
 import Footer from "../../components/homepage/Footer";
+import MunicipalOfficials from "../../components/homepage/MunicipalOfficials";
 import Tourist from "../../components/homepage/Tourist";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -57,6 +58,7 @@ const Homepage = () => {
         <div className="w-full lg:my-0 lg:mx-5 relative rounded-t-[25px] h-full mx-auto bg-white lg:shadow-2xl shadow-none md:w-full flex flex-col">
           <Home />
           <About />
+          <MunicipalOfficials />
           <Services />
           <Tourist />
         </div>

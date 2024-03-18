@@ -11,6 +11,7 @@ import Dropbox from "./Dropbox";
 import ViewDropbox from "./ViewDropbox";
 import Preloader from "../../loaders/Preloader";
 import { useSearchParams } from "react-router-dom";
+import moment from "moment";
 // import EditDropbox from "./EditDropbox";
 
 const ViewRequestModal = ({ viewRequest }) => {
@@ -164,13 +165,55 @@ const ViewRequestModal = ({ viewRequest }) => {
 
         if (response.status === 200) {
 
-          setTimeout(() => {
-            setSubmitClicked(false);
-            setUpdatingStatus("success");
+          const getService = await axios.get(
+            `${API_LINK}/services/specific_service/?service_id=${viewRequest.service_id}`
+          )
+
+          const notify = {
+            category: "Many",
+            compose: {
+              subject: `REQUEST - ${viewRequest.name}`,
+              message: `A user has replied to a service request for the service of ${viewRequest.name
+                }.\n
+            \n
+            Request Details:\n
+            - Name: ${`${userData.lastName}, ${userData.firstName}`}\n
+            - Service Applied: ${viewRequest.name}\n
+            - Request ID: ${viewRequest.req_id}\n
+            - Date Created: ${moment(viewRequest.createdAt).format(
+                  "MMM. DD, YYYY h:mm a"
+                )}\n
+            \n
+            Please update this service request!\n
+            \n
+            Thank you!!`,
+              go_to: "Requests",
+            },
+            target: { user_id: userData.user_id, area: userData.address.brgy },
+            type: getType(viewRequest.brgy),
+            banner: getService.data[0].collections.banner,
+            logo: getService.data[0].collections.logo,
+          };
+
+          const result = await axios.post(
+            `${API_LINK}/notification/`,
+            notify,
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          if(result.status === 200){
             setTimeout(() => {
-              window.location.reload();
-            }, 3000);
-          }, 1000);
+              setSubmitClicked(false);
+              setUpdatingStatus("success");
+              setTimeout(() => {
+                window.location.reload();
+              }, 3000);
+            }, 1000);
+          }
 
         } else {
           setSubmitClicked(false);
@@ -184,7 +227,7 @@ const ViewRequestModal = ({ viewRequest }) => {
     }
   };
 
-  // console.log(viewRequest)
+  // console.log(viewRequest
 
   const setColor = (status) => {
     if (status === "Completed")

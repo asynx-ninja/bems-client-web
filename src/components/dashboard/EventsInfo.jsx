@@ -16,10 +16,21 @@ const EventsInfo = () => {
     const [announcements, setAnnouncements] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [pageCount, setPageCount] = useState(0);
+    const [info, setInfo] = useState({
+        banner: {
+            link: "",
+        },
+        logo: {
+            link: "",
+        },
+    });
 
     useEffect(() => {
         const fetchEvents = async () => {
             try {
+                const brgyInfo = await axios.get(`${API_LINK}/brgyinfo/?brgy=${brgy}`);
+                setInfo(brgyInfo.data[0]);
+
                 const response = await axios.get(
                     `${API_LINK}/announcement/all/?brgy=${brgy}&page=${currentPage}`
                 );
@@ -100,7 +111,7 @@ const EventsInfo = () => {
                                 </div>
                                 <Link
                                     to={`/events/?id=${id}&brgy=${brgy}&event_id=${item.event_id}&page=${currentPage}`}
-                                    className="bg-custom-green-button w-[150px] sm:mx-auto md:mx-0 text-white font-medium px-[25px] py-[10px] my-[25px] rounded-lg hover:bg-gradient-to-r from-[#295141] to-[#408D51] transition duration-500 ease-in-out hover:text-custom-gold"
+                                    className={`bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] w-[150px] sm:mx-auto md:mx-0 text-white font-medium px-[25px] py-[10px] my-[25px] rounded-lg hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}] transition duration-500 ease-in-out hover:text-custom-gold`}
                                 >
                                     Read More
                                 </Link>

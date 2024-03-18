@@ -8,6 +8,7 @@ import moment from "moment";
 
 import Notification from "../notification/Notification";
 import ViewNotification from "../notification/viewNotification";
+import TopHeader from "./TopHeader";
 
 const Header = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -17,6 +18,7 @@ const Header = () => {
   const [notification, setNotification] = useState([]);
   const [viewNotif, setViewNotif] = useState([]);
   const [unread, setUnread] = useState(0)
+  const [info, setInfo] = useState({});
 
   useEffect(() => {
     fetch();
@@ -24,14 +26,22 @@ const Header = () => {
 
   const fetch = async () => {
     try {
+      const brgyInfo = await axios.get(`${API_LINK}/brgyinfo/?brgy=${brgy}`);
+      if (brgyInfo.status === 200) {
+        setInfo(brgyInfo.data[0]);
+      } else {
+        setInfo({})
+      }
+
       const res = await axios.get(`${API_LINK}/users/specific/${id}`);
       if (res.status === 200) {
         setUserData(res.data[0]);
-        var pfpSrc = document.getElementById("headerPFP");
-        pfpSrc.src =
-          res.data[0].profile.link !== ""
-            ? res.data[0].profile.link
-            : defaultPFP;
+        // var pfpSrc = document.getElementById("headerPFP");
+        // pfpSrc.src =
+        //   res.data[0].profile.link !== ""
+        //     ? res.data[0].profile.link
+        //     : defaultPFP;
+
       } else {
         setError("Invalid username or password");
       }
@@ -39,8 +49,6 @@ const Header = () => {
       const response = await axios.get(
         `${API_LINK}/notification/?user_id=${res.data[0].user_id}&area=${brgy}&type=Resident`
       );
-
-      // console.log(response.data)
 
       if (response.status === 200) {
         const read = response.data.filter((item) =>
@@ -59,12 +67,14 @@ const Header = () => {
         setNotification((response.data.sort((a, b) => b.createdAt - a.createdAt)))
       }
 
+      // console.log(response.data)
+
     } catch (error) {
       console.log(error);
     }
   };
 
-  // console.log(unread)
+  // console.log(info)
 
   const dateFormat = (date) => {
     const birthdate = date === undefined ? "" : date.substr(0, 10);
@@ -73,7 +83,8 @@ const Header = () => {
 
   return (
     <div>
-      <nav className="h-[70px] bg-gradient-to-r from-[#295141] to-[#408D51] relative z-[50] flex w-full drop-shadow-[0_35px_35px_rgba(0,0,0,0.10)]">
+      <TopHeader fetch={fetch} userData={userData} />
+      <nav className={`h-[70px] bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}] relative z-[50] flex w-full drop-shadow-[0_35px_35px_rgba(0,0,0,0.10)]`}>
         <div className=' flex bg-[url("/header-bg.png")] my-auto justify-between w-full h-full pr-[20px]'>
           <div className="flex gap-5 overflow-hidden">
             <div className="mr-[30px] sm:hidden md:flex">
@@ -158,6 +169,11 @@ const Header = () => {
               <button id="hs-dropdown-profile">
                 <img
                   id="headerPFP"
+                  src={
+                    userData && userData.profile && userData.profile.link !== undefined
+                      ? userData.profile.link
+                      : defaultPFP
+                  }
                   className="hs-dropdown-toggle rounded-[100%] w-[40px] h-[40px] object-cover cursor-pointer"
                   alt=""
                 />
@@ -181,7 +197,7 @@ const Header = () => {
                           .remove()
                         : null;
                     }}
-                    className="flex items-center w-full gap-x-3.5 py-2 px-3 rounded-md text-sm hover:text-custom-gold1 text-gray-800 hover:bg-gradient-to-r from-[#295141] to-[#408D51] focus:ring-2 focus:ring-blue-500 "
+                    className={`flex items-center w-full gap-x-3.5 py-2 px-3 rounded-md text-sm hover:text-custom-gold1 text-gray-800 hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}] focus:ring-2 focus:ring-blue-500 `}
                   >
                     Profile
                   </Link>
@@ -196,7 +212,7 @@ const Header = () => {
                           .remove()
                         : null;
                     }}
-                    className="flex items-center w-full gap-x-3.5 py-2 px-3 rounded-md text-sm hover:text-custom-gold1 text-gray-800 hover:bg-gradient-to-r from-[#295141] to-[#408D51] focus:ring-2 focus:ring-blue-500 "
+                    className={`flex items-center w-full gap-x-3.5 py-2 px-3 rounded-md text-sm hover:text-custom-gold1 text-gray-800 hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}] focus:ring-2 focus:ring-blue-500 `}
                   >
                     Sign-Out
                   </Link>
@@ -206,7 +222,7 @@ const Header = () => {
           </div>
         </div>
       </nav>
-      <ViewNotification viewNotif={viewNotif} userData={userData} />
+      <ViewNotification viewNotif={viewNotif} userData={userData} info={info} />
     </div>
   );
 };

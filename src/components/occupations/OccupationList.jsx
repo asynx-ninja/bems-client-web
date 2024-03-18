@@ -24,7 +24,7 @@ const OccupationList = ({
           : handleChange
       }
     >
-      <option disabled>
+      <option value="" disabled>
         -- select occupation --
       </option>
       <optgroup label="Healthcare Practitioners and Technical Occupations:">

@@ -29,6 +29,8 @@ const Details = () => {
     fetch();
   }, []);
 
+  console.log(info)
+
   return (
     <>
       <div className="flex justify-center w-full sm:-mt-[50px] md:-mt-[150px] md:mb-[50px]">
@@ -39,7 +41,7 @@ const Details = () => {
           }}
           className="rounded-[25px] sm:mx-0 md:mx-[20px] mx-auto bg-white mb-4 lg:shadow-2xl shadow-none w-full flex flex-col pb-[50px]"
         >
-          <div className="relative bg-gradient-to-r from-[#295141] to-[#408D51] mx-auto justify-center items-center rounded-t-[25px] w-full">
+          <div className={`relative bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}] mx-auto justify-center items-center rounded-t-[25px] w-full`}>
             <div className="bg-[url('/header-bg.png')] sm:h-[180px] lg:h-auto rounded-t-[25px]">
               <img
                 src={info.logo.link !== "" ? info.logo.link : null}
@@ -80,7 +82,9 @@ const Details = () => {
           {/* MISSION VISION */}
           <div className="flex pb-[20px] sm:w-[90%] lg:w-[1000px] border-t-2 pt-[20px] border-b-2 border-gray-400 mx-auto sm:mt-[50px] md:mt-[80px] justify-between sm:flex-col lg:flex-row gap-5">
             <div className="sm:w-full lg:w-[50%]">
-              <h6 className="font-bold bg-custom-green-header text-[24px] sm:text-center md:text-left md:pl-[15px] text-white">
+              <h6
+                className={`font-bold bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] text-[24px] sm:text-center md:text-left md:pl-[15px] text-white`}
+              >
                 MISSION
               </h6>
               <p className="mt-[15px]">
@@ -89,7 +93,9 @@ const Details = () => {
             </div>
 
             <div className="sm:w-full lg:w-[50%]">
-              <h6 className="font-bold bg-custom-green-header text-[24px] sm:text-center md:text-left md:pl-[15px] text-white">
+              <h6
+                className={`font-bold bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] text-[24px] sm:text-center md:text-left md:pl-[15px] text-white`}
+              >
                 VISION
               </h6>
               <p className="mt-[15px]">

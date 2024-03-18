@@ -1,8 +1,13 @@
 import React, { useState, useRef } from "react";
 import myImage from "../../assets/image/rizallogo2.png";
+import {
+  FaCameraRetro
+} from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import API_LINK from "../../config/API"
+import moment from "moment";
+import Webcam from "react-webcam";
 
 // COMPONENTS
 import SideInfo from "../../components/signup/SideInfo";
@@ -12,6 +17,10 @@ import AccountCredentials from "../../components/signup/AccountCredentials";
 import Verification from "../../components/signup/Verification";
 
 const SignupPage = () => {
+  const WebcamComponent = () => <Webcam />;
+  const [viewerVisible, setViewerVisible] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [capturedImage, setCapturedImage] = useState(null);
   const [passwordError, setPasswordError] = useState(false);
   const [passwordStrengthError, setPasswordStrengthError] = useState(false);
   const [passwordMatchSuccess, setPasswordMatchSuccess] = useState(false);
@@ -52,35 +61,105 @@ const SignupPage = () => {
     username: "",
     password: "",
     type: "Resident",
+    primary_id: "",
+    primary_file: [],
+    secondary_id: "",
+    secondary_file: [],
+    selfie: null,
   });
-  const filePrimeIDRef = useRef()
-  const fileSecIDRef = useRef()
+  const fileInputPrimaryIDRef = useRef()
+  const fileInputSecondaryIDRef = useRef()
+
+  const WebcamCapture = () => {
+    const webcamRef = React.useRef(null);
+    const [capturedImage, setCapturedImage] = useState(null);
+
+    const capture = React.useCallback(
+      async (e) => {
+        e.preventDefault(); // Prevent the default behavior
+        const imageSrc = webcamRef.current.getScreenshot();
+        setCapturedImage(imageSrc);
+
+        try {
+          const response = await fetch(imageSrc);
+          const file = await response.blob();
+
+          // Use the existing Blob for selfie with data:image/jpeg;base64 format
+          let selfieFile = new File(
+            [file],
+            `${formData.lastName}, ${formData.firstName} - SELFIE`,
+            {
+              type: "image/jpeg",
+              size: file.size,
+              uri: `data:image/jpeg;base64,${imageSrc.split(",")[1]}`,
+            }
+          );
+
+          console.log("selfieFile: ", selfieFile);
+
+          setFormData((prev) => ({
+            ...prev,
+            selfie: selfieFile
+          }))
+
+        } catch (error) {
+          console.error("Error fetching image:", error);
+        }
+      },
+      [webcamRef]
+    );
+
+    return (
+      <>
+        <div className="relative">
+          <Webcam
+            audio={false}
+            height={400}
+            ref={webcamRef}
+            screenshotFormat="image/jpeg"
+            width={600}
+            className="rounded-xl mx-auto"
+          />
+          <button
+            onClick={capture}
+            className="h-12 w-12 py-1 px-2 rounded-full border text-sm font-base bg-teal-900 text-white shadow-sm absolute bottom-4 left-1/2 transform -translate-x-1/2"
+          >
+            <div className="flex items-center justify-center">
+              <FaCameraRetro size={20} />
+            </div>
+          </button>
+        </div>
+        {capturedImage && (
+          <img
+            src={capturedImage}
+            alt="Captured Photo"
+            className="w-full h-full px-2 py-2 object-cover rounded-xl mt-2"
+          />
+        )}
+      </>
+    );
+  }
+
+  const handleFileChange = (field, e) => {
+    e.preventDefault();
+    const files = e.target.files;
+
+    setFormData((prev) => ({
+      ...prev,
+      [field]: prev[field] === null ? files : [...prev[field], ...files]
+    }))
+  };
+
+  const handleAddPrimaryID = () => {
+    fileInputPrimaryIDRef.current.click();
+  };
+
+  const handleAddSecondaryID = () => {
+    fileInputSecondaryIDRef.current.click();
+  }
 
   const navigate = useNavigate();
 
-  const handleFileChange = (e) => {
-    e.preventDefault();
-
-    if (e.target.id === "primary_input") {
-      var primary = document.getElementById("primary");
-      primary.src = URL.createObjectURL(e.target.files[0]);
-      primary.onload = function () {
-        URL.revokeObjectURL(primary.src); // free memory
-      };
-      // setGovID({
-      //     primary: e.target.files[0],
-      // });
-    } else if (e.target.id = "secondary_input") {
-      var secondary = document.getElementById("secondary");
-      secondary.src = URL.createObjectURL(e.target.files[0]);
-      secondary.onload = function () {
-        URL.revokeObjectURL(secondary.src); // free memory
-      };
-      // setGovID({
-      //     secondary: e.target.files[0]
-      // })
-    }
-  };
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -217,6 +296,7 @@ const SignupPage = () => {
     } else {
       setShowError(false);
     }
+
     if (formData.password !== formData.confirmPassword) {
       setPasswordError(true);
       setPasswordMatchSuccess(false);
@@ -250,70 +330,114 @@ const SignupPage = () => {
       username: formData.username,
       password: formData.password,
       isApproved: "Pending",
+      primary_id: formData.primary_id,
+      primary_file: formData.primary_file,
+      secondary_id: formData.secondary_id,
+      secondary_file: formData.secondary_file,
+      selfie: formData.selfie,
     };
 
-    try {
-      const response = await axios.get(`${API_LINK}/users/${brgy}`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const users = response.data; // Assign the response data to users
+    const res_folder = await axios.get(
+      `${API_LINK}/folder/specific/?brgy=${obj.address.brgy}`
+    );
 
-      const usernameExists = users.some(
-        (user) => user.username.toLowerCase() === username.toLowerCase()
-      );
-      const emailExists = users.some(
-        (user) => user.email.toLowerCase() === email.toLowerCase()
-      );
+    if (res_folder.status === 200) {
+      try {
+        var newFormData = new FormData();
 
-      if (usernameExists || emailExists) {
-        setDuplicateError(true);
-        setEmpty(false);
-        setShowError(false);
-      } else {
-        setDuplicateError(false);
-        // Proceed with registration...
+        newFormData.append("user", JSON.stringify(obj));
+
+        let selfieFile = new File(
+          [formData.selfie],
+          `${formData.lastName}, ${formData.firstName} - SELFIE`,
+          {
+            type: "image/jpeg",
+            size: formData.selfie.size,
+            uri: formData.selfie.uri,
+          }
+        );
+
+        newFormData.append("files", selfieFile);
+
+        for (let i = 0; i < formData.primary_file.length; i++) {
+          let file = {
+            name: `${formData.lastName}, ${formData.firstName
+              } - PRIMARY ID ${moment(new Date()).format("MMDDYYYYHHmmss")}`,
+            size: formData.primary_file[i].size,
+            type: formData.primary_file[i].type,
+            uri: formData.primary_file[i].uri,
+          };
+
+          newFormData.append(
+            "files",
+            new File([formData.primary_file[i]], file.name, {
+              type: file.type,
+            })
+          );
+        }
+
+        for (let i = 0; i < formData.secondary_file.length; i++) {
+          let file = {
+            name: `${formData.lastName}, ${formData.firstName
+              } - SECONDARY ID ${moment(new Date()).format(
+                "MMDDYYYYHHmmss"
+              )}`,
+            uri: formData.secondary_file[i].uri,
+            type: formData.secondary_file[i].type,
+            size: formData.secondary_file[i].size,
+          };
+
+          newFormData.append(
+            "files",
+            new File([formData.secondary_file[i]], file.name, {
+              type: file.type,
+            })
+          );
+        }
+
+        const response = await axios.post(
+          `${API_LINK}/users/?folder_id=${res_folder.data[0].verification}`,
+          newFormData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
+        if (response.status === 200) {
+          setsuccessReg(true);
+
+          const email = btoa(obj.email);
+          const barangay = btoa(obj.address.brgy);
+
+          setTimeout(function () {
+            navigate(`/loading/?email=${email}&brgy=${barangay}`);
+          }, 3000);
+        }
+
+      } catch (error) {
+        console.log(error)
+        if (error.response && error.response.data && error.response.data.error) {
+          setDuplicateError(error.response.data.error);
+          setEmpty(false);
+          setShowError(false);
+        } else {
+          setDuplicateError("An unknown error occurred.");
+        }
       }
-    } catch (error) {
-      if (error.response && error.response.data && error.response.data.error) {
-        setDuplicateError(error.response.data.error);
-        setEmpty(false);
-        setShowError(false);
-      } else {
-        setDuplicateError("An unknown error occurred.");
-      }
-    }
 
-    // Continue with the form submission if the passwords match
-    try {
-      const response = await axios.post(`${API_LINK}/users/`, obj, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      setEmpty(false);
-      setShowError(false);
-      setDuplicateError(false);
-      setsuccessReg(true);
-
-      const email = btoa(obj.email);
-      const barangay = btoa(obj.address.brgy);
-
-      setTimeout(function () {
-        navigate(`/loading/?email=${email}&brgy=${barangay}`);
-      }, 3000);
-    } catch (error) {
-      console.error("Error:", error);
     }
   };
+
+  console.log(formData)
 
   return (
     <div className="flex flex-col-reverse md:flex-row-reverse ">
 
       <SideInfo />
 
-      <div className="sm:w-full lg:w-6/12 mx-auto sm:h-auto sm:py-[30px] md:h-screen flex flex-col items-center justify-center bg-white">
+      <div className="sm:w-full lg:w-6/12 mx-auto sm:h-auto sm:py-[30px] flex flex-col items-center justify-center bg-white">
         <img
           className="sm:w-[250px] md:w-1/3 lg:w-[450px]"
           src={myImage}
@@ -332,7 +456,7 @@ const SignupPage = () => {
           <Address formData={formData} empty={empty} emptyFields={emptyFields} restrict={restrict} handleChange={handleChange} handleNextPage={handleNextPage} />
         ) : null}
         {signupPage.verification === true ? (
-          <Verification formData={formData} empty={empty} emptyFields={emptyFields} restrict={restrict} handleChange={handleChange} passwordError={passwordError} passwordStrengthError={passwordStrengthError} passwordMatchSuccess={passwordMatchSuccess} passwordStrengthSuccess={passwordStrengthSuccess} showError={showError} passwordStrength={passwordStrength} duplicateError={duplicateError} successReg={successReg} termsAccepted={termsAccepted} setTermsAccepted={setTermsAccepted} policyAccepted={policyAccepted} setPolicyAccepted={setPolicyAccepted} handleSubmit={handleSubmit} handleNextPage={handleNextPage} />
+          <Verification formData={formData} setFormData={setFormData} empty={empty} emptyFields={emptyFields} restrict={restrict} handleAddPrimaryID={handleAddPrimaryID} handleAddSecondaryID={handleAddSecondaryID} fileInputPrimaryIDRef={fileInputPrimaryIDRef} fileInputSecondaryIDRef={fileInputSecondaryIDRef} handleFileChange={handleFileChange} WebcamCapture={WebcamCapture} setViewerVisible={setViewerVisible} setSelectedImage={setSelectedImage} setCapturedImage={setCapturedImage} handleNextPage={handleNextPage} />
         ) : null}
         {signupPage.credential === true ? (
           <AccountCredentials formData={formData} empty={empty} emptyFields={emptyFields} restrict={restrict} handleChange={handleChange} passwordError={passwordError} passwordStrengthError={passwordStrengthError} passwordMatchSuccess={passwordMatchSuccess} passwordStrengthSuccess={passwordStrengthSuccess} showError={showError} passwordStrength={passwordStrength} duplicateError={duplicateError} successReg={successReg} termsAccepted={termsAccepted} setTermsAccepted={setTermsAccepted} policyAccepted={policyAccepted} setPolicyAccepted={setPolicyAccepted} handleSubmit={handleSubmit} handleNextPage={handleNextPage} />

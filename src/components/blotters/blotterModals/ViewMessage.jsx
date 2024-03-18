@@ -11,7 +11,7 @@ import Preloader from "../../loaders/Preloader";
 import { useSearchParams } from "react-router-dom";
 import moment from "moment";
 
-const ViewMessage = ({ inquiry, setInquiry }) => {
+const ViewMessage = ({ specBlotter, setSpecBlotter }) => {
   // console.log(inquiry.folder_id);
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get("id");
@@ -29,8 +29,7 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
   const [submitClicked, setSubmitClicked] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState(null);
   const [errMsg, setErrMsg] = useState(false)
-
-  // console.log(inquiry)
+  const [isComplainant, setIsComplainant] = useState(false)
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -42,6 +41,7 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
           message: "",
           date: new Date(),
         })
+
       } catch (error) {
         console.log(error)
       }
@@ -49,14 +49,14 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
     fetchUser()
   }, [id])
 
-  useEffect(() => {
-    setFiles(inquiry.length === 0 ? [] : inquiry.compose.file);
-  }, [inquiry]);
+  // useEffect(() => {
+  //   setFiles(specBlotter.length === 0 ? [] : specBlotter.compose.file);
+  // }, [specBlotter]);
 
   useEffect(() => {
-    if (inquiry.length !== 0) {
-      if (inquiry && inquiry.response.length !== 0) {
-        const lastResponse = inquiry.response[inquiry.response.length - 1];
+    if (specBlotter.length !== 0) {
+      if (specBlotter && specBlotter.responses.length !== 0) {
+        const lastResponse = specBlotter.responses[specBlotter.responses.length - 1];
 
         if (lastResponse.file && lastResponse.file.length > 0) {
           setViewFiles(lastResponse.file);
@@ -67,7 +67,7 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
         setViewFiles([]);
       }
     }
-  }, [inquiry]);
+  }, [specBlotter]);
 
   const fileInputRef = useRef();
 
@@ -115,6 +115,15 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
     setCreateFiles([...createFiles, ...e.target.files]);
   };
 
+  const setType = (item) => {
+    if(item === "Complainant"){
+      return "COMPLAINANT"
+      setIsComplainant(true)
+    } else { 
+      return "DEFENDANT"
+    }
+  }
+
   const handleOnSend = async (e) => {
     e.preventDefault();
     console.log(newMessage);
@@ -130,10 +139,17 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
     try {
       const obj = {
         sender: `${userData.firstName.toUpperCase()} ${userData.lastName.toUpperCase()}`,
+        type: "Resident",
         message: newMessage.message,
         date: newMessage.date,
-        folder_id: inquiry.folder_id,
+        folder_id: specBlotter.folder_id,
       };
+
+      const targetIds = [
+        specBlotter?.to[0]?.user_id,
+        specBlotter?.to[1]?.user_id
+      ]
+
       var formData = new FormData();
       formData.append("response", JSON.stringify(obj));
       for (let i = 0; i < createFiles.length; i++) {
@@ -141,7 +157,7 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
       }
 
       const response = await axios.patch(
-        `${API_LINK}/inquiries/?inq_id=${inquiry._id}`,
+        `${API_LINK}/blotter/?patawag_id=${specBlotter._id}`,
         formData
       );
 
@@ -150,32 +166,19 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
         const notify = {
           category: "Many",
           compose: {
-            subject: `INQUIRY - ${`${userData.lastName}, ${userData.firstName}`}`,
-            message: `A user has replied to an inquiry ${inquiry.compose.subject}!\n
+            subject: `PATAWAG REPLY - ${`${userData.lastName}, ${userData.firstName}`}`,
+            message: `A user has replied to a Service Blotter named ${specBlotter.name}!\n
             \n
-            Inquiry Details:\n
-            - Subject: ${inquiry.compose.subject}\n
-            - Message: ${inquiry.compose.message}\n
-            - Date Created: ${moment(inquiry.createdAt).format(
-              "MMM. DD, YYYY h:mm a"
-            )}\n
-            \n
-            Please update this inquiry!\n
+            Please view and response as you've seen this notification!\n
             \n
             Thank you!!`,
-            go_to: "Inquiries",
+            go_to: "Patawag",
           },
           target: {
-            user_id: userData.user_id,
-            area:
-              inquiry.compose.to === "Admin"
-                ? "Municipality"
-                : userData.address.brgy,
+            user_id: targetIds,
+            area: userData.address.brgy,
           },
-          type:
-            inquiry.compose.to === "Admin"
-              ? "Municipality"
-              : "Barangay",
+          type: "Barangay",
           banner: {
             link: "https://drive.google.com/thumbnail?id=1v009xuRjSNW8OGUyHbAYTJt3ynxjhtGW&sz=w1000",
             name: "inquiries_banner.jpg",
@@ -236,13 +239,13 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
                   className="font-bold text-white mx-auto md:text-xl text-center"
                   style={{ letterSpacing: "0.3em" }}
                 >
-                  VIEW INQUIRY
+                  BLOTTER
                 </h3>
               </div>
 
               <div className="scrollbarWidth scrollbarTrack scrollbarHover scrollbarThumb flex flex-col mx-auto w-full pt-5 px-5 overflow-y-auto relative max-h-[470px]">
                 <b className="border-solid border-0 border-black/50 border-b-2  uppercase font-medium text-lg md:text-lg mb-4">
-                  Inquiry Details
+                  Patawag Details
                 </b>
                 <div className="flex flex-col lg:flex-row">
                   <div className="mb-4 px-2 w-full lg:w-1/2">
@@ -257,7 +260,7 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
                       id="title"
                       name="title"
                       className="shadow appearance-none border w-full py-2 px-3 text-sm text-black rounded-lg focus:border-green-500 focus:ring-green-500 focus:outline-none focus:shadow-outline"
-                      value={inquiry && inquiry.name || ""}
+                      value={specBlotter && specBlotter.name || ""}
                       disabled
                     />
                   </div>
@@ -266,16 +269,22 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
                       htmlFor="title"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Email
+                      To
                     </label>
-                    <input
-                      type="text"
-                      id="title"
-                      name="title"
-                      className="shadow appearance-none border w-full py-2 px-3 text-sm text-black rounded-lg focus:border-green-500 focus:ring-green-500 focus:outline-none focus:shadow-outline"
-                      value={inquiry && inquiry.email || ""}
-                      disabled
-                    />
+                    <span className="text-xs sm:text-sm text-black line-clamp-2 ">
+                      {
+                        specBlotter && specBlotter.to && specBlotter.to.length !== 0 ?
+                          specBlotter.to.map((item, i) => (
+                            <div key={i}>
+                              {item.lastName}, {item.firstName} ({setType(item.type)})
+                            </div>
+                          ))
+                          :
+                          <div>
+
+                          </div>
+                      }
+                    </span>
                   </div>
                 </div>
 
@@ -285,14 +294,14 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
                       htmlFor="title"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Subject
+                      Barangay
                     </label>
                     <input
                       type="text"
                       id="title"
                       name="title"
                       className="shadow appearance-none border w-full py-2 px-3 text-sm text-black rounded-lg focus:border-green-500 focus:ring-green-500 focus:outline-none focus:shadow-outline"
-                      value={inquiry && inquiry?.compose?.subject || ""}
+                      value={specBlotter && specBlotter.brgy || ""}
                       disabled
                     />
                   </div>
@@ -309,38 +318,21 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
                       name="title"
                       className="shadow appearance-none border w-full py-2 px-3 text-sm text-black rounded-lg focus:border-green-500 focus:ring-green-500 focus:outline-none focus:shadow-outline"
                       value={
-                        DateFormat(inquiry && inquiry?.compose?.date) || ""
+                        DateFormat(specBlotter && specBlotter.createdAt) || ""
                       }
                       disabled
                     />
                   </div>
                 </div>
 
-                <div className="mb-4 px-2">
-                  <label
-                    htmlFor="details"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Message
-                  </label>
-                  <textarea
-                    id="details"
-                    name="details"
-                    rows="4"
-                    className="shadow appearance-none border w-full h-full py-2 px-3 text-sm text-black rounded-lg focus:border-green-500 focus:ring-green-500 focus:outline-none focus:shadow-outline"
-                    value={inquiry && inquiry?.compose?.message || ""}
-                    disabled
-                  />
-                </div>
-
-                <EditDropbox files={inquiry && files} setFiles={setFiles} />
+                <EditDropbox files={specBlotter && files} setFiles={setFiles} />
 
                 <div className="flex flex-col mt-5 w-full">
                   <b className="border-solid border-0 w-full border-black/50 border-b-2 my-4 uppercase font-medium text-lg md:text-lg mb-4">
                     Conversation History
                   </b>
                   <form>
-                    {!inquiry.response || inquiry.response.length === 0 ? (
+                    {!specBlotter.responses || specBlotter.responses.length === 0 ? (
                       <div className="flex flex-col items-center">
                         {
                           errMsg ? (
@@ -411,9 +403,9 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
                         </div>
                       </div>
                     ) : null}
-                    {inquiry &&
-                      inquiry.response &&
-                      inquiry.response.map((responseItem, index) => (
+                    {specBlotter &&
+                      specBlotter.responses &&
+                      specBlotter.responses.map((responseItem, index) => (
                         <div
                           key={index}
                           className={responseItem.sender === `${userData.firstName.toUpperCase()} ${userData.lastName.toUpperCase()}` || responseItem.sender === "Resident" ? "flex flex-col justify-end items-end mb-5 w-full h-auto" : "flex flex-col justify-start items-start mb-5 w-full h-auto"}
@@ -447,7 +439,7 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
                                 : null
                             }
                             {
-                              !responseItem.file ?
+                              !responseItem.file.length ?
                                 null
                                 :
                                 <div className="flex flex-col rounded-xl bg-custom-green-button w-full mt-2 px-2 md:px-4 py-2">
@@ -461,7 +453,7 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
                               {DateFormat(responseItem.date) || ""}
                             </p>
                           </div>
-                          {index === inquiry.response.length - 1 ?
+                          {index === specBlotter.responses.length - 1 ?
                             <div className="flex flex-row items-center w-full">
                               {
                                 responseItem.isRepliable === false ?

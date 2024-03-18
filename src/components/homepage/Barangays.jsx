@@ -1,9 +1,24 @@
 import React from "react";
 import headerImage from "../../assets/image/header.png";
+import { useEffect, useState } from "react";
+import API_LINK from "../../config/API";
+import axios from "axios";
+
 const Barangays = ({ selectedBarangay, closeModal }) => {
   if (!selectedBarangay) {
     return null; // Don't render anything if no barangay is selected
   }
+
+  const [info, setInfo] = useState({});
+
+  useEffect(() => {
+    const fetchBrgy = async () => {
+      const response = await axios.get(`${API_LINK}/brgyinfo/?brgy=${selectedBarangay.brgy}`);
+      setInfo(response.data[0]);
+    }
+    fetchBrgy()
+  }, [selectedBarangay])
+
   return (
     <div
       id="hs-vertically-centered-scrollable-modal"
@@ -38,7 +53,7 @@ const Barangays = ({ selectedBarangay, closeModal }) => {
             </div>
             <div className="p-4 space-y-4 bg-white rounded-b-xl shadow-2xl transform transition-all duration-500 ease-in-out">
               <div className="space-y-2 ">
-                <div className="tracking-widest py-2 px-3 rounded-md text-white text-sm font-bold uppercase bg-gradient-to-r from-[#295141] to-[#408D51]">
+                <div className={`tracking-widest py-2 px-3 rounded-md text-white text-sm font-bold uppercase bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : "#408D51"}]`}>
                   Barangay Story
                 </div>
                 <div className="text-gray-700 text-sm bg-white p-3 rounded-md shadow-md mb-5 h-36 lg:h-auto overflow-y-auto">
@@ -46,7 +61,7 @@ const Barangays = ({ selectedBarangay, closeModal }) => {
                 </div>
               </div>
               <div className="space-y-2 overflow-y-auto">
-                <div className="tracking-widest py-2 px-3 rounded-md text-white text-sm font-bold uppercase bg-gradient-to-r from-[#295141] to-[#408D51]">
+                <div className={`tracking-widest py-2 px-3 rounded-md text-white text-sm font-bold uppercase bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : "#408D51"}]`}>
                   Barangay Mission
                 </div>
                 <div className="text-gray-700 text-sm bg-white p-3 rounded-md shadow-md mb-5 h-36 lg:h-auto overflow-y-auto">
@@ -54,7 +69,7 @@ const Barangays = ({ selectedBarangay, closeModal }) => {
                 </div>
               </div>
               <div className="space-y-2">
-                <div className="tracking-widest py-2 px-3 rounded-md text-white text-sm font-bold uppercase bg-gradient-to-r from-[#295141] to-[#408D51]">
+                <div className={`tracking-widest py-2 px-3 rounded-md text-white text-sm font-bold uppercase bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : "#408D51"}]`}>
                   Barangay Vision
                 </div>
                 <div className="text-gray-700 text-sm bg-white p-3 rounded-md shadow-md mb-5 h-36 lg:h-auto overflow-y-auto">

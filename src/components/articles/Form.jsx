@@ -29,10 +29,14 @@ const Form = ({ announcement }) => {
   const [submitClicked, setSubmitClicked] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState(null);
   const [noForm, setNoForm] = useState(false)
+  const [info, setInfo] = useState({});
 
   useEffect(() => {
     const fetchForms = async () => {
       try {
+        const brgyinfo = await axios.get(`${API_LINK}/brgyinfo/?brgy=${brgy}`);
+        setInfo(brgyinfo.data[0]);
+
         const event_response = await axios.get(
           `${API_LINK}/event_form/check/?brgy=${brgy}&event_id=${event_id}`
         );
@@ -463,12 +467,22 @@ const Form = ({ announcement }) => {
             </div>
             : null
         }
+        {
+          userData.isApproved !== "Verified" ?
+            <div
+              className="bg-red-50 border px-5 text-center border-red-200 text-sm text-red-600 rounded-md py-4 mt-2 mb-4"
+              role="alert"
+            >
+              <span className="font-bold ">Warning: Your account is not eligible to request a Services, please complete you account information.</span>
+            </div>
+            : null
+        }
         <div className="flex mx-auto sm:flex-row md:flex-row w-full items-center gap-4 justify-center">
           <button
-            disabled={noForm === true}
+            disabled={noForm === true || userData.isApproved !== "Verified"}
             data-hs-overlay="#hs-full-screen-modal"
-            className={noForm === true ? "flex items-center justify-center text-center bg-gray-400 sm:w-full md:w-[150px] sm:my-[5px] md:m-5 h-[50px] text-sm text-white font-medium rounded-lg"
-              : "flex items-center justify-center text-center bg-green-700 sm:w-full md:w-[150px] sm:my-[5px] md:m-5 h-[50px] text-sm text-white font-medium rounded-lg hover:bg-gradient-to-r from-[#295141] to-[#408D51] transition duration-500 ease-in-out hover:text-custom-gold"}
+            className={noForm === true || userData.isApproved !== "Verified" ? "flex items-center justify-center text-center bg-gray-400 sm:w-full md:w-[150px] sm:my-[5px] md:m-5 h-[50px] text-sm text-white font-medium rounded-lg"
+              : `flex items-center justify-center text-center bg-custom-green-button sm:w-full md:w-[150px] sm:my-[5px] md:m-5 h-[50px] text-sm text-white font-medium rounded-lg hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}] transition duration-500 ease-in-out hover:text-custom-gold`}
           >
             Submit an Application
           </button>

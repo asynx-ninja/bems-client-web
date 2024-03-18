@@ -1,52 +1,39 @@
 import { useRef } from "react";
+import { useState } from "react";
 import {
     FaCamera,
-    FaFacebook,
-    FaEnvelope,
-    FaPhone,
-    FaTwitter,
-    FaInstagram,
+    FaPlusCircle
 } from "react-icons/fa";
 
-const Verification = ({ formData, empty, emptyFields, handleChange, handleNextPage }) => {
-    const filePrimeIDRef = useRef()
-    const fileSecIDRef = useRef()
+import DropboxPrimary from "../settings/verification/DropboxPrimary";
+import DropboxSecondary from "../settings/verification/DropboxSecondary";
 
-    const handleAdd = (e) => {
-        e.preventDefault();
+const Verification = ({ formData, setFormData, empty, handleAddPrimaryID, handleAddSecondaryID, fileInputPrimaryIDRef, fileInputSecondaryIDRef, handleFileChange, WebcamCapture, handleNextPage = { handleNextPage } }) => {
+    const userDeets = formData !== undefined ? formData : ""
+    const [editButton, setEditButton] = useState(false)
+    const [upload, setUpload] = useState({
+        primary: false,
+        secondary: false,
+    });
+    const [capture, setCapture] = useState(false);
 
-        if (e.target.id === "primeID") {
-            filePrimeIDRef.current.click();
-        } else if (e.target.id === "secID") {
-            fileSecIDRef.current.click();
-        }
-
+    const handleOnCapture = () => {
+        setCapture(!capture);
     };
 
-
-    const handleFileChange = (e) => {
-        e.preventDefault();
-
-        if (e.target.id === "primary_input") {
-            var primary = document.getElementById("primary");
-            primary.src = URL.createObjectURL(e.target.files[0]);
-            primary.onload = function () {
-                URL.revokeObjectURL(primary.src); // free memory
-            };
-            // setGovID({
-            //     primary: e.target.files[0],
-            // });
-        } else if (e.target.id = "secondary_input") {
-            var secondary = document.getElementById("secondary");
-            secondary.src = URL.createObjectURL(e.target.files[0]);
-            secondary.onload = function () {
-                URL.revokeObjectURL(secondary.src); // free memory
-            };
-            // setGovID({
-            //     secondary: e.target.files[0]
-            // })
-        }
+    const handleOnUpload = () => {
+        setUpload({
+            primary: !upload.primary,
+            secondary: !upload.secondary
+        });
     };
+
+    const handleIDType = (field, value) => {
+        setFormData((prev) => ({
+            ...prev,
+            [field]: value
+        }))
+    }
 
     return (
         <div className="sm:w-[80%] md:w-9/12 lg:w-9/12">
@@ -60,127 +47,212 @@ const Verification = ({ formData, empty, emptyFields, handleChange, handleNextPa
                 </div>
             )}
             <h1 className="py-3 mb-3 font-bold">Step 3: Verification</h1>
-            <div className="relative lg:w-full grid sm:grid-cols-1 md:grid-cols-2 gap-5 m-auto justify-center items-center mb-5">
-                <div className="relative lg:w-full flex flex-col m-auto justify-center items-center">
-                    <div className="absolute top-[75px] w-full h-[150px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center items-center">
-                        <label
-                            htmlFor="primary_input"
-                            id="primeID"
-                            onClick={handleAdd}
-                            className="flex justify-center items-center text-transparent w-full h-full font-medium rounded-xl text-sm text-center opacity-0 hover:opacity-100 transition-opacity hover:bg-[#295141] hover:bg-opacity-60 cursor-pointer"
-                        >
-                            <FaCamera
-                                size={50}
-                                style={{ color: "#ffffff" }}
-                                className="cursor-none m-auto"
+            <div className="relative lg:w-full grid grid-cols-1 gap-5 m-auto justify-center items-center mb-5">
+                <div className="relative lg:w-full grid gap-10 grid-cols-1 m-auto justify-end items-end">
+
+                    <div className={"flex flex-col gap-5"}>
+
+                        <div className="mt-5">
+                            <h1 className="font-bold mt-[5px] text-center">Primary ID</h1>
+                        </div>
+                        <div className={"relative w-full flex flex-col m-auto justify-center items-center"}>
+                            <div className="w-full">
+                                <select
+                                    id="primary_id"
+                                    name="primary_id"
+                                    value={userDeets.primary_id || ""}
+                                    onChange={(e) =>
+                                        handleIDType("primary_id", e.target.value)
+                                    }
+                                    className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 bg-white"
+                                >
+                                    <option value="" disabled>Select Primary ID</option>
+                                    <option>Philippine Passport</option>
+                                    <option>SSS/GSIS/UMID</option>
+                                    <option>Driver's License</option>
+                                    <option>PRC ID</option>
+                                    <option>OWWA ID</option>
+                                    <option>iDOLE Card</option>
+                                    <option>Voter's ID</option>
+                                    <option>Voter's Certification</option>
+                                    <option>Firearms License</option>
+                                    <option>Senior Citizen ID</option>
+                                    <option>PWD ID</option>
+                                    <option>Alien Certification of Registration or Immigrant Certificate of Registration</option>
+                                    <option>PhilHealth ID</option>
+                                    <option>GOCC ID</option>
+                                    <option>IBP ID</option>
+                                    <option>School ID</option>
+                                    <option>Current Valid ePassport</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div className="flex flex-col items-center gap-5">
+                            <DropboxPrimary
+                                viewFiles={userDeets.primary_file}
+                                setUserData={setFormData}
+                                editButton={editButton}
                             />
-                        </label>
-                        <input
-                            type="file"
-                            id="primary_input"
-                            name="file"
-                            onChange={handleFileChange}
-                            ref={filePrimeIDRef}
-                            accept="image/*"
-                            multiple="multiple"
-                            className="hidden"
-                        />
-                    </div>
-                    <img
-                        id="primary"
-                        className="w-[300px] h-[150px] rounded-xl sm:mb-3 lg:mb-0 border-[1px] border-[#295141] object-cover"
-                    />
-                    <div>
-                        <h1 className="font-bold mt-[5px]">Primary ID</h1>
-                    </div>
-                    <div className="w-[90%]">
-                        <select
-                            id="select_primary"
-                            name="primaryID"
-                            // value={userAddress.brgy || ""}
-                            // onChange={(e) =>
-                            //     handleUserChangeAdd("brgy", e.target.value)
-                            // }
-                            className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 bg-white"
+                        </div>
+                        <div
+                            className={"block bg-custom-green-button text-white rounded-lg mx-auto mt-1"}
                         >
-                            {/* <option>{userAddress.brgy}</option> */}
-                            <option value="philippinePassport">Philippine Passport</option>
-                            <option value="philSysID">Philippine National ID (PhilSys ID)</option>
-                            <option value="driversLicense">Driver's License</option>
-                            <option value="umidCard">Unified Multi-Purpose ID (UMID)</option>
-                            <option value="votersID">Voter's ID</option>
-                            <option value="postalID">Postal ID</option>
-                            <option value="sssID">Social Security System ID (SSS ID)</option>
-                            <option value="gsisID">Government Service Insurance System ID (GSIS ID)</option>
-                            <option value="pagibigID">Pag-IBIG Fund ID</option>
-                            <option value="companyID">Company ID</option>
-                            <option value="prcID">Professional Regulation Commission ID (PRC ID)</option>
-                            <option value="ofwID">Overseas Filipino Worker ID (OFW ID)</option>
-                            <option value="seniorCitizenID">Senior Citizen ID</option>
-                            <option value="pwdID">Person with Disability ID (PWD ID)</option>
-                            <option value="owwaID">Overseas Workers Welfare Administrator</option>
-                            <option value="philID">PhilHealth ID</option>
-                            <option value="studentID">Student ID</option>
-                            <option value="alienCertificateOfRegistration">Alien Certificate of Registration (ACR)</option>
-                        </select>
+                            <button
+                                className="flex gap-5 items-center py-2 px-5 justify-center"
+                                id="button"
+                                onClick={handleAddPrimaryID || handleOnUpload}
+                            >
+                                Please Insert your ID
+                                <FaPlusCircle />
+                            </button>
+                            <input
+                                type="file"
+                                id="primary_input"
+                                name="file"
+                                onChange={(e) => handleFileChange("primary_file", e)}
+                                ref={fileInputPrimaryIDRef}
+                                accept="image/*"
+                                multiple="multiple"
+                                className="hidden"
+                            />
+                        </div>
+
+                        <div className="mt-5">
+                            <h1 className="font-bold mt-[5px] text-center">Secondary ID</h1>
+                        </div>
+                        <div className={"relative w-full flex flex-col m-auto justify-center items-center"}>
+                            <div className="w-full">
+                                <select
+                                    id="secondary_id"
+                                    name="secondary_id"
+                                    value={userDeets.secondary_id || ""}
+                                    onChange={(e) =>
+                                        handleIDType("secondary_id", e.target.value)
+                                    }
+                                    className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 bg-white"
+                                >
+                                    <option value="" disabled>Select Secondary ID</option>
+                                    <option>TIN ID</option>
+                                    <option>Postal ID</option>
+                                    <option>Barangay Certification</option>
+                                    <option>GSIS e-Card</option>
+                                    <option>Seaman's Book</option>
+                                    <option>NCWDP Certification</option>
+                                    <option>DSWD Certification</option>
+                                    <option>Copmpany ID</option>
+                                    <option>Police Clearance</option>
+                                    <option>Barangay Clearance</option>
+                                    <option>Cedula</option>
+                                    <option>Government Service Record</option>
+                                    <option>Elementary or High School Form 137 Records</option>
+                                    <option>Transcript of Records from University</option>
+                                    <option>Land Title</option>
+                                    <option>PSA Marriage Contract</option>
+                                    <option>PSA Birth Certificate</option>
+                                    <option>Homeowner's Certification</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div className="flex flex-col items-center gap-5">
+                            <DropboxSecondary
+                                viewFiles={userDeets.secondary_file}
+                                setUserData={setFormData}
+                                editButton={editButton}
+                            />
+                        </div>
+                        <div
+                            className={"block bg-custom-green-button text-white rounded-lg mx-auto mt-1"}
+                        >
+                            <button
+                                className="flex gap-5 items-center py-2 px-5 justify-center"
+                                id="button"
+                                onClick={handleAddSecondaryID || handleOnUpload}
+                            >
+                                Please Insert your ID
+                                <FaPlusCircle />
+                            </button>
+                            <input
+                                type="file"
+                                id="primary_input"
+                                name="file"
+                                onChange={(e) => handleFileChange("secondary_file", e)}
+                                ref={fileInputSecondaryIDRef}
+                                accept="image/*"
+                                multiple="multiple"
+                                className="hidden"
+                            />
+                        </div>
                     </div>
                 </div>
-                <div className="relative lg:w-full flex flex-col m-auto justify-center items-center">
-                    <div className="absolute top-[75px] w-full h-[150px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center items-center">
+
+                <div className="flex flex-col items-center space-y-2 relative mt-10">
+                    <div className="w-full text-center">
                         <label
-                            htmlFor="secondary_input"
-                            id="secID"
-                            onClick={handleAdd}
-                            className="flex justify-center items-center text-transparent w-full h-full font-medium rounded-xl text-sm text-center opacity-0 hover:opacity-100 transition-opacity hover:bg-[#295141] hover:bg-opacity-60 cursor-pointer"
+                            className="block text-sm font-bold mb-2 mt-2"
+                            htmlFor="name"
                         >
-                            <FaCamera
-                                size={50}
-                                style={{ color: "#ffffff" }}
-                                className="cursor-none m-auto"
-                            />
+                            Selfie of the Resident
                         </label>
-                        <input
-                            type="file"
-                            id="secondary_input"
-                            name="file"
-                            onChange={handleFileChange}
-                            ref={fileSecIDRef}
-                            accept="image/*"
-                            multiple="multiple"
-                            className="hidden"
-                        />
                     </div>
-                    <img
-                        id="secondary"
-                        className="w-[300px] h-[150px] rounded-xl sm:mb-3 lg:mb-0 border-[1px] border-[#295141] object-cover"
-                    />
-                    <div>
-                        <h1 className="font-bold mt-[5px]">Secondary ID</h1>
-                    </div>
-                    <div className="w-[90%]">
-                        <select
-                            id="select_secondary"
-                            name="secondaryID"
-                            // value={userAddress.brgy || ""}
-                            // onChange={(e) =>
-                            //     handleUserChangeAdd("brgy", e.target.value)
-                            // }
-                            className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 bg-white"
-                        >
-                            {/* <option>{userAddress.brgy}</option> */}
-                            <option value="philHealthID">PhilHealth ID</option>
-                            <option value="barangayClearance">Barangay Clearance</option>
-                            <option value="nbiClearance">National Bureau of Investigation (NBI) Clearance</option>
-                            <option value="policeClearance">Police Clearance</option>
-                            <option value="studentID">Student ID</option>
-                            <option value="birthCertificate">Birth Certificate (PSA/NSO)</option>
-                            <option value="marriageCertificate">Marriage Certificate (PSA/NSO)</option>
-                            <option value="baptismalCertificate">Baptismal Certificate</option>
-                            <option value="transcriptOfRecords">Transcript of Records</option>
-                            <option value="alienCertificateOfRegistration">Alien Certificate of Registration (ACR)</option>
-                            <option value="seamanBook">Seaman's Book</option>
-                            <option value="bankPassbook">Bank Passbook</option>
-                        </select>
+
+                    <div className="w-full">
+                        <div className="flex flex-col">
+                            {capture ? (
+                                <button
+                                    type="button"
+                                    className="h-[2.5rem] mx-auto py-1 px-6 gap-2 rounded-md borde text-sm font-base bg-pink-900 text-white shadow-sm mb-2"
+                                    onClick={handleOnCapture}
+                                >
+                                    CANCEL
+                                </button>
+                            ) : (
+                                <button
+                                    type="button"
+                                    className="h-[2.5rem] mx-auto py-1 px-6 gap-2 rounded-md border text-sm font-base bg-custom-green-button text-white shadow-sm mb-2"
+                                    onClick={handleOnCapture}
+                                >
+                                    TAKE A NEW PHOTO
+                                </button>
+                            )}
+
+                            {!capture ? (
+                                <div></div>
+                            ) : (
+                                <div>
+                                    <WebcamCapture />
+                                </div>
+                            )}
+                        </div>
+                        {userDeets.selfie &&
+                            (Array.isArray(userDeets.selfie) ? (
+                                userDeets.selfie.map((item, idx) => <></>)
+                            ) : (
+                                <div
+                                    className="w-[400px] h-[350px] border mx-auto border-gray-300 rounded-xl bg-gray-300 cursor-pointer mt-2"
+                                    onClick={() =>
+                                        handleImageClick(userDeets.selfie)
+                                    }
+                                >
+                                    <img
+                                        src={
+                                            userDeets.selfie instanceof File
+                                                ? URL.createObjectURL(
+                                                    userDeets.selfie
+                                                )
+                                                : userDeets.selfie.hasOwnProperty(
+                                                    "link"
+                                                )
+                                                    ? userDeets.selfie.link
+                                                    : userDeets.selfie.uri
+                                        }
+                                        alt={`Selfie`}
+                                        className="px-2 py-2 object-cover rounded-xl"
+                                    />
+                                    <div className="text-black pb-2 ml-2 rounded-b-xl">
+                                        {userDeets.selfie.name}
+                                    </div>
+                                </div>
+                            ))}
                     </div>
                 </div>
             </div>
