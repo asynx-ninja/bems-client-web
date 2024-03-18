@@ -7,7 +7,7 @@ import API_LINK from "../../config/API";
 import moment from "moment";
 
 import Notification from "../notification/Notification";
-import ViewNotification from "../notification/viewNotification";
+import ViewNotification from "../notification/ViewNotification";
 import TopHeader from "./TopHeader";
 
 const Header = () => {
