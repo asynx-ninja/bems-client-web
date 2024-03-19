@@ -37,7 +37,7 @@ const BrgyOfficials = () => {
 
                 var chairman = document.getElementById("chairman");
                 chairman.src =
-                    brgy_chairman[0] && brgy_chairman[0].picture && brgy_chairman[0].picture.link !== undefined
+                    brgy_chairman[0] && brgy_chairman[0].picture && brgy_chairman[0].picture.link !== ""
                         ? brgy_chairman[0].picture.link
                         : defaultPFP;
 
@@ -85,7 +85,7 @@ const BrgyOfficials = () => {
                     </div>
                 </div>
             </div>
-            <div className='px-[45px] grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5'>
+            <div className='md:px-[45px] grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5'>
                 {
                     officials.map((item, i) => (
                         <div key={i} className='flex flex-col mt-[100px]'>
@@ -97,7 +97,7 @@ const BrgyOfficials = () => {
                                 >
                                     <img
                                         className='w-[150px] h-[150px] rounded-full'
-                                        src={item.picture.link}
+                                        src={item.picture.link !== "" ? item.picture.link : defaultPFP}
                                         alt="" />
                                 </div>
                                 <div className='flex flex-col mt-[80px] justify-center items-center'>

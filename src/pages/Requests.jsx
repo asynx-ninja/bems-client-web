@@ -126,11 +126,11 @@ const Requests = () => {
       <div className="p-4 lg:p-10">
         <div className="flex flex-col">
 
-          <div className="md:mr-[20px] rounded-lg">
+          <div className="sm:mx-auto md:mx-0 md:mr-[20px] rounded-lg">
             <h2 className="text-[2rem] font-bold text-green-900">REQUEST</h2>
           </div>
 
-          <div className="mt-10 w-full flex flex-row justify-between items-center">
+          <div className="mt-10 w-full flex sm:flex-col sm:gap-5 md:flex-row justify-between items-center">
             {/* Service Type Sort */}
             <div className="hs-dropdown relative inline-flex sm:[--placement:bottom] md:[--placement:bottom-left]">
               <button

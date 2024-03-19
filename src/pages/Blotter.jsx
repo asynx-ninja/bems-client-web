@@ -105,12 +105,12 @@ const Blotter = () => {
             <div className="p-4 lg:p-10 border flex flex-col">
                 <div className="w-full flex flex-col">
                     <div className="flex w-full justify-between">
-                        <div className="md:mr-[20px] rounded-lg">
-                            <h2 className="text-[2rem] font-bold text-green-900">BLOTTER RECORDS</h2>
+                        <div className="sm:mx-auto md:mr-[20px] rounded-lg">
+                            <h2 className="sm:text-[26px] sm:text-center md:text-[2rem] font-bold text-green-900">BLOTTER RECORDS</h2>
                         </div>
                     </div>
 
-                    <div className="mt-5 sw-full flex flex-row justify-end items-center">
+                    <div className="mt-5 sw-full flex flex-row sm:justify-center md:justify-end items-center">
                         {/* SEARCH */}
                         <div className="flex gap-2">
                             <input

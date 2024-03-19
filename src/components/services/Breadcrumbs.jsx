@@ -11,7 +11,7 @@ const Breadcrumbs = ({ serviceTitle }) => {
       className="flex sm:px-0 md:px-5 py-3 sm:mx-auto lg:mx-0 text-black rounded-lg "
       aria-label="Breadcrumb"
     >
-      <ol className="inline-flex items-center space-x-1 md:space-x-3">
+      <ol className="sm:flex sm:flex-wrap sm:space-y-2 sm:w-full md:inline-flex items-center space-x-1 md:space-x-3">
         <li className="inline-flex items-center">
           <Link
             to={`/dashboard/?id=${id}&brgy=${brgy}`}

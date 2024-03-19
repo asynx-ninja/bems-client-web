@@ -63,10 +63,10 @@ const ViewNotification = ({ viewNotif, userData, info }) => {
                         {/* Buttons */}
                         <div className="flex justify-center items-center gap-x-2 py-3 px-6 dark:border-gray-700">
                             <div className="sm:space-x-0 md:space-x-2 sm:space-y-2 md:space-y-0 w-full flex sm:flex-col md:flex-row">
-                                <div className='w-full pb-5 flex gap-5'>
+                                <div className='w-full pb-5 sm:space-y-3 md:flex md:space-y-0 gap-5'>
                                     <button
                                         type="button"
-                                        className="h-[2.5rem] w-full py-1 px-6 gap-2 rounded-md borde text-sm font-base bg-pink-900 text-white shadow-sm"
+                                        className="h-[2.5rem] w-full py-1 px-6 gap-2 rounded-md borde text-sm font-base bg-pink-900 text-white shadow-sm text-center"
                                         data-hs-overlay="#hs-modal-viewNotification"
                                     >
                                         CLOSE
@@ -75,7 +75,7 @@ const ViewNotification = ({ viewNotif, userData, info }) => {
                                         viewNotif.length !== 0 && viewNotif.compose.go_to === "Events" ?
                                             <Link
                                                 to={`/events-application/?id=${id}&brgy=${brgy}&user_id=${userData.user_id}`}
-                                                className="h-[2.5rem] flex w-full py-1 px-6 gap-2 rounded-md borde text-sm font-base bg-custom-green-button text-white shadow-sm"
+                                                className="h-[2.5rem] flex w-full py-1 px-6 gap-2 rounded-md borde text-sm font-base bg-custom-green-button text-white shadow-sm text-center"
                                                 data-hs-overlay="#hs-modal-viewNotification"
                                             >
                                                 <h1 className='m-auto'>Go to {viewNotif.length === 0 ? "" : viewNotif.compose.go_to}</h1>
@@ -86,7 +86,7 @@ const ViewNotification = ({ viewNotif, userData, info }) => {
                                         viewNotif.length !== 0 && viewNotif.compose.go_to === "Services" ?
                                             <Link
                                                 to={`/requests/?id=${id}&brgy=${brgy}&user_id=${userData.user_id}`}
-                                                className="h-[2.5rem] flex w-full py-1 px-6 gap-2 rounded-md borde text-sm font-base bg-custom-green-button text-white shadow-sm"
+                                                className="h-[2.5rem] flex w-full py-1 px-6 gap-2 rounded-md borde text-sm font-base bg-custom-green-button text-white shadow-sm text-center"
                                                 data-hs-overlay="#hs-modal-viewNotification"
                                             >
                                                 <h1 className='m-auto'>Go to {viewNotif.length === 0 ? "" : viewNotif.compose.go_to}</h1>
@@ -97,7 +97,7 @@ const ViewNotification = ({ viewNotif, userData, info }) => {
                                         viewNotif.length !== 0 && viewNotif.compose.go_to === "Inquiries" ?
                                             <Link
                                                 to={`/inquiries/?id=${id}&brgy=${brgy}&user_id=${userData.user_id}`}
-                                                className="h-[2.5rem] flex w-full py-1 px-6 gap-2 rounded-md borde text-sm font-base bg-custom-green-button text-white shadow-sm"
+                                                className="h-[2.5rem] flex w-full py-1 px-6 gap-2 rounded-md borde text-sm font-base bg-custom-green-button text-white shadow-sm text-center"
                                                 data-hs-overlay="#hs-modal-viewNotification"
                                             >
                                                 <h1 className='m-auto'>Go to {viewNotif.length === 0 ? "" : viewNotif.compose.go_to}</h1>
@@ -108,7 +108,7 @@ const ViewNotification = ({ viewNotif, userData, info }) => {
                                         viewNotif.length !== 0 && viewNotif.compose.go_to === "Requests" ?
                                             <Link
                                                 to={`/requests/?id=${id}&brgy=${brgy}&user_id=${userData.user_id}`}
-                                                className="h-[2.5rem] flex w-full py-1 px-6 gap-2 rounded-md borde text-sm font-base bg-custom-green-button text-white shadow-sm"
+                                                className="h-[2.5rem] flex w-full py-1 px-6 gap-2 rounded-md borde text-sm font-base bg-custom-green-button text-white shadow-sm text-center"
                                                 data-hs-overlay="#hs-modal-viewNotification"
                                             >
                                                 <h1 className='m-auto'>Go to {viewNotif.length === 0 ? "" : viewNotif.compose.go_to}</h1>
@@ -119,7 +119,7 @@ const ViewNotification = ({ viewNotif, userData, info }) => {
                                         viewNotif.length !== 0 && viewNotif.compose.go_to === "Application" ?
                                             <Link
                                                 to={`/events-application/?id=${id}&brgy=${brgy}&user_id=${userData.user_id}`}
-                                                className="h-[2.5rem] flex w-full py-1 px-6 gap-2 rounded-md borde text-sm font-base bg-custom-green-button text-white shadow-sm"
+                                                className="h-[2.5rem] flex w-full py-1 px-6 gap-2 rounded-md borde text-sm font-base bg-custom-green-button text-white shadow-sm text-center"
                                                 data-hs-overlay="#hs-modal-viewNotification"
                                             >
                                                 <h1 className='m-auto'>Go to {viewNotif.length === 0 ? "" : viewNotif.compose.go_to}</h1>
@@ -129,7 +129,7 @@ const ViewNotification = ({ viewNotif, userData, info }) => {
                                         viewNotif.length !== 0 && viewNotif.compose.go_to === "Patawag" ?
                                             <Link
                                                 to={`/blotter/?id=${id}&brgy=${brgy}&user_id=${userData.user_id}`}
-                                                className="h-[2.5rem] flex w-full py-1 px-6 gap-2 rounded-md borde text-sm font-base bg-custom-green-button text-white shadow-sm"
+                                                className="h-[2.5rem] flex w-full py-1 px-6 gap-2 rounded-md borde text-sm font-base bg-custom-green-button text-white shadow-sm text-center"
                                                 data-hs-overlay="#hs-modal-viewNotification"
                                             >
                                                 <h1 className='m-auto'>Go to {viewNotif.length === 0 ? "" : viewNotif.compose.go_to}</h1>

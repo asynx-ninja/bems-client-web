@@ -63,7 +63,7 @@ const Tourist = () => {
           showStatus={true}
           customLeftArrow={<></>}
           customRightArrow={<></>}
-          className="sm:mt-12 -mt-12 md:mt-8 lg:mt-0 "
+          className="sm:mt-12 md:mt-8 lg:mt-0 "
         >
           {touristspot.map((spot, index) => (
             <div className="carousel-item-container p-4 " key={index}>

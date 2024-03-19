@@ -16,6 +16,7 @@ import {
 import { useSearchParams, useLocation } from "react-router-dom";
 import axios from "axios";
 import defaultPFP from "../../assets/sample-image/default-pfp.png";
+import sideBarImage from "../../assets/header//side-bg.png"
 import API_LINK from "../../config/API";
 
 const Sidebar = () => {
@@ -77,7 +78,7 @@ const Sidebar = () => {
           <div className="space-y-5">
             <div className="flex w-full">
               <img
-                src="./../src/assets/header/side-bg.png"
+                src={sideBarImage}
                 className="object-fit"
                 alt=""
               />
@@ -106,7 +107,7 @@ const Sidebar = () => {
               <button
                 id="hs-unstyled-collapse-events"
                 data-hs-collapse="#hs-unstyled-collapse-heading-events"
-                className={`hs-collapse-toggle flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[#326350] transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}] hover:text-custom-gold`}
+                className={`hs-collapse-toggle flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}] hover:text-custom-gold`}
                 onClick={OnOpen}
               >
                 <FaCalendar className="my-auto" size={"15px"} />
@@ -183,7 +184,7 @@ const Sidebar = () => {
               <button
                 id="hs-unstyled-collapse"
                 data-hs-collapse="#hs-unstyled-collapse-heading"
-                className={`hs-collapse-toggle flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[#326350] transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}] hover:text-custom-gold`}
+                className={`hs-collapse-toggle flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}] hover:text-custom-gold`}
                 onClick={OnOpen}
               >
                 <FaTh className="my-auto" size={"15px"} />
@@ -349,7 +350,7 @@ const Sidebar = () => {
                 <img
                   id="sidebarPFP"
                   src={
-                    userData && userData.profile && userData.profile.link !== undefined
+                    userData && userData.profile && userData.profile.link !== ""
                       ? userData.profile.link
                       : defaultPFP
                   }

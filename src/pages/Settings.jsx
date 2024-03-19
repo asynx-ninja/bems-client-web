@@ -696,9 +696,6 @@ const Settings = () => {
               alt=""
             />
             <div className="absolute inset-0 flex items-center justify-center bg-black transition-opacity duration-300 opacity-[50%]"></div>
-            <div className={ userData.isApproved !== "Verified" ? "bg-gray-400 absolute bottom-[10px] right-[10px] text-white font-medium px-4 py-1 rounded-2xl" : "bg-custom-green-button absolute bottom-[10px] right-[10px] text-white font-medium px-4 py-1 rounded-2xl"}>
-              <h1>{userData.isApproved}</h1>
-            </div>
           </div>
           <div className="flex sm:flex-col-reverse lg:flex-row-reverse sm:px-[5px] px-[20px] justify-center mb-[20px]">
             <div className="flex flex-col sm:w-full lg:w-9/12 mx-auto">
@@ -718,8 +715,8 @@ const Settings = () => {
                   onClick={handleOnActive}
                   className={
                     activeButton.personal
-                      ? "sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-custom-green-button text-white font-medium"
-                      : "sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-white text-black font-medium transition-all ease-in-out hover:bg-custom-green-button hover:text-white"
+                      ? `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] text-white font-medium`
+                      : `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-white text-black font-medium transition-all ease-in-out hover:bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] hover:text-white`
                   }
                 >
                   Personal Info
@@ -729,8 +726,8 @@ const Settings = () => {
                   onClick={handleOnActive}
                   className={
                     activeButton.username
-                      ? "sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-custom-green-button text-white font-medium"
-                      : "sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-white text-black font-medium transition-all ease-in-out hover:bg-custom-green-button hover:text-white"
+                      ? `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] text-white font-medium`
+                      : `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-white text-black font-medium transition-all ease-in-out hover:bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] hover:text-white`
                   }
                 >
                   Change Username
@@ -740,8 +737,8 @@ const Settings = () => {
                   onClick={handleOnActive}
                   className={
                     activeButton.password
-                      ? "sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-custom-green-button text-white font-medium"
-                      : "sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-white text-black font-medium transition-all ease-in-out hover:bg-custom-green-button hover:text-white"
+                      ? `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] text-white font-medium`
+                      : `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-white text-black font-medium transition-all ease-in-out hover:bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] hover:text-white`
                   }
                 >
                   Change Password
@@ -751,8 +748,8 @@ const Settings = () => {
                   onClick={handleOnActive}
                   className={
                     activeButton.govID
-                      ? "sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-custom-green-button text-white font-medium"
-                      : "sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-white text-black font-medium transition-all ease-in-out hover:bg-custom-green-button hover:text-white"
+                      ? `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] text-white font-medium`
+                      : `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-white text-black font-medium transition-all ease-in-out hover:bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] hover:text-white`
                   }
                 >
                   Verification
@@ -850,6 +847,9 @@ const Settings = () => {
                   <p className="text-[12px] leading-[10px]">
                     {userData.username}
                   </p>
+                </div>
+                <div className={userData.isApproved !== "Verified" ? "bg-gray-400 text-white font-medium px-4 py-1 rounded-2xl w-[150px] mx-auto mt-[20px]" : "bg-custom-green-button absolute bottom-[10px] right-[10px] text-white font-medium px-4 py-1 rounded-2xl w-[150px] mx-auto mt-[20px]"}>
+                  <h1 className="text-center">{userData.isApproved}</h1>
                 </div>
                 <div className={`flex flex-col justify-center sm:w-[250px] md:w-[90%] lg:w-full items-center mx-auto mt-5 bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] rounded-md p-[10px]`}>
                   <div className="flex justify-center items-center border-b-[1px] border-white w-full pb-[10px]">

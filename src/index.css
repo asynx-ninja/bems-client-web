@@ -1,17 +1,17 @@
 @layer base {
   @font-face {
     font-family: Gilmer-Regular;
-    src: url('../src/assets/font/Gilmer-Regular.woff') format("opentype");
+    src: url("../src/assets/font/Gilmer-Regular.ttf") format("truetype");
   }
 
   @font-face {
     font-family: Gilmer-Bold;
-    src: url('../src/assets/font/Gilmer-Bold.woff') format("opentype");
+    src: url('../src/assets/font/Gilmer\ Bold.ttf') format("truetype");
   }
 
   @font-face {
     font-family: Gilmer-Medium;
-    src: url('../src/assets/font/Gilmer\ Medium.otf') format("opentype");
+    src: url("../src/assets/font/Gilmer-Medium.ttf") format("truetype");
   }
 
   @font-face {

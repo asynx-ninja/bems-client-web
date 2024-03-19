@@ -473,7 +473,7 @@ const Form = ({ announcement }) => {
               className="bg-red-50 border px-5 text-center border-red-200 text-sm text-red-600 rounded-md py-4 mt-2 mb-4"
               role="alert"
             >
-              <span className="font-bold ">Warning: Your account is not eligible to request a Services, please complete you account information.</span>
+              <span className="font-bold ">Warning: Your account is not eligible to request a Services, please complete your account information.</span>
             </div>
             : null
         }

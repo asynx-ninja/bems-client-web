@@ -104,7 +104,7 @@ const Details = () => {
             </div>
           </div>
 
-          <div className="mt-[50px] mx-auto sm:w-[90%] lg:w-[1000px]">
+          <div className="mt-[50px] mx-auto sm:w-full lg:w-[1000px]">
             <div className="container mx-auto text-center py-[30px]">
               <p className="sm:text-[14px] md:text-[18px] font-bold uppercase">
                 Meet Our

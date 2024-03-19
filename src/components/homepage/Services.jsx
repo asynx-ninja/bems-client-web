@@ -53,7 +53,7 @@ const Services = () => {
 
       {/* Service Cards */}
       <section className="mt-4 mb-10">
-        <div className="md:mx-auto sm:px-5 md:px-6 grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-8 md:w-12/12 sm:w-full">
+        <div className="md:mx-auto sm:px-5 md:px-6 sm:gap-10 md:grid-10 grid sm:grid-cols-1 md:grid-cols-3 gap-3 md:gap-8 md:w-12/12 sm:w-full">
           {servicesinfo.map((service, index) => (
             <div
               key={index}

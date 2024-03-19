@@ -36,7 +36,7 @@ const MunicipalOfficials = () => {
 
                 var mayor = document.getElementById("mayor");
                 mayor.src =
-                    city_mayor[0] && city_mayor[0].picture && city_mayor[0].picture.link !== undefined
+                    city_mayor[0] && city_mayor[0].picture && city_mayor[0].picture.link !== ""
                         ? city_mayor[0].picture.link
                         : defaultPFP;
 
@@ -59,7 +59,7 @@ const MunicipalOfficials = () => {
     // console.log(cityMayor)
 
     return (
-        <div className='w-[80%] mx-auto flex flex-col'>
+        <div className='md:w-[80%] mx-auto flex flex-col'>
             <section className="">
                 <div className="container mx-auto text-center">
                     <h1 className="sm:text-[24px] md:text-4xl font-bold mb-4">
@@ -74,7 +74,7 @@ const MunicipalOfficials = () => {
                 <div
                     className={`rounded-xl w-[300px] mx-auto bg-gradient-to-r from-custom-green-header to-custom-green-button relative z-[50] flex transition-all border-b-[0px] border-b-gray-400 hover:border-b-[5px] hover:scale-105`}
                 >
-                    <div className='bg-[url("/header-bg.png")] w-[300px] relative flex flex-col p-5 rounded-xl mx-auto transition-all'>
+                    <div className='bg-[url("/header-bg.png")] sm:w-full md:w-[300px] relative flex flex-col p-5 rounded-xl mx-auto transition-all'>
                         <div
                             className={`mx-auto absolute top-[-70px] rounded-full border-custom-green-header border-[5px] left-[72px]`}
                         >
@@ -94,10 +94,10 @@ const MunicipalOfficials = () => {
                     </div>
                 </div>
             </div>
-            <div className='px-[45px] grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5'>
+            <div className='md:px-[45px] grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5'>
                 {
                     officials.map((item, i) => (
-                        <div key={i} className='flex flex-col mt-[100px]'>
+                        <div key={i} className='flex flex-col mt-[100px] mx-auto items-center justify-center'>
                             <div
                                 className={`bg-[url("/header-bg.png")] w-[300px] relative flex flex-col p-5 rounded-xl mx-auto bg-custom-green-header transition-all border-b-[0px] border-b-gray-400 hover:border-b-[5px] hover:scale-105`}
                             >
@@ -124,7 +124,7 @@ const MunicipalOfficials = () => {
                     ))
                 }
             </div>
-            <div className="md:py-4 md:px-4 w-full mt-[30px] bg-custom-green-header flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3">
+            {/* <div className="md:py-4 md:px-4 w-full mt-[30px] bg-custom-green-header flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3">
                 <span className="font-medium text-white sm:text-xs text-sm">
                     Showing {currentPage + 1} out of {pageCount} pages
                 </span>
@@ -140,7 +140,7 @@ const MunicipalOfficials = () => {
                     disabledLinkClassName="text-gray-300"
                     renderOnZeroPageCount={null}
                 />
-            </div>
+            </div> */}
         </div>
     )
 }
