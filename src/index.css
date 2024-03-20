@@ -6,7 +6,7 @@
 
   @font-face {
     font-family: Gilmer-Bold;
-    src: url('../src/assets/font/Gilmer\ Bold.ttf') format("truetype");
+    src: url('../src/assets/font/Gilmer-Bold.ttf') format("truetype");
   }
 
   @font-face {
@@ -16,12 +16,12 @@
 
   @font-face {
     font-family: Gilmer-Heavy;
-    src: url('../src/assets/font/Gilmer\ Heavy.otf') format("opentype");
+    src: url('../src/assets/font/Gilmer-Heavy.otf') format("opentype");
   }
 
   @font-face {
     font-family: Gilmer-Light;
-    src: url('../src/assets/font/Gilmer\ Light.otf') format("opentype");
+    src: url('../src/assets/font/Gilmer-Light.otf') format("opentype");
   }
 }
 
