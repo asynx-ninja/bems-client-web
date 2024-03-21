@@ -63,11 +63,11 @@ const BrgyOfficials = () => {
         <div className='w-full flex flex-col'>
             <div className='w-full mx-auto mt-[100px] mb-[20px]'>
                 <div
-                    className={`rounded-xl w-[300px] mx-auto bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}] relative z-[50] flex transition-all border-b-[0px] border-b-gray-400 hover:border-b-[5px] hover:scale-105`}
+                    className={`rounded-xl w-[300px] mx-auto bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}] relative z-[50] flex transition-all border-b-[0px] border-b-gray-400 hover:border-b-[5px] hover:scale-105`}
                 >
                     <div className='bg-[url("/header-bg.png")] w-[300px] relative flex flex-col p-5 rounded-xl mx-auto transition-all'>
                         <div
-                            className={`mx-auto absolute top-[-70px] rounded-full border-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] border-[5px] left-[72px]`}
+                            className={`mx-auto absolute top-[-70px] rounded-full border-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] border-[5px] left-[72px]`}
                         >
                             <img
                                 className='w-[150px] h-[150px] rounded-full'
@@ -90,10 +90,10 @@ const BrgyOfficials = () => {
                     officials.map((item, i) => (
                         <div key={i} className='flex flex-col mt-[100px]'>
                             <div
-                                className={`bg-[url("/header-bg.png")] w-[300px] relative flex flex-col p-5 rounded-xl mx-auto bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] transition-all border-b-[0px] border-b-gray-400 hover:border-b-[5px] hover:scale-105`}
+                                className={`bg-[url("/header-bg.png")] w-[300px] relative flex flex-col p-5 rounded-xl mx-auto bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] transition-all border-b-[0px] border-b-gray-400 hover:border-b-[5px] hover:scale-105`}
                             >
                                 <div
-                                    className={`mx-auto absolute top-[-70px] rounded-full border-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] border-[5px] left-[72px]`}
+                                    className={`mx-auto absolute top-[-70px] rounded-full border-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] border-[5px] left-[72px]`}
                                 >
                                     <img
                                         className='w-[150px] h-[150px] rounded-full'

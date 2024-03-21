@@ -15,7 +15,7 @@ const Breadcrumbs = ({ title }) => {
         <li className="inline-flex items-center">
           <Link
             to={`/dashboard/?id=${id}&brgy=${brgy}`}
-            className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-green-500 dark:text-gray-400 dark:hover:text-white"
+            className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-green-500"
           >
             <svg
               className="w-3 h-3 mr-2.5"
@@ -47,7 +47,7 @@ const Breadcrumbs = ({ title }) => {
               />
             </svg>
             <Link
-              className="ml-1 text-sm font-medium text-gray-700 hover:text-green-500 md:ml-2 dark:text-gray-400 dark:hover:text-white"
+              className="ml-1 text-sm font-medium text-gray-700 hover:text-green-500 md:ml-2"
               to={`/events-list/?id=${id}&brgy=${brgy}`}
             >
               Events List
@@ -72,7 +72,7 @@ const Breadcrumbs = ({ title }) => {
               />
             </svg>
             <Link
-              className="ml-1 text-sm font-medium text-gray-700 hover:text-green-500 md:ml-2 dark:text-gray-400 dark:hover:text-white"
+              className="ml-1 text-sm font-medium text-gray-700 hover:text-green-500 md:ml-2"
             >
               {title}
             </Link>

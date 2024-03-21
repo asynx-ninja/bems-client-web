@@ -498,13 +498,13 @@ const Form = ({ announcement }) => {
         id="hs-full-screen-modal"
         className="hs-overlay hidden w-full h-full fixed top-0 left-0 z-[60] overflow-x-hidden overflow-y-auto flex items-center justify-center"
       >
-        <div className="hs-overlay-open:mt-0 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-10 opacity-0 transition-all max-w-full w-[90%] md:w-[80%] lg:w-[80%] bg-white dark:bg-gray-800 rounded-lg ">
-          <div className="flex flex-col bg-white dark:bg-gray-800 overflow-y-auto max-h-[90vh] rounded-lg">
+        <div className="hs-overlay-open:mt-0 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-10 opacity-0 transition-all max-w-full w-[90%] md:w-[80%] lg:w-[80%] bg-white rounded-lg ">
+          <div className="flex flex-col bg-white overflow-y-auto max-h-[90vh] rounded-lg">
             <div
               style={{
                 background: `url(${headerImage})`,
               }}
-              className="flex justify-between items-center py-3 px-4 border-b dark:border-gray-700"
+              className="flex justify-between items-center py-3 px-4 border-b"
             >
               <h3 className="lg:tracking-[.2rem] tracking-widest text-md lg:text-lg font-bold uppercase text-center text-white ">
                 {announcement && announcement.title}
@@ -524,7 +524,7 @@ const Form = ({ announcement }) => {
                 <div className="flex flex-col gap-5 mx-5">
                   <div className="flex flex-col w-full space-y-2">
                     <div
-                      className="w-full bg-green-400 border rounded-md dark:border-gray-700"
+                      className="w-full bg-green-400 border rounded-md"
                       role="alert"
                     >
                       <div className="flex p-2">
@@ -541,7 +541,7 @@ const Form = ({ announcement }) => {
                           </svg>
                         </div>
                         <div className="ml-3">
-                          <p className="text-sm text-black dark:text-gray-400">
+                          <p className="text-sm text-black">
                             Note: Please read through the form before completing
                             it. All question MUST be answered. Failure to
                             provide full and accurate information will
@@ -552,7 +552,7 @@ const Form = ({ announcement }) => {
                       </div>
                     </div>
                     <div
-                      className="w-full bg-green-400 border rounded-md dark:border-gray-700"
+                      className="w-full bg-green-400 border rounded-md"
                       role="alert"
                     >
                       <div className="flex p-2">
@@ -569,7 +569,7 @@ const Form = ({ announcement }) => {
                           </svg>
                         </div>
                         <div className="ml-3">
-                          <p className="text-sm text-black dark:text-gray-400">
+                          <p className="text-sm text-black">
                             In accordance to this request form, I give consent
                             to the collection, processing and use of my personal
                             data in accordance with the Data Privacy Act of 2012
@@ -608,7 +608,7 @@ const Form = ({ announcement }) => {
 
               </form>
             </div>
-            <div className="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-gray-700">
+            <div className="flex justify-end items-center gap-x-2 py-3 px-4 border-t">
               <button
                 type="button"
                 className="hs-dropdown-toggle py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm"

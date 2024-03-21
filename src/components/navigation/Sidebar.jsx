@@ -95,8 +95,8 @@ const Sidebar = () => {
                     : null;
                 }}
                 className={
-                  page === "dashboard" ? `flex h-[50px] w-full my-auto pl-[30px] gap-5 bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}]`
-                    : `flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}] hover:text-custom-gold`
+                  page === "dashboard" ? `flex h-[50px] w-full my-auto pl-[30px] gap-5 bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}]`
+                    : `flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}] hover:text-custom-gold`
                 }
               >
                 <FaChartPie className="my-auto" size={"15px"} />
@@ -107,7 +107,7 @@ const Sidebar = () => {
               <button
                 id="hs-unstyled-collapse-events"
                 data-hs-collapse="#hs-unstyled-collapse-heading-events"
-                className={`hs-collapse-toggle flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}] hover:text-custom-gold`}
+                className={`hs-collapse-toggle flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}] hover:text-custom-gold`}
                 onClick={OnOpen}
               >
                 <FaCalendar className="my-auto" size={"15px"} />
@@ -148,8 +148,8 @@ const Sidebar = () => {
                       : null;
                   }}
                   className={
-                    page === "events-list" ? `flex h-[50px] w-full my-auto pl-[60px] gap-5 bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}]`
-                      : `flex h-[50px] w-full my-auto pl-[60px] gap-5 text-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}] hover:text-custom-gold`
+                    page === "events-list" ? `flex h-[50px] w-full my-auto pl-[60px] gap-5 bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}]`
+                      : `flex h-[50px] w-full my-auto pl-[60px] gap-5 text-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}] hover:text-custom-gold`
                   }
                 >
                   {" "}
@@ -170,8 +170,8 @@ const Sidebar = () => {
                       : null;
                   }}
                   className={
-                    page === "events-application" ? `flex h-[50px] w-full my-auto pl-[60px] gap-5 bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}]`
-                      : `flex h-[50px] w-full my-auto pl-[60px] gap-5 text-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}] hover:text-custom-gold`
+                    page === "events-application" ? `flex h-[50px] w-full my-auto pl-[60px] gap-5 bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}]`
+                      : `flex h-[50px] w-full my-auto pl-[60px] gap-5 text-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}] hover:text-custom-gold`
                   }
                 >
                   {" "}
@@ -184,7 +184,7 @@ const Sidebar = () => {
               <button
                 id="hs-unstyled-collapse"
                 data-hs-collapse="#hs-unstyled-collapse-heading"
-                className={`hs-collapse-toggle flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}] hover:text-custom-gold`}
+                className={`hs-collapse-toggle flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}] hover:text-custom-gold`}
                 onClick={OnOpen}
               >
                 <FaTh className="my-auto" size={"15px"} />
@@ -225,8 +225,8 @@ const Sidebar = () => {
                       : null;
                   }}
                   className={
-                    page === "services" ? `flex h-[50px] w-full my-auto pl-[60px] gap-5 bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}]`
-                      : `flex h-[50px] w-full my-auto pl-[60px] gap-5 text-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}] hover:text-custom-gold`
+                    page === "services" ? `flex h-[50px] w-full my-auto pl-[60px] gap-5 bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}]`
+                      : `flex h-[50px] w-full my-auto pl-[60px] gap-5 text-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}] hover:text-custom-gold`
                   }
                 >
                   {" "}
@@ -247,8 +247,8 @@ const Sidebar = () => {
                       : null;
                   }}
                   className={
-                    page === "requests" ? `flex h-[50px] w-full my-auto pl-[60px] gap-5 bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}]`
-                      : `flex h-[50px] w-full my-auto pl-[60px] gap-5 text-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}] hover:text-custom-gold`
+                    page === "requests" ? `flex h-[50px] w-full my-auto pl-[60px] gap-5 bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}]`
+                      : `flex h-[50px] w-full my-auto pl-[60px] gap-5 text-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}] hover:text-custom-gold`
                   }
                 >
                   {" "}
@@ -268,8 +268,8 @@ const Sidebar = () => {
                     : null;
                 }}
                 className={
-                  page === "inquiries" ? `flex h-[50px] w-full my-auto pl-[30px] gap-5 bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}]`
-                    : `flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}] hover:text-custom-gold`
+                  page === "inquiries" ? `flex h-[50px] w-full my-auto pl-[30px] gap-5 bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}]`
+                    : `flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}] hover:text-custom-gold`
                 }
               >
                 {" "}
@@ -288,8 +288,8 @@ const Sidebar = () => {
                     : null;
                 }}
                 className={
-                  page === "blotter" ? `flex h-[50px] w-full my-auto pl-[30px] gap-5 bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}]`
-                    : `flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}] hover:text-custom-gold`
+                  page === "blotter" ? `flex h-[50px] w-full my-auto pl-[30px] gap-5 bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}]`
+                    : `flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}] hover:text-custom-gold`
                 }
               >
                 {" "}
@@ -308,8 +308,8 @@ const Sidebar = () => {
                     : null;
                 }}
                 className={
-                  page === "barangay-info" ? `flex h-[50px] w-full my-auto pl-[30px] gap-5 bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}]`
-                    : `flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}] hover:text-custom-gold`
+                  page === "barangay-info" ? `flex h-[50px] w-full my-auto pl-[30px] gap-5 bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}]`
+                    : `flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}] hover:text-custom-gold`
                 }
               >
                 {" "}
@@ -328,8 +328,8 @@ const Sidebar = () => {
                     : null;
                 }}
                 className={
-                  page === "settings" ? `flex h-[50px] w-full my-auto pl-[30px] gap-5 bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}]`
-                    : `flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}] hover:text-custom-gold`
+                  page === "settings" ? `flex h-[50px] w-full my-auto pl-[30px] gap-5 bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}]`
+                    : `flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}] hover:text-custom-gold`
                 }              >
                 <FaUserAlt className="my-auto" size={"15px"} />
                 <h1 className="text-bold my-auto font-bold text-sm">ACCOUNT</h1>
@@ -340,7 +340,7 @@ const Sidebar = () => {
           {/* PROFILE DROP DOWN */}
 
           <div
-            className={`hs-dropdown sm:flex md:hidden w-full bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}] h-[90px]`}
+            className={`hs-dropdown sm:flex md:hidden w-full bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}] h-[90px]`}
           >
             <div
               id="hs-dropdown-profile"
@@ -377,7 +377,7 @@ const Sidebar = () => {
                       .remove()
                     : null;
                 }}
-                className={`flex items-center w-full gap-x-3.5 py-2 px-3 rounded-md text-sm hover:text-custom-gold1 text-gray-800 hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}] focus:ring-2 focus:ring-blue-500 `}
+                className={`flex items-center w-full gap-x-3.5 py-2 px-3 rounded-md text-sm hover:text-custom-gold1 text-gray-800 hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}] focus:ring-2 focus:ring-blue-500 `}
               >
                 Profile
               </Link>
@@ -390,7 +390,7 @@ const Sidebar = () => {
                       .remove()
                     : null;
                 }}
-                className={`flex items-center w-full gap-x-3.5 py-2 px-3 rounded-md text-sm hover:text-custom-gold1 text-gray-800 hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}] focus:ring-2 focus:ring-blue-500 `}
+                className={`flex items-center w-full gap-x-3.5 py-2 px-3 rounded-md text-sm hover:text-custom-gold1 text-gray-800 hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}] focus:ring-2 focus:ring-blue-500 `}
               >
                 Sign-Out
               </Link>

@@ -106,7 +106,7 @@ const MunicipalOfficials = () => {
                                 >
                                     <img
                                         className='w-[150px] h-[150px] rounded-full bg-white'
-                                        src={item.picture.link}
+                                        src={item.picture.link !== "" ? item.picture.link : defaultPFP}
                                         alt="" />
                                 </div>
                                 <div className='flex flex-col mt-[80px] justify-center items-center'>

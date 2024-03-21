@@ -200,11 +200,11 @@ const Requests = () => {
           </div>
 
           {/* Table */}
-          <div className="overflow-x-auto sm:h-[380px] lg:h-[680px] bg-white border border-b-0 mt-5 rounded-t-xl">
+          <div className="overflow-x-hidden sm:h-[380px] lg:h-[680px] bg-white border border-b-0 mt-5 rounded-t-xl">
 
             <table className="w-full divide-y divide-gray-200 ">
               {/* Table Headers */}
-              <thead className={`bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] border`}>
+              <thead className={`bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] border`}>
                 <tr>
                   {
                     tableHeader.map((item, i) => (
@@ -237,7 +237,7 @@ const Requests = () => {
             </table>
           </div>
 
-          <div className={`md:py-4 md:px-4 bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3`}>
+          <div className={`md:py-4 md:px-4 bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3`}>
             <span className="font-medium text-white sm:text-xs text-sm">
               Showing {currentPage + 1} out of {pageCount} pages
             </span>

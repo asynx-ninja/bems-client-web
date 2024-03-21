@@ -393,7 +393,7 @@ const ComposeModal = () => {
                 </form>
               </div>
               {/* Buttons */}
-              <div className="flex justify-center items-center gap-x-2 py-3 px-6 dark:border-gray-700">
+              <div className="flex justify-center items-center gap-x-2 py-3 px-6">
                 <button
                   type="button"
                   data-hs-overlay="#hs-modal-compose"

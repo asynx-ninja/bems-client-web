@@ -715,8 +715,8 @@ const Settings = () => {
                   onClick={handleOnActive}
                   className={
                     activeButton.personal
-                      ? `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] text-white font-medium`
-                      : `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-white text-black font-medium transition-all ease-in-out hover:bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] hover:text-white`
+                      ? `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] text-white font-medium`
+                      : `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-white text-black font-medium transition-all ease-in-out hover:bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] hover:text-white`
                   }
                 >
                   Personal Info
@@ -726,8 +726,8 @@ const Settings = () => {
                   onClick={handleOnActive}
                   className={
                     activeButton.username
-                      ? `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] text-white font-medium`
-                      : `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-white text-black font-medium transition-all ease-in-out hover:bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] hover:text-white`
+                      ? `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] text-white font-medium`
+                      : `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-white text-black font-medium transition-all ease-in-out hover:bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] hover:text-white`
                   }
                 >
                   Change Username
@@ -737,8 +737,8 @@ const Settings = () => {
                   onClick={handleOnActive}
                   className={
                     activeButton.password
-                      ? `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] text-white font-medium`
-                      : `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-white text-black font-medium transition-all ease-in-out hover:bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] hover:text-white`
+                      ? `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] text-white font-medium`
+                      : `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-white text-black font-medium transition-all ease-in-out hover:bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] hover:text-white`
                   }
                 >
                   Change Password
@@ -748,8 +748,8 @@ const Settings = () => {
                   onClick={handleOnActive}
                   className={
                     activeButton.govID
-                      ? `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] text-white font-medium`
-                      : `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-white text-black font-medium transition-all ease-in-out hover:bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] hover:text-white`
+                      ? `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] text-white font-medium`
+                      : `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-white text-black font-medium transition-all ease-in-out hover:bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] hover:text-white`
                   }
                 >
                   Verification
@@ -811,7 +811,7 @@ const Settings = () => {
                       className={
                         editButton
                           ? "hidden"
-                          : `block text-transparent p-[45px] font-medium rounded-full text-sm text-center opacity-0 hover:opacity-100 transition-opacity hover:bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] hover:bg-opacity-60 cursor-pointer`
+                          : `block text-transparent p-[45px] font-medium rounded-full text-sm text-center opacity-0 hover:opacity-100 transition-opacity hover:bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] hover:bg-opacity-60 cursor-pointer`
                       }
                     >
                       <FaCamera
@@ -851,14 +851,14 @@ const Settings = () => {
                 <div className={userData.isApproved !== "Verified" ? "bg-gray-400 text-white font-medium px-4 py-1 rounded-2xl w-[150px] mx-auto mt-[20px]" : "bg-custom-green-button absolute bottom-[10px] right-[10px] text-white font-medium px-4 py-1 rounded-2xl w-[150px] mx-auto mt-[20px]"}>
                   <h1 className="text-center">{userData.isApproved}</h1>
                 </div>
-                <div className={`flex flex-col justify-center sm:w-[250px] md:w-[90%] lg:w-full items-center mx-auto mt-5 bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] rounded-md p-[10px]`}>
+                <div className={`flex flex-col justify-center sm:w-[250px] md:w-[90%] lg:w-full items-center mx-auto mt-5 bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] rounded-md p-[10px]`}>
                   <div className="flex justify-center items-center border-b-[1px] border-white w-full pb-[10px]">
                     <h6 className="font-bold text-white">Socials</h6>
                   </div>
                   <div className="p-[10px] flex sm:flex-col md:flex-row lg:flex-col gap-5">
                     {userSocials.facebook.name.length !== 0 ?
                       <button
-                        className={`flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] text-white hover:p-2`}>
+                        className={`flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] text-white hover:p-2`}>
                         <FaFacebook />
                         <p className="text-left truncate text-[12px]">
                           {userSocials.facebook.name}
@@ -868,7 +868,7 @@ const Settings = () => {
                     }
                     {userSocials.instagram.name.length !== 0 ?
                       <button
-                        className={`flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] text-white hover:p-2`}>
+                        className={`flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] text-white hover:p-2`}>
                         <FaInstagram />
                         <p className="text-left truncate text-[12px]">
                           {userSocials.instagram.name}
@@ -878,7 +878,7 @@ const Settings = () => {
                     }
                     {userSocials.twitter.name.length !== 0 ?
                       <button
-                        className={`flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] text-white hover:p-2`}>
+                        className={`flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] text-white hover:p-2`}>
                         <FaTwitter />
                         <p className="text-left truncate text-[12px]">
                           {userSocials.twitter.name}
@@ -888,7 +888,7 @@ const Settings = () => {
                     }
                     {userData.contact !== "" ?
                       <button
-                        className={`flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] text-white hover:p-2`}>
+                        className={`flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] text-white hover:p-2`}>
                         <FaPhone />
                         <p className="text-left truncate text-[12px]">
                           {userData.contact}
@@ -898,7 +898,7 @@ const Settings = () => {
                     }
                     {userData.email !== "" ?
                       <button
-                        className={`flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] text-white hover:p-2`}>
+                        className={`flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] text-white hover:p-2`}>
                         <FaEnvelope />
                         <p className="text-left truncate text-[12px]">
                           {userData.email}

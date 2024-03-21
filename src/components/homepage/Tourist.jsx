@@ -5,6 +5,7 @@ import axios from "axios";
 import API_LINK from "../../config/API";
 import "react-multi-carousel/lib/styles.css";
 import TouristSpotMain from "../touristspot/TouristSpotMain";
+import sampleImg from "../../assets/image/montalban-without-logo.png"
 
 const Tourist = () => {
   const brgy = "MUNICIPAL INFO";
@@ -91,7 +92,7 @@ const Tourist = () => {
                 {spot.image && spot.image.length > 0 ? (
                   <img
                     className="max-h-[160px] md:max-h-[200px] w-full object-cover rounded-xl"
-                    src={spot.image[0].link} // Access the first image's link
+                    src={spot.image[0].link !== "" ? spot.image[0].link : ""} // Access the first image's link
                     alt={spot.name}
                   />
                 ) : (

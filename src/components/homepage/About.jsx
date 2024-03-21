@@ -4,6 +4,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import myImage from "../../assets/image/rizalleader.png";
 import API_LINK from "../../config/API";
 import axios from "axios";
+import sampleImg from "../../assets/image/montalban-without-logo.png"
 import { useEffect, useState } from "react";
 
 const About = () => {
@@ -55,7 +56,7 @@ const About = () => {
                     <div className="h-64  rounded-md">
                       <img
                         className="h-64 w-full object-contain"
-                        src={item.banner.link}
+                        src={item.banner.link !== "" ? item.banner.link : sampleImg}
                         alt=""
                       />
                     </div>
@@ -68,7 +69,7 @@ const About = () => {
                     <div className="h-64  rounded-md">
                       <img
                         className="h-64 w-full object-contain"
-                        src={item.banner.link}
+                        src={item.banner.link !== "" ? item.banner.link : sampleImg}
                         alt=""
                       />
                     </div>

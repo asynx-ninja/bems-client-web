@@ -105,7 +105,7 @@ const Blotter = () => {
             <div className="p-4 lg:p-10 border flex flex-col">
                 <div className="w-full flex flex-col">
                     <div className="flex w-full justify-between">
-                        <div className="sm:mx-auto md:mr-[20px] rounded-lg">
+                        <div className="sm:mx-auto md:mx-0 md:mr-[20px] rounded-lg">
                             <h2 className="sm:text-[26px] sm:text-center md:text-[2rem] font-bold text-green-900">BLOTTER RECORDS</h2>
                         </div>
                     </div>
@@ -146,7 +146,7 @@ const Blotter = () => {
                                     }
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                            <tbody className="divide-y divide-gray-200">
                                 {/* Table Body */}
                                 {
                                     blotter.length === 0 ?

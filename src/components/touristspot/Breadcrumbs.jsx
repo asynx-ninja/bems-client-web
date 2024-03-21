@@ -18,7 +18,7 @@ const Breadcrumbs = ({ touristInfo }) => {
         <li className="inline-flex items-center">
           <Link
             to="/"
-            className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-green-500 dark:text-gray-400 dark:hover:text-white"
+            className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-green-500"
           >
             <svg
               className="w-3 h-3 mr-2.5"
@@ -51,7 +51,7 @@ const Breadcrumbs = ({ touristInfo }) => {
             </svg>
             <Link
               to="/tourist-spot-list"
-              className="ml-1 text-sm font-medium text-gray-700 hover:text-green-500 md:ml-2 dark:text-gray-400 dark:hover:text-white"
+              className="ml-1 text-sm font-medium text-gray-700 hover:text-green-500 md:ml-2"
             >
               Tourist Spots
             </Link>
@@ -74,7 +74,7 @@ const Breadcrumbs = ({ touristInfo }) => {
                 d="m1 9 4-4-4-4"
               />
             </svg>
-            <span className="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">
+            <span className="ml-1 text-sm font-medium text-gray-500 md:ml-2">
               {
                 title === "tourist-spot-list" ? "" : touristInfo.name
               }

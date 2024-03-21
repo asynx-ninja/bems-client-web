@@ -111,7 +111,7 @@ const EventsInfo = () => {
                                 </div>
                                 <Link
                                     to={`/events/?id=${id}&brgy=${brgy}&event_id=${item.event_id}&page=${currentPage}`}
-                                    className={`bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] w-[150px] sm:mx-auto md:mx-0 text-white font-medium px-[25px] py-[10px] my-[25px] rounded-lg hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}] transition duration-500 ease-in-out hover:text-custom-gold`}
+                                    className={`bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] w-[150px] sm:mx-auto md:mx-0 text-white font-medium px-[25px] py-[10px] my-[25px] rounded-lg hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}] transition duration-500 ease-in-out hover:text-custom-gold`}
                                 >
                                     Read More
                                 </Link>

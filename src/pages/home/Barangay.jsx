@@ -176,23 +176,23 @@ const Barangay = () => {
                       <tbody className="divide-y divide-gray-100 ">
                         {currentItems.map((barangay, idx) => (
                           <tr key={idx} className="bg-gray-200 text-left">
-                            <td className="px-6 py-4 text-sm font-medium text-gray-800 dark:text-gray-200">
+                            <td className="px-6 py-4 text-sm font-medium text-gray-800">
                               <img
                                 className="object-contain w-full h-28"
                                 src={barangay.logo}
                                 alt=""
                               />
                             </td>
-                            <td className="px-6 whitespace-nowrap uppercase text-sm font-bold text-gray-800 dark:text-gray-200">
+                            <td className="px-6 whitespace-nowrap uppercase text-sm font-bold text-gray-800">
                               barangay {barangay.brgy}
                             </td>
                             <td className="h-full text-center">
-                              <p className="px-6 items-center text-sm my-auto text-gray-800 line-clamp-4 text-justify dark:text-gray-200">
+                              <p className="px-6 items-center text-sm my-auto text-gray-800 line-clamp-4 text-justify">
                                 {barangay.story}
                               </p>
                             </td>
 
-                            <td className="px-6 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
+                            <td className="px-6 whitespace-nowrap text-sm text-gray-800 ">
                               <Link
                                 type="button"
                                 onClick={() => handleView({ ...barangay })}

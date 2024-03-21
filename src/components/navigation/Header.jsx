@@ -84,7 +84,7 @@ const Header = () => {
   return (
     <div>
       <TopHeader fetch={fetch} userData={userData} />
-      <nav className={`h-[70px] bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : "#FFCF67"}] relative z-[50] flex w-full drop-shadow-[0_35px_35px_rgba(0,0,0,0.10)]`}>
+      <nav className={`h-[70px] bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}] relative z-[50] flex w-full drop-shadow-[0_35px_35px_rgba(0,0,0,0.10)]`}>
         <div className=' flex bg-[url("/header-bg.png")] my-auto justify-between w-full h-full pr-[20px]'>
           <div className="flex gap-5 overflow-hidden">
             <div className="mr-[30px] sm:hidden md:flex">
