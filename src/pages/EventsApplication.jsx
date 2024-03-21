@@ -111,11 +111,11 @@ const EventsApplication = () => {
 
       <div className="p-4 lg:p-10 overflow-hidden">
         <div className="flex flex-col">
-
           <div className="sm:mx-auto md:mx-0 md:mr-[20px] bg-white rounded-lg">
-            <h2 className="text-[2rem] font-bold text-green-900 sm:text-center md:text-left">EVENTS APPLICATION LIST</h2>
+            <h2 className="text-[2rem] font-bold text-green-900 sm:text-center md:text-left">
+              EVENTS APPLICATION LIST
+            </h2>
           </div>
-
           <div className="mt-10 w-full flex sm:flex-col sm:gap-5 md:flex-row justify-between items-center">
             {/* Events Application Type Sort */}
             <div className="hs-dropdown relative inline-flex sm:[--placement:bottom] md:[--placement:bottom-left]">
@@ -124,7 +124,11 @@ const EventsApplication = () => {
                 type="button"
                 className={`h-[40px] sm:w-full md:w-full sm:mt-2 md:mt-0 text-white hs-dropdown-toggle py-1 px-5 inline-flex justify-center items-center gap-2 rounded-md  font-medium shadow-sm align-middle transition-all text-sm`}
                 style={{
-                  background: `${info && info.theme && info.theme.primary !== "" ? info.theme.primary : '#295141'}`
+                  background: `${
+                    info && info.theme && info.theme.primary !== ""
+                      ? info.theme.primary
+                      : "#295141"
+                  }`,
                 }}
               >
                 {SortByName !== "all" ? SortByName.toUpperCase() : "EVENT NAME"}
@@ -183,52 +187,66 @@ const EventsApplication = () => {
               <button
                 className="rounded-xl w-[40px] h-[40px] justify-center items-center text-white"
                 style={{
-                  background: `${info && info.theme && info.theme.primary !== "" ? info.theme.primary : '#295141'}`
+                  background: `${
+                    info && info.theme && info.theme.primary !== ""
+                      ? info.theme.primary
+                      : "#295141"
+                  }`,
                 }}
               >
                 <FaSearch className="w-full" />
               </button>
             </div>
           </div>
-
           {/* Table */}
           <div className="overflow-scroll sm:h-[380px] lg:h-[680px] border border-b-0 mt-5 rounded-t-xl bg-white">
-            <table className="overflow-hidden w-full divide-y divide-gray-200 ">
+            <table className="relative table-auto w-full divide-y divide-gray-200 ">
               {/* Table Headers */}
-              <thead className={`bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] border`}>
+              <thead
+                className={`bg-[${
+                  info && info.theme && info.theme.primary !== ""
+                    ? info.theme.primary
+                    : "#295141"
+                }] border`}
+              >
                 <tr>
-                  {
-                    tableHeader.map((item, i) => (
-                      <th
-                        scope="col"
-                        key={i}
-                        className="px-6 py-3 text-center text-xs font-bold text-white uppercase"
-                      >
-                        {item}
-                      </th>
-                    ))
-                  }
+                  {tableHeader.map((item, i) => (
+                    <th
+                      scope="col"
+                      key={i}
+                      className="px-6 py-3 text-center text-xs font-bold text-white uppercase"
+                    >
+                      {item}
+                    </th>
+                  ))}
                 </tr>
               </thead>
 
               {/* Table Body */}
               <tbody className="divide-y divide-gray-200">
-                {
-                  events.length === 0 ?
-                    <tr>
-                      <th className="pt-[50px]" rowSpan={5} colSpan={7}>
-                        <img className="w-[150px] mx-auto" src={no_data} alt="" />
-                        No Records Shown
-                      </th>
-                    </tr>
-                    :
-                    <EventsApplicationList events={events} setViewEvent={setViewEvent} />
-                }
+                {events.length === 0 ? (
+                  <tr>
+                    <th className="pt-[50px]" rowSpan={5} colSpan={7}>
+                      <img className="w-[150px] mx-auto" src={no_data} alt="" />
+                      No Records Shown
+                    </th>
+                  </tr>
+                ) : (
+                  <EventsApplicationList
+                    events={events}
+                    setViewEvent={setViewEvent}
+                  />
+                )}
               </tbody>
             </table>
           </div>
-
-          <div className={`md:py-4 md:px-4 bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3`}>
+          <div
+            className={`md:py-4 md:px-4 bg-[${
+              info && info.theme && info.theme.primary !== ""
+                ? info.theme.primary
+                : "#295141"
+            }] flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3`}
+          >
             <span className="font-medium text-white sm:text-xs text-sm">
               Showing {currentPage + 1} out of {pageCount} pages
             </span>
