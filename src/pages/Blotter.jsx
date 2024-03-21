@@ -120,7 +120,10 @@ const Blotter = () => {
                                 onChange={handleOnSearch}
                             />
                             <button
-                                className="rounded-xl bg-custom-green-header w-[40px] h-[40px] justify-center items-center text-white"
+                                className="rounded-xl w-[40px] h-[40px] justify-center items-center text-white"
+                                style={{
+                                    background: `${info && info.theme && info.theme.primary !== "" ? info.theme.primary : '#295141'}`
+                                }}
                             >
                                 <FaSearch className="w-full" />
                             </button>

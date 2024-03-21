@@ -17,7 +17,7 @@ const Breadcrumbs = () => {
                 <li className="inline-flex items-center">
                     <Link
                         to={`/dashboard/?id=${id}&brgy=${brgy}`}
-                        className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-green-500 dark:text-gray-400 dark:hover:text-white"
+                        className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-green-500"
                     >
                         <svg
                             className="w-3 h-3 mr-2.5"
@@ -34,7 +34,7 @@ const Breadcrumbs = () => {
                 <li aria-current="page">
                     <div className="flex items-center">
                         <svg
-                            className="w-3 h-3 mx-1 text-gray-400"
+                            className="w-3 h-3 mx-1 text-gray-700"
                             aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -49,7 +49,7 @@ const Breadcrumbs = () => {
                             />
                         </svg>
                         <Link
-                            className="ml-1 text-sm font-medium text-gray-700 hover:text-green-500 md:ml-2 dark:text-gray-400 dark:hover:text-white"
+                            className="ml-1 text-sm font-medium text-gray-700 hover:text-green-500 md:ml-2"
                         >
                             {title === "events-list" ? "EVENTS LIST" : title.toUpperCase()}
                         </Link>
