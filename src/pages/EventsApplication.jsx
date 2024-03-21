@@ -226,7 +226,7 @@ const EventsApplication = () => {
                 }
               </tbody>
             </table>
-          </div>
+          </div>*
 
           <div className={`md:py-4 md:px-4 bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3`}>
             <span className="font-medium text-white sm:text-xs text-sm">
