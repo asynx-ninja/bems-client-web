@@ -110,7 +110,7 @@ const Requests = () => {
   ];
 
   return (
-    <div className="flex flex-col bg-gray-100 h-auto">
+    <div className="flex flex-col bg-gray-100 h-auto overflow-hidden">
       <div className="relative sm:h-[200px] lg:h-[250px] w-full object-cover">
         <video className="h-full w-full object-cover" autoPlay muted loop>
           <source src={video} type="video/mp4" />
