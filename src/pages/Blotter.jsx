@@ -102,6 +102,7 @@ const Blotter = () => {
                     }}
                 />
             </div>
+
             <div className="p-4 lg:p-10 border flex flex-col">
                 <div className="w-full flex flex-col">
                     <div className="flex w-full justify-between">
@@ -131,8 +132,8 @@ const Blotter = () => {
                     </div>
 
                     {/* Table */}
-                    <div className="overflow-x-auto sm:h-[380px] lg:h-[680px] border border-b-0 mt-5 rounded-t-xl bg-white">
-                        <table className="w-full divide-y divide-gray-200 ">
+                    <div className="overflow-x-auto border border-b-0 mt-5 rounded-t-xl bg-white">
+                        <table className="overflow-x-hidden w-full divide-y divide-gray-200 ">
                             {/* Table Headers */}
                             <thead className={`bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] border`}>
                                 <tr>

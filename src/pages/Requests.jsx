@@ -110,7 +110,7 @@ const Requests = () => {
   ];
 
   return (
-    <div className="flex flex-col bg-gray-100">
+    <div className="flex flex-col bg-gray-100 h-auto">
       <div className="relative sm:h-[200px] lg:h-[250px] w-full object-cover">
         <video className="h-full w-full object-cover" autoPlay muted loop>
           <source src={video} type="video/mp4" />
@@ -206,10 +206,8 @@ const Requests = () => {
           </div>
 
           {/* Table */}
-          <div className="overflow-x-auto sm:h-[380px] lg:h-[680px] bg-white border border-b-0 mt-5 rounded-t-xl">
-
-            <table className="w-full divide-y divide-gray-200 ">
-              {/* Table Headers */}
+          <div className="overflow-x-auto border border-b-0 mt-5 rounded-t-xl bg-white">
+            <table className="overflow-x-hidden w-full divide-y divide-gray-200 ">
               <thead className={`bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] border`}>
                 <tr>
                   {

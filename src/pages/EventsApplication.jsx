@@ -192,8 +192,8 @@ const EventsApplication = () => {
           </div>
 
           {/* Table */}
-          <div className="overflow-x-auto sm:h-[380px] lg:h-[680px] xl:h-[700px] xxl:h-[700px] xxxl:h-[640px] border border-b-0 mt-5 rounded-t-xl">
-            <table className="w-full divide-y divide-gray-200 ">
+          <div className="overflow-x-auto border border-b-0 mt-5 rounded-t-xl bg-white">
+            <table className="overflow-x-hidden w-full divide-y divide-gray-200 ">
               {/* Table Headers */}
               <thead className={`bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] border`}>
                 <tr>

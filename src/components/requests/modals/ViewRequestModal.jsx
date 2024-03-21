@@ -509,15 +509,21 @@ const ViewRequestModal = ({ viewRequest }) => {
             <div className="flex justify-end items-center gap-x-2 py-3 px-6 dark:border-gray-700">
               <button
                 type="button"
-                className="py-1 px-6 inline-flex justify-center items-center gap-2 rounded-md borde text-sm font-base bg-custom-green-button3 text-white shadow-sm align-middle"
+                className="py-1 px-6 inline-flex justify-center items-center gap-2 rounded-md borde text-sm font-base text-white shadow-sm align-middle"
                 data-hs-overlay="#hs-viewRequest-modal"
+                style={{
+                  background: '#268F26'
+                }}
               >
                 SEND
               </button>
               <button
                 type="button"
-                className="py-1 px-6 inline-flex justify-center items-center gap-2 rounded-md border text-sm font-base bg-custom-red-button text-white shadow-sm align-middle"
+                className="py-1 px-6 inline-flex justify-center items-center gap-2 rounded-md border text-sm font-base text-white shadow-sm align-middle"
                 data-hs-overlay="#hs-viewRequest-modal"
+                style={{
+                  background: '#B95252'
+                }}
               >
                 CANCEL
               </button>

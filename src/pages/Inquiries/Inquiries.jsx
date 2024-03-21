@@ -144,7 +144,7 @@ const Inquiries = () => {
             </div>
           </div>
 
-          <div className="mt-5 sw-full flex flex-row justify-between items-center">
+          <div className="mt-10 w-full flex sm:flex-col sm:gap-5 md:flex-row justify-between items-center">
             {/* Events Application Type Sort */}
             <div className="hs-dropdown relative inline-flex sm:[--placement:bottom] md:[--placement:bottom-left]">
               <button
@@ -220,8 +220,8 @@ const Inquiries = () => {
           </div>
 
           {/* Table */}
-          <div className="overflow-x-auto sm:h-[380px] lg:h-[680px] border border-b-0 mt-5 rounded-t-xl bg-white">
-            <table className="w-full divide-y divide-gray-200 ">
+          <div className="overflow-x-auto border border-b-0 mt-5 rounded-t-xl bg-white">
+            <table className="overflow-x-hidden w-full divide-y divide-gray-200 ">
               {/* Table Headers */}
               <thead className={`bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] border`}>
                 <tr>
