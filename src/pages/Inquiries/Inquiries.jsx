@@ -116,7 +116,7 @@ const Inquiries = () => {
           }}
         />
       </div>
-      <div className="p-4 lg:p-10 border flex flex-col">
+      <div className="p-4 lg:p-10 border flex flex-col overflow-hidden">
         <div className="w-full flex flex-col">
           <div className="flex w-full justify-between">
             <div className="md:mr-[20px] rounded-lg">

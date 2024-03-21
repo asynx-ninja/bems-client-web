@@ -109,7 +109,7 @@ const EventsApplication = () => {
         />
       </div>
 
-      <div className="p-4 lg:p-10">
+      <div className="p-4 lg:p-10 overflow-hidden">
         <div className="flex flex-col">
 
           <div className="sm:mx-auto md:mx-0 md:mr-[20px] bg-white rounded-lg">
