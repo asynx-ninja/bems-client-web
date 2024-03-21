@@ -144,7 +144,7 @@ const Barangay = () => {
               <div className="-m-1.5 overflow-x-auto">
                 <div className="p-1.5 min-w-full inline-block align-middle">
                   <div className="overflow-hidden rounded-lg">
-                    <table className="min-w-full rounded-b-lg divide-y divide-gray-200 dark:divide-gray-700">
+                    <table className="min-w-full rounded-b-lg divide-y divide-gray-200">
                       {/* The table content */}
                       <thead>
                         <tr className="bg-gray-300 ">
@@ -196,7 +196,7 @@ const Barangay = () => {
                               <Link
                                 type="button"
                                 onClick={() => handleView({ ...barangay })}
-                                className="text-center py-2 px-2 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-green-500 text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"
+                                className="text-center py-2 px-2 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-green-500 text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all text-sm"
                                 data-hs-overlay="#hs-vertically-centered-scrollable-modal"
                               >
                                 Read more
