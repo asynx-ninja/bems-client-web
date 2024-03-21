@@ -205,39 +205,37 @@ const Requests = () => {
             </div>
           </div>
 
-          <div className="overflow-hidden sm:w-90% sm:max-h-[380px] lg:max-h-[680px] border border-b-0 mt-5 rounded-t-xl bg-white">
-            {/* Table */}
-            <div className="overflow-x-auto overflow-y-auto">
-              <table className="w-full divide-y divide-gray-200">
-                <thead className={`bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] border`}>
-                  <tr>
-                    {tableHeader.map((item, i) => (
-                      <th
-                        scope="col"
-                        key={i}
-                        className="px-6 py-3 text-center text-xs font-bold text-white uppercase"
-                      >
-                        {item}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
+          {/* Table */}
+          <div className="overflow-x-auto overflow-y-auto sm:w-90% sm:max-h-[380px] lg:max-h-[680px] border border-b-0 mt-5 rounded-t-xl bg-white">
+            <table className="w-full divide-y divide-gray-200">
+              <thead className={`bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] border`}>
+                <tr>
+                  {tableHeader.map((item, i) => (
+                    <th
+                      scope="col"
+                      key={i}
+                      className="px-6 py-3 text-center text-xs font-bold text-white uppercase"
+                    >
+                      {item}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
 
-                {/* Table Body */}
-                <tbody>
-                  {request.length === 0 ? (
-                    <tr>
-                      <th className="pt-[50px]" colSpan={tableHeader.length}>
-                        <img className="w-[150px] mx-auto" src={no_data} alt="" />
-                        No Records Shown
-                      </th>
-                    </tr>
-                  ) : (
-                    <RequestList request={request} selectedItems={selectedItems} checkboxHandler={checkAllHandler} setViewRequest={setViewRequest} />
-                  )}
-                </tbody>
-              </table>
-            </div>
+              {/* Table Body */}
+              <tbody>
+                {request.length === 0 ? (
+                  <tr>
+                    <th className="pt-[50px]" colSpan={tableHeader.length}>
+                      <img className="w-[150px] mx-auto" src={no_data} alt="" />
+                      No Records Shown
+                    </th>
+                  </tr>
+                ) : (
+                  <RequestList request={request} selectedItems={selectedItems} checkboxHandler={checkAllHandler} setViewRequest={setViewRequest} />
+                )}
+              </tbody>
+            </table>
           </div>
 
           <div className={`md:py-4 md:px-4 bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3`}>
