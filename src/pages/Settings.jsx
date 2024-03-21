@@ -848,7 +848,7 @@ const Settings = () => {
                     {userData.username}
                   </p>
                 </div>
-                <div className={userData.isApproved !== "Verified" ? "bg-gray-400 text-white font-medium px-4 py-1 rounded-2xl w-[150px] mx-auto mt-[20px]" : "bg-custom-green-button absolute bottom-[10px] right-[10px] text-white font-medium px-4 py-1 rounded-2xl w-[150px] mx-auto mt-[20px]"}>
+                <div className={userData.isApproved !== "Verified" ? "bg-gray-400 text-white font-medium px-4 py-1 rounded-2xl w-[150px] mx-auto mt-[20px]" : "bg-custom-green-button text-white font-medium px-4 py-1 rounded-2xl w-[150px] mx-auto mt-[20px]"}>
                   <h1 className="text-center">{userData.isApproved}</h1>
                 </div>
                 <div className={`flex flex-col justify-center sm:w-[250px] md:w-[90%] lg:w-full items-center mx-auto mt-5 bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] rounded-md p-[10px]`}>
@@ -918,7 +918,10 @@ const Settings = () => {
             <button
               name="edit"
               onClick={handleOnEdit}
-              className="bg-custom-green-button text-white font-medium px-[20px] py-[5px] rounded-md"
+              className=" text-white font-medium px-[20px] py-[5px] rounded-md"
+              style={{
+                background: '#268F26'
+              }}
             >
               Edit
             </button>
@@ -928,14 +931,20 @@ const Settings = () => {
                 type="submit"
                 name="save"
                 onClick={saveChanges}
-                className="bg-custom-green-button text-white font-medium px-[20px] py-[5px] rounded-md"
+                className=" text-white font-medium px-[20px] py-[5px] rounded-md"
+                style={{
+                  background: '#268F26'
+                }}
               >
                 Save
               </button>
               <button
                 onClick={handleOnEdit}
                 name="cancel"
-                className="bg-custom-red-button text-white font-medium px-[20px] py-[5px] rounded-md"
+                className=" text-white font-medium px-[20px] py-[5px] rounded-md"
+                style={{
+                  background: '#B95252'
+                }}
               >
                 Cancel
               </button>

@@ -128,7 +128,10 @@ const Inquiries = () => {
               <button
                 type="button"
                 data-hs-overlay="#hs-modal-compose"
-                className={`hs-tooltip-toggle flex justify-center items-center rounded-lg bg-custom-green-header text-white font-medium text-sm text-center w-[100px] h-[50px]`}
+                className={`hs-tooltip-toggle flex justify-center items-center rounded-lg text-white font-medium text-sm text-center w-[100px] h-[50px]`}
+                style={{
+                  background: `${info && info.theme && info.theme.primary !== "" ? info.theme.primary : '#295141'}`
+                }}
               >
                 <FaPlus size={24} style={{ color: "#ffffff" }} />
                 <span
@@ -147,7 +150,10 @@ const Inquiries = () => {
               <button
                 id="hs-dropdown"
                 type="button"
-                className={`bg-custom-green-header h-[40px] sm:w-full md:w-full sm:mt-2 md:mt-0 text-white hs-dropdown-toggle py-1 px-5 inline-flex justify-center items-center gap-2 rounded-md  font-medium shadow-sm align-middle transition-all text-sm  `}
+                className={` h-[40px] sm:w-full md:w-full sm:mt-2 md:mt-0 text-white hs-dropdown-toggle py-1 px-5 inline-flex justify-center items-center gap-2 rounded-md  font-medium shadow-sm align-middle transition-all text-sm  `}
+                style={{
+                  background: `${info && info.theme && info.theme.primary !== "" ? info.theme.primary : '#295141'}`
+                }}
               >
                 TO {SortByName !== "all" ? SortByName.toUpperCase() : ""}
                 <svg
@@ -203,7 +209,10 @@ const Inquiries = () => {
                 onChange={handleOnSearch}
               />
               <button
-                className="rounded-xl bg-custom-green-header w-[40px] h-[40px] justify-center items-center text-white"
+                className="rounded-xl w-[40px] h-[40px] justify-center items-center text-white"
+                style={{
+                  background: `${info && info.theme && info.theme.primary !== "" ? info.theme.primary : '#295141'}`
+                }}
               >
                 <FaSearch className="w-full" />
               </button>
@@ -211,7 +220,7 @@ const Inquiries = () => {
           </div>
 
           {/* Table */}
-          <div className="overflow-x-hidden sm:h-[380px] lg:h-[680px] border border-b-0 mt-5 rounded-t-xl bg-white">
+          <div className="overflow-x-auto sm:h-[380px] lg:h-[680px] border border-b-0 mt-5 rounded-t-xl bg-white">
             <table className="w-full divide-y divide-gray-200 ">
               {/* Table Headers */}
               <thead className={`bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] border`}>
