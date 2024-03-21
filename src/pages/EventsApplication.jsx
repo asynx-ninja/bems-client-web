@@ -240,7 +240,6 @@ const EventsApplication = () => {
               </tbody>
             </table>
           </div>
-          *
           <div
             className={`md:py-4 md:px-4 bg-[${
               info && info.theme && info.theme.primary !== ""
