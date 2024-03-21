@@ -36,9 +36,11 @@ const EventsApplicationList = ({ events, setViewEvent }) => {
         </span>
       </td>
       <td className="px-6 py-3">
-        <span className="text-xs sm:text-sm text-black line-clamp-2">
-          {DateFormat(item.createdAt) || ""}
-        </span>
+        <div className="flex justify-center items-center">
+          <span className="text-xs sm:text-sm text-black line-clamp-2">
+            {DateFormat(item.createdAt) || ""}
+          </span>
+        </div>
       </td>
 
       <td className="px-6 py-3">
