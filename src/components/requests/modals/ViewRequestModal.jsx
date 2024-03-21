@@ -507,7 +507,7 @@ const ViewRequestModal = ({ viewRequest }) => {
 
             {/* Buttons */}
             <div className="flex justify-end items-center gap-x-2 py-3 px-6 dark:border-gray-700">
-              <button
+              {/* <button
                 type="button"
                 className="py-1 px-6 inline-flex justify-center items-center gap-2 rounded-md borde text-sm font-base text-white shadow-sm align-middle"
                 data-hs-overlay="#hs-viewRequest-modal"
@@ -516,7 +516,7 @@ const ViewRequestModal = ({ viewRequest }) => {
                 }}
               >
                 SEND
-              </button>
+              </button> */}
               <button
                 type="button"
                 className="py-1 px-6 inline-flex justify-center items-center gap-2 rounded-md border text-sm font-base text-white shadow-sm align-middle"
