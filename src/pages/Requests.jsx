@@ -206,7 +206,7 @@ const Requests = () => {
           </div>
 
           {/* Table */}
-          <div className="overflow-hidden overflow-x-auto sm:w-90% sm:max-h-[380px] lg:max-h-[680px] border border-b-0 mt-5 rounded-t-xl bg-white">
+          <div className="overflow-x-auto overflow-y-auto sm:w-90% sm:max-h-[380px] lg:max-h-[680px] border border-b-0 mt-5 rounded-t-xl bg-white">
             <table className="w-full divide-y divide-gray-200">
               <thead className={`bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] border`}>
                 <tr>
