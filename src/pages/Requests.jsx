@@ -82,12 +82,15 @@ const Requests = () => {
   };
 
   const handleOnSearch = (e) => {
-    const getSearch = getAll.filter((item) =>
-      item.req_id.toUpperCase()
-        .includes(e.target.value.toUpperCase()))
+    const inputValue = e.target.value.toUpperCase();
 
-    setRequest(getSearch)
-  }
+    const getSearch = getAll.filter((item) =>
+      item.req_id.toUpperCase().includes(inputValue) ||
+      item.service_name.toUpperCase().includes(inputValue)
+    );
+
+    setRequest(getSearch);
+  };
 
   const checkAllHandler = () => {
     if (request.length === selectedItems.length) {

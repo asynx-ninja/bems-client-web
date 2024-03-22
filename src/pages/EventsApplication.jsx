@@ -65,7 +65,7 @@ const EventsApplication = () => {
     fetch();
   }, [brgy, id, SortByName, currentPage]);
 
-  // console.log(getAll)
+  console.log(getAll)
 
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected);
@@ -80,12 +80,15 @@ const EventsApplication = () => {
   };
 
   const handleOnSearch = (e) => {
-    const getSearch = getAll.filter((item) =>
-      item.application_id.toUpperCase()
-        .includes(e.target.value.toUpperCase()))
+    const inputValue = e.target.value.toUpperCase();
 
-    setEvents(getSearch)
-  }
+    const getSearch = getAll.filter((item) =>
+      item.application_id.toUpperCase().includes(inputValue) ||
+      item.event_name.toUpperCase().includes(inputValue)
+    );
+
+    setEvents(getSearch);
+  };
 
   const tableHeader = [
     "Application ID",
