@@ -207,16 +207,22 @@ const GovernmentID = ({ userData, setUserData, editButton, handleAddPrimaryID, h
                             {capture ? (
                                 <button
                                     type="button"
-                                    className="h-[2.5rem] mx-auto py-1 px-6 gap-2 rounded-md borde text-sm font-base bg-pink-900 text-white shadow-sm mb-2"
+                                    className="h-[2.5rem] mx-auto py-1 px-6 gap-2 rounded-md borde text-sm font-base text-white shadow-sm mb-2"
                                     onClick={handleOnCapture}
+                                    style={{
+                                        background: '#B95252'
+                                    }}
                                 >
                                     CANCEL
                                 </button>
                             ) : (
                                 <button
                                     type="button"
-                                    className="h-[2.5rem] mx-auto py-1 px-6 gap-2 rounded-md border text-sm font-base bg-custom-green-button text-white shadow-sm mb-2"
+                                    className="h-[2.5rem] mx-auto py-1 px-6 gap-2 rounded-md border text-sm font-base text-white shadow-sm mb-2"
                                     onClick={handleOnCapture}
+                                    style={{
+                                        background: '#268F26'
+                                    }}
                                 >
                                     TAKE A NEW PHOTO
                                 </button>

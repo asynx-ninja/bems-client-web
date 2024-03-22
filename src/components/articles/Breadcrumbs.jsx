@@ -11,11 +11,11 @@ const Breadcrumbs = ({ title }) => {
       className="flex sm:px-0 md:px-5 py-3 text-black rounded-lg "
       aria-label="Breadcrumb"
     >
-      <ol className="sm:flex sm:flex-wrap sm:space-y-2 sm:w-full md:inline-flex items-center space-x-1 md:space-x-3">
-        <li className="inline-flex items-center">
+      <ol className="flex sm:flex-wrap sm:space-y-2 sm:w-full md:inline-flex space-x-1 md:space-x-3">
+        <li className="flex items-center">
           <Link
             to={`/dashboard/?id=${id}&brgy=${brgy}`}
-            className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-green-500"
+            className="inline-flex items-center text-sm font-medium text-gray-700 uppercase"
           >
             <svg
               className="w-3 h-3 mr-2.5"
@@ -29,8 +29,17 @@ const Breadcrumbs = ({ title }) => {
             Dashboard
           </Link>
         </li>
-        <li aria-current="page">
-          <div className="flex items-center">
+        <li
+          className="flex items-center"
+          aria-current="page"
+          style={{
+            margin: "0px"
+          }}
+        >
+          <Link
+            className="flex ml-1 items-center text-sm font-medium text-gray-700 md:ml-2 uppercase"
+            to={`/events-list/?id=${id}&brgy=${brgy}`}
+          >
             <svg
               className="w-3 h-3 mx-1 text-gray-400"
               aria-hidden="true"
@@ -46,16 +55,19 @@ const Breadcrumbs = ({ title }) => {
                 d="m1 9 4-4-4-4"
               />
             </svg>
-            <Link
-              className="ml-1 text-sm font-medium text-gray-700 hover:text-green-500 md:ml-2"
-              to={`/events-list/?id=${id}&brgy=${brgy}`}
-            >
-              Events List
-            </Link>
-          </div>
+            Events List
+          </Link>
         </li>
-        <li aria-current="page">
-          <div className="flex items-center">
+        <li
+          className="flex items-center"
+          aria-current="page"
+          style={{
+            margin: "0px"
+          }}
+        >
+          <Link
+            className="flex ml-1 items-center text-sm font-medium text-gray-700 md:ml-2 uppercase"
+          >
             <svg
               className="w-3 h-3 mx-1 text-gray-400"
               aria-hidden="true"
@@ -71,12 +83,8 @@ const Breadcrumbs = ({ title }) => {
                 d="m1 9 4-4-4-4"
               />
             </svg>
-            <Link
-              className="ml-1 text-sm font-medium text-gray-700 hover:text-green-500 md:ml-2"
-            >
-              {title}
-            </Link>
-          </div>
+            {title}
+          </Link>
         </li>
       </ol>
     </nav>

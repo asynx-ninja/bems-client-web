@@ -33,6 +33,7 @@ const ServicesForm = ({ props }) => {
   const [submitClicked, setSubmitClicked] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState(null);
   const [noForm, setNoForm] = useState(false)
+  const [isNotVerified, setIsNotVerified] = useState(false)
 
   useEffect(() => {
     const fetchForms = async () => {
@@ -60,6 +61,7 @@ const ServicesForm = ({ props }) => {
             const getUser = await axios.get(`${API_LINK}/users/specific/${id}`);
 
             setUserData(getUser.data[0]);
+            setIsNotVerified(getUser.data[0].isApproved === "Verified" ? true : false)
 
             filter.form[0].user_id.value = getUser.data[0].user_id;
 
@@ -370,6 +372,8 @@ const ServicesForm = ({ props }) => {
 
         if (folderResponse.status === 200) {
 
+          setSubmitClicked(true);
+
           const response = await axios.post(`${API_LINK}/requests/?request_folder_id=${folderResponse.data[0].request}`, formData, {
             headers: {
               "Content-Type": "multipart/form-data",
@@ -417,20 +421,18 @@ const ServicesForm = ({ props }) => {
               );
 
               if (result.status === 200) {
-                setSubmitClicked(true);
-                HSOverlay.close(document.getElementById("hs-full-screen-modal"));
-                HSOverlay.open(
-                  document.getElementById("hs-toggle-between-modals-second-modal")
-                );
                 setTimeout(() => {
                   setSubmitClicked(false);
                   setUpdatingStatus("success");
+                  HSOverlay.close(document.getElementById("hs-full-screen-modal"));
+                  HSOverlay.open(
+                    document.getElementById("hs-toggle-between-modals-second-modal")
+                  );
                   setTimeout(() => {
                     window.location.reload();
                   }, 3000);
                 }, 1000);
               }
-
             } catch (err) {
               console.log(err)
             }
@@ -503,7 +505,7 @@ const ServicesForm = ({ props }) => {
             : null
         }
         {
-          userData.isApproved !== "Verified" ?
+          isNotVerified ?
             <div
               className="bg-red-50 border px-5 text-center border-red-200 text-sm text-red-600 rounded-md py-4 mt-2 mb-4"
               role="alert"

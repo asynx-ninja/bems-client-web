@@ -11,11 +11,11 @@ const Breadcrumbs = ({ serviceTitle }) => {
       className="flex sm:px-0 md:px-5 py-3 sm:mx-auto lg:mx-0 text-black rounded-lg "
       aria-label="Breadcrumb"
     >
-      <ol className="sm:flex sm:flex-wrap sm:space-y-2 sm:w-full md:inline-flex items-center space-x-1 md:space-x-3">
-        <li className="inline-flex items-center">
+      <ol className="flex sm:flex-wrap sm:space-y-2 sm:w-full md:flex-row space-x-1 md:space-x-3">
+        <li className="flex items-center">
           <Link
             to={`/dashboard/?id=${id}&brgy=${brgy}`}
-            className="inline-flex items-center text:xs lg:text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white"
+            className="inline-flex items-center text-sm font-medium text-gray-700 uppercase"
           >
             <svg
               className="w-3 h-3 mr-2.5"
@@ -29,10 +29,19 @@ const Breadcrumbs = ({ serviceTitle }) => {
             Dashboard
           </Link>
         </li>
-        <li>
-          <div className="flex items-center">
+        <li
+          className="flex items-center"
+          aria-current="page"
+          style={{
+            margin: "0px"
+          }}
+        >
+          <Link
+            to={`/services/?id=${id}&brgy=${brgy}`}
+            className="flex ml-1 items-center text-sm font-medium text-gray-700 md:ml-2 uppercase"
+          >
             <svg
-              className="w-3 h-3 mx-1 text-gray-400"
+              className="w-3 h-3 mx-1 text-gray-700"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -46,18 +55,21 @@ const Breadcrumbs = ({ serviceTitle }) => {
                 d="m1 9 4-4-4-4"
               />
             </svg>
-            <Link
-              to={`/services/?id=${id}&brgy=${brgy}`}
-              className="ml-1 line-clamp-1 text:xs lg:text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white"
-            >
-              Services
-            </Link>
-          </div>
+            Services
+          </Link>
         </li>
-        <li aria-current="page">
-          <div className="flex items-center sm:w-[100px] md:w-full">
+        <li
+          className="flex items-center"
+          aria-current="page"
+          style={{
+            margin: "0px"
+          }}
+        >
+          <div
+            className="flex ml-1 items-center text-sm font-medium text-gray-700 md:ml-2 uppercase"
+          >
             <svg
-              className="w-3 h-3 mx-1 text-gray-400"
+              className="w-3 h-3 mx-1 text-gray-700"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -71,7 +83,7 @@ const Breadcrumbs = ({ serviceTitle }) => {
                 d="m1 9 4-4-4-4"
               />
             </svg>
-            <span className="ml-1 text:xs line-clamp-1 lg:text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">
+            <span className="text:xs line-clamp-1 lg:text-sm font-medium text-gray-700">
               {serviceTitle}
             </span>
           </div>

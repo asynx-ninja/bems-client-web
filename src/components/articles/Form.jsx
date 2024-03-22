@@ -29,6 +29,7 @@ const Form = ({ announcement }) => {
   const [submitClicked, setSubmitClicked] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState(null);
   const [noForm, setNoForm] = useState(false)
+  const [isNotVerified, setIsNotVerified] = useState(false)
   const [info, setInfo] = useState({});
 
   useEffect(() => {
@@ -58,6 +59,7 @@ const Form = ({ announcement }) => {
         const getUser = await axios.get(`${API_LINK}/users/specific/${id}`);
 
         setUserData(getUser.data[0]);
+        setIsNotVerified(getUser.data[0].isApproved === "Verified" ? true : false)
 
         event_form.form[0].user_id.value = getUser.data[0].user_id;
 
@@ -347,6 +349,8 @@ const Form = ({ announcement }) => {
 
         if (folderResponse.status === 200) {
 
+          setSubmitClicked(true);
+
           const response = await axios.post(
             `${API_LINK}/application/?app_folder_id=${folderResponse.data[0].application}`,
             formData,
@@ -394,14 +398,13 @@ const Form = ({ announcement }) => {
             );
 
             if (result.status === 200) {
-              setSubmitClicked(true);
-              HSOverlay.close(document.getElementById("hs-full-screen-modal"));
-              HSOverlay.open(
-                document.getElementById("hs-toggle-between-modals-second-modal")
-              );
               setTimeout(() => {
                 setSubmitClicked(false);
                 setUpdatingStatus("success");
+                HSOverlay.close(document.getElementById("hs-full-screen-modal"));
+                HSOverlay.open(
+                  document.getElementById("hs-toggle-between-modals-second-modal")
+                );
                 setTimeout(() => {
                   window.location.reload();
                 }, 3000);
@@ -468,7 +471,7 @@ const Form = ({ announcement }) => {
             : null
         }
         {
-          userData.isApproved !== "Verified" ?
+          isNotVerified ?
             <div
               className="bg-red-50 border px-5 text-center border-red-200 text-sm text-red-600 rounded-md py-4 mt-2 mb-4"
               role="alert"

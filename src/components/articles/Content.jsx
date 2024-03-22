@@ -66,11 +66,11 @@ const Content = ({ announcement }) => {
               <div className="flex flex-col w-full items-center bg-green-500 shadow-lg py-3 px-3 mt-3 rounded-lg">
                 {files &&
                   files.map((item, idx) => (
-                    <div key={idx} className="my-auto flex justify-start items-center">
+                    <div key={idx} className="my-auto flex justify-start items-center w-full">
                       <a
                         href={item.link}
                         target="_blank"
-                        className="flex gap-5 hover:text-yellow-300 text-white leading-relaxed font-bold uppercase"
+                        className="flex gap-5 hover:text-yellow-300 text-white leading-relaxed font-bold uppercase truncate"
                       >
                         <AiFillFilePdf className="my-auto" />
                         {item.name}
