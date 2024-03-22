@@ -61,7 +61,7 @@ const ServicesForm = ({ props }) => {
             const getUser = await axios.get(`${API_LINK}/users/specific/${id}`);
 
             setUserData(getUser.data[0]);
-            setIsNotVerified(getUser.data[0].isApproved === "Verified" ? true : false)
+            setIsNotVerified(getUser.data[0].isApproved !== "Verified" ? true : false)
 
             filter.form[0].user_id.value = getUser.data[0].user_id;
 
@@ -516,9 +516,9 @@ const ServicesForm = ({ props }) => {
         }
         <div className="flex mx-auto sm:flex-row md:flex-row w-full items-center gap-4 justify-center">
           <button
-            disabled={noForm === true || userData.isApproved !== "Verified"}
+            disabled={noForm === true || isNotVerified}
             data-hs-overlay="#hs-full-screen-modal"
-            className={noForm === true || userData.isApproved !== "Verified" ? "flex items-center justify-center text-center bg-gray-400 sm:w-full md:w-[150px] sm:my-[5px] md:m-5 h-[50px] text-sm text-white font-medium rounded-lg"
+            className={noForm === true || isNotVerified ? "flex items-center justify-center text-center bg-gray-400 sm:w-full md:w-[150px] sm:my-[5px] md:m-5 h-[50px] text-sm text-white font-medium rounded-lg"
               : "flex items-center justify-center text-center bg-green-700 sm:w-full md:w-[150px] sm:my-[5px] md:m-5 h-[50px] text-sm text-white font-medium rounded-lg hover:bg-gradient-to-r from-[#295141] to-[#408D51] transition duration-500 ease-in-out hover:text-custom-gold"}
           >
             Submit a request

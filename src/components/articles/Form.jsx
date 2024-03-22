@@ -59,7 +59,7 @@ const Form = ({ announcement }) => {
         const getUser = await axios.get(`${API_LINK}/users/specific/${id}`);
 
         setUserData(getUser.data[0]);
-        setIsNotVerified(getUser.data[0].isApproved === "Verified" ? true : false)
+        setIsNotVerified(getUser.data[0].isApproved !== "Verified" ? true : false)
 
         event_form.form[0].user_id.value = getUser.data[0].user_id;
 
@@ -482,9 +482,9 @@ const Form = ({ announcement }) => {
         }
         <div className="flex mx-auto sm:flex-row md:flex-row w-full items-center gap-4 justify-center">
           <button
-            disabled={noForm === true || userData.isApproved !== "Verified"}
+            disabled={noForm === true || isNotVerified}
             data-hs-overlay="#hs-full-screen-modal"
-            className={noForm === true || userData.isApproved !== "Verified" ? "flex items-center justify-center text-center bg-gray-400 sm:w-full md:w-[150px] sm:my-[5px] md:m-5 h-[50px] text-sm text-white font-medium rounded-lg"
+            className={noForm === true || isNotVerified ? "flex items-center justify-center text-center bg-gray-400 sm:w-full md:w-[150px] sm:my-[5px] md:m-5 h-[50px] text-sm text-white font-medium rounded-lg"
               : `flex items-center justify-center text-center bg-custom-green-button sm:w-full md:w-[150px] sm:my-[5px] md:m-5 h-[50px] text-sm text-white font-medium rounded-lg hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}] transition duration-500 ease-in-out hover:text-custom-gold`}
           >
             Submit an Application
