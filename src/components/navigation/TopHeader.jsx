@@ -31,7 +31,7 @@ const TopHeader = ({ fetch, userData }) => {
       if (!accountVerified) {
         setPopup(true);
       }
-    }, 10000); // 5 minutes in milliseconds
+    }, 300000); // 5 minutes in milliseconds
 
     return () => clearInterval(popupInterval);
   }, [accountVerified]);
