@@ -68,7 +68,7 @@ const Services = () => {
         <h1 className='text-[38px] text-center border-b-[2px] border-custom-green-header'>OFFERED <b className='text-custom-green-header'>SERVICES</b></h1>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-8 p-4 w-full max-w-7xl">
+      <div className={filterType.length === 0 ? "grid grid-cols-1 justify-center items-center" : "grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-8 p-4 w-full max-w-7xl"}>
         {filterType.map((item, i) => (
           <Link
             key={i}

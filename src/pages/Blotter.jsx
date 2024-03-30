@@ -154,11 +154,11 @@ const Blotter = () => {
                                 {/* Table Body */}
                                 {
                                     blotter.length === 0 ?
-                                        <tr>
-                                            <th className="pt-[50px]" rowSpan={5} colSpan={7}>
-                                                <img className="w-[150px] mx-auto" src={no_data} alt="" />
+                                        <tr className="sm:h-[380px] lg:h-[630px]">
+                                            <td className="text-center m-auto" colSpan={tableHeader.length}>
+                                                <img className="w-[150px] m-auto" src={no_data} alt="" />
                                                 No Records Shown
-                                            </th>
+                                            </td>
                                         </tr>
                                         :
                                         <BlotterRecords

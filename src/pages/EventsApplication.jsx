@@ -127,11 +127,10 @@ const EventsApplication = () => {
                 type="button"
                 className={`h-[40px] sm:w-full md:w-full sm:mt-2 md:mt-0 text-white hs-dropdown-toggle py-1 px-5 inline-flex justify-center items-center gap-2 rounded-md  font-medium shadow-sm align-middle transition-all text-sm`}
                 style={{
-                  background: `${
-                    info && info.theme && info.theme.primary !== ""
+                  background: `${info && info.theme && info.theme.primary !== ""
                       ? info.theme.primary
                       : "#295141"
-                  }`,
+                    }`,
                 }}
               >
                 {SortByName !== "all" ? SortByName.toUpperCase() : "EVENT NAME"}
@@ -190,11 +189,10 @@ const EventsApplication = () => {
               <button
                 className="rounded-xl w-[40px] h-[40px] justify-center items-center text-white"
                 style={{
-                  background: `${
-                    info && info.theme && info.theme.primary !== ""
+                  background: `${info && info.theme && info.theme.primary !== ""
                       ? info.theme.primary
                       : "#295141"
-                  }`,
+                    }`,
                 }}
               >
                 <FaSearch className="w-full" />
@@ -206,11 +204,10 @@ const EventsApplication = () => {
             <table className="relative table-auto w-full divide-y divide-gray-200 ">
               {/* Table Headers */}
               <thead
-                className={`bg-[${
-                  info && info.theme && info.theme.primary !== ""
+                className={`bg-[${info && info.theme && info.theme.primary !== ""
                     ? info.theme.primary
                     : "#295141"
-                }] border`}
+                  }] border`}
               >
                 <tr>
                   {tableHeader.map((item, i) => (
@@ -228,11 +225,11 @@ const EventsApplication = () => {
               {/* Table Body */}
               <tbody className="divide-y divide-gray-200">
                 {events.length === 0 ? (
-                  <tr>
-                    <th className="pt-[50px]" rowSpan={5} colSpan={7}>
-                      <img className="w-[150px] mx-auto" src={no_data} alt="" />
+                  <tr className="sm:h-[380px] lg:h-[630px]">
+                    <td className="text-center m-auto" colSpan={tableHeader.length}>
+                      <img className="w-[150px] m-auto" src={no_data} alt="" />
                       No Records Shown
-                    </th>
+                    </td>
                   </tr>
                 ) : (
                   <EventsApplicationList
@@ -244,11 +241,10 @@ const EventsApplication = () => {
             </table>
           </div>
           <div
-            className={`md:py-4 md:px-4 bg-[${
-              info && info.theme && info.theme.primary !== ""
+            className={`md:py-4 md:px-4 bg-[${info && info.theme && info.theme.primary !== ""
                 ? info.theme.primary
                 : "#295141"
-            }] flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3`}
+              }] flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3`}
           >
             <span className="font-medium text-white sm:text-xs text-sm">
               Showing {currentPage + 1} out of {pageCount} pages

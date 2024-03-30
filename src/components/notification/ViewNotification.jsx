@@ -17,7 +17,7 @@ const ViewNotification = ({ viewNotif, userData, info }) => {
             >
                 {/* Modal */}
                 <div className="hs-overlay-open:opacity-100 hs-overlay-open:duration-500 px-3 py-5 md:px-5 opacity-0 transition-all w-full h-auto">
-                    <div className="flex flex-col bg-white shadow-sm rounded-t-3xl rounded-b-3xl w-full h-full md:max-w-xl lg:max-w-2xl xxl:max-w-3xl mx-auto max-h-screen">
+                    <div className="flex flex-col bg-white shadow-sm rounded-t-3xl rounded-b-3xl w-full md:max-w-lg lg:max-w-1xl xxl:max-w-2xl mx-auto h-[500px]">
                         {/* Header */}
                         <div className={`py-5 px-3 flex justify-between items-center bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}] overflow-hidden rounded-t-2xl`}>
                             <h3
