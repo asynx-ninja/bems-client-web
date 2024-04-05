@@ -110,17 +110,17 @@ const Notification = ({ notification, setViewNotif, fetch }) => {
                         <div
                             className={`${borderNotif(item.compose.go_to)} flex gap-5 w-full my-2 px-5 py-2 transition-all hover:border-l-[5px] hover:border-b-custom-green-header`}
                         >
-                            <div className='flex flex-col sm:w-full md:w-[75%]'>
+                             <div className='flex flex-col sm:w-full md:w-[75%]'>
                                 <div className='w-full'>
-                                    <h1 className='text-[14px] text-left truncate font-bold'>{item.compose.subject}</h1>
-                                    <p className='text-[12px] text-left line-clamp-2'>{item.compose.message}</p>
+                                    <h1 className='text-[14px] text-left truncate font-bold max-w-[200px]'>{item.compose.subject}</h1>
+                                    <p className='text-[12px] text-left line-clamp-2 max-w-[280px]'>{item.compose.message}</p>
                                 </div>
                                 <div className='mt-2'>
                                     <p className='text-[12px] text-left text-gray-400'>{DateFormat(item.createdAt)}</p>
                                 </div>
                             </div>
                             <div className='w-[25%] sm:hidden md:block'>
-                                <img src={item.logo.link} alt="" />
+                                <img src={item.logo.link} className='object-cover w-full h-[90px] rounded-lg' alt="" />
                             </div>
                         </div>
                     </button>

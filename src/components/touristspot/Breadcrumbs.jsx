@@ -15,7 +15,7 @@ const Breadcrumbs = ({ touristInfo }) => {
       aria-label="Breadcrumb"
     >
       <ol className="sm:flex sm:flex-wrap sm:space-y-2 sm:w-full md:inline-flex items-center space-x-1 md:space-x-3">
-        <li className="inline-flex items-center">
+        <li className="inline-flex items-center mt-1.5">
           <Link
             to="/"
             className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-green-500"
