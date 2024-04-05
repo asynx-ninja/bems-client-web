@@ -1,11 +1,9 @@
 import React, { useState, useRef } from "react";
 import myImage from "../../assets/image/rizallogo2.png";
-import {
-  FaCameraRetro
-} from "react-icons/fa";
+import { FaCameraRetro } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import API_LINK from "../../config/API"
+import API_LINK from "../../config/API";
 import moment from "moment";
 import Webcam from "react-webcam";
 
@@ -33,13 +31,13 @@ const SignupPage = () => {
   const [successReg, setsuccessReg] = useState(false);
   const [emptyFields, setEmptyFields] = useState([]);
   const [empty, setEmpty] = useState(false);
-  const [restrict, setRestrict] = useState(false)
+  const [restrict, setRestrict] = useState(false);
   const [signupPage, setSignupPage] = useState({
     personal: true,
     address: false,
     credential: false,
     verification: false,
-  })
+  });
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -67,8 +65,8 @@ const SignupPage = () => {
     secondary_file: [],
     selfie: null,
   });
-  const fileInputPrimaryIDRef = useRef()
-  const fileInputSecondaryIDRef = useRef()
+  const fileInputPrimaryIDRef = useRef();
+  const fileInputSecondaryIDRef = useRef();
 
   const WebcamCapture = () => {
     const webcamRef = React.useRef(null);
@@ -99,9 +97,8 @@ const SignupPage = () => {
 
           setFormData((prev) => ({
             ...prev,
-            selfie: selfieFile
-          }))
-
+            selfie: selfieFile,
+          }));
         } catch (error) {
           console.error("Error fetching image:", error);
         }
@@ -138,7 +135,7 @@ const SignupPage = () => {
         )}
       </>
     );
-  }
+  };
 
   const handleFileChange = (field, e) => {
     e.preventDefault();
@@ -146,8 +143,8 @@ const SignupPage = () => {
 
     setFormData((prev) => ({
       ...prev,
-      [field]: prev[field] === null ? files : [...prev[field], ...files]
-    }))
+      [field]: prev[field] === null ? files : [...prev[field], ...files],
+    }));
   };
 
   const handleAddPrimaryID = () => {
@@ -156,10 +153,9 @@ const SignupPage = () => {
 
   const handleAddSecondaryID = () => {
     fileInputSecondaryIDRef.current.click();
-  }
+  };
 
   const navigate = useNavigate();
-
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -211,31 +207,31 @@ const SignupPage = () => {
         personal: true,
         address: false,
         credential: false,
-        verification: false
-      })
+        verification: false,
+      });
     } else if (e.target.name === "Address") {
       setSignupPage({
         personal: false,
         address: true,
         credential: false,
-        verification: false
-      })
+        verification: false,
+      });
     } else if (e.target.name === "Credentials") {
       setSignupPage({
         personal: false,
         address: false,
         credential: true,
-        verification: false
-      })
+        verification: false,
+      });
     } else if (e.target.name === "Verification") {
       setSignupPage({
         personal: false,
         address: false,
         credential: false,
-        verification: true
-      })
+        verification: true,
+      });
     }
-  }
+  };
 
   // console.log(formData)
 
@@ -361,8 +357,9 @@ const SignupPage = () => {
 
         for (let i = 0; i < formData.primary_file.length; i++) {
           let file = {
-            name: `${formData.lastName}, ${formData.firstName
-              } - PRIMARY ID ${moment(new Date()).format("MMDDYYYYHHmmss")}`,
+            name: `${formData.lastName}, ${
+              formData.firstName
+            } - PRIMARY ID ${moment(new Date()).format("MMDDYYYYHHmmss")}`,
             size: formData.primary_file[i].size,
             type: formData.primary_file[i].type,
             uri: formData.primary_file[i].uri,
@@ -378,10 +375,9 @@ const SignupPage = () => {
 
         for (let i = 0; i < formData.secondary_file.length; i++) {
           let file = {
-            name: `${formData.lastName}, ${formData.firstName
-              } - SECONDARY ID ${moment(new Date()).format(
-                "MMDDYYYYHHmmss"
-              )}`,
+            name: `${formData.lastName}, ${
+              formData.firstName
+            } - SECONDARY ID ${moment(new Date()).format("MMDDYYYYHHmmss")}`,
             uri: formData.secondary_file[i].uri,
             type: formData.secondary_file[i].type,
             size: formData.secondary_file[i].size,
@@ -415,10 +411,13 @@ const SignupPage = () => {
             navigate(`/loading/?email=${email}&brgy=${barangay}`);
           }, 3000);
         }
-
       } catch (error) {
-        console.log(error)
-        if (error.response && error.response.data && error.response.data.error) {
+        console.log(error);
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.error
+        ) {
           setDuplicateError(error.response.data.error);
           setEmpty(false);
           setShowError(false);
@@ -426,50 +425,100 @@ const SignupPage = () => {
           setDuplicateError("An unknown error occurred.");
         }
       }
-
     }
   };
 
-  console.log(formData)
+  console.log(formData);
 
   return (
-    <div className="flex flex-col-reverse md:flex-row-reverse ">
+    <>
+      <div className="flex flex-col-reverse md:flex-row-reverse md:h-screen">
+        <SideInfo />
 
-      <SideInfo />
+        <div className="sm:w-full lg:w-6/12 mx-auto sm:h-auto sm:py-[30px] flex flex-col items-center justify-center bg-white">
+          <img
+            className="sm:w-[250px] md:w-1/3 lg:w-[450px]"
+            src={myImage}
+            alt=""
+          />
+          <div className="bg-green-700 flex justify-center items-center sm:w-auto md:w-6/12 mt-5 mb-2 rounded-full text-white">
+            <h1 className="text-xs sm:text-sm text-center sm:px-5 sm:py-2 md:p-1">
+              City of Rodriguez Rizal
+            </h1>
+          </div>
 
-      <div className="sm:w-full lg:w-6/12 mx-auto sm:h-auto sm:py-[30px] flex flex-col items-center justify-center bg-white">
-        <img
-          className="sm:w-[250px] md:w-1/3 lg:w-[450px]"
-          src={myImage}
-          alt=""
-        />
-        <div className="bg-green-700 flex justify-center items-center sm:w-auto md:w-6/12 mt-5 mb-2 rounded-full text-white">
-          <h1 className="text-xs sm:text-sm text-center sm:px-5 sm:py-2 md:p-1">
-            City of Rodriguez Rizal
-          </h1>
+          {signupPage.personal === true ? (
+            <PersonalInfo
+              formData={formData}
+              empty={empty}
+              emptyFields={emptyFields}
+              restrict={restrict}
+              handleChange={handleChange}
+              handleNextPage={handleNextPage}
+            />
+          ) : null}
+          {signupPage.address === true ? (
+            <Address
+              formData={formData}
+              empty={empty}
+              emptyFields={emptyFields}
+              restrict={restrict}
+              handleChange={handleChange}
+              handleNextPage={handleNextPage}
+            />
+          ) : null}
+          {signupPage.verification === true ? (
+            <Verification
+              formData={formData}
+              setFormData={setFormData}
+              empty={empty}
+              emptyFields={emptyFields}
+              restrict={restrict}
+              handleAddPrimaryID={handleAddPrimaryID}
+              handleAddSecondaryID={handleAddSecondaryID}
+              fileInputPrimaryIDRef={fileInputPrimaryIDRef}
+              fileInputSecondaryIDRef={fileInputSecondaryIDRef}
+              handleFileChange={handleFileChange}
+              WebcamCapture={WebcamCapture}
+              setViewerVisible={setViewerVisible}
+              setSelectedImage={setSelectedImage}
+              setCapturedImage={setCapturedImage}
+              handleNextPage={handleNextPage}
+            />
+          ) : null}
+          {signupPage.credential === true ? (
+            <AccountCredentials
+              formData={formData}
+              empty={empty}
+              emptyFields={emptyFields}
+              restrict={restrict}
+              handleChange={handleChange}
+              passwordError={passwordError}
+              passwordStrengthError={passwordStrengthError}
+              passwordMatchSuccess={passwordMatchSuccess}
+              passwordStrengthSuccess={passwordStrengthSuccess}
+              showError={showError}
+              passwordStrength={passwordStrength}
+              duplicateError={duplicateError}
+              successReg={successReg}
+              termsAccepted={termsAccepted}
+              setTermsAccepted={setTermsAccepted}
+              policyAccepted={policyAccepted}
+              setPolicyAccepted={setPolicyAccepted}
+              handleSubmit={handleSubmit}
+              handleNextPage={handleNextPage}
+            />
+          ) : null}
+
+          <p className="text-sm text-black text-center mt-2">
+            Already have an account?
+            <span className="font-bold">
+              <Link to="/login"> Login here.</Link>
+            </span>
+          </p>
         </div>
-
-        {signupPage.personal === true ? (
-          <PersonalInfo formData={formData} empty={empty} emptyFields={emptyFields} restrict={restrict} handleChange={handleChange} handleNextPage={handleNextPage} />
-        ) : null}
-        {signupPage.address === true ? (
-          <Address formData={formData} empty={empty} emptyFields={emptyFields} restrict={restrict} handleChange={handleChange} handleNextPage={handleNextPage} />
-        ) : null}
-        {signupPage.verification === true ? (
-          <Verification formData={formData} setFormData={setFormData} empty={empty} emptyFields={emptyFields} restrict={restrict} handleAddPrimaryID={handleAddPrimaryID} handleAddSecondaryID={handleAddSecondaryID} fileInputPrimaryIDRef={fileInputPrimaryIDRef} fileInputSecondaryIDRef={fileInputSecondaryIDRef} handleFileChange={handleFileChange} WebcamCapture={WebcamCapture} setViewerVisible={setViewerVisible} setSelectedImage={setSelectedImage} setCapturedImage={setCapturedImage} handleNextPage={handleNextPage} />
-        ) : null}
-        {signupPage.credential === true ? (
-          <AccountCredentials formData={formData} empty={empty} emptyFields={emptyFields} restrict={restrict} handleChange={handleChange} passwordError={passwordError} passwordStrengthError={passwordStrengthError} passwordMatchSuccess={passwordMatchSuccess} passwordStrengthSuccess={passwordStrengthSuccess} showError={showError} passwordStrength={passwordStrength} duplicateError={duplicateError} successReg={successReg} termsAccepted={termsAccepted} setTermsAccepted={setTermsAccepted} policyAccepted={policyAccepted} setPolicyAccepted={setPolicyAccepted} handleSubmit={handleSubmit} handleNextPage={handleNextPage} />
-        ) : null}
-
-        <p className="text-sm text-black text-center mt-2">
-          Already have an account?
-          <span className="font-bold">
-            <Link to="/login"> Login here.</Link>
-          </span>
-        </p>
       </div>
-    </div>
+    </>
   );
 };
 export default SignupPage;
