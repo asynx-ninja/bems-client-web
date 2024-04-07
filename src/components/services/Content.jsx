@@ -1,6 +1,7 @@
 import React from "react";
 import { AiFillFilePdf } from "react-icons/ai";
 import defaultLogo from "../../assets/header/side-bg.png";
+import defaultBanner from "../../assets/image/1.png";
 
 const Content = ({ service }) => {
   const files =
@@ -8,56 +9,70 @@ const Content = ({ service }) => {
       ? service.collections.file
       : "";
 
-  // console.log(service)
+  console.log(service);
 
   return (
-    <div className="flex flex-col gap-5 sm:px-2 md:px-5">
+    <div className="flex flex-col gap-5 sm:px-2 md:px-5 w-full">
       {/* DESCRIPTION */}
-      <div className="bg-white rounded-lg shadow-xl sm:p-5 md:p-6 lg:w-full w-100 mx-auto mb-10">
-        <h1 className="text-custom-green-header font-bold text-2xl lg:text-[36px] w-[90%] mx-auto mb-10 text-center ">
-          {service && service.name}
-        </h1>
-        <div className="grid sm:grid-cols-1 lg:grid-cols-2 justify-between items-start gap-10 ">
-          <div className="flex flex-col justify-between sm:w-full">
-            <p className="text-gray-600 leading-relaxed whitespace-pre-wrap text-justify">
+      <div className="sm:p-5 md:p-6 lg:w-full w-100 mx-auto">
+        <img
+          className=" rounded-[15px] w-full sm:h-[200px] lg:h-[300px] object-cover"
+          src={
+            service &&
+            service.collections &&
+            service.collections.banner &&
+            service.collections.banner.link !== undefined
+              ? service.collections.banner.link
+              : defaultBanner
+          }
+          alt=""
+        />
+
+        <div className="flex flex-col lg:flex-row justify-between items-start gap-5 ">
+          <div className="flex flex-col justify-between w-full lg:w-[70%]">
+            <div className="flex flex-col my-5 space-y-4">
+              <h1 className="text-custom-green-header font-bold text-2xl md:text-[36px] text-left">
+                {service && service.name}
+              </h1>
+              <label className="flex max-w-40 items-center rounded-md justify-center bg-green-50 px-2 py-1 text-md font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
+                PHP {service && service.fee}
+              </label>
+            </div>
+
+            <p className="text-gray-600 leading-relaxed whitespace-pre-wrap text-justify h-full pr-3">
               {service && service.details}
             </p>
           </div>
 
-          <div className="flex flex-col">
-            <img
-              className="w-full lg:w-[400px] mx-auto sm:h-[200px] lg:h-[400px] object-cover rounded-lg"
-              src={
-                service &&
-                  service.collections &&
-                  service.collections.logo &&
-                  service.collections.logo.link !== undefined
-                  ? service.collections.logo.link
-                  : defaultLogo
-              }
-              alt=""
-            />
-            {
-              files.length !== 0 ?
-                <div className="flex flex-col w-full items-center bg-green-500 shadow-lg py-3 px-3 mt-3 rounded-lg">
-                  {files &&
-                    files.map((item, idx) => (
-                      <div className="my-auto flex justify-start items-center w-full">
-                        <a
-                          key={idx}
-                          href={item.link}
-                          target="_blank"
-                          className="flex gap-5 hover:text-yellow-300 text-white leading-relaxed font-bold uppercase truncate"
-                        >
-                          <AiFillFilePdf className="my-auto" />
+          {files.length !== 0 && (
+            <div className="flex flex-col w-full lg:w-[30%] border-2 bg-[#f3f3f3] rounded-lg shadow-lg mt-7">
+              <div className="flex flex-col pb-2 md:w-full ">
+                <h1 className="flex justify-center my-2 font-bold text-[#353535]">
+                  ATTACHED FILES
+                </h1>
+
+                <div className="overflow-y-auto overflow-x-auto w-full h-[400px]">
+                  {files.map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="my-auto flex justify-start items-center w-full px-5"
+                    >
+                      <a
+                        href={item.link}
+                        target="_blank"
+                        className="flex flex-row gap-5 w-full items-center bg-[#ffffff] shadow-lg py-3 px-3 my-1 rounded-lg text-[#353535] leading-relaxed font-bold uppercase truncate ...  hover:text-yellow-300 transform transition duration-500 ease-in-out hover:scale-105"
+                      >
+                        <AiFillFilePdf size={20} style={{ color: "black" }} />
+                        <label className="w-40 md:w-96 lg:w-full truncate ...">
                           {item.name}
-                        </a>
-                      </div>
-                    ))}
+                        </label>
+                      </a>
+                    </div>
+                  ))}
                 </div>
-                : null
-            }
-          </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
