@@ -462,6 +462,27 @@ const Form = ({ announcement }) => {
 
         <div className="bg-white rounded-lg shadow-xl  lg:w-full w-100 mx-auto mb-10">
           <Content announcement={announcement} />
+          <div className="w-[90%] mx-auto flex flex-col items-center px-6 lg:px-0">
+            {noForm ? (
+              <div
+                className="bg-red-50 border text-center border-red-200 text-sm text-red-600 rounded-md p-4 mb-4"
+                role="alert"
+              >
+                No Service Form Attached to this Service.
+              </div>
+            ) : null}
+            {isNotVerified ? (
+              <div
+                className="bg-red-50 border px-5 text-center border-red-200 text-sm text-red-600 rounded-md py-4 mt-2 mb-4"
+                role="alert"
+              >
+                <span className="font-bold ">
+                  Warning: Your account is not eligible to request a Services,
+                  please complete your account information.
+                </span>
+              </div>
+            ) : null}
+          </div>
           <div className="flex mx-auto sm:flex-row md:flex-row w-full items-center gap-4 justify-center">
             <button
               disabled={noForm === true || isNotVerified}
@@ -498,27 +519,6 @@ const Form = ({ announcement }) => {
         </div>
       </div>
 
-      <div className="w-[90%] mx-auto flex flex-col items-center px-6 lg:px-0">
-        {noForm ? (
-          <div
-            className="bg-red-50 border text-center border-red-200 text-sm text-red-600 rounded-md p-4 mb-4"
-            role="alert"
-          >
-            No Service Form Attached to this Service.
-          </div>
-        ) : null}
-        {isNotVerified ? (
-          <div
-            className="bg-red-50 border px-5 text-center border-red-200 text-sm text-red-600 rounded-md py-4 mt-2 mb-4"
-            role="alert"
-          >
-            <span className="font-bold ">
-              Warning: Your account is not eligible to request a Services,
-              please complete your account information.
-            </span>
-          </div>
-        ) : null}
-      </div>
       <div
         id="hs-full-screen-modal"
         className="hs-overlay hidden w-full h-full fixed top-0 left-0 z-[60] overflow-x-hidden overflow-y-auto flex items-center justify-center"
