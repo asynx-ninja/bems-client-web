@@ -8,7 +8,7 @@ import {
 import DropboxPrimary from "../settings/verification/DropboxPrimary";
 import DropboxSecondary from "../settings/verification/DropboxSecondary";
 
-const Verification = ({ formData, setFormData, empty, handleAddPrimaryID, handleAddSecondaryID, fileInputPrimaryIDRef, fileInputSecondaryIDRef, handleFileChange, WebcamCapture, handleNextPage = { handleNextPage } }) => {
+const Verification = ({ formData, setFormData, empty, emptyFields, handleAddPrimaryID, handleAddSecondaryID, fileInputPrimaryIDRef, fileInputSecondaryIDRef, handleFileChange, WebcamCapture, handleNextPage = { handleNextPage } }) => {
     const userDeets = formData !== undefined ? formData : ""
     const [editButton, setEditButton] = useState(false)
     const [upload, setUpload] = useState({
@@ -47,7 +47,7 @@ const Verification = ({ formData, setFormData, empty, handleAddPrimaryID, handle
                 </div>
             )}
             <h1 className="py-3 mb-3 font-bold">Step 3: Verification</h1>
-            <div className="relative lg:w-full grid grid-cols-1 gap-5 m-auto justify-center items-center mb-5">
+            <div className="relative lg:w-full grid grid-cols-1 gap-5 m-auto justify-center items-center mb-5 h-[250px] overflow-y-auto">
                 <div className="relative lg:w-full grid gap-10 grid-cols-1 m-auto justify-end items-end">
 
                     <div className={"flex flex-col gap-5"}>
@@ -260,7 +260,7 @@ const Verification = ({ formData, setFormData, empty, handleAddPrimaryID, handle
                 <button
                     onClick={handleNextPage}
                     name='Address'
-                    className="w-full mt-5 text-center text-black hover:text-white border-[1px] bg-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-green-700 dark:hover:bg-green-800 dark:focus:ring-gray-700 dark:border-gray-700"
+                    className="w-full mt-5 text-center text-black hover:text-white border-[1px] bg-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 "
                 >
                     Back
                 </button>
@@ -268,7 +268,7 @@ const Verification = ({ formData, setFormData, empty, handleAddPrimaryID, handle
                     type="submit"
                     onClick={handleNextPage}
                     name='Credentials'
-                    className="w-full mt-5 text-center text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-green-700 dark:hover:bg-green-800 dark:focus:ring-gray-700 dark:border-gray-700"
+                    className="w-full mt-5 text-center text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2"
                 >
                     Next
                 </button>

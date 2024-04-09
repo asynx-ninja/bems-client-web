@@ -58,7 +58,7 @@ const BrgyOfficials = () => {
     };
 
     return (
-        <div className='w-full flex flex-col'>
+        <div className={officials.length !== 0 ? 'w-full flex flex-col' : "hidden"}>
             <div className={currentPage === 1 ? "hidden" : 'w-full mx-auto mt-[100px] mb-[20px]'}>
                 <div
                     className={`rounded-xl w-[300px] mx-auto bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}] relative z-[50] flex transition-all border-b-[0px] border-b-gray-400 hover:border-b-[5px] hover:scale-105`}

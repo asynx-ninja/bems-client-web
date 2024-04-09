@@ -28,8 +28,8 @@ const Form = ({ announcement }) => {
   const [error, setError] = useState(null);
   const [submitClicked, setSubmitClicked] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState(null);
-  const [noForm, setNoForm] = useState(false)
-  const [isNotVerified, setIsNotVerified] = useState(false)
+  const [noForm, setNoForm] = useState(false);
+  const [isNotVerified, setIsNotVerified] = useState(false);
   const [info, setInfo] = useState({});
 
   useEffect(() => {
@@ -43,9 +43,9 @@ const Form = ({ announcement }) => {
         );
 
         if (event_response.data.length === 0) {
-          setNoForm(true)
+          setNoForm(true);
         } else {
-          setNoForm(false)
+          setNoForm(false);
         }
 
         const event_form = event_response.data[0];
@@ -59,7 +59,9 @@ const Form = ({ announcement }) => {
         const getUser = await axios.get(`${API_LINK}/users/specific/${id}`);
 
         setUserData(getUser.data[0]);
-        setIsNotVerified(getUser.data[0].isApproved !== "Verified" ? true : false)
+        setIsNotVerified(
+          getUser.data[0].isApproved !== "Verified" ? true : false
+        );
 
         event_form.form[0].user_id.value = getUser.data[0].user_id;
 
@@ -164,8 +166,8 @@ const Form = ({ announcement }) => {
       value: Object.entries(objectConstraint).find(([k]) => key === k)
         ? objectConstraint[key]
         : key === "user_id"
-          ? newData[key].value
-          : "",
+        ? newData[key].value
+        : "",
     };
 
     return newData;
@@ -306,7 +308,8 @@ const Form = ({ announcement }) => {
                 "files",
                 renameFile(
                   childItem.value,
-                  `${detail.form[0].lastName.value
+                  `${
+                    detail.form[0].lastName.value
                   } - ${childItem.display.toUpperCase()}`
                 )
               )
@@ -348,7 +351,6 @@ const Form = ({ announcement }) => {
         );
 
         if (folderResponse.status === 200) {
-
           setSubmitClicked(true);
 
           const response = await axios.post(
@@ -362,21 +364,21 @@ const Form = ({ announcement }) => {
           );
 
           if (response.status === 200) {
-
             const notify = {
               category: "Many",
               compose: {
                 subject: `APPLICATION - ${announcement.title}`,
-                message: `A user has submitted an event application form for the event of ${announcement.title
-                  }.\n\n
+                message: `A user has submitted an event application form for the event of ${
+                  announcement.title
+                }.\n\n
               
               Application Details:\n
               - Name: ${`${userData.lastName}, ${userData.firstName}`}\n
               - Event Applied: ${announcement.title}\n
               - Application ID: ${response.data.application_id}\n
               - Date Created: ${moment(response.data.createdAt).format(
-                    "MMM. DD, YYYY h:mm a"
-                  )}\n\n
+                "MMM. DD, YYYY h:mm a"
+              )}\n\n
               Please update this application as you\'ve seen this notification!\n\n
               Thank you!!`,
                 go_to: "Application",
@@ -401,9 +403,13 @@ const Form = ({ announcement }) => {
               setTimeout(() => {
                 setSubmitClicked(false);
                 setUpdatingStatus("success");
-                HSOverlay.close(document.getElementById("hs-full-screen-modal"));
+                HSOverlay.close(
+                  document.getElementById("hs-full-screen-modal")
+                );
                 HSOverlay.open(
-                  document.getElementById("hs-toggle-between-modals-second-modal")
+                  document.getElementById(
+                    "hs-toggle-between-modals-second-modal"
+                  )
                 );
                 setTimeout(() => {
                   window.location.reload();
@@ -428,15 +434,15 @@ const Form = ({ announcement }) => {
       setSubmitClicked(false);
       setUpdatingStatus("error");
       // setError(error.message);
-      console.log(err)
+      console.log(err);
     }
   };
 
   const handleOnClose = () => {
     setEmpty(false);
-    setEmptyFields([])
+    setEmptyFields([]);
     document.getElementById("defaultDeets").checked = false;
-  }
+  };
 
   // console.log("user default data: ", userData)
   // console.log("new form detail: ", detail);
@@ -454,49 +460,65 @@ const Form = ({ announcement }) => {
           <Breadcrumbs title={announcement && announcement.title} />
         </div>
 
-        <div>
+        <div className="bg-white rounded-lg shadow-xl  lg:w-full w-100 mx-auto mb-10">
           <Content announcement={announcement} />
+          <div className="w-[90%] mx-auto flex flex-col items-center px-6 lg:px-0">
+            {noForm ? (
+              <div
+                className="bg-red-50 border text-center border-red-200 text-sm text-red-600 rounded-md p-4 mb-4"
+                role="alert"
+              >
+                No Service Form Attached to this Service.
+              </div>
+            ) : null}
+            {isNotVerified ? (
+              <div
+                className="bg-red-50 border px-5 text-center border-red-200 text-sm text-red-600 rounded-md py-4 mt-2 mb-4"
+                role="alert"
+              >
+                <span className="font-bold ">
+                  Warning: Your account is not eligible to request a Services,
+                  please complete your account information.
+                </span>
+              </div>
+            ) : null}
+          </div>
+          <div className="flex mx-auto sm:flex-row md:flex-row w-full items-center gap-4 justify-center">
+            <button
+              disabled={noForm === true || isNotVerified}
+              data-hs-overlay="#hs-full-screen-modal"
+              className={
+                noForm === true || isNotVerified
+                  ? "flex items-center justify-center text-center bg-gray-400 sm:w-full md:w-[150px] sm:my-[5px] md:m-5 h-[50px] text-sm text-white font-medium rounded-lg"
+                  : `flex items-center justify-center text-center bg-custom-green-button sm:w-full md:w-[150px] sm:my-[5px] md:m-5 h-[50px] text-sm text-white font-medium rounded-lg hover:bg-gradient-to-r from-[${
+                      info &&
+                      info.theme &&
+                      info.theme.gradient &&
+                      info.theme.gradient.start !== undefined
+                        ? info.theme.gradient.start
+                        : ""
+                    }] to-[${
+                      info &&
+                      info.theme &&
+                      info.theme.gradient &&
+                      info.theme.gradient.end !== undefined
+                        ? info.theme.gradient.end
+                        : ""
+                    }] transition duration-500 ease-in-out hover:text-custom-gold`
+              }
+            >
+              Submit an Application
+            </button>
+            <Link
+              to={`/events-list/?id=${id}&brgy=${brgy}`}
+              className="flex items-center justify-center bg-custom-red sm:w-full md:w-[150px] h-[50px] sm:my-[20px] text-sm md:m-5 text-white font-medium rounded-lg hover:bg-gradient-to-r from-[#B90000] to-[#FF2828] transition duration-500 ease-in-out hover:text-custom-gold"
+            >
+              Back
+            </Link>
+          </div>
         </div>
       </div>
 
-      <div className="w-[90%] mx-auto flex flex-col items-center px-6 lg:px-0">
-        {
-          noForm ?
-            <div
-              className="bg-red-50 border text-center border-red-200 text-sm text-red-600 rounded-md p-4 mb-4"
-              role="alert"
-            >
-              No Service Form Attached to this Service.
-            </div>
-            : null
-        }
-        {
-          isNotVerified ?
-            <div
-              className="bg-red-50 border px-5 text-center border-red-200 text-sm text-red-600 rounded-md py-4 mt-2 mb-4"
-              role="alert"
-            >
-              <span className="font-bold ">Warning: Your account is not eligible to request a Services, please complete your account information.</span>
-            </div>
-            : null
-        }
-        <div className="flex mx-auto sm:flex-row md:flex-row w-full items-center gap-4 justify-center">
-          <button
-            disabled={noForm === true || isNotVerified}
-            data-hs-overlay="#hs-full-screen-modal"
-            className={noForm === true || isNotVerified ? "flex items-center justify-center text-center bg-gray-400 sm:w-full md:w-[150px] sm:my-[5px] md:m-5 h-[50px] text-sm text-white font-medium rounded-lg"
-              : `flex items-center justify-center text-center bg-custom-green-button sm:w-full md:w-[150px] sm:my-[5px] md:m-5 h-[50px] text-sm text-white font-medium rounded-lg hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}] transition duration-500 ease-in-out hover:text-custom-gold`}
-          >
-            Submit an Application
-          </button>
-          <Link
-            to={`/events-list/?id=${id}&brgy=${brgy}`}
-            className="flex items-center justify-center bg-custom-red sm:w-full md:w-[150px] h-[50px] sm:my-[20px] text-sm md:m-5 text-white font-medium rounded-lg hover:bg-gradient-to-r from-[#B90000] to-[#FF2828] transition duration-500 ease-in-out hover:text-custom-gold"
-          >
-            Back
-          </Link>
-        </div>
-      </div>
       <div
         id="hs-full-screen-modal"
         className="hs-overlay hidden w-full h-full fixed top-0 left-0 z-[60] overflow-x-hidden overflow-y-auto flex items-center justify-center"
@@ -608,7 +630,6 @@ const Form = ({ announcement }) => {
                   handleOtherDetail={handleOtherDetail}
                   emptyFields={emptyFields}
                 />
-
               </form>
             </div>
             <div className="flex justify-end items-center gap-x-2 py-3 px-4 border-t">

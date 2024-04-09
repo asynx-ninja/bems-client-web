@@ -37,7 +37,7 @@ const Footer = () => {
             <div className="w-full md:w-1/3">
               <h4 className="uppercase font-bold mt-5 sm:text-[14px] md:text-[18px]">About us</h4>
               <p className="sm:text-[12px] md:text-[16px]">
-                {aboutus.details}
+                {aboutus && aboutus.details !== undefined ? aboutus.details : ""}
               </p>
             </div>
             <div className="w-full md:w-1/3 mt-5">

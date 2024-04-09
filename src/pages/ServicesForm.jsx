@@ -32,8 +32,8 @@ const ServicesForm = ({ props }) => {
   const [error, setError] = useState(null);
   const [submitClicked, setSubmitClicked] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState(null);
-  const [noForm, setNoForm] = useState(false)
-  const [isNotVerified, setIsNotVerified] = useState(false)
+  const [noForm, setNoForm] = useState(false);
+  const [isNotVerified, setIsNotVerified] = useState(false);
 
   useEffect(() => {
     const fetchForms = async () => {
@@ -61,28 +61,33 @@ const ServicesForm = ({ props }) => {
             const getUser = await axios.get(`${API_LINK}/users/specific/${id}`);
 
             setUserData(getUser.data[0]);
-            setIsNotVerified(getUser.data[0].isApproved !== "Verified" ? true : false)
+            setIsNotVerified(
+              getUser.data[0].isApproved !== "Verified" ? true : false
+            );
 
             filter.form[0].user_id.value = getUser.data[0].user_id;
 
-            setNoForm(false)
+            setNoForm(false);
             setService(rest);
             setDetail(filter);
           } else {
-            setNoForm(true)
-            setService(service_response.data[0])
+            setNoForm(true);
+            setService(service_response.data[0]);
           }
         } else {
           try {
-            setNoForm(true)
-            setService(response.data.result.find(item => item.service_id === service_id))
+            setNoForm(true);
+            setService(
+              response.data.result.find(
+                (item) => item.service_id === service_id
+              )
+            );
           } catch (err) {
-            console.log(err)
+            console.log(err);
           }
         }
-
       } catch (error) {
-        setNoForm(true)
+        setNoForm(true);
       }
 
       // imageRef.current.src = defaultPFP;
@@ -178,8 +183,8 @@ const ServicesForm = ({ props }) => {
       value: Object.entries(objectConstraint).find(([k]) => key === k)
         ? objectConstraint[key]
         : key === "user_id"
-          ? newData[key].value
-          : "",
+        ? newData[key].value
+        : "",
     };
 
     return newData;
@@ -321,7 +326,8 @@ const ServicesForm = ({ props }) => {
                 "files",
                 renameFile(
                   childItem.value,
-                  `${detail.form[0].lastName.value
+                  `${
+                    detail.form[0].lastName.value
                   } - ${childItem.display.toUpperCase()}`
                 )
               )
@@ -371,45 +377,50 @@ const ServicesForm = ({ props }) => {
         );
 
         if (folderResponse.status === 200) {
-
           setSubmitClicked(true);
 
-          const response = await axios.post(`${API_LINK}/requests/?request_folder_id=${folderResponse.data[0].request}`, formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          });
+          const response = await axios.post(
+            `${API_LINK}/requests/?request_folder_id=${folderResponse.data[0].request}`,
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
 
           if (response.status === 200) {
-
             const notify = {
               category: "Many",
               compose: {
                 subject: `REQUEST - ${service.name}`,
-                message: `A user has submitted an service request form for the service of ${service.name
-                  }.\n
+                message: `A user has submitted an service request form for the service of ${
+                  service.name
+                }.\n
               \n
               Request Details:\n
               - Name: ${`${userData.lastName}, ${userData.firstName}`}\n
               - Service Applied: ${service.name}\n
               - Request ID: ${response.data.req_id}\n
               - Date Created: ${moment(response.data.createdAt).format(
-                    "MMM. DD, YYYY h:mm a"
-                  )}\n
+                "MMM. DD, YYYY h:mm a"
+              )}\n
               \n
               Please update this service request!\n
               \n
               Thank you!!`,
                 go_to: "Requests",
               },
-              target: { user_id: userData.user_id, area: userData.address.brgy },
+              target: {
+                user_id: userData.user_id,
+                area: userData.address.brgy,
+              },
               type: getType(service.brgy),
               banner: service.collections.banner,
               logo: service.collections.logo,
             };
 
             try {
-
               const result = await axios.post(
                 `${API_LINK}/notification/`,
                 notify,
@@ -424,9 +435,13 @@ const ServicesForm = ({ props }) => {
                 setTimeout(() => {
                   setSubmitClicked(false);
                   setUpdatingStatus("success");
-                  HSOverlay.close(document.getElementById("hs-full-screen-modal"));
+                  HSOverlay.close(
+                    document.getElementById("hs-full-screen-modal")
+                  );
                   HSOverlay.open(
-                    document.getElementById("hs-toggle-between-modals-second-modal")
+                    document.getElementById(
+                      "hs-toggle-between-modals-second-modal"
+                    )
                   );
                   setTimeout(() => {
                     window.location.reload();
@@ -434,13 +449,11 @@ const ServicesForm = ({ props }) => {
                 }, 1000);
               }
             } catch (err) {
-              console.log(err)
+              console.log(err);
             }
-
           } else {
             console.log(err.message);
           }
-
         }
 
         // generatePDF();
@@ -455,7 +468,7 @@ const ServicesForm = ({ props }) => {
     } catch (err) {
       setSubmitClicked(false);
       setUpdatingStatus("error");
-      console.log(err)
+      console.log(err);
     }
   };
 
@@ -487,49 +500,53 @@ const ServicesForm = ({ props }) => {
           alt=""
         />
 
-        <div>
+        <div className="bg-white rounded-lg shadow-xl  lg:w-full w-100 mx-auto mb-10">
           <Content service={service} />
+
+          <div className="w-[90%] mx-auto flex flex-col items-center px-6 lg:px-0">
+            {noForm ? (
+              <div
+                className="bg-red-50 border text-center border-red-200 text-sm text-red-600 rounded-md p-4 mb-4"
+                role="alert"
+              >
+                No Service Form Attached to this Service.
+              </div>
+            ) : null}
+            {isNotVerified ? (
+              <div
+                className="bg-red-50 border px-5 text-center border-red-200 text-sm text-red-600 rounded-md py-4 mt-2 mb-4"
+                role="alert"
+              >
+                <span className="font-bold ">
+                  Warning: Your account is not eligible to request a Services,
+                  please complete you account information.
+                </span>
+              </div>
+            ) : null}
+          </div>
+          
+          <div className="flex mx-auto sm:flex-row md:flex-row lg:w-full items-center gap-4 px-4 md:px-0 justify-center">
+            <button
+              disabled={noForm === true || isNotVerified}
+              data-hs-overlay="#hs-full-screen-modal"
+              className={
+                noForm === true || isNotVerified
+                  ? "flex items-center justify-center text-center bg-gray-400 sm:w-full md:w-[150px] sm:my-[5px] md:my-5 h-[50px] text-sm text-white font-medium rounded-lg"
+                  : "flex items-center justify-center text-center bg-green-700 sm:w-full md:w-[150px] sm:my-[5px] md:my-5 h-[50px] text-sm text-white font-medium rounded-lg hover:bg-gradient-to-r from-[#295141] to-[#408D51] transition duration-500 ease-in-out hover:text-custom-gold"
+              }
+            >
+              Submit a request
+            </button>
+            <Link
+              to={`/services/?id=${id}&brgy=${brgy}`}
+              className="flex items-center justify-center border border-red-600 sm:w-full md:w-[150px] h-[50px] sm:my-[20px] text-sm md:my-5 text-red-500 font-medium rounded-lg hover:bg-gradient-to-r from-[#B90000] to-[#FF2828] transition duration-500 ease-in-out hover:text-custom-gold"
+            >
+              Back
+            </Link>
+          </div>
         </div>
       </div>
 
-      <div className="w-[90%] mx-auto flex flex-col items-center px-6 lg:px-0">
-        {
-          noForm ?
-            <div
-              className="bg-red-50 border text-center border-red-200 text-sm text-red-600 rounded-md p-4 mb-4"
-              role="alert"
-            >
-              No Service Form Attached to this Service.
-            </div>
-            : null
-        }
-        {
-          isNotVerified ?
-            <div
-              className="bg-red-50 border px-5 text-center border-red-200 text-sm text-red-600 rounded-md py-4 mt-2 mb-4"
-              role="alert"
-            >
-              <span className="font-bold ">Warning: Your account is not eligible to request a Services, please complete you account information.</span>
-            </div>
-            : null
-        }
-        <div className="flex mx-auto sm:flex-row md:flex-row w-full items-center gap-4 justify-center">
-          <button
-            disabled={noForm === true || isNotVerified}
-            data-hs-overlay="#hs-full-screen-modal"
-            className={noForm === true || isNotVerified ? "flex items-center justify-center text-center bg-gray-400 sm:w-full md:w-[150px] sm:my-[5px] md:m-5 h-[50px] text-sm text-white font-medium rounded-lg"
-              : "flex items-center justify-center text-center bg-green-700 sm:w-full md:w-[150px] sm:my-[5px] md:m-5 h-[50px] text-sm text-white font-medium rounded-lg hover:bg-gradient-to-r from-[#295141] to-[#408D51] transition duration-500 ease-in-out hover:text-custom-gold"}
-          >
-            Submit a request
-          </button>
-          <Link
-            to={`/services/?id=${id}&brgy=${brgy}`}
-            className="flex items-center justify-center bg-custom-red sm:w-full md:w-[150px] h-[50px] sm:my-[20px] text-sm md:m-5 text-white font-medium rounded-lg hover:bg-gradient-to-r from-[#B90000] to-[#FF2828] transition duration-500 ease-in-out hover:text-custom-gold"
-          >
-            Back
-          </Link>
-        </div>
-      </div>
       <div
         id="hs-full-screen-modal"
         className="hs-overlay hidden w-full h-full fixed top-0 left-0 z-[60] overflow-x-hidden overflow-y-auto flex items-center justify-center"
@@ -641,7 +658,6 @@ const ServicesForm = ({ props }) => {
                   handleOtherDetail={handleOtherDetail}
                   emptyFields={emptyFields}
                 />
-
               </form>
             </div>
             <div className="flex justify-end items-center gap-x-2 py-3 px-4 border-t">

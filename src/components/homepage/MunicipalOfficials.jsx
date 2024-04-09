@@ -31,7 +31,6 @@ const MunicipalOfficials = () => {
                 setInfo(response.data[0]);
 
                 const m_official = await axios.get(`${API_LINK}/mofficials/?brgy=${brgy}&page=${currentPage}&archived=${false}&position=${"ALL"}`);
-
                 const city_mayor = await axios.get(`${API_LINK}/mofficials/mayor/?brgy=${brgy}&archived=${false}`);
 
                 var mayor = document.getElementById("mayor");
@@ -59,7 +58,7 @@ const MunicipalOfficials = () => {
     // console.log(officials)
 
     return (
-        <div className='md:w-[80%] mx-auto flex flex-col'>
+        <div className={officials.length !== 0 ? 'md:w-[80%] mx-auto flex flex-col' : 'hidden'}>
             <section className="">
                 <div className="container mx-auto text-center">
                     <h1 className="sm:text-[24px] md:text-4xl font-bold mb-4">
@@ -85,10 +84,10 @@ const MunicipalOfficials = () => {
                         </div>
                         <div className='flex flex-col mt-[80px] justify-center items-center'>
                             <h1 className='text-center text-white font-bold uppercase'>
-                                {cityMayor.lastName}, {cityMayor.firstName} {cityMayor.suffix}
+                                {cityMayor && cityMayor.lastName !== undefined ? cityMayor.lastName : ""}, {cityMayor && cityMayor.firstName !== undefined ? cityMayor.firstName : ""} {cityMayor && cityMayor.suffix !== undefined ? cityMayor.suffix : ""}
                             </h1>
                             <p className='text-center text-[14px] text-white uppercase'>
-                                {cityMayor.position}
+                                {cityMayor && cityMayor.position !== undefined ? cityMayor.position : ""}
                             </p>
                         </div>
                     </div>

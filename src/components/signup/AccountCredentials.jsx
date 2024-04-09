@@ -121,7 +121,7 @@ const AccountCredentials = ({ formData, empty, emptyFields, restrict, handleChan
             </div>
             {/* //password error messages */}
             {formData.password && (
-                <div className="flex w-full h-1.5 bg-gray-200 rounded-full overflow-hidden dark:bg-gray-700">
+                <div className="flex w-full h-1.5 bg-gray-200 rounded-full overflow-hidden ">
                     <div
                         className={`flex flex-col justify-center overflow-hidden ${passwordStrength < 25
                             ? "bg-red-500"
@@ -187,12 +187,12 @@ const AccountCredentials = ({ formData, empty, emptyFields, restrict, handleChan
                             name="terms"
                             checked={termsAccepted}
                             onChange={() => setTermsAccepted(!termsAccepted)}
-                            className="shrink-0 mt-0.5 border-gray-200 rounded text-green-500 focus:ring-green-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
+                            className="shrink-0 mt-0.5 border-gray-200 rounded text-green-500 focus:ring-green-500 "
                             id="hs-checkbox-group-1"
                         />
                         <label
                             htmlFor="hs-checkbox-group-1"
-                            className="text-sm text-black ml-3 dark:text-gray-400"
+                            className="text-sm text-black ml-3 "
                         >
                             I have read and understood the{" "}
                             <span className="font-bold">Terms of Use.</span>
@@ -208,12 +208,12 @@ const AccountCredentials = ({ formData, empty, emptyFields, restrict, handleChan
                             name="policy"
                             checked={policyAccepted}
                             onChange={() => setPolicyAccepted(!policyAccepted)}
-                            className="shrink-0 mt-0.5 border-gray-200 rounded text-green-500 focus:ring-green-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
+                            className="shrink-0 mt-0.5 border-gray-200 rounded text-green-500 focus:ring-green-500 "
                             id="hs-checkbox-group-1"
                         />
                         <label
                             htmlFor="hs-checkbox-group-1"
-                            className="text-sm text-black ml-3 dark:text-gray-400"
+                            className="text-sm text-black ml-3 "
                         >
                             I have read and understood the{" "}
                             <span className="font-bold">Data Privacy Policy.</span>
@@ -231,7 +231,7 @@ const AccountCredentials = ({ formData, empty, emptyFields, restrict, handleChan
                 <button
                     onClick={handleNextPage}
                     name='Verification'
-                    className="w-full mt-5 text-center text-black hover:text-white border-[1px] bg-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-green-700 dark:hover:bg-green-800 dark:focus:ring-gray-700 dark:border-gray-700"
+                    className="w-full mt-5 text-center text-black hover:text-white border-[1px] bg-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 "
                 >
                     Back
                 </button>
@@ -239,7 +239,7 @@ const AccountCredentials = ({ formData, empty, emptyFields, restrict, handleChan
                     onClick={handleSubmit}
                     type="submit"
                     name='Credentials'
-                    className="w-full mt-5 text-center text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-green-700 dark:hover:bg-green-800 dark:focus:ring-gray-700 dark:border-gray-700"
+                    className="w-full mt-5 text-center text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 "
                 >
                     Submit
                 </button>

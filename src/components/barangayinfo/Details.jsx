@@ -71,7 +71,7 @@ const Details = () => {
             <textarea
               disabled
               value={info.story}
-              className="w-[90%] text-black border-0 bg-transparent resize-none">
+              className="w-full h-[300px] text-black border-0 bg-transparent resize-none">
               {info.story}
             </textarea>
           </div>
