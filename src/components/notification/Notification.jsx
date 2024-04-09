@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import API_LINK from '../../config/API';
 import axios from 'axios';
 import moment from 'moment';
+import defaultImg from "../../assets/header/side-bg.png"
 
 const Notification = ({ notification, setViewNotif, fetch }) => {
     // console.log(notification)
@@ -86,10 +87,14 @@ const Notification = ({ notification, setViewNotif, fetch }) => {
             return 'border-l-[1px] border-l-custom-green-header'
         } else if (item === "Services") {
             return 'border-l-[1px] border-l-red-400'
-        }  else if (item === "Inquiries") {
+        } else if (item === "Inquiries") {
             return 'border-l-[1px] border-l-purple-400'
         }
     }
+
+    const handleImageError = (event) => {
+        event.target.src = defaultImg;
+    };
 
     return (
         <div className=" overflow-y-scroll h-[425px]">
@@ -119,8 +124,12 @@ const Notification = ({ notification, setViewNotif, fetch }) => {
                                     <p className='text-[12px] text-left text-gray-400'>{DateFormat(item.createdAt)}</p>
                                 </div>
                             </div>
-                            <div className='w-[25%] sm:hidden md:block'>
-                                <img src={item.logo.link} alt="" />
+                            <div className='w-[25%] sm:hidden md:flex object-cover justify-end'>
+                                <img className='w-[80px] h-[80px] object-cover'
+                                    id='notifImage'
+                                    src={item.logo.link}
+                                    onError={handleImageError}
+                                    alt="" />
                             </div>
                         </div>
                     </button>

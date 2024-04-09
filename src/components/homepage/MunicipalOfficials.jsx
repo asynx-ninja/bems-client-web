@@ -32,17 +32,17 @@ const MunicipalOfficials = () => {
 
                 const m_official = await axios.get(`${API_LINK}/mofficials/?brgy=${brgy}&page=${currentPage}&archived=${false}&position=${"ALL"}`);
 
-                const city_mayor = m_official.data.result.filter((item) => item.position === "City Mayor")
+                const city_mayor = await axios.get(`${API_LINK}/mofficials/mayor/?brgy=${brgy}&archived=${false}`);
 
                 var mayor = document.getElementById("mayor");
                 mayor.src =
-                    city_mayor[0] && city_mayor[0].picture && city_mayor[0].picture.link !== ""
-                        ? city_mayor[0].picture.link
+                    city_mayor.data.result[0] && city_mayor.data.result[0].picture && city_mayor.data.result[0].picture.link !== ""
+                        ? city_mayor.data.result[0].picture.link
                         : defaultPFP;
 
                 const filtered = m_official.data.result.filter((item) => item.position !== "City Mayor")
 
-                setCityMayor(city_mayor[0])
+                setCityMayor(city_mayor.data.result[0])
                 setOfficials(filtered.sort(getPositionByOrder))
                 setPageCount(m_official.data.pageCount);
             } catch (error) {
@@ -56,7 +56,7 @@ const MunicipalOfficials = () => {
         setCurrentPage(selected);
     };
 
-    // console.log(cityMayor)
+    // console.log(officials)
 
     return (
         <div className='md:w-[80%] mx-auto flex flex-col'>
@@ -70,7 +70,7 @@ const MunicipalOfficials = () => {
                     </p> */}
                 </div>
             </section>
-            <div className='w-full mx-auto mt-[150px] mb-[20px]'>
+            <div className={currentPage === 1 ? "hidden" : 'w-full mx-auto mt-[100px] mb-[20px]'}>
                 <div
                     className={`rounded-xl w-[300px] mx-auto bg-gradient-to-r from-custom-green-header to-custom-green-button relative z-[50] flex transition-all border-b-[0px] border-b-gray-400 hover:border-b-[5px] hover:scale-105`}
                 >

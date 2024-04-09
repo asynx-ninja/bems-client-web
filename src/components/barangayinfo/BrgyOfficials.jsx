@@ -33,17 +33,17 @@ const BrgyOfficials = () => {
 
                 const brgy_official = await axios.get(`${API_LINK}/brgyofficial/?brgy=${brgy}&page=${currentPage}&archived=${false}&position=${"ALL"}`);
 
-                const brgy_chairman = brgy_official.data.result.filter((item) => item.position === "Barangay Chairman")
+                const brgy_chairman = await axios.get(`${API_LINK}/brgyofficial/chairman?brgy=${brgy}&archived=${false}`);
 
                 var chairman = document.getElementById("chairman");
                 chairman.src =
-                    brgy_chairman[0] && brgy_chairman[0].picture && brgy_chairman[0].picture.link !== ""
-                        ? brgy_chairman[0].picture.link
+                    brgy_chairman.data.result[0] && brgy_chairman.data.result[0].picture && brgy_chairman.data.result[0].picture.link !== ""
+                        ? brgy_chairman.data.result[0].picture.link
                         : defaultPFP;
 
                 const filtered = brgy_official.data.result.filter((item) => item.position !== "Barangay Chairman")
 
-                setBrgyChairman(brgy_chairman[0])
+                setBrgyChairman(brgy_chairman.data.result[0])
                 setOfficials(filtered.sort(getPositionByOrder))
                 setPageCount(brgy_official.data.pageCount);
             } catch (error) {
@@ -57,11 +57,9 @@ const BrgyOfficials = () => {
         setCurrentPage(selected);
     };
 
-    // console.log(brgyChairman)
-
     return (
         <div className='w-full flex flex-col'>
-            <div className='w-full mx-auto mt-[100px] mb-[20px]'>
+            <div className={currentPage === 1 ? "hidden" : 'w-full mx-auto mt-[100px] mb-[20px]'}>
                 <div
                     className={`rounded-xl w-[300px] mx-auto bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}] relative z-[50] flex transition-all border-b-[0px] border-b-gray-400 hover:border-b-[5px] hover:scale-105`}
                 >
@@ -70,7 +68,7 @@ const BrgyOfficials = () => {
                             className={`mx-auto absolute top-[-70px] rounded-full border-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] border-[5px] left-[72px]`}
                         >
                             <img
-                                className='w-[150px] h-[150px] rounded-full'
+                                className='w-[150px] h-[150px] rounded-full object-cover'
                                 id='chairman'
                                 alt="" />
                         </div>
@@ -96,7 +94,7 @@ const BrgyOfficials = () => {
                                     className={`mx-auto absolute top-[-70px] rounded-full border-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] border-[5px] left-[72px]`}
                                 >
                                     <img
-                                        className='w-[150px] h-[150px] rounded-full'
+                                        className='w-[150px] h-[150px] rounded-full object-cover'
                                         src={item.picture.link !== "" ? item.picture.link : defaultPFP}
                                         alt="" />
                                 </div>
@@ -115,7 +113,7 @@ const BrgyOfficials = () => {
                     ))
                 }
             </div>
-            <div className="md:py-4 md:px-4 w-full mt-[30px] bg-custom-green-header flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3">
+            <div className="md:py-4 md:px-4 w-full mt-[30px] bg-custom-green-header flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3 rounded-b-lg">
                 <span className="font-medium text-white sm:text-xs text-sm">
                     Showing {currentPage + 1} out of {pageCount} pages
                 </span>

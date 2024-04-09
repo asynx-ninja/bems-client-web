@@ -220,7 +220,7 @@ const Settings = () => {
 
   }
 
-  console.log(userData)
+  // console.log(userData)
 
   useEffect(() => {
     const fetch = async () => {

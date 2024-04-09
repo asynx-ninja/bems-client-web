@@ -8,6 +8,7 @@ import axios from "axios";
 import API_LINK from "../../config/API"
 import moment from "moment";
 import Webcam from "react-webcam";
+import Preloader from "../../components/loaders/Preloader"
 
 // COMPONENTS
 import SideInfo from "../../components/signup/SideInfo";
@@ -67,6 +68,10 @@ const SignupPage = () => {
     secondary_file: [],
     selfie: null,
   });
+  const [error, setError] = useState(null);
+  const [submitClicked, setSubmitClicked] = useState(false);
+  const [updatingStatus, setUpdatingStatus] = useState(null);
+  const [errMsg, setErrMsg] = useState(false)
   const fileInputPrimaryIDRef = useRef()
   const fileInputSecondaryIDRef = useRef()
 
@@ -343,6 +348,8 @@ const SignupPage = () => {
 
     if (res_folder.status === 200) {
       try {
+        setSubmitClicked(true);
+
         var newFormData = new FormData();
 
         newFormData.append("user", JSON.stringify(obj));
@@ -411,17 +418,22 @@ const SignupPage = () => {
           const email = btoa(obj.email);
           const barangay = btoa(obj.address.brgy);
 
-          setTimeout(function () {
-            navigate(`/loading/?email=${email}&brgy=${barangay}`);
-          }, 3000);
+          setTimeout(() => {
+            setSubmitClicked(false);
+            setUpdatingStatus("success");
+            setTimeout(function () {
+              navigate(`/loading/?email=${email}&brgy=${barangay}`);
+            }, 3000);
+          }, 1000)
         }
-
       } catch (error) {
         console.log(error)
         if (error.response && error.response.data && error.response.data.error) {
           setDuplicateError(error.response.data.error);
           setEmpty(false);
           setShowError(false);
+          setSubmitClicked(false);
+          setUpdatingStatus("error");
         } else {
           setDuplicateError("An unknown error occurred.");
         }
@@ -469,6 +481,10 @@ const SignupPage = () => {
           </span>
         </p>
       </div>
+      {submitClicked && <Preloader updatingStatus="waiting" />}
+      {updatingStatus && (
+        <Preloader updatingStatus={updatingStatus} error={error} />
+      )}
     </div>
   );
 };

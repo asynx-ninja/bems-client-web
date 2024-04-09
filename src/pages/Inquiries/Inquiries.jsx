@@ -30,8 +30,9 @@ const Inquiries = () => {
   const [pageCount, setPageCount] = useState(0);
   const [sortBy, setSortBy] = useState([])
   const [SortByName, setSortByName] = useState("all")
-  const [searchID, setSearchID] = useState("")
+  const [searchInput, setSearchInput] = useState("")
   const [getAll, setGetAll] = useState([])
+  const [searchResult, setSearchResult] = useState(0)
   const [info, setInfo] = useState({});
 
   useEffect(() => {
@@ -51,6 +52,8 @@ const Inquiries = () => {
         const response = await axios.get(
           `${API_LINK}/inquiries/?id=${user_id}&brgy=${brgy}&to=${SortByName}&archived=false&page=${currentPage}`
         );
+
+        console.log(response.data)
 
         if (response.status === 200) {
           setInquiries(response.data.result.sort((date1, date2) => new Date(date2.createdAt) - new Date(date1.createdAt)))
@@ -85,10 +88,15 @@ const Inquiries = () => {
   };
 
   const handleOnSearch = (e) => {
+    const inputValue = e.target.value.toUpperCase();
+    setSearchInput(inputValue)
+
     const getSearch = getAll.filter((item) =>
       item.inq_id.toUpperCase()
-        .includes(e.target.value.toUpperCase()))
-
+        .includes(e.target.value.toUpperCase()) ||
+      item.compose.subject.toUpperCase()
+        .includes(e.target.value.toUpperCase())) 
+    setSearchResult(getSearch.length)
     setInquiries(getSearch)
   }
 
@@ -201,11 +209,14 @@ const Inquiries = () => {
             </div>
 
             {/* SEARCH */}
-            <div className="flex gap-2">
+            <div className="flex items-center gap-2">
+              <p className={searchInput !== "" ? "text-gray-400" : "hidden"}>
+                Searching {searchInput}, return {searchResult} result/s
+              </p>
               <input
-                className="rounded-lg uppercase"
+                className="rounded-lg sm:w-[250px] md:w-[350px] placeholder:text-[14px] placeholder:text-gray-300"
                 type="text"
-                placeholder="Search..."
+                placeholder="Search by ID"
                 onChange={handleOnSearch}
               />
               <button
@@ -258,7 +269,7 @@ const Inquiries = () => {
             </table>
           </div>
 
-          <div className={`md:py-4 md:px-4 bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3`}>
+          <div className={searchInput === "" ? `md:py-4 md:px-4 bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3 w-full` : "hidden"}>
             <span className="font-medium text-white sm:text-xs text-sm">
               Showing {currentPage + 1} out of {pageCount} pages
             </span>

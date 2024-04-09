@@ -108,7 +108,7 @@ const Dashboard = () => {
           <div className='flex flex-col py-5 w-[50%] justify-center'>
             <h1 className='text-white font-bold sm:text-[18px] lg:text-[20px] x:text-[28px] sm:leading-none md:leading-4 lg:leading-5 x:leading-7'>TRACK APPLIED EVENTS HERE</h1>
             <Link
-              to={`/events-application/?id=${id}&brgy=${brgy}`}
+              to={`/events-application/?id=${id}&brgy=${brgy}&user_id=${userData.user_id}`}
               className='sm:w-[90px] lg:w-[120px] mt-[18px] bg-white font-medium sm:text-[10px] lg:text-[14px] py-[8px] rounded-md hover:scale-[105%] transition text-center'
             >
               <h1>

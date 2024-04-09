@@ -25,6 +25,8 @@ const Requests = () => {
   const [pageCount, setPageCount] = useState(0);
   const [sortBy, setSortBy] = useState([])
   const [SortByName, setSortByName] = useState("all")
+  const [searchInput, setSearchInput] = useState("")
+  const [searchResult, setSearchResult] = useState(0)
   const [getAll, setGetAll] = useState([])
   const [info, setInfo] = useState({});
 
@@ -83,12 +85,13 @@ const Requests = () => {
 
   const handleOnSearch = (e) => {
     const inputValue = e.target.value.toUpperCase();
+    setSearchInput(inputValue)
 
     const getSearch = getAll.filter((item) =>
       item.req_id.toUpperCase().includes(inputValue) ||
       item.service_name.toUpperCase().includes(inputValue)
     );
-
+    setSearchResult(getSearch.length)
     setRequest(getSearch);
   };
 
@@ -190,11 +193,14 @@ const Requests = () => {
             </div>
 
             {/* SEARCH */}
-            <div className="flex gap-2">
+            <div className="flex items-center gap-2">
+              <p className={searchInput !== "" ? "text-gray-400" : "hidden"}>
+                Searching {searchInput}, return {searchResult} result/s
+              </p>
               <input
-                className="rounded-lg uppercase"
+                className="rounded-lg sm:w-[250px] md:w-[350px] placeholder:text-[14px] placeholder:text-gray-300"
                 type="text"
-                placeholder="Search..."
+                placeholder="Search by ID | Name"
                 onChange={handleOnSearch}
               />
               <button
@@ -240,8 +246,7 @@ const Requests = () => {
               </tbody>
             </table>
           </div>
-
-          <div className={`md:py-4 md:px-4 bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3`}>
+          <div className={searchInput === "" ? `md:py-4 md:px-4 bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3 w-full` : "hidden"}>
             <span className="font-medium text-white sm:text-xs text-sm">
               Showing {currentPage + 1} out of {pageCount} pages
             </span>

@@ -25,7 +25,7 @@ const TopHeader = ({ fetch, userData }) => {
 
     return () => clearInterval(interval);
   }, [userData]);
-
+ 
   useEffect(() => {
     const popupInterval = setInterval(() => {
       if (!accountVerified) {

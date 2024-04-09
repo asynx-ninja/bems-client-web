@@ -11,22 +11,22 @@ const Content = ({ service }) => {
   // console.log(service)
 
   return (
-    <div className="flex flex-col gap-5 sm:px-2 md:px-5">
+    <div className="flex flex-col gap-5 sm:px-2 md:px-0">
       {/* DESCRIPTION */}
       <div className="bg-white rounded-lg shadow-xl sm:p-5 md:p-6 lg:w-full w-100 mx-auto mb-10">
-        <h1 className="text-custom-green-header font-bold text-2xl lg:text-[36px] w-[90%] mx-auto mb-10 text-center ">
-          {service && service.name}
-        </h1>
-        <div className="grid sm:grid-cols-1 lg:grid-cols-2 justify-between items-start gap-10 ">
+        <div className="flex justify-between items-start gap-10 ">
           <div className="flex flex-col justify-between sm:w-full">
+            <h1 className="text-custom-green-header font-bold text-2xl lg:text-[36px] w-[90%] mb-10 text-left ">
+              {service && service.name}
+            </h1>
             <p className="text-gray-600 leading-relaxed whitespace-pre-wrap text-justify">
               {service && service.details}
             </p>
           </div>
 
-          <div className="flex flex-col">
+          <div className="flex flex-col h-full">
             <img
-              className="w-full lg:w-[400px] mx-auto sm:h-[200px] lg:h-[400px] object-cover rounded-lg"
+              className="w-full mx-auto sm:h-[200px] object-cover rounded-lg"
               src={
                 service &&
                   service.collections &&
@@ -39,7 +39,7 @@ const Content = ({ service }) => {
             />
             {
               files.length !== 0 ?
-                <div className="flex flex-col w-full items-center bg-green-500 shadow-lg py-3 px-3 mt-3 rounded-lg">
+                <div className={files.length >= 1 ? "h-full flex flex-col w-full items-center bg-green-500 shadow-lg py-3 px-3 mt-3 rounded-lg" : "flex flex-col w-full items-center bg-green-500 shadow-lg py-3 px-3 mt-3 rounded-lg"}>
                   {files &&
                     files.map((item, idx) => (
                       <div className="my-auto flex justify-start items-center w-full">

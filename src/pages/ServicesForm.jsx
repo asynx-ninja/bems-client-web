@@ -468,25 +468,24 @@ const ServicesForm = ({ props }) => {
 
   return (
     <div className="w-full flex flex-col lg:px-[70px] pt-[40px] pb-[30px] bg-gray-100">
-      <img
-        className=" rounded-[25px] w-full sm:h-[200px] lg:h-[300px] object-contain"
-        src={
-          service &&
-            service.collections &&
-            service.collections.banner &&
-            service.collections.banner.link !== undefined
-            ? service.collections.banner.link
-            : defaultBanner
-        }
-        alt=""
-      />
-
       {/* CONTENTS */}
-
       <div className="flex flex-col">
-        <div className="flex my-[40px]">
+        <div className="flex my-[1s0px]">
           <Breadcrumbs serviceTitle={service && service.name} />
         </div>
+
+        <img
+          className=" rounded-[25px] w-full sm:h-[200px] lg:h-[300px] mb-[20px] object-cover"
+          src={
+            service &&
+              service.collections &&
+              service.collections.banner &&
+              service.collections.banner.link !== undefined
+              ? service.collections.banner.link
+              : defaultBanner
+          }
+          alt=""
+        />
 
         <div>
           <Content service={service} />

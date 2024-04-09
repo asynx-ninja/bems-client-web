@@ -5,6 +5,7 @@ import axios from "axios";
 import defaultPFP from "../../assets/sample-image/default-pfp.png";
 import API_LINK from "../../config/API";
 import moment from "moment";
+import no_data from "../../assets/image/no-data.png"
 
 import Notification from "../notification/Notification";
 import ViewNotification from "../notification/ViewNotification";
@@ -36,11 +37,6 @@ const Header = () => {
       const res = await axios.get(`${API_LINK}/users/specific/${id}`);
       if (res.status === 200) {
         setUserData(res.data[0]);
-        // var pfpSrc = document.getElementById("headerPFP");
-        // pfpSrc.src =
-        //   res.data[0].profile.link !== ""
-        //     ? res.data[0].profile.link
-        //     : defaultPFP;
 
       } else {
         setError("Invalid username or password");
@@ -51,35 +47,41 @@ const Header = () => {
       );
 
       if (response.status === 200) {
-        const read = response.data.filter((item) =>
+        // Filter notifications created after the client's createdAt
+        const filteredNotifications = response.data.filter(item =>
+          item.createdAt > res.data[0].createdAt
+        );
+
+        // Sort filtered notifications by createdAt in descending order
+        const sortedNotifications = filteredNotifications.sort((a, b) => b.createdAt - a.createdAt);
+
+        const read = sortedNotifications.filter(item =>
           item.read_by.some(item1 => item1.readerId === id)
         );
 
-        const emptyRead = response.data.filter((item) =>
-          item.read_by.length === 0)
+        const emptyRead = sortedNotifications.filter(item =>
+          item.read_by.length === 0
+        );
 
-        if (response.data.length === read.length) {
-          setUnread(response.data.length - (read.length - emptyRead.length))
+        if (sortedNotifications.length === read.length) {
+          setUnread(sortedNotifications.length - (read.length - emptyRead.length));
         } else {
-          setUnread(response.data.length - read.length)
+          setUnread(sortedNotifications.length - read.length);
         }
-        // console.log(response.data)
-        setNotification((response.data.sort((a, b) => b.createdAt - a.createdAt)))
+
+        setNotification(sortedNotifications);
       }
-
-      // console.log(response.data)
-
     } catch (error) {
       console.log(error);
     }
   };
 
-  // console.log(info)
-
-  const dateFormat = (date) => {
-    const birthdate = date === undefined ? "" : date.substr(0, 10);
-    return birthdate;
+  const handleImageError = (event) => {
+    event.target.src = defaultPFP;
   };
+
+  // console.log(notification)
+  // console.log(userData)
 
   return (
     <div>
@@ -147,7 +149,7 @@ const Header = () => {
                 aria-labelledby="hs-dropdown-notification"
               >
                 <div
-                  className="mt-[-50px] bg-white h-[500px] shadow-md rounded-lg p-2 pb-[20px]"
+                  className={notification.length !== 0 ? "mt-[-50px] bg-white h-[500px] shadow-md rounded-lg p-2 pb-[20px]" : "mt-[-50px] bg-white shadow-md rounded-lg p-2 pb-[20px]"}
                 >
                   <div className="py-[10px] px-[5px] border-b-[1px] border-custom-gray flex justify-between">
                     <h1 className="font-medium text-[18px] my-auto">
@@ -157,8 +159,15 @@ const Header = () => {
 
                   {/* NOTIFICATION LIST */}
 
-                  <Notification notification={notification} setViewNotif={setViewNotif} fetch={fetch} />
-
+                  {
+                    notification.length !== 0 ?
+                      < Notification notification={notification} setViewNotif={setViewNotif} fetch={fetch} />
+                      :
+                      <div className="flex flex-col items-center">
+                        <img className="w-[150px] m-auto" src={no_data} alt="" />
+                        No Notification Yet
+                      </div>
+                  }
                 </div>
               </div>
             </div>
@@ -172,8 +181,9 @@ const Header = () => {
                   src={
                     userData && userData.profile && userData.profile.link !== ""
                       ? userData.profile.link
-                      : defaultPFP
+                      : ""
                   }
+                  onError={handleImageError}
                   className="hs-dropdown-toggle rounded-[100%] w-[40px] h-[40px] object-cover cursor-pointer"
                   alt=""
                 />

@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
+// import defaultImg from "../../../../assets/header/side-bg.png"
 import API_LINK from "../../../../config/API";
 // import bgmodal from "../../assets/modals/bg-modal2.png";
 import wait from "../../../../assets/image/wait.png"
@@ -186,8 +187,8 @@ const ViewEventModal = ({ viewEvent }) => {
           },
           target: { user_id: userData.user_id, area: viewEvent.brgy },
           type: getType(viewEvent.brgy),
-          banner: getEvent.result.collections.banner,
-          logo: getEvent.result.collections.logo,
+          banner: getEvent.data.result.collections.banner,
+          logo: getEvent.data.result.collections.logo,
         };
 
         const result = await axios.post(

@@ -29,8 +29,6 @@ const Details = () => {
     fetch();
   }, []);
 
-  console.log(info)
-
   return (
     <>
       <div className="flex justify-center w-full sm:-mt-[50px] md:-mt-[150px] md:mb-[50px]">
@@ -39,9 +37,9 @@ const Details = () => {
             background:
               "linear-gradient(180deg, rgba(192,192,192,1) 0%, rgba(250,250,250,1) 10%)",
           }}
-          className="rounded-[25px] sm:mx-0 md:mx-[20px] mx-auto bg-white mb-4 lg:shadow-2xl shadow-none w-full flex flex-col pb-[50px]"
+          className="rounded-[25px] sm:mx-0 md:mx-[20px] mx-auto bg-white mb-4 lg:shadow-2xl shadow-none w-full flex flex-col"
         >
-          <div className={`relative bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== undefined ? info.theme.gradient.start : ""}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== undefined ? info.theme.gradient.end : ""}] mx-auto justify-center items-center rounded-t-[25px] w-full`}>
+          <div className={`relative bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}] mx-auto justify-center items-center rounded-t-[25px] w-full`}>
             <div className="bg-[url('/header-bg.png')] sm:h-[180px] lg:h-auto rounded-t-[25px]">
               <img
                 src={info.logo.link !== "" ? info.logo.link : null}
@@ -60,7 +58,7 @@ const Details = () => {
           </div>
 
           {/* DESCRIPTION */}
-          <div className="pb-[20px] sm:w-[90%] lg:w-[1000px] mx-auto sm:mt-[50px] md:mt-[30px] grid grid-cols-1 gap-5">
+          <div className="pb-[20px] sm:w-[90%] lg:w-[1000px] mx-auto sm:mt-[50px] md:mt-[30px] grid grid-cols-1 gap-5 px-[20px]">
 
             <div className="w-full">
               <img
@@ -76,11 +74,10 @@ const Details = () => {
               className="w-[90%] text-black border-0 bg-transparent resize-none">
               {info.story}
             </textarea>
-
           </div>
 
           {/* MISSION VISION */}
-          <div className="flex pb-[20px] sm:w-[90%] lg:w-[1000px] border-t-2 pt-[20px] border-b-2 border-gray-400 mx-auto sm:mt-[50px] md:mt-[80px] justify-between sm:flex-col lg:flex-row gap-5">
+          <div className="flex pb-[20px] sm:w-[90%] lg:w-[1000px] border-t-2 pt-[20px] border-b-2 border-gray-400 mx-auto sm:mt-[50px] md:mt-[80px] justify-between sm:flex-col lg:flex-row gap-5 px-[20px]">
             <div className="sm:w-full lg:w-[50%]">
               <h6
                 className={`font-bold bg-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] text-[24px] sm:text-center md:text-left md:pl-[15px] text-white`}
@@ -116,7 +113,6 @@ const Details = () => {
 
             <BrgyOfficials />
           </div>
-
         </div>
       </div>
     </>

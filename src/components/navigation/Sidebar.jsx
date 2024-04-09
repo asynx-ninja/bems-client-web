@@ -59,11 +59,11 @@ const Sidebar = () => {
 
   // console.log("id", id)
   const OnOpen = () => {
-    if (isCollapse) {
-      onCollapse(false);
-    } else {
-      onCollapse(true);
-    }
+      onCollapse(!isCollapse);
+  };
+
+  const handleImageError = (event) => {
+    event.target.src = defaultPFP;
   };
 
   return (
@@ -86,6 +86,9 @@ const Sidebar = () => {
 
             <div>
               <Link
+                data-hs-overlay="#hs-overlay-basic"
+                aria-controls="hs-overlay-basic"
+                aria-label="Toggle navigation"
                 to={`/dashboard/?id=${id}&brgy=${brgy}`}
                 onClick={() => {
                   window.innerWidth >= 320 && window.innerWidth <= 1023
@@ -137,6 +140,9 @@ const Sidebar = () => {
                 aria-labelledby="hs-unstyled-collapse"
               >
                 <Link
+                  data-hs-overlay="#hs-overlay-basic"
+                  aria-controls="hs-overlay-basic"
+                  aria-label="Toggle navigation"
                   to={`/events-list/?id=${id}&brgy=${brgy}`}
                   onClick={() => {
                     window.innerWidth >= 320 && window.innerWidth <= 1023
@@ -159,6 +165,9 @@ const Sidebar = () => {
                   </h1>
                 </Link>
                 <Link
+                  data-hs-overlay="#hs-overlay-basic"
+                  aria-controls="hs-overlay-basic"
+                  aria-label="Toggle navigation"
                   to={`/events-application/?id=${id}&brgy=${brgy}&user_id=${userData.user_id}`}
                   onClick={() => {
                     window.innerWidth >= 320 && window.innerWidth <= 1023
@@ -214,6 +223,9 @@ const Sidebar = () => {
                 aria-labelledby="hs-unstyled-collapse"
               >
                 <Link
+                  data-hs-overlay="#hs-overlay-basic"
+                  aria-controls="hs-overlay-basic"
+                  aria-label="Toggle navigation"
                   to={`/services/?id=${id}&brgy=${brgy}`}
                   onClick={() => {
                     window.innerWidth >= 320 && window.innerWidth <= 1023
@@ -236,6 +248,9 @@ const Sidebar = () => {
                   </h1>
                 </Link>
                 <Link
+                  data-hs-overlay="#hs-overlay-basic"
+                  aria-controls="hs-overlay-basic"
+                  aria-label="Toggle navigation"
                   to={`/requests/?id=${id}&brgy=${brgy}&user_id=${userData.user_id}`}
                   onClick={() => {
                     window.innerWidth >= 320 && window.innerWidth <= 1023
@@ -259,6 +274,9 @@ const Sidebar = () => {
                 </Link>
               </div>
               <Link
+                data-hs-overlay="#hs-overlay-basic"
+                aria-controls="hs-overlay-basic"
+                aria-label="Toggle navigation"
                 to={`/inquiries/?id=${id}&brgy=${brgy}&user_id=${userData.user_id}`}
                 onClick={() => {
                   window.innerWidth >= 320 && window.innerWidth <= 1023
@@ -279,6 +297,9 @@ const Sidebar = () => {
                 </h1>
               </Link>
               <Link
+                data-hs-overlay="#hs-overlay-basic"
+                aria-controls="hs-overlay-basic"
+                aria-label="Toggle navigation"
                 to={`/blotter/?id=${id}&brgy=${brgy}&user_id=${userData.user_id}`}
                 onClick={() => {
                   window.innerWidth >= 320 && window.innerWidth <= 1023
@@ -299,6 +320,9 @@ const Sidebar = () => {
                 </h1>
               </Link>
               <Link
+                data-hs-overlay="#hs-overlay-basic"
+                aria-controls="hs-overlay-basic"
+                aria-label="Toggle navigation"
                 to={`/barangay-info/?id=${id}&brgy=${brgy}`}
                 onClick={() => {
                   window.innerWidth >= 320 && window.innerWidth <= 1023
@@ -319,6 +343,9 @@ const Sidebar = () => {
                 </h1>
               </Link>
               <Link
+                data-hs-overlay="#hs-overlay-basic"
+                aria-controls="hs-overlay-basic"
+                aria-label="Toggle navigation"
                 to={`/settings/?id=${id}&brgy=${brgy}`}
                 onClick={() => {
                   window.innerWidth >= 320 && window.innerWidth <= 1023
@@ -352,8 +379,9 @@ const Sidebar = () => {
                   src={
                     userData && userData.profile && userData.profile.link !== ""
                       ? userData.profile.link
-                      : defaultPFP
+                      : ""
                   }
+                  onError={handleImageError}
                   className="rounded-[100%] w-[40px] h-[40px] object-cover"
                   alt=""
                 />
@@ -369,6 +397,9 @@ const Sidebar = () => {
               aria-labelledby="hs-dropdown-profile"
             >
               <Link
+                data-hs-overlay="#hs-overlay-basic"
+                aria-controls="hs-overlay-basic"
+                aria-label="Toggle navigation"
                 to={`/settings/?id=${id}&brgy=${brgy}`}
                 onClick={() => {
                   window.innerWidth >= 320 && window.innerWidth <= 1023
