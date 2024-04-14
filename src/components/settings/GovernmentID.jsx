@@ -78,6 +78,7 @@ const GovernmentID = ({ userData, setUserData, editButton, handleAddPrimaryID, h
                                 <option>Firearms License</option>
                                 <option>Senior Citizen ID</option>
                                 <option>PWD ID</option>
+                                <option>NBI Clearance</option>
                                 <option>Alien Certification of Registration or Immigrant Certificate of Registration</option>
                                 <option>PhilHealth ID</option>
                                 <option>GOCC ID</option>
