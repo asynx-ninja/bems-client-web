@@ -49,8 +49,7 @@ const GovernmentID = ({ userData, setUserData, editButton, handleAddPrimaryID, h
             </div>
             <div className="relative lg:w-full grid gap-10 grid-cols-1 m-auto justify-end items-end">
 
-                <div className={userDeets && userDeets.primary_file.length === 0 &&
-                    userDeets && userDeets.secondary_file.length === 0 ? "hidden" : "flex flex-col gap-5"}>
+                <div className={"flex flex-col gap-5"}>
 
                     <div className="mt-5">
                         <h1 className="font-bold mt-[5px] text-center">Primary ID</h1>
