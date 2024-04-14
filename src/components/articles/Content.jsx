@@ -2,21 +2,22 @@ import React from "react";
 import { FaCalendarAlt } from "react-icons/fa";
 import { useRef, useEffect } from "react";
 import { AiFillFilePdf } from "react-icons/ai";
+import defaultBanner from "../../assets/image/1.png";
 
-const Content = ({ announcement }) => {
+const Content = ({ announcement, info }) => {
   const files =
     announcement &&
-    announcement.collections &&
-    announcement.collections.file !== undefined
+      announcement.collections &&
+      announcement.collections.file !== undefined
       ? announcement.collections.file
       : "";
 
-  const logo =
+  const banner =
     announcement &&
-    announcement.collections &&
-    announcement.collections.logo.link !== undefined
-      ? announcement.collections.logo.link
-      : "";
+      announcement.collections &&
+      announcement.collections.banner.link !== undefined
+      ? announcement.collections.banner.link
+      : defaultBanner;
 
   const dateFormat = (date) => {
     if (!date) return "";
@@ -29,7 +30,7 @@ const Content = ({ announcement }) => {
     return new Intl.DateTimeFormat("en-US", options).format(new Date(date));
   };
 
-  const reqAnother = () => {};
+  const reqAnother = () => { };
 
   // console.log(announcement)
 
@@ -37,22 +38,24 @@ const Content = ({ announcement }) => {
     <div className="flex flex-col gap-5 sm:px-2 md:px-5 w-full">
       {/* DESCRIPTION */}
       <div className="sm:p-5 md:p-6 lg:w-full w-100 mx-auto">
-        <img
-          className=" rounded-[15px] w-full sm:h-[200px] lg:h-[300px] object-cover"
-          id="logo"
-          src={logo}
-          alt=""
-        />
+        <div className={`border-[1px] border-[${info && info.theme && info.theme.secondary !== "" ? info.theme.secondary : '#295141'}] bg-opacity-[50%] bg-[${info && info.theme && info.theme.secondary !== "" ? info.theme.secondary : '#295141'}] rounded-[15px]`}>
+          <img
+            className=" rounded-[15px] w-full sm:h-[200px] lg:h-[300px] object-contain"
+            src={banner}
+            alt=""
+          />
+        </div>
+
 
         <div className="flex flex-col lg:flex-row justify-between items-start gap-5 ">
-          <div className="flex flex-col justify-between w-full lg:w-[70%]">
+          <div className={files.length === 0 ? "flex flex-col justify-between w-full lg:w-[100%]" : "flex flex-col justify-between w-full lg:w-[70%]"}>
             <div className="flex flex-col my-5 space-y-4">
               <h1 className="text-custom-green-header font-bold text-2xl md:text-[36px] text-left">
                 {announcement.title}
               </h1>
             </div>
 
-            <p className="sm:w-full md:w-[60%] whitespace-pre-wrap border-none">
+            <p className="text-gray-600 leading-relaxed whitespace-pre-wrap text-justify h-full pr-3">
               {announcement.details}
             </p>
           </div>

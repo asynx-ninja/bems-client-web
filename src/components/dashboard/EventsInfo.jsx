@@ -193,11 +193,11 @@ const EventsInfo = () => {
                             key={i}
                             to={`/events/?id=${id}&brgy=${brgy}&event_id=${item.event_id}&page=${currentPage}`}
                         >
-                            <div className="group bg-white border-[1px] md:h-[350px] border-gray-300 relative rounded-lg shadow-lg overflow-hidden transform transition duration-500 ease-in-out hover:scale-105">
-                                <div className="overflow-hidden">
+                            <div className={`border-[1px] hover:border-[${info && info.theme && info.theme.secondary !== "" ? info.theme.secondary : '#295141'}] group md:h-[350px] relative rounded-lg shadow-lg overflow-hidden transform transition duration-500 ease-in-out hover:scale-105`}>
+                                <div className={`bg-opacity-[50%] bg-[${info && info.theme && info.theme.secondary !== "" ? info.theme.secondary : '#295141'}] overflow-hidden`}>
                                     <img
-                                        className="w-full h-48 object-cover hover:scale-150 transition-all"
-                                        src={item.collections.banner.link}
+                                        className="w-full h-48 object-contain hover:scale-150 transition-all"
+                                        src={item.collections.logo.link}
                                         alt={item.name}
                                     />
                                 </div>

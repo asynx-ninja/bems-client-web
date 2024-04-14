@@ -34,10 +34,18 @@ const ServicesForm = ({ props }) => {
   const [updatingStatus, setUpdatingStatus] = useState(null);
   const [noForm, setNoForm] = useState(false);
   const [isNotVerified, setIsNotVerified] = useState(false);
+  const [info, setInfo] = useState({});
 
   useEffect(() => {
     const fetchForms = async () => {
       try {
+        const brgyInfo = await axios.get(`${API_LINK}/brgyinfo/?brgy=${brgy}`);
+        if (brgyInfo.status === 200) {
+          setInfo(brgyInfo.data[0]);
+        } else {
+          setInfo({})
+        }
+
         const service_response = await axios.get(
           `${API_LINK}/services/specific_service/?brgy=${brgy}&service_id=${service_id}`
         );
@@ -487,21 +495,8 @@ const ServicesForm = ({ props }) => {
           <Breadcrumbs serviceTitle={service && service.name} />
         </div>
 
-        <img
-          className=" rounded-[25px] w-full sm:h-[200px] lg:h-[300px] mb-[20px] object-cover"
-          src={
-            service &&
-              service.collections &&
-              service.collections.banner &&
-              service.collections.banner.link !== undefined
-              ? service.collections.banner.link
-              : defaultBanner
-          }
-          alt=""
-        />
-
         <div className="bg-white rounded-lg shadow-xl  lg:w-full w-100 mx-auto mb-10">
-          <Content service={service} />
+          <Content service={service} info={info} />
 
           <div className="w-[90%] mx-auto flex flex-col items-center px-6 lg:px-0">
             {noForm ? (

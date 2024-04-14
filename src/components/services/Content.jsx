@@ -3,7 +3,7 @@ import { AiFillFilePdf } from "react-icons/ai";
 import defaultLogo from "../../assets/header/side-bg.png";
 import defaultBanner from "../../assets/image/1.png";
 
-const Content = ({ service }) => {
+const Content = ({ service, info }) => {
   const files =
     service && service.collections && service.collections.file !== undefined
       ? service.collections.file
@@ -15,21 +15,23 @@ const Content = ({ service }) => {
     <div className="flex flex-col gap-5 sm:px-2 md:px-5 w-full">
       {/* DESCRIPTION */}
       <div className="sm:p-5 md:p-6 lg:w-full w-100 mx-auto">
-        <img
-          className=" rounded-[15px] w-full sm:h-[200px] lg:h-[300px] object-cover"
-          src={
-            service &&
-            service.collections &&
-            service.collections.banner &&
-            service.collections.banner.link !== undefined
-              ? service.collections.banner.link
-              : defaultBanner
-          }
-          alt=""
-        />
+        <div className={`border-[1px] border-[${info && info.theme && info.theme.secondary !== "" ? info.theme.secondary : '#295141'}] bg-opacity-[50%] bg-[${info && info.theme && info.theme.secondary !== "" ? info.theme.secondary : '#295141'}] rounded-[15px]`}>
+          <img
+            className=" rounded-[15px] w-full sm:h-[200px] lg:h-[300px] object-contain"
+            src={
+              service &&
+                service.collections &&
+                service.collections.banner &&
+                service.collections.banner.link !== undefined
+                ? service.collections.banner.link
+                : defaultBanner
+            }
+            alt=""
+          />
+        </div>
 
         <div className="flex flex-col lg:flex-row justify-between items-start gap-5 ">
-          <div className="flex flex-col justify-between w-full lg:w-[70%]">
+          <div className={files.length === 0 ? "flex flex-col justify-between w-full lg:w-[100%]" : "flex flex-col justify-between w-full lg:w-[70%]"}>
             <div className="flex flex-col my-5 space-y-4">
               <h1 className="text-custom-green-header font-bold text-2xl md:text-[36px] text-left">
                 {service && service.name}

@@ -461,7 +461,7 @@ const Form = ({ announcement }) => {
         </div>
 
         <div className="bg-white rounded-lg shadow-xl  lg:w-full w-100 mx-auto mb-10">
-          <Content announcement={announcement} />
+          <Content announcement={announcement} info={info} />
           <div className="w-[90%] mx-auto flex flex-col items-center px-6 lg:px-0">
             {noForm ? (
               <div

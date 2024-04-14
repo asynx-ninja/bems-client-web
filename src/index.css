@@ -42,7 +42,8 @@
 }
 
 body {
-  font-family: "Gilmer-Regular";
+  font-family: "Gilmer-Regular" !important;
+  src: url("../src/assets/font/Gilmer-Regular.ttf") format("truetype") !important;
 }
 
 input[type='number']::-webkit-inner-spin-button,
