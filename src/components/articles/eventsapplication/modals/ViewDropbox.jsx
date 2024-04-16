@@ -7,6 +7,8 @@ const ViewDropbox = ({ viewFiles, setViewFiles }) => {
   const fileInputRef = useRef();
   const navigate = useNavigate();
 
+  console.log(viewFiles)
+
   // console.log(viewFiles)
 
   // useEffect(() => {
@@ -93,15 +95,15 @@ const ViewDropbox = ({ viewFiles, setViewFiles }) => {
     setViewFiles((prev) => prev.filter((_, index) => index !== idx));
   };
 
-  const handleFileClick = (file) => {
-    const url = URL.createObjectURL(file);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = file.name;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  };
+  // const handleFileClick = (file) => {
+  //   const url = URL.createObjectURL(file);
+  //   const a = document.createElement("a");
+  //   a.href = url;
+  //   a.download = file.name;
+  //   document.body.appendChild(a);
+  //   a.click();
+  //   document.body.removeChild(a);
+  // };
 
   return (
     <div className="">
@@ -133,7 +135,7 @@ const ViewDropbox = ({ viewFiles, setViewFiles }) => {
                   <li
                     className="flex mx-2"
                     key={idx}
-                    onClick={() => handleFileClick(file)}
+                    // onClick={() => handleFileClick(file)}
                   >
                     {
                       checkImage(file) === true ?
@@ -163,11 +165,11 @@ const ViewDropbox = ({ viewFiles, setViewFiles }) => {
                             <a
                               href={file.link}
                               target="_blank"
-                              className="flex-1 group-hover:text-blue-800 line-clamp-1"
+                              className="flex-1 relative group-hover:text-blue-800 line-clamp-1 z-20"
                             >
                               {file.name}
                             </a>
-                            <div className="flex absolute right-0 left-0 top-0 bottom-0 opacity-50">
+                            <div className="flex absolute right-0 left-0 top-0 bottom-0 opacity-50 z-[0]">
                               <span className="p-1 text-blue-800 m-auto">
                                 <i>
                                   <svg

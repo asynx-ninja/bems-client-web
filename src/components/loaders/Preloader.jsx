@@ -18,7 +18,7 @@ function Preloader({ updatingStatus, error }) {
         if (["success", "error"].includes(updatingStatus)) {
             const timeout = setTimeout(() => {
                 setLoading(false);
-            }, 3000);
+            }, 1000);
 
             return () => clearTimeout(timeout);
         }
