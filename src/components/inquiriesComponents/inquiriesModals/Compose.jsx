@@ -396,7 +396,6 @@ const ComposeModal = () => {
               <div className="flex justify-center items-center gap-x-2 py-3 px-6 dark:border-gray-700">
                 <button
                   type="button"
-                  data-hs-overlay="#hs-modal-compose"
                   onClick={handleOnSend}
                   className="h-[2.5rem] w-[9.5rem] py-1 px-6 inline-flex justify-center items-center gap-2 rounded-md borde text-sm font-base bg-teal-900 text-white shadow-sm align-middle"
                 >
