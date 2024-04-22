@@ -74,7 +74,7 @@ const EventsApplicationList = ({ events, setViewEvent }) => {
             </div>
           )}
           {item.status === "Processing" && (
-            <div className="flex w-full items-center justify-center bg-custom-amber m-2 rounded-lg">
+            <div className="flex w-full items-center justify-center bg-[#3b66b6] m-2 rounded-lg">
               <span className="text-xs sm:text-sm font-bold text-white p-3 mx-5">
                 PROCESSING
               </span>
