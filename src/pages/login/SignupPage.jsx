@@ -6,7 +6,7 @@ import axios from "axios";
 import API_LINK from "../../config/API";
 import moment from "moment";
 import Webcam from "react-webcam";
-import Preloader from "../../components/loaders/Preloader"
+import Preloader from "../../components/loaders/Preloader";
 
 // COMPONENTS
 import SideInfo from "../../components/signup/SideInfo";
@@ -69,9 +69,9 @@ const SignupPage = () => {
   const [error, setError] = useState(null);
   const [submitClicked, setSubmitClicked] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState(null);
-  const [errMsg, setErrMsg] = useState(false)
-  const fileInputPrimaryIDRef = useRef()
-  const fileInputSecondaryIDRef = useRef()
+  const [errMsg, setErrMsg] = useState(false);
+  const fileInputPrimaryIDRef = useRef();
+  const fileInputSecondaryIDRef = useRef();
 
   const WebcamCapture = () => {
     const webcamRef = React.useRef(null);
@@ -278,7 +278,12 @@ const SignupPage = () => {
       !formData.email ||
       !formData.username ||
       !formData.password ||
-      !formData.confirmPassword
+      !formData.confirmPassword ||
+      !formData.primary_file ||
+      !formData.primary_id ||
+      !formData.secondary_file ||
+      !formData.secondary_id ||
+      !formData.selfie
     ) {
       setEmpty(true);
       setDuplicateError(false);
@@ -364,8 +369,9 @@ const SignupPage = () => {
 
         for (let i = 0; i < formData.primary_file.length; i++) {
           let file = {
-            name: `${formData.lastName}, ${formData.firstName
-              } - PRIMARY ID ${moment(new Date()).format("MMDDYYYYHHmmss")}`,
+            name: `${formData.lastName}, ${
+              formData.firstName
+            } - PRIMARY ID ${moment(new Date()).format("MMDDYYYYHHmmss")}`,
             size: formData.primary_file[i].size,
             type: formData.primary_file[i].type,
             uri: formData.primary_file[i].uri,
@@ -381,8 +387,9 @@ const SignupPage = () => {
 
         for (let i = 0; i < formData.secondary_file.length; i++) {
           let file = {
-            name: `${formData.lastName}, ${formData.firstName
-              } - SECONDARY ID ${moment(new Date()).format("MMDDYYYYHHmmss")}`,
+            name: `${formData.lastName}, ${
+              formData.firstName
+            } - SECONDARY ID ${moment(new Date()).format("MMDDYYYYHHmmss")}`,
             uri: formData.secondary_file[i].uri,
             type: formData.secondary_file[i].type,
             size: formData.secondary_file[i].size,
@@ -406,6 +413,8 @@ const SignupPage = () => {
           }
         );
 
+        console.log(response.data);
+
         if (response.status === 200) {
           setsuccessReg(true);
 
@@ -418,7 +427,7 @@ const SignupPage = () => {
             setTimeout(function () {
               navigate(`/loading/?email=${email}&brgy=${barangay}`);
             }, 3000);
-          }, 1000)
+          }, 1000);
         }
       } catch (error) {
         console.log(error);
@@ -437,7 +446,7 @@ const SignupPage = () => {
         }
       }
     }
-  }
+  };
 
   // console.log(formData);
 
