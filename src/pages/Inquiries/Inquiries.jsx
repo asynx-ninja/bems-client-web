@@ -15,8 +15,7 @@ import ViewMessage from "../../components/inquiriesComponents/inquiriesModals/Vi
 import ComposeModal from "../../components/inquiriesComponents/inquiriesModals/Compose";
 import InquiriesList from "../../components/inquiriesComponents/InquiriesList";
 import video from "../../assets/image/video.mp4";
-import no_data from "../../assets/image/no-data.png"
-
+import no_data from "../../assets/image/no-data.png";
 
 const Inquiries = () => {
   const [selectedItems, setSelectedItems] = useState([]);
@@ -28,11 +27,11 @@ const Inquiries = () => {
   const [inquiry, setInquiry] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [pageCount, setPageCount] = useState(0);
-  const [sortBy, setSortBy] = useState([])
-  const [SortByName, setSortByName] = useState("all")
-  const [searchInput, setSearchInput] = useState("")
-  const [getAll, setGetAll] = useState([])
-  const [searchResult, setSearchResult] = useState(0)
+  const [sortBy, setSortBy] = useState([]);
+  const [SortByName, setSortByName] = useState("all");
+  const [searchInput, setSearchInput] = useState("");
+  const [getAll, setGetAll] = useState([]);
+  const [searchResult, setSearchResult] = useState(0);
   const [info, setInfo] = useState({});
 
   useEffect(() => {
@@ -40,39 +39,56 @@ const Inquiries = () => {
   }, []);
 
   useEffect(() => {
-    const fetch = async () => {
+    const getBrgy = async () => {
       try {
         const brgyInfo = await axios.get(`${API_LINK}/brgyinfo/?brgy=${brgy}`);
         if (brgyInfo.status === 200) {
           setInfo(brgyInfo.data[0]);
         } else {
-          setInfo({})
+          setInfo({});
         }
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
+    const fetch = async () => {
+      try {
         const response = await axios.get(
           `${API_LINK}/inquiries/?id=${user_id}&brgy=${brgy}&to=${SortByName}&archived=false&page=${currentPage}`
         );
 
-        console.log(response.data)
+        console.log(response.data);
 
         if (response.status === 200) {
-          setInquiries(response.data.result.sort((date1, date2) => new Date(date2.createdAt) - new Date(date1.createdAt)))
+          setInquiries(
+            response.data.result.sort(
+              (date1, date2) =>
+                new Date(date2.createdAt) - new Date(date1.createdAt)
+            )
+          );
           setPageCount(response.data.pageCount);
-          setGetAll(response.data.all)
+          setGetAll(response.data.all);
 
           let uniqueInquiries = new Set(
-            response.data.all.map((item) => item.compose.to));
+            response.data.all.map((item) => item.compose.to)
+          );
           let arr = [...uniqueInquiries].sort();
           setSortBy(arr);
         } else {
           setInquiries([]);
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     };
 
-    fetch();
+    getBrgy();
+    const interval = setInterval(() => {
+      fetch();
+    }, 3000);
+
+    return () => clearInterval(interval);
   }, [user_id, brgy, SortByName, currentPage]);
 
   const handlePageChange = ({ selected }) => {
@@ -89,16 +105,18 @@ const Inquiries = () => {
 
   const handleOnSearch = (e) => {
     const inputValue = e.target.value.toUpperCase();
-    setSearchInput(inputValue)
+    setSearchInput(inputValue);
 
-    const getSearch = getAll.filter((item) =>
-      item.inq_id.toUpperCase()
-        .includes(e.target.value.toUpperCase()) ||
-      item.compose.subject.toUpperCase()
-        .includes(e.target.value.toUpperCase())) 
-    setSearchResult(getSearch.length)
-    setInquiries(getSearch)
-  }
+    const getSearch = getAll.filter(
+      (item) =>
+        item.inq_id.toUpperCase().includes(e.target.value.toUpperCase()) ||
+        item.compose.subject
+          .toUpperCase()
+          .includes(e.target.value.toUpperCase())
+    );
+    setSearchResult(getSearch.length);
+    setInquiries(getSearch);
+  };
 
   // console.log(inquiries)
 
@@ -128,7 +146,9 @@ const Inquiries = () => {
         <div className="w-full flex flex-col">
           <div className="flex w-full justify-between">
             <div className="md:mr-[20px] rounded-lg">
-              <h2 className="text-[2rem] font-bold text-green-900">INQUIRIES</h2>
+              <h2 className="text-[2rem] font-bold text-green-900">
+                INQUIRIES
+              </h2>
             </div>
 
             <div className="flex h-auto justify-end">
@@ -138,7 +158,11 @@ const Inquiries = () => {
                 data-hs-overlay="#hs-modal-compose"
                 className={`hs-tooltip-toggle flex justify-center items-center rounded-lg text-white font-medium text-sm text-center w-[100px] h-[50px]`}
                 style={{
-                  background: `${info && info.theme && info.theme.primary !== "" ? info.theme.primary : '#295141'}`
+                  background: `${
+                    info && info.theme && info.theme.primary !== ""
+                      ? info.theme.primary
+                      : "#295141"
+                  }`,
                 }}
               >
                 <FaPlus size={24} style={{ color: "#ffffff" }} />
@@ -160,7 +184,11 @@ const Inquiries = () => {
                 type="button"
                 className={` h-[40px] sm:w-full md:w-full sm:mt-2 md:mt-0 text-white hs-dropdown-toggle py-1 px-5 inline-flex justify-center items-center gap-2 rounded-md  font-medium shadow-sm align-middle transition-all text-sm  `}
                 style={{
-                  background: `${info && info.theme && info.theme.primary !== "" ? info.theme.primary : '#295141'}`
+                  background: `${
+                    info && info.theme && info.theme.primary !== ""
+                      ? info.theme.primary
+                      : "#295141"
+                  }`,
                 }}
               >
                 TO {SortByName !== "all" ? SortByName.toUpperCase() : ""}
@@ -222,7 +250,11 @@ const Inquiries = () => {
               <button
                 className="rounded-xl w-[40px] h-[40px] justify-center items-center text-white"
                 style={{
-                  background: `${info && info.theme && info.theme.primary !== "" ? info.theme.primary : '#295141'}`
+                  background: `${
+                    info && info.theme && info.theme.primary !== ""
+                      ? info.theme.primary
+                      : "#295141"
+                  }`,
                 }}
               >
                 <FaSearch className="w-full" />
@@ -234,42 +266,58 @@ const Inquiries = () => {
           <div className="overflow-scroll sm:h-[380px] lg:h-[680px] border border-b-0 mt-5 rounded-t-xl bg-white">
             <table className="relative table-auto w-full divide-y divide-gray-200 ">
               {/* Table Headers */}
-              <thead className={`bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] border`}>
+              <thead
+                className={`bg-[${
+                  info && info.theme && info.theme.primary !== ""
+                    ? info.theme.primary
+                    : "#295141"
+                }] border`}
+              >
                 <tr>
-                  {
-                    tableHeader.map((item, i) => (
-                      <th
-                        scope="col"
-                        key={i}
-                        className="px-6 py-3 text-center text-xs font-bold text-white uppercase"
-                      >
-                        {item}
-                      </th>
-                    ))
-                  }
+                  {tableHeader.map((item, i) => (
+                    <th
+                      scope="col"
+                      key={i}
+                      className="px-6 py-3 text-center text-xs font-bold text-white uppercase"
+                    >
+                      {item}
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
                 {/* Table Body */}
-                {
-                  inquiries.length === 0 ?
-                    <tr className="sm:h-[380px] lg:h-[630px]">
-                      <td className="text-center m-auto" colSpan={tableHeader.length}>
-                        <img className="w-[150px] m-auto" src={no_data} alt="" />
-                        No Records Shown
-                      </td>
-                    </tr>
-                    :
-                    <InquiriesList
-                      inquiries={inquiries}
-                      setInquiry={setInquiry}
-                    />
-                }
+                {inquiries.length === 0 ? (
+                  <tr className="sm:h-[380px] lg:h-[630px]">
+                    <td
+                      className="text-center m-auto"
+                      colSpan={tableHeader.length}
+                    >
+                      <img className="w-[150px] m-auto" src={no_data} alt="" />
+                      No Records Shown
+                    </td>
+                  </tr>
+                ) : (
+                  <InquiriesList
+                    inquiries={inquiries}
+                    setInquiry={setInquiry}
+                  />
+                )}
               </tbody>
             </table>
           </div>
 
-          <div className={searchInput === "" ? `md:py-4 md:px-4 bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3 w-full` : "hidden"}>
+          <div
+            className={
+              searchInput === ""
+                ? `md:py-4 md:px-4 bg-[${
+                    info && info.theme && info.theme.primary !== ""
+                      ? info.theme.primary
+                      : "#295141"
+                  }] flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3 w-full`
+                : "hidden"
+            }
+          >
             <span className="font-medium text-white sm:text-xs text-sm">
               Showing {currentPage + 1} out of {pageCount} pages
             </span>

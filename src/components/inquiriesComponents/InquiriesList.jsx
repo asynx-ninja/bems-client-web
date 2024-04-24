@@ -62,7 +62,7 @@ const InquiriesList = ({ inquiries, setInquiry }) => {
           {item.isApproved === "Pending" && (
             <div className="flex w-full items-center justify-center bg-custom-red-button m-2 rounded-lg">
               <span className="text-xs sm:text-sm font-bold text-white p-3 mx-5">
-                Pending
+                PENDING
               </span>
             </div>
           )}

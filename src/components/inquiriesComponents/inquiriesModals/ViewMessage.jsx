@@ -15,20 +15,20 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
   // console.log(inquiry.folder_id);
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get("id");
-  const [userData, setUserData] = useState({})
+  const [userData, setUserData] = useState({});
   const [reply, setReply] = useState(false);
   const [upload, setUpload] = useState(false);
   const [files, setFiles] = useState([]);
   const [createFiles, setCreateFiles] = useState([]);
   const [viewFiles, setViewFiles] = useState([]);
   const [newMessage, setNewMessage] = useState({
-    sender: '',
+    sender: "",
     message: "",
     date: new Date(),
   });
   const [submitClicked, setSubmitClicked] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState(null);
-  const [errMsg, setErrMsg] = useState(false)
+  const [errMsg, setErrMsg] = useState(false);
 
   // console.log(inquiry)
 
@@ -36,18 +36,19 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
     const fetchUser = async () => {
       try {
         const res = await axios.get(`${API_LINK}/users/specific/${id}`);
-        setUserData(res.data[0])
+        setUserData(res.data[0]);
         setNewMessage({
           sender: `${res.data[0].firstName.toUpperCase()} ${res.data[0].lastName.toUpperCase()}`,
           message: "",
           date: new Date(),
-        })
+        });
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
-    fetchUser()
-  }, [id])
+    };
+
+    fetchUser();
+  }, [id]);
 
   useEffect(() => {
     setFiles(inquiry.length === 0 ? [] : inquiry.compose.file);
@@ -120,9 +121,9 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
     console.log(newMessage);
 
     if (newMessage.message === "" && createFiles.length === 0) {
-      setErrMsg(true)
+      setErrMsg(true);
 
-      return
+      return;
     }
 
     setSubmitClicked(true);
@@ -146,12 +147,13 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
       );
 
       if (response.status === 200) {
-
         const notify = {
           category: "Many",
           compose: {
             subject: `INQUIRY - ${`${userData.lastName}, ${userData.firstName}`}`,
-            message: `A user has replied to an inquiry ${inquiry.compose.subject}!\n
+            message: `A user has replied to an inquiry ${
+              inquiry.compose.subject
+            }!\n
             \n
             Inquiry Details:\n
             - Subject: ${inquiry.compose.subject}\n
@@ -172,10 +174,7 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
                 ? "Municipality"
                 : userData.address.brgy,
           },
-          type:
-            inquiry.compose.to === "Admin"
-              ? "Municipality"
-              : "Barangay",
+          type: inquiry.compose.to === "Admin" ? "Municipality" : "Barangay",
           banner: {
             link: "https://drive.google.com/thumbnail?id=1v009xuRjSNW8OGUyHbAYTJt3ynxjhtGW&sz=w1000",
             name: "inquiries_banner.jpg",
@@ -188,15 +187,11 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
           },
         };
 
-        const result = await axios.post(
-          `${API_LINK}/notification/`,
-          notify,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const result = await axios.post(`${API_LINK}/notification/`, notify, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
         if (result.status === 200) {
           setTimeout(() => {
@@ -207,7 +202,6 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
             }, 3000);
           }, 1000);
         }
-
       } else {
         setSubmitClicked(false);
         setUpdatingStatus("error");
@@ -257,7 +251,7 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
                       id="title"
                       name="title"
                       className="shadow appearance-none border w-full py-2 px-3 text-sm text-black rounded-lg focus:border-green-500 focus:ring-green-500 focus:outline-none focus:shadow-outline"
-                      value={inquiry && inquiry.name || ""}
+                      value={(inquiry && inquiry.name) || ""}
                       disabled
                     />
                   </div>
@@ -273,7 +267,7 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
                       id="title"
                       name="title"
                       className="shadow appearance-none border w-full py-2 px-3 text-sm text-black rounded-lg focus:border-green-500 focus:ring-green-500 focus:outline-none focus:shadow-outline"
-                      value={inquiry && inquiry.email || ""}
+                      value={(inquiry && inquiry.email) || ""}
                       disabled
                     />
                   </div>
@@ -292,7 +286,7 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
                       id="title"
                       name="title"
                       className="shadow appearance-none border w-full py-2 px-3 text-sm text-black rounded-lg focus:border-green-500 focus:ring-green-500 focus:outline-none focus:shadow-outline"
-                      value={inquiry && inquiry?.compose?.subject || ""}
+                      value={(inquiry && inquiry?.compose?.subject) || ""}
                       disabled
                     />
                   </div>
@@ -328,7 +322,7 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
                     name="details"
                     rows="4"
                     className="shadow appearance-none border w-full h-full py-2 px-3 text-sm text-black rounded-lg focus:border-green-500 focus:ring-green-500 focus:outline-none focus:shadow-outline"
-                    value={inquiry && inquiry?.compose?.message || ""}
+                    value={(inquiry && inquiry?.compose?.message) || ""}
                     disabled
                   />
                 </div>
@@ -342,13 +336,13 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
                   <form>
                     {!inquiry.response || inquiry.response.length === 0 ? (
                       <div className="flex flex-col items-center">
-                        {
-                          errMsg ? (
-                            <div className="w-[100%] bg-red-500 rounded-md mb-[10px] flex">
-                              <p className="py-[10px] text-[12px] px-[20px] text-white font-medium">Please enter a message or insert a file!</p>
-                            </div>
-                          ) : null
-                        }
+                        {errMsg ? (
+                          <div className="w-[100%] bg-red-500 rounded-md mb-[10px] flex">
+                            <p className="py-[10px] text-[12px] px-[20px] text-white font-medium">
+                              Please enter a message or insert a file!
+                            </p>
+                          </div>
+                        ) : null}
                         <div className="relative w-full mt-4 mx-2">
                           <div className="relative w-full">
                             <textarea
@@ -416,77 +410,71 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
                       inquiry.response.map((responseItem, index) => (
                         <div
                           key={index}
-                          className={responseItem.sender === `${userData.firstName.toUpperCase()} ${userData.lastName.toUpperCase()}` || responseItem.sender === "Resident" ? "flex flex-col justify-end items-end mb-5 w-full h-auto" : "flex flex-col justify-start items-start mb-5 w-full h-auto"}
+                          className={
+                            responseItem.sender ===
+                              `${userData.firstName.toUpperCase()} ${userData.lastName.toUpperCase()}` ||
+                            responseItem.sender === "Resident"
+                              ? "flex flex-col justify-end items-end mb-5 w-full h-auto"
+                              : "flex flex-col justify-start items-start mb-5 w-full h-auto"
+                          }
                         >
-                          <div
-                            className="flex flex-col items-end mb-5 h-auto"
-                          >
-                            <div
-                              className="flex flex-row w-full justify-between"
-                            >
+                          <div className="flex flex-col items-end mb-5 h-auto">
+                            <div className="flex flex-row w-full justify-between">
                               <div className="flex flex-col md:flex-row md:items-center">
                                 <p className="text-[14px] text-black md:text-sm font-medium uppercase ">
                                   {responseItem.sender}
                                 </p>
                               </div>
                             </div>
-                            {
-                              responseItem.message !== "" ?
-                                <div
-                                  className="flex flex-col rounded-xl bg-custom-green-button w-full px-2 md:px-4 py-2"
-                                  onClick={(e) => e.stopPropagation()}
-                                >
-                                  <div className="w-full h-full">
-                                    <div className="w-full h-full rounded-xl p-1">
-                                      <p className="text-[10px] text-white md:text-xs">
-                                        {responseItem.message}
-                                      </p>
-                                    </div>
+                            {responseItem.message !== "" ? (
+                              <div
+                                className="flex flex-col rounded-xl bg-custom-green-button w-full px-2 md:px-4 py-2"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                <div className="w-full h-full">
+                                  <div className="w-full h-full rounded-xl p-1">
+                                    <p className="text-[10px] text-white md:text-xs">
+                                      {responseItem.message}
+                                    </p>
                                   </div>
                                 </div>
-                                : null
-                            }
-                            {
-                              !responseItem.file ?
-                                null
-                                :
-                                <div className="flex flex-col rounded-xl bg-custom-green-button w-full mt-2 px-2 md:px-4 py-2">
-                                  <ViewDropbox
-                                    viewFiles={responseItem.file || []}
-                                    setViewFiles={setViewFiles}
-                                  />
-                                </div>
-                            }
+                              </div>
+                            ) : null}
+                            {!responseItem.file ? null : (
+                              <div className="flex flex-col rounded-xl bg-custom-green-button w-full mt-2 px-2 md:px-4 py-2">
+                                <ViewDropbox
+                                  viewFiles={responseItem.file || []}
+                                  setViewFiles={setViewFiles}
+                                />
+                              </div>
+                            )}
                             <p className="text-[10px] md:text-xs mt-[5px] text-black text-right text-xs">
                               {DateFormat(responseItem.date) || ""}
                             </p>
                           </div>
-                          {index === inquiry.response.length - 1 ?
+                          {index === inquiry.response.length - 1 ? (
                             <div className="flex flex-row items-center w-full">
-                              {
-                                responseItem.isRepliable === false ?
-                                  null
-                                  :
-                                  <button
-                                    type="button"
-                                    className="h-8 w-full lg:w-32 py-1 px-2 gap-2 mt-4 rounded-full borde text-sm font-base bg-custom-green-header text-white shadow-sm"
-                                    onClick={handleOnReply}
-                                    hidden={reply}
-                                  >
-                                    REPLY
-                                  </button>
-                              }
+                              {responseItem.isRepliable === false ? null : (
+                                <button
+                                  type="button"
+                                  className="h-8 w-full lg:w-32 py-1 px-2 gap-2 mt-4 rounded-full borde text-sm font-base bg-custom-green-header text-white shadow-sm"
+                                  onClick={handleOnReply}
+                                  hidden={reply}
+                                >
+                                  REPLY
+                                </button>
+                              )}
                               {!reply ? (
                                 <div></div>
                               ) : (
                                 <div className="relative w-full mt-4 mx-2">
-                                  {
-                                    errMsg ? (
-                                      <div className="w-[100%] bg-red-500 rounded-md mb-[10px] flex">
-                                        <p className="py-[10px] text-[12px] px-[20px] text-white font-medium">Please enter a message or insert a file!</p>
-                                      </div>
-                                    ) : null
-                                  }
+                                  {errMsg ? (
+                                    <div className="w-[100%] bg-red-500 rounded-md mb-[10px] flex">
+                                      <p className="py-[10px] text-[12px] px-[20px] text-white font-medium">
+                                        Please enter a message or insert a file!
+                                      </p>
+                                    </div>
+                                  ) : null}
                                   <div className="relative w-full">
                                     <textarea
                                       id="message"
@@ -552,7 +540,7 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
                                 </div>
                               )}
                             </div>
-                            : null}
+                          ) : null}
                         </div>
                       ))}
                   </form>
@@ -580,6 +568,6 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
       )}
     </div>
   );
-}
+};
 
 export default ViewMessage;

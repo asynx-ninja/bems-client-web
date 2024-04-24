@@ -10,22 +10,22 @@ import { useSearchParams } from "react-router-dom";
 // COMPONENTS
 import ViewEventModal from "../components/articles/eventsapplication/modals/ViewEventModal";
 import EventsApplicationList from "../components/articles/eventsapplication/EventsApplicationList";
-import no_data from "../assets/image/no-data.png"
+import no_data from "../assets/image/no-data.png";
 
 const EventsApplication = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get("id");
   const brgy = searchParams.get("brgy");
-  const user_id = searchParams.get("user_id")
-  const [events, setEvents] = useState([])
-  const [viewEvent, setViewEvent] = useState([])
+  const user_id = searchParams.get("user_id");
+  const [events, setEvents] = useState([]);
+  const [viewEvent, setViewEvent] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [pageCount, setPageCount] = useState(0);
-  const [sortBy, setSortBy] = useState([])
-  const [SortByName, setSortByName] = useState("all")
-  const [searchInput, setSearchInput] = useState("")
-  const [searchResult, setSearchResult] = useState(0)
-  const [getAll, setGetAll] = useState([])
+  const [sortBy, setSortBy] = useState([]);
+  const [SortByName, setSortByName] = useState("all");
+  const [searchInput, setSearchInput] = useState("");
+  const [searchResult, setSearchResult] = useState(0);
+  const [getAll, setGetAll] = useState([]);
   const [info, setInfo] = useState({});
 
   useEffect(() => {
@@ -33,15 +33,20 @@ const EventsApplication = () => {
   }, []);
 
   useEffect(() => {
-    const fetch = async () => {
+    const getBrgy = async () => {
       try {
         const brgyInfo = await axios.get(`${API_LINK}/brgyinfo/?brgy=${brgy}`);
         if (brgyInfo.status === 200) {
           setInfo(brgyInfo.data[0]);
         } else {
-          setInfo({})
+          setInfo({});
         }
-
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    const fetch = async () => {
+      try {
         const response = await axios.get(
           `${API_LINK}/application/specific/?user_id=${user_id}&event_name=${SortByName}&page=${currentPage}`
         );
@@ -49,22 +54,27 @@ const EventsApplication = () => {
         // const getUser = await axios.get(`${API_LINK}/users/specific/${id}`);
 
         if (response.status === 200) {
-          setEvents(response.data.result)
+          setEvents(response.data.result);
           setPageCount(response.data.pageCount);
-          setGetAll(response.data.all)
+          setGetAll(response.data.all);
 
           let uniqueServiceNames = new Set(
-            response.data.all.map((item) => item.event_name));
+            response.data.all.map((item) => item.event_name)
+          );
           let arr = [...uniqueServiceNames].sort();
           setSortBy(arr);
         }
-
       } catch (err) {
-        console.log(err)
+        console.log(err);
       }
     };
+    getBrgy();
 
-    fetch();
+    const interval = setInterval(() => {
+      fetch();
+    }, 3000);
+
+    return () => clearInterval(interval);
   }, [brgy, id, SortByName, currentPage]);
 
   // console.log(getAll)
@@ -83,13 +93,14 @@ const EventsApplication = () => {
 
   const handleOnSearch = (e) => {
     const inputValue = e.target.value.toUpperCase();
-    setSearchInput(inputValue)
+    setSearchInput(inputValue);
 
-    const getSearch = getAll.filter((item) =>
-      item.application_id.toUpperCase().includes(inputValue) ||
-      item.event_name.toUpperCase().includes(inputValue)
+    const getSearch = getAll.filter(
+      (item) =>
+        item.application_id.toUpperCase().includes(inputValue) ||
+        item.event_name.toUpperCase().includes(inputValue)
     );
-    setSearchResult(getSearch.length)
+    setSearchResult(getSearch.length);
     setEvents(getSearch);
   };
 
@@ -130,10 +141,11 @@ const EventsApplication = () => {
                 type="button"
                 className={`h-[40px] sm:w-full md:w-full sm:mt-2 md:mt-0 text-white hs-dropdown-toggle py-1 px-5 inline-flex justify-center items-center gap-2 rounded-md  font-medium shadow-sm align-middle transition-all text-sm`}
                 style={{
-                  background: `${info && info.theme && info.theme.primary !== ""
-                    ? info.theme.primary
-                    : "#295141"
-                    }`,
+                  background: `${
+                    info && info.theme && info.theme.primary !== ""
+                      ? info.theme.primary
+                      : "#295141"
+                  }`,
                 }}
               >
                 {SortByName !== "all" ? SortByName.toUpperCase() : "EVENT NAME"}
@@ -195,10 +207,11 @@ const EventsApplication = () => {
               <button
                 className="rounded-xl w-[40px] h-[40px] justify-center items-center text-white"
                 style={{
-                  background: `${info && info.theme && info.theme.primary !== ""
-                    ? info.theme.primary
-                    : "#295141"
-                    }`,
+                  background: `${
+                    info && info.theme && info.theme.primary !== ""
+                      ? info.theme.primary
+                      : "#295141"
+                  }`,
                 }}
               >
                 <FaSearch className="w-full" />
@@ -210,10 +223,11 @@ const EventsApplication = () => {
             <table className="relative table-auto w-full divide-y divide-gray-200 ">
               {/* Table Headers */}
               <thead
-                className={`bg-[${info && info.theme && info.theme.primary !== ""
-                  ? info.theme.primary
-                  : "#295141"
-                  }] border`}
+                className={`bg-[${
+                  info && info.theme && info.theme.primary !== ""
+                    ? info.theme.primary
+                    : "#295141"
+                }] border`}
               >
                 <tr>
                   {tableHeader.map((item, i) => (
@@ -232,7 +246,10 @@ const EventsApplication = () => {
               <tbody className="divide-y divide-gray-200">
                 {events.length === 0 ? (
                   <tr className="sm:h-[380px] lg:h-[630px]">
-                    <td className="text-center m-auto" colSpan={tableHeader.length}>
+                    <td
+                      className="text-center m-auto"
+                      colSpan={tableHeader.length}
+                    >
                       <img className="w-[150px] m-auto" src={no_data} alt="" />
                       No Records Shown
                     </td>
@@ -246,7 +263,17 @@ const EventsApplication = () => {
               </tbody>
             </table>
           </div>
-          <div className={searchInput === "" ? `md:py-4 md:px-4 bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3 w-full` : "hidden"}>
+          <div
+            className={
+              searchInput === ""
+                ? `md:py-4 md:px-4 bg-[${
+                    info && info.theme && info.theme.primary !== ""
+                      ? info.theme.primary
+                      : "#295141"
+                  }] flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3 w-full`
+                : "hidden"
+            }
+          >
             <span className="font-medium text-white sm:text-xs text-sm">
               Showing {currentPage + 1} out of {pageCount} pages
             </span>
