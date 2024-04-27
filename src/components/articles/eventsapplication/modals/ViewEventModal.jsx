@@ -148,7 +148,7 @@ const ViewEventModal = ({ viewEvent }) => {
         sender: `${userData.firstName.toUpperCase()} ${userData.lastName.toUpperCase()}`,
         message: newMessage.message,
         status: viewEvent.status,
-        isRepliable: false,
+        isRepliable: true,
         date: new Date(),
         folder_id: viewEvent.folder_id,
         last_sender:

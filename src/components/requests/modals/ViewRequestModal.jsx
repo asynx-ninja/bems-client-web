@@ -145,7 +145,7 @@ const ViewRequestModal = ({ viewRequest }) => {
         message: newMessage.message,
         status: viewRequest.status,
         date: new Date(),
-        isRepliable: false,
+        isRepliable: true,
         folder_id: viewRequest.folder_id,
         last_sender:
           viewRequest.response.length === 0
