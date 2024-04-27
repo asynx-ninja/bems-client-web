@@ -16,11 +16,11 @@ import {
 import { useSearchParams, useLocation } from "react-router-dom";
 import axios from "axios";
 import defaultPFP from "../../assets/sample-image/default-pfp.png";
-import sideBarImage from "../../assets/header//side-bg.png"
+import sideBarImage from "../../assets/header//side-bg.png";
 import API_LINK from "../../config/API";
 
 const Sidebar = () => {
-  const location = useLocation()
+  const location = useLocation();
   const page = location.pathname.split("/")[1];
   const [isCollapse, onCollapse] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -36,7 +36,7 @@ const Sidebar = () => {
         if (brgyInfo.status === 200) {
           setInfo(brgyInfo.data[0]);
         } else {
-          setInfo({})
+          setInfo({});
         }
 
         const res = await axios.get(`${API_LINK}/users/specific/${id}`);
@@ -59,7 +59,7 @@ const Sidebar = () => {
 
   // console.log("id", id)
   const OnOpen = () => {
-      onCollapse(!isCollapse);
+    onCollapse(!isCollapse);
   };
 
   const handleImageError = (event) => {
@@ -77,11 +77,7 @@ const Sidebar = () => {
         <div className="h-full flex flex-col justify-between">
           <div className="space-y-5">
             <div className="flex w-full">
-              <img
-                src={sideBarImage}
-                className="object-fit"
-                alt=""
-              />
+              <img src={sideBarImage} className="object-fit" alt="" />
             </div>
 
             <div>
@@ -93,13 +89,50 @@ const Sidebar = () => {
                 onClick={() => {
                   window.innerWidth >= 320 && window.innerWidth <= 1023
                     ? document
-                      .getQuerySelector("[data-hs-overlay-backdrop-template]")
-                      .remove()
+                        .getQuerySelector("[data-hs-overlay-backdrop-template]")
+                        .remove()
                     : null;
                 }}
                 className={
-                  page === "dashboard" ? `flex h-[50px] w-full my-auto pl-[30px] gap-5 bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}]`
-                    : `flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}] hover:text-custom-gold`
+                  page === "dashboard"
+                    ? `flex h-[50px] w-full my-auto pl-[30px] gap-5 bg-[${
+                        info && info.theme && info.theme.primary !== ""
+                          ? info.theme.primary
+                          : "#295141"
+                      }] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[${
+                        info &&
+                        info.theme &&
+                        info.theme.gradient &&
+                        info.theme.gradient.start !== ""
+                          ? info.theme.gradient.start
+                          : "#295141"
+                      }] to-[${
+                        info &&
+                        info.theme &&
+                        info.theme.gradient &&
+                        info.theme.gradient.end !== ""
+                          ? info.theme.gradient.end
+                          : "#408D51"
+                      }]`
+                    : `flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[${
+                        info && info.theme && info.theme.primary !== ""
+                          ? info.theme.primary
+                          : "#295141"
+                      }] transition-all ease-in-out hover:bg-gradient-to-r from-[${
+                        info &&
+                        info.theme &&
+                        info.theme.gradient &&
+                        info.theme.gradient.start !== ""
+                          ? info.theme.gradient.start
+                          : "#295141"
+                      }] to-[${
+                        info &&
+                        info.theme &&
+                        info.theme.gradient &&
+                        info.theme.gradient.end !== ""
+                          ? info.theme.gradient.end
+                          : "#408D51"
+                      }] hover:text-custom-gold`
                 }
               >
                 <FaChartPie className="my-auto" size={"15px"} />
@@ -110,7 +143,25 @@ const Sidebar = () => {
               <button
                 id="hs-unstyled-collapse-events"
                 data-hs-collapse="#hs-unstyled-collapse-heading-events"
-                className={`hs-collapse-toggle flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}] hover:text-custom-gold`}
+                className={`hs-collapse-toggle flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[${
+                  info && info.theme && info.theme.primary !== ""
+                    ? info.theme.primary
+                    : "#295141"
+                }] transition-all ease-in-out hover:bg-gradient-to-r from-[${
+                  info &&
+                  info.theme &&
+                  info.theme.gradient &&
+                  info.theme.gradient.start !== ""
+                    ? info.theme.gradient.start
+                    : "#295141"
+                }] to-[${
+                  info &&
+                  info.theme &&
+                  info.theme.gradient &&
+                  info.theme.gradient.end !== ""
+                    ? info.theme.gradient.end
+                    : "#408D51"
+                }] hover:text-custom-gold`}
                 onClick={OnOpen}
               >
                 <FaCalendar className="my-auto" size={"15px"} />
@@ -147,15 +198,52 @@ const Sidebar = () => {
                   onClick={() => {
                     window.innerWidth >= 320 && window.innerWidth <= 1023
                       ? document
-                        .getQuerySelector(
-                          "[data-hs-overlay-backdrop-template]"
-                        )
-                        .remove()
+                          .getQuerySelector(
+                            "[data-hs-overlay-backdrop-template]"
+                          )
+                          .remove()
                       : null;
                   }}
                   className={
-                    page === "events-list" ? `flex h-[50px] w-full my-auto pl-[60px] gap-5 bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}]`
-                      : `flex h-[50px] w-full my-auto pl-[60px] gap-5 text-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}] hover:text-custom-gold`
+                    page === "events-list"
+                      ? `flex h-[50px] w-full my-auto pl-[60px] gap-5 bg-[${
+                          info && info.theme && info.theme.primary !== ""
+                            ? info.theme.primary
+                            : "#295141"
+                        }] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[${
+                          info &&
+                          info.theme &&
+                          info.theme.gradient &&
+                          info.theme.gradient.start !== ""
+                            ? info.theme.gradient.start
+                            : "#295141"
+                        }] to-[${
+                          info &&
+                          info.theme &&
+                          info.theme.gradient &&
+                          info.theme.gradient.end !== ""
+                            ? info.theme.gradient.end
+                            : "#408D51"
+                        }]`
+                      : `flex h-[50px] w-full my-auto pl-[60px] gap-5 text-[${
+                          info && info.theme && info.theme.primary !== ""
+                            ? info.theme.primary
+                            : "#295141"
+                        }] transition-all ease-in-out hover:bg-gradient-to-r from-[${
+                          info &&
+                          info.theme &&
+                          info.theme.gradient &&
+                          info.theme.gradient.start !== ""
+                            ? info.theme.gradient.start
+                            : "#295141"
+                        }] to-[${
+                          info &&
+                          info.theme &&
+                          info.theme.gradient &&
+                          info.theme.gradient.end !== ""
+                            ? info.theme.gradient.end
+                            : "#408D51"
+                        }] hover:text-custom-gold`
                   }
                 >
                   {" "}
@@ -172,15 +260,52 @@ const Sidebar = () => {
                   onClick={() => {
                     window.innerWidth >= 320 && window.innerWidth <= 1023
                       ? document
-                        .getQuerySelector(
-                          "[data-hs-overlay-backdrop-template]"
-                        )
-                        .remove()
+                          .getQuerySelector(
+                            "[data-hs-overlay-backdrop-template]"
+                          )
+                          .remove()
                       : null;
                   }}
                   className={
-                    page === "events-application" ? `flex h-[50px] w-full my-auto pl-[60px] gap-5 bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}]`
-                      : `flex h-[50px] w-full my-auto pl-[60px] gap-5 text-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}] hover:text-custom-gold`
+                    page === "events-application"
+                      ? `flex h-[50px] w-full my-auto pl-[60px] gap-5 bg-[${
+                          info && info.theme && info.theme.primary !== ""
+                            ? info.theme.primary
+                            : "#295141"
+                        }] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[${
+                          info &&
+                          info.theme &&
+                          info.theme.gradient &&
+                          info.theme.gradient.start !== ""
+                            ? info.theme.gradient.start
+                            : "#295141"
+                        }] to-[${
+                          info &&
+                          info.theme &&
+                          info.theme.gradient &&
+                          info.theme.gradient.end !== ""
+                            ? info.theme.gradient.end
+                            : "#408D51"
+                        }]`
+                      : `flex h-[50px] w-full my-auto pl-[60px] gap-5 text-[${
+                          info && info.theme && info.theme.primary !== ""
+                            ? info.theme.primary
+                            : "#295141"
+                        }] transition-all ease-in-out hover:bg-gradient-to-r from-[${
+                          info &&
+                          info.theme &&
+                          info.theme.gradient &&
+                          info.theme.gradient.start !== ""
+                            ? info.theme.gradient.start
+                            : "#295141"
+                        }] to-[${
+                          info &&
+                          info.theme &&
+                          info.theme.gradient &&
+                          info.theme.gradient.end !== ""
+                            ? info.theme.gradient.end
+                            : "#408D51"
+                        }] hover:text-custom-gold`
                   }
                 >
                   {" "}
@@ -193,7 +318,25 @@ const Sidebar = () => {
               <button
                 id="hs-unstyled-collapse"
                 data-hs-collapse="#hs-unstyled-collapse-heading"
-                className={`hs-collapse-toggle flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}] hover:text-custom-gold`}
+                className={`hs-collapse-toggle flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[${
+                  info && info.theme && info.theme.primary !== ""
+                    ? info.theme.primary
+                    : "#295141"
+                }] transition-all ease-in-out hover:bg-gradient-to-r from-[${
+                  info &&
+                  info.theme &&
+                  info.theme.gradient &&
+                  info.theme.gradient.start !== ""
+                    ? info.theme.gradient.start
+                    : "#295141"
+                }] to-[${
+                  info &&
+                  info.theme &&
+                  info.theme.gradient &&
+                  info.theme.gradient.end !== ""
+                    ? info.theme.gradient.end
+                    : "#408D51"
+                }] hover:text-custom-gold`}
                 onClick={OnOpen}
               >
                 <FaTh className="my-auto" size={"15px"} />
@@ -230,15 +373,52 @@ const Sidebar = () => {
                   onClick={() => {
                     window.innerWidth >= 320 && window.innerWidth <= 1023
                       ? document
-                        .getQuerySelector(
-                          "[data-hs-overlay-backdrop-template]"
-                        )
-                        .remove()
+                          .getQuerySelector(
+                            "[data-hs-overlay-backdrop-template]"
+                          )
+                          .remove()
                       : null;
                   }}
                   className={
-                    page === "services" ? `flex h-[50px] w-full my-auto pl-[60px] gap-5 bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}]`
-                      : `flex h-[50px] w-full my-auto pl-[60px] gap-5 text-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}] hover:text-custom-gold`
+                    page === "services"
+                      ? `flex h-[50px] w-full my-auto pl-[60px] gap-5 bg-[${
+                          info && info.theme && info.theme.primary !== ""
+                            ? info.theme.primary
+                            : "#295141"
+                        }] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[${
+                          info &&
+                          info.theme &&
+                          info.theme.gradient &&
+                          info.theme.gradient.start !== ""
+                            ? info.theme.gradient.start
+                            : "#295141"
+                        }] to-[${
+                          info &&
+                          info.theme &&
+                          info.theme.gradient &&
+                          info.theme.gradient.end !== ""
+                            ? info.theme.gradient.end
+                            : "#408D51"
+                        }]`
+                      : `flex h-[50px] w-full my-auto pl-[60px] gap-5 text-[${
+                          info && info.theme && info.theme.primary !== ""
+                            ? info.theme.primary
+                            : "#295141"
+                        }] transition-all ease-in-out hover:bg-gradient-to-r from-[${
+                          info &&
+                          info.theme &&
+                          info.theme.gradient &&
+                          info.theme.gradient.start !== ""
+                            ? info.theme.gradient.start
+                            : "#295141"
+                        }] to-[${
+                          info &&
+                          info.theme &&
+                          info.theme.gradient &&
+                          info.theme.gradient.end !== ""
+                            ? info.theme.gradient.end
+                            : "#408D51"
+                        }] hover:text-custom-gold`
                   }
                 >
                   {" "}
@@ -255,15 +435,52 @@ const Sidebar = () => {
                   onClick={() => {
                     window.innerWidth >= 320 && window.innerWidth <= 1023
                       ? document
-                        .getQuerySelector(
-                          "[data-hs-overlay-backdrop-template]"
-                        )
-                        .remove()
+                          .getQuerySelector(
+                            "[data-hs-overlay-backdrop-template]"
+                          )
+                          .remove()
                       : null;
                   }}
                   className={
-                    page === "requests" ? `flex h-[50px] w-full my-auto pl-[60px] gap-5 bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}]`
-                      : `flex h-[50px] w-full my-auto pl-[60px] gap-5 text-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}] hover:text-custom-gold`
+                    page === "requests"
+                      ? `flex h-[50px] w-full my-auto pl-[60px] gap-5 bg-[${
+                          info && info.theme && info.theme.primary !== ""
+                            ? info.theme.primary
+                            : "#295141"
+                        }] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[${
+                          info &&
+                          info.theme &&
+                          info.theme.gradient &&
+                          info.theme.gradient.start !== ""
+                            ? info.theme.gradient.start
+                            : "#295141"
+                        }] to-[${
+                          info &&
+                          info.theme &&
+                          info.theme.gradient &&
+                          info.theme.gradient.end !== ""
+                            ? info.theme.gradient.end
+                            : "#408D51"
+                        }]`
+                      : `flex h-[50px] w-full my-auto pl-[60px] gap-5 text-[${
+                          info && info.theme && info.theme.primary !== ""
+                            ? info.theme.primary
+                            : "#295141"
+                        }] transition-all ease-in-out hover:bg-gradient-to-r from-[${
+                          info &&
+                          info.theme &&
+                          info.theme.gradient &&
+                          info.theme.gradient.start !== ""
+                            ? info.theme.gradient.start
+                            : "#295141"
+                        }] to-[${
+                          info &&
+                          info.theme &&
+                          info.theme.gradient &&
+                          info.theme.gradient.end !== ""
+                            ? info.theme.gradient.end
+                            : "#408D51"
+                        }] hover:text-custom-gold`
                   }
                 >
                   {" "}
@@ -281,13 +498,50 @@ const Sidebar = () => {
                 onClick={() => {
                   window.innerWidth >= 320 && window.innerWidth <= 1023
                     ? document
-                      .getQuerySelector("[data-hs-overlay-backdrop-template]")
-                      .remove()
+                        .getQuerySelector("[data-hs-overlay-backdrop-template]")
+                        .remove()
                     : null;
                 }}
                 className={
-                  page === "inquiries" ? `flex h-[50px] w-full my-auto pl-[30px] gap-5 bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}]`
-                    : `flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}] hover:text-custom-gold`
+                  page === "inquiries"
+                    ? `flex h-[50px] w-full my-auto pl-[30px] gap-5 bg-[${
+                        info && info.theme && info.theme.primary !== ""
+                          ? info.theme.primary
+                          : "#295141"
+                      }] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[${
+                        info &&
+                        info.theme &&
+                        info.theme.gradient &&
+                        info.theme.gradient.start !== ""
+                          ? info.theme.gradient.start
+                          : "#295141"
+                      }] to-[${
+                        info &&
+                        info.theme &&
+                        info.theme.gradient &&
+                        info.theme.gradient.end !== ""
+                          ? info.theme.gradient.end
+                          : "#408D51"
+                      }]`
+                    : `flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[${
+                        info && info.theme && info.theme.primary !== ""
+                          ? info.theme.primary
+                          : "#295141"
+                      }] transition-all ease-in-out hover:bg-gradient-to-r from-[${
+                        info &&
+                        info.theme &&
+                        info.theme.gradient &&
+                        info.theme.gradient.start !== ""
+                          ? info.theme.gradient.start
+                          : "#295141"
+                      }] to-[${
+                        info &&
+                        info.theme &&
+                        info.theme.gradient &&
+                        info.theme.gradient.end !== ""
+                          ? info.theme.gradient.end
+                          : "#408D51"
+                      }] hover:text-custom-gold`
                 }
               >
                 {" "}
@@ -304,19 +558,56 @@ const Sidebar = () => {
                 onClick={() => {
                   window.innerWidth >= 320 && window.innerWidth <= 1023
                     ? document
-                      .getQuerySelector("[data-hs-overlay-backdrop-template]")
-                      .remove()
+                        .getQuerySelector("[data-hs-overlay-backdrop-template]")
+                        .remove()
                     : null;
                 }}
                 className={
-                  page === "blotter" ? `flex h-[50px] w-full my-auto pl-[30px] gap-5 bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}]`
-                    : `flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}] hover:text-custom-gold`
+                  page === "blotter"
+                    ? `flex h-[50px] w-full my-auto pl-[30px] gap-5 bg-[${
+                        info && info.theme && info.theme.primary !== ""
+                          ? info.theme.primary
+                          : "#295141"
+                      }] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[${
+                        info &&
+                        info.theme &&
+                        info.theme.gradient &&
+                        info.theme.gradient.start !== ""
+                          ? info.theme.gradient.start
+                          : "#295141"
+                      }] to-[${
+                        info &&
+                        info.theme &&
+                        info.theme.gradient &&
+                        info.theme.gradient.end !== ""
+                          ? info.theme.gradient.end
+                          : "#408D51"
+                      }]`
+                    : `flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[${
+                        info && info.theme && info.theme.primary !== ""
+                          ? info.theme.primary
+                          : "#295141"
+                      }] transition-all ease-in-out hover:bg-gradient-to-r from-[${
+                        info &&
+                        info.theme &&
+                        info.theme.gradient &&
+                        info.theme.gradient.start !== ""
+                          ? info.theme.gradient.start
+                          : "#295141"
+                      }] to-[${
+                        info &&
+                        info.theme &&
+                        info.theme.gradient &&
+                        info.theme.gradient.end !== ""
+                          ? info.theme.gradient.end
+                          : "#408D51"
+                      }] hover:text-custom-gold`
                 }
               >
                 {" "}
                 <FaPeopleArrows className="my-auto" size={"15px"} />
                 <h1 className="text-bold my-auto font-bold text-sm">
-                  BLOTTER RECORDS
+                  PATAWAG RECORDS
                 </h1>
               </Link>
               <Link
@@ -327,13 +618,50 @@ const Sidebar = () => {
                 onClick={() => {
                   window.innerWidth >= 320 && window.innerWidth <= 1023
                     ? document
-                      .getQuerySelector("[data-hs-overlay-backdrop-template]")
-                      .remove()
+                        .getQuerySelector("[data-hs-overlay-backdrop-template]")
+                        .remove()
                     : null;
                 }}
                 className={
-                  page === "barangay-info" ? `flex h-[50px] w-full my-auto pl-[30px] gap-5 bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}]`
-                    : `flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}] hover:text-custom-gold`
+                  page === "barangay-info"
+                    ? `flex h-[50px] w-full my-auto pl-[30px] gap-5 bg-[${
+                        info && info.theme && info.theme.primary !== ""
+                          ? info.theme.primary
+                          : "#295141"
+                      }] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[${
+                        info &&
+                        info.theme &&
+                        info.theme.gradient &&
+                        info.theme.gradient.start !== ""
+                          ? info.theme.gradient.start
+                          : "#295141"
+                      }] to-[${
+                        info &&
+                        info.theme &&
+                        info.theme.gradient &&
+                        info.theme.gradient.end !== ""
+                          ? info.theme.gradient.end
+                          : "#408D51"
+                      }]`
+                    : `flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[${
+                        info && info.theme && info.theme.primary !== ""
+                          ? info.theme.primary
+                          : "#295141"
+                      }] transition-all ease-in-out hover:bg-gradient-to-r from-[${
+                        info &&
+                        info.theme &&
+                        info.theme.gradient &&
+                        info.theme.gradient.start !== ""
+                          ? info.theme.gradient.start
+                          : "#295141"
+                      }] to-[${
+                        info &&
+                        info.theme &&
+                        info.theme.gradient &&
+                        info.theme.gradient.end !== ""
+                          ? info.theme.gradient.end
+                          : "#408D51"
+                      }] hover:text-custom-gold`
                 }
               >
                 {" "}
@@ -350,14 +678,52 @@ const Sidebar = () => {
                 onClick={() => {
                   window.innerWidth >= 320 && window.innerWidth <= 1023
                     ? document
-                      .getQuerySelector("[data-hs-overlay-backdrop-template]")
-                      .remove()
+                        .getQuerySelector("[data-hs-overlay-backdrop-template]")
+                        .remove()
                     : null;
                 }}
                 className={
-                  page === "settings" ? `flex h-[50px] w-full my-auto pl-[30px] gap-5 bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}]`
-                    : `flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] transition-all ease-in-out hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}] hover:text-custom-gold`
-                }              >
+                  page === "settings"
+                    ? `flex h-[50px] w-full my-auto pl-[30px] gap-5 bg-[${
+                        info && info.theme && info.theme.primary !== ""
+                          ? info.theme.primary
+                          : "#295141"
+                      }] text-custom-gold transition-all ease-in-out hover:bg-gradient-to-r from-[${
+                        info &&
+                        info.theme &&
+                        info.theme.gradient &&
+                        info.theme.gradient.start !== ""
+                          ? info.theme.gradient.start
+                          : "#295141"
+                      }] to-[${
+                        info &&
+                        info.theme &&
+                        info.theme.gradient &&
+                        info.theme.gradient.end !== ""
+                          ? info.theme.gradient.end
+                          : "#408D51"
+                      }]`
+                    : `flex h-[50px] w-full my-auto pl-[30px] gap-5 text-[${
+                        info && info.theme && info.theme.primary !== ""
+                          ? info.theme.primary
+                          : "#295141"
+                      }] transition-all ease-in-out hover:bg-gradient-to-r from-[${
+                        info &&
+                        info.theme &&
+                        info.theme.gradient &&
+                        info.theme.gradient.start !== ""
+                          ? info.theme.gradient.start
+                          : "#295141"
+                      }] to-[${
+                        info &&
+                        info.theme &&
+                        info.theme.gradient &&
+                        info.theme.gradient.end !== ""
+                          ? info.theme.gradient.end
+                          : "#408D51"
+                      }] hover:text-custom-gold`
+                }
+              >
                 <FaUserAlt className="my-auto" size={"15px"} />
                 <h1 className="text-bold my-auto font-bold text-sm">ACCOUNT</h1>
               </Link>
@@ -367,7 +733,21 @@ const Sidebar = () => {
           {/* PROFILE DROP DOWN */}
 
           <div
-            className={`hs-dropdown sm:flex md:hidden w-full bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}] h-[90px]`}
+            className={`hs-dropdown sm:flex md:hidden w-full bg-gradient-to-r from-[${
+              info &&
+              info.theme &&
+              info.theme.gradient &&
+              info.theme.gradient.start !== ""
+                ? info.theme.gradient.start
+                : "#295141"
+            }] to-[${
+              info &&
+              info.theme &&
+              info.theme.gradient &&
+              info.theme.gradient.end !== ""
+                ? info.theme.gradient.end
+                : "#408D51"
+            }] h-[90px]`}
           >
             <div
               id="hs-dropdown-profile"
@@ -404,11 +784,25 @@ const Sidebar = () => {
                 onClick={() => {
                   window.innerWidth >= 320 && window.innerWidth <= 1023
                     ? document
-                      .getQuerySelector("[data-hs-overlay-backdrop-template]")
-                      .remove()
+                        .getQuerySelector("[data-hs-overlay-backdrop-template]")
+                        .remove()
                     : null;
                 }}
-                className={`flex items-center w-full gap-x-3.5 py-2 px-3 rounded-md text-sm hover:text-custom-gold1 text-gray-800 hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}] focus:ring-2 focus:ring-blue-500 `}
+                className={`flex items-center w-full gap-x-3.5 py-2 px-3 rounded-md text-sm hover:text-custom-gold1 text-gray-800 hover:bg-gradient-to-r from-[${
+                  info &&
+                  info.theme &&
+                  info.theme.gradient &&
+                  info.theme.gradient.start !== ""
+                    ? info.theme.gradient.start
+                    : "#295141"
+                }] to-[${
+                  info &&
+                  info.theme &&
+                  info.theme.gradient &&
+                  info.theme.gradient.end !== ""
+                    ? info.theme.gradient.end
+                    : "#408D51"
+                }] focus:ring-2 focus:ring-blue-500 `}
               >
                 Profile
               </Link>
@@ -417,11 +811,25 @@ const Sidebar = () => {
                 onClick={() => {
                   window.innerWidth >= 320 && window.innerWidth <= 1023
                     ? document
-                      .getQuerySelector("[data-hs-overlay-backdrop-template]")
-                      .remove()
+                        .getQuerySelector("[data-hs-overlay-backdrop-template]")
+                        .remove()
                     : null;
                 }}
-                className={`flex items-center w-full gap-x-3.5 py-2 px-3 rounded-md text-sm hover:text-custom-gold1 text-gray-800 hover:bg-gradient-to-r from-[${info && info.theme && info.theme.gradient && info.theme.gradient.start !== "" ? info.theme.gradient.start : "#295141"}] to-[${info && info.theme && info.theme.gradient && info.theme.gradient.end !== "" ? info.theme.gradient.end : "#408D51"}] focus:ring-2 focus:ring-blue-500 `}
+                className={`flex items-center w-full gap-x-3.5 py-2 px-3 rounded-md text-sm hover:text-custom-gold1 text-gray-800 hover:bg-gradient-to-r from-[${
+                  info &&
+                  info.theme &&
+                  info.theme.gradient &&
+                  info.theme.gradient.start !== ""
+                    ? info.theme.gradient.start
+                    : "#295141"
+                }] to-[${
+                  info &&
+                  info.theme &&
+                  info.theme.gradient &&
+                  info.theme.gradient.end !== ""
+                    ? info.theme.gradient.end
+                    : "#408D51"
+                }] focus:ring-2 focus:ring-blue-500 `}
               >
                 Sign-Out
               </Link>
