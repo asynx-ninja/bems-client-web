@@ -35,7 +35,7 @@ const ViewEventModal = ({ viewEvent }) => {
   const [updatingStatus, setUpdatingStatus] = useState(null);
   const [errMsg, setErrMsg] = useState(false);
 
-  // console.log(viewEvent)
+  // console.log(viewEvent);
 
   useEffect(() => {
     setFiles(viewEvent.length === 0 ? [] : viewEvent.file);
@@ -283,75 +283,92 @@ const ViewEventModal = ({ viewEvent }) => {
                 <div className="flex flex-col p-2">
                   <form>
                     {!viewEvent.response || viewEvent.response.length === 0 ? (
-                      <div className="flex flex-col items-center">
-                        {errMsg ? (
-                          <div className="w-[100%] bg-red-500 rounded-md mb-[10px] flex">
-                            <p className="py-[10px] text-[12px] px-[20px] text-white font-medium">
-                              Please enter a message or insert a file!
-                            </p>
-                          </div>
-                        ) : null}
-                        <div className="relative w-full mt-4 mx-2">
-                          <div className="relative w-full">
-                            <textarea
-                              id="message"
-                              name="message"
-                              onChange={handleChange}
-                              className="p-4 pb-12 block w-full border-gray-200 rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none border"
-                              placeholder="Input response..."
-                            ></textarea>
+                      viewEvent.status === "Cancelled" ||
+                      viewEvent.status === "Rejected" ? (
+                        <div>
+                          <p className="text-center text-[14px]">
+                            You are unable to reply to this conversation due to
+                            the status of your Application is on{" "}
+                            <b
+                              className={`font-medium text-${setColor(
+                                viewEvent.status
+                              )}`}
+                            >
+                              {viewEvent.status}
+                            </b>
+                          </p>
+                        </div>
+                      ) : (
+                        <div className={"flex flex-col items-center"}>
+                          {errMsg ? (
+                            <div className="w-[100%] bg-red-500 rounded-md mb-[10px] flex">
+                              <p className="py-[10px] text-[12px] px-[20px] text-white font-medium">
+                                Please enter a message or insert a file!
+                              </p>
+                            </div>
+                          ) : null}
+                          <div className="relative w-full mt-4 mx-2">
+                            <div className="relative w-full">
+                              <textarea
+                                id="message"
+                                name="message"
+                                onChange={handleChange}
+                                className="p-4 pb-12 block w-full border-gray-200 rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none border"
+                                placeholder="Input response..."
+                              ></textarea>
 
-                            <div className="absolute bottom-px inset-x-px p-2 rounded-b-md bg-white">
-                              <div className="flex justify-between items-center">
-                                <div className="flex items-center">
-                                  <input
-                                    type="file"
-                                    name="file"
-                                    onChange={(e) => handleFileChange(e)}
-                                    ref={fileInputRef}
-                                    accept=".xlsx,.xls,.doc,.docx,.ppt,.pptx,.txt,.pdf"
-                                    multiple="multiple"
-                                    className="hidden"
-                                  />
-                                  <button
-                                    id="button"
-                                    onClick={handleAdd || handleOnUpload}
-                                    className="mt-2 rounded-xl px-3 py-1 hover:bg-gray-300 focus:shadow-outline focus:outline-none"
-                                  >
-                                    <IoIosAttach size={24} />
-                                  </button>
-                                </div>
-
-                                <div className="flex items-center gap-x-1">
-                                  <button
-                                    type="submit"
-                                    onClick={handleOnSend}
-                                    className="inline-flex flex-shrink-0 justify-center items-center w-28 rounded-lg text-white py-1 px-6 gap-2 bg-cyan-700"
-                                  >
-                                    <span>SEND</span>
-                                    <IoSend
-                                      size={18}
-                                      className="flex-shrink-0"
+                              <div className="absolute bottom-px inset-x-px p-2 rounded-b-md bg-white">
+                                <div className="flex justify-between items-center">
+                                  <div className="flex items-center">
+                                    <input
+                                      type="file"
+                                      name="file"
+                                      onChange={(e) => handleFileChange(e)}
+                                      ref={fileInputRef}
+                                      accept=".xlsx,.xls,.doc,.docx,.ppt,.pptx,.txt,.pdf"
+                                      multiple="multiple"
+                                      className="hidden"
                                     />
-                                  </button>
+                                    <button
+                                      id="button"
+                                      onClick={handleAdd || handleOnUpload}
+                                      className="mt-2 rounded-xl px-3 py-1 hover:bg-gray-300 focus:shadow-outline focus:outline-none"
+                                    >
+                                      <IoIosAttach size={24} />
+                                    </button>
+                                  </div>
+
+                                  <div className="flex items-center gap-x-1">
+                                    <button
+                                      type="submit"
+                                      onClick={handleOnSend}
+                                      className="inline-flex flex-shrink-0 justify-center items-center w-28 rounded-lg text-white py-1 px-6 gap-2 bg-cyan-700"
+                                    >
+                                      <span>SEND</span>
+                                      <IoSend
+                                        size={18}
+                                        className="flex-shrink-0"
+                                      />
+                                    </button>
+                                  </div>
                                 </div>
                               </div>
                             </div>
+                            {upload ? (
+                              // Render Dropbox only when there are uploaded files
+                              createFiles.length > 0 && (
+                                <Dropbox
+                                  createFiles={createFiles}
+                                  setCreateFiles={setCreateFiles}
+                                  handleFileChange={handleFileChange}
+                                />
+                              )
+                            ) : (
+                              <div></div>
+                            )}
                           </div>
-                          {upload ? (
-                            // Render Dropbox only when there are uploaded files
-                            createFiles.length > 0 && (
-                              <Dropbox
-                                createFiles={createFiles}
-                                setCreateFiles={setCreateFiles}
-                                handleFileChange={handleFileChange}
-                              />
-                            )
-                          ) : (
-                            <div></div>
-                          )}
                         </div>
-                      </div>
+                      )
                     ) : null}
                     {viewEvent &&
                       viewEvent.response &&
@@ -402,9 +419,30 @@ const ViewEventModal = ({ viewEvent }) => {
                           </div>
                           {index === viewEvent.response.length - 1 ? (
                             <div className="flex flex-row items-center w-full">
+                              {viewEvent.status === "Cancelled" ||
+                              viewEvent.status === "Rejected" ? (
+                                <div>
+                                  <p className="text-center text-[14px]">
+                                    You are unable to reply to this conversation
+                                    due to the status of your Application is on{" "}
+                                    <b
+                                      className={`font-medium text-${setColor(
+                                        viewEvent.status
+                                      )}`}
+                                    >
+                                      {viewEvent.status}
+                                    </b>
+                                  </p>
+                                </div>
+                              ) : null}
                               <button
                                 type="button"
-                                className="h-8 w-full lg:w-32 py-1 px-2 gap-2 mt-4 rounded-full borde text-sm font-base bg-custom-green-header text-white shadow-sm"
+                                className={
+                                  viewEvent.status === "Cancelled" ||
+                                  viewEvent.status === "Rejected"
+                                    ? "hidden"
+                                    : "h-8 w-full lg:w-32 py-1 px-2 gap-2 mt-4 rounded-full borde text-sm font-base bg-custom-green-header text-white shadow-sm"
+                                }
                                 onClick={handleOnReply}
                                 hidden={reply}
                               >
