@@ -9,23 +9,23 @@ import axios from "axios";
 const Changepass = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const client_email = atob(location.pathname.split("/")[2])
+  const client_email = atob(location.pathname.split("/")[2]);
   const [passwordStrengthError, setPasswordStrengthError] = useState(false);
   const [passwordStrengthSuccess, setPasswordStrengthSuccess] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [password, setPassword] = useState({
     enter: "",
-    reenter: ""
-  })
+    reenter: "",
+  });
   const [response, setResponse] = useState({
     success: false,
     error: false,
-    message: ""
+    message: "",
   });
   const [credential, setCredential] = useState({
     email: "",
-    password: ""
-  })
+    password: "",
+  });
   const [passwordShown, setPasswordShown] = useState(false);
   const [repasswordShown, setRePasswordShown] = useState(false);
   const togglePassword = () => {
@@ -38,12 +38,12 @@ const Changepass = () => {
   const handleOnChange = (e) => {
     setPassword((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value
-    }))
+      [e.target.name]: e.target.value,
+    }));
     setCredential({
       email: client_email,
-      password: password.enter
-    })
+      password: password.enter,
+    });
 
     if (e.target.name === "enter") {
       const password = e.target.value;
@@ -65,44 +65,44 @@ const Changepass = () => {
       if (/\d/.test(password)) strength++;
       setPasswordStrength(strength * 25);
     }
-  }
+  };
 
   const handleOnSubmit = async (e) => {
-    e.preventDefault()
-    
+    e.preventDefault();
+
     try {
       if (password.enter !== password.reenter) {
         setResponse({
           success: false,
           error: true,
-          message: "Password does not Match! Please Try Again"
-        })
+          message: "Password does not Match! Please Try Again",
+        });
       } else {
         await axios.patch(`${API_LINK}/auth/pass/`, credential, {
           headers: {
-            'Content-Type': 'application/json',
-          }
-        })
+            "Content-Type": "application/json",
+          },
+        });
 
         setResponse({
           success: true,
           error: false,
-          message: "Password Change Successfully!"
-        })
+          message: "Password Change Successfully!",
+        });
 
         setTimeout(() => {
-          navigate('/login')
-        }, 3000)
+          navigate("/login");
+        }, 3000);
       }
     } catch (error) {
       setResponse({
         success: false,
         error: true,
-        message: "Error: Please Try Again"
-      })
-      console.log(error)
+        message: "Error: Please Try Again",
+      });
+      console.log(error);
     }
-  }
+  };
 
   return (
     <div className="flex flex-col-reverse md:flex-row-reverse">
@@ -154,7 +154,10 @@ const Changepass = () => {
                 Immerse yourself in the rich culture and stunning landscapes of
                 our city.
               </p>
-              <Link to="/#" className="bg-white text-green-700 px-6 py-2 rounded-lg font-bold">
+              <Link
+                to="/#"
+                className="bg-white text-green-700 px-6 py-2 rounded-lg font-bold"
+              >
                 Discover More
               </Link>
             </div>
@@ -174,7 +177,7 @@ const Changepass = () => {
           </h1>
         </div>
         <div
-          className="w-9/12 md:w-8/12 lg:w-8/12 bg-green-400 border rounded-md   dark:border-red-700"
+          className="w-9/12 md:w-8/12 lg:w-8/12 bg-green-400 border rounded-md"
           role="alert"
         >
           <div className="flex p-2">
@@ -191,28 +194,29 @@ const Changepass = () => {
               </svg>
             </div>
             <div className="ml-3">
-              <p className="text-xs text-black dark:text-gray-400 ">
-                Finally, you have successfully verified your account. Please now change your password
+              <p className="text-xs text-black">
+                Finally, you have successfully verified your account. Please now
+                change your password
               </p>
             </div>
           </div>
         </div>
 
         <div>
-          {
-            response.success ? (
-              <div className="w-[100%] bg-green-400 rounded-md mt-[10px] flex">
-                <p className="py-[10px] text-[12px] px-[20px] text-white font-medium">{response.message}</p>
-              </div>
-            ) : null
-          }
-          {
-            response.error ? (
-              <div className="w-[100%] bg-red-500 rounded-md mt-[10px] flex">
-                <p className="py-[10px] text-[12px] px-[20px] text-white font-medium">{response.message}</p>
-              </div>
-            ) : null
-          }
+          {response.success ? (
+            <div className="w-[100%] bg-green-400 rounded-md mt-[10px] flex">
+              <p className="py-[10px] text-[12px] px-[20px] text-white font-medium">
+                {response.message}
+              </p>
+            </div>
+          ) : null}
+          {response.error ? (
+            <div className="w-[100%] bg-red-500 rounded-md mt-[10px] flex">
+              <p className="py-[10px] text-[12px] px-[20px] text-white font-medium">
+                {response.message}
+              </p>
+            </div>
+          ) : null}
         </div>
 
         <form action="" className="sm:w-[80%] mt-5 md:w-8/12 lg:w-8/12">
@@ -272,18 +276,19 @@ const Changepass = () => {
           </div>
           <div>
             {password.enter && (
-              <div className="flex w-full h-1.5 bg-gray-200 rounded-full overflow-hidden dark:bg-gray-700">
+              <div className="flex w-full h-1.5 bg-gray-200 rounded-full overflow-hidden">
                 <div
-                  className={`flex flex-col justify-center overflow-hidden ${passwordStrength < 25
+                  className={`flex flex-col justify-center overflow-hidden ${
+                    passwordStrength < 25
                       ? "bg-red-500"
                       : passwordStrength < 50
-                        ? "bg-yellow-500"
-                        : passwordStrength < 75
-                          ? "bg-amber-500"
-                          : passwordStrength < 100
-                            ? "bg-blue-500"
-                            : "bg-green-500"
-                    }`}
+                      ? "bg-yellow-500"
+                      : passwordStrength < 75
+                      ? "bg-amber-500"
+                      : passwordStrength < 100
+                      ? "bg-blue-500"
+                      : "bg-green-500"
+                  }`}
                   role="progressbar"
                   style={{ width: `${passwordStrength}%` }}
                   aria-valuenow={passwordStrength}
@@ -306,16 +311,16 @@ const Changepass = () => {
                 className="bg-orange-50 border border-orange-200 text-sm text-orange-600 rounded-md p-4 mt-2"
                 role="alert"
               >
-                <span className="font-bold">Warning:</span> Password must contain
-                at least 8 characters, one uppercase letter, one lowercase letter,
-                one number, and one special character
+                <span className="font-bold">Warning:</span> Password must
+                contain at least 8 characters, one uppercase letter, one
+                lowercase letter, one number, and one special character
               </div>
             )}
           </div>
           <button
             type="submit"
             onClick={handleOnSubmit}
-            className="w-full text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-green-700 dark:hover:bg-green-800 dark:focus:ring-gray-700 dark:border-gray-700"
+            className="w-full text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2"
           >
             Submit
           </button>

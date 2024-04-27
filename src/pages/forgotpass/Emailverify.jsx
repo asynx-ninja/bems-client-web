@@ -152,7 +152,7 @@ const Emailverify = () => {
           <div className="relative z-0 w-full mb-3 group">
             <label
               htmlFor="input-label"
-              className="block text-sm font-medium mb-2 dark:text-black"
+              className="block text-sm font-medium mb-2"
             >
               Email
             </label>
@@ -169,7 +169,7 @@ const Emailverify = () => {
           <button
             type="submit"
             onClick={handleOnSubmit}
-            className="w-full text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-green-700 dark:hover:bg-green-800 dark:focus:ring-gray-700 dark:border-gray-700"
+            className="w-full text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2"
           >
             Submit
           </button>

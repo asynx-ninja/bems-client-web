@@ -168,7 +168,7 @@ const Codeverfiy = () => {
         </div>
         <h1 className="font-bold text-2xl py-4">Security PIN</h1>
         <div
-          className="sm:w-[80%] md:w-8/12 lg:w-8/12 bg-red-400 border rounded-md   dark:border-red-700"
+          className="sm:w-[80%] md:w-8/12 lg:w-8/12 bg-red-400 border rounded-md"
           role="alert"
         >
           <div className="flex p-2">
@@ -185,7 +185,7 @@ const Codeverfiy = () => {
               </svg>
             </div>
             <div className="ml-3">
-              <p className="text-xs text-black dark:text-gray-400 ">
+              <p className="text-xs text-black">
                 Note: Please check the verifcation code that sent through your email and input it to the input field below.
               </p>
             </div>
@@ -219,7 +219,7 @@ const Codeverfiy = () => {
                   value={code.charAt(index)}
                   onChange={(event) => handleOnChange(event, index)}
                   onKeyUp={(e) => handleBackspaceAndEnter(e, index)}
-                  className="no-arrow text-lg md:text-2xl lg:text-2xl text-center font-bold h-[90px] rounded-lg block py-2.5 px-0 w-full text-gray-900 bg-transparent border-2 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-green-600 peer"
+                  className="no-arrow text-lg md:text-2xl lg:text-2xl text-center font-bold h-[90px] rounded-lg block py-2.5 px-0 w-full text-gray-900 bg-transparent border-2 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-green-600 peer"
                   placeholder=" "
                   required
                 />
@@ -229,7 +229,7 @@ const Codeverfiy = () => {
           <button
             type="submit"
             onClick={handleOnSubmit}
-            className="w-full text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-green-700 dark:hover:bg-green-800 dark:focus:ring-gray-700 dark:border-gray-700"
+            className="w-full text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2"
           >
             Submit
           </button>
