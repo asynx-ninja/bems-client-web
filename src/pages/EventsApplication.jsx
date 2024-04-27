@@ -10,6 +10,7 @@ import { useSearchParams } from "react-router-dom";
 // COMPONENTS
 import ViewEventModal from "../components/articles/eventsapplication/modals/ViewEventModal";
 import EventsApplicationList from "../components/articles/eventsapplication/EventsApplicationList";
+import CancelEventApplicationModal from "../components/articles/eventsapplication/modals/CancelEventApplicationModal";
 import no_data from "../assets/image/no-data.png";
 
 const EventsApplication = () => {
@@ -293,6 +294,7 @@ const EventsApplication = () => {
         </div>
       </div>
       <ViewEventModal viewEvent={viewEvent} />
+      <CancelEventApplicationModal viewEvent={viewEvent} />
     </div>
   );
 };

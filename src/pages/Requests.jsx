@@ -10,6 +10,7 @@ import { useSearchParams } from "react-router-dom";
 
 // COMPONENTS
 import ViewRequestModal from "../components/requests/modals/ViewRequestModal";
+import CancelRequestModal from "../components/requests/modals/CancelRequestModal";
 import RequestList from "../components/requests/RequestList";
 import no_data from "../assets/image/no-data.png";
 
@@ -310,6 +311,7 @@ const Requests = () => {
         </div>
       </div>
       <ViewRequestModal viewRequest={viewRequest} />
+      <CancelRequestModal viewRequest={viewRequest} />
     </div>
   );
 };

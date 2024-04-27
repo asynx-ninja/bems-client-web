@@ -1,5 +1,5 @@
 import { AiOutlineEye } from "react-icons/ai";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaTimes } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 
 const EventsApplicationList = ({ events, setViewEvent }) => {
@@ -106,6 +106,26 @@ const EventsApplicationList = ({ events, setViewEvent }) => {
               role="tooltip"
             >
               View Event
+            </span>
+          </div>
+          <div
+            className={
+              item.status !== "Pending" ? "hidden" : "hs-tooltip inline-block"
+            }
+          >
+            <button
+              type="button"
+              data-hs-overlay="#hs-cancelEvent-modal"
+              onClick={() => handleView({ ...item })}
+              className="hs-tooltip-toggle text-white bg-red-800  font-medium text-xs px-2 py-2 inline-flex items-center rounded-lg"
+            >
+              <FaTimes size={24} style={{ color: "#ffffff" }} />
+            </button>
+            <span
+              className="sm:hidden md:block hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-20 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded-md shadow-sm "
+              role="tooltip"
+            >
+              Cancel Request
             </span>
           </div>
         </div>
