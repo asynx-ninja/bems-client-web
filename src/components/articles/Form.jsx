@@ -39,7 +39,9 @@ const Form = ({ announcement }) => {
         setInfo(brgyinfo.data[0]);
 
         const event_response = await axios.get(
-          `${API_LINK}/event_form/check/?brgy=${brgy}&event_id=${event_id}`
+          `${API_LINK}/event_form/check/?brgy=${
+            announcement.brgy !== brgy ? "MUNISIPYO" : brgy
+          }&event_id=${event_id}`
         );
 
         if (event_response.data.length === 0) {
