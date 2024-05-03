@@ -20,21 +20,27 @@ const Articles = () => {
     const fetchEvents = async () => {
       try {
         const res = await axios.get(
-          `${API_LINK}/announcement/all/?brgy=${brgy}&page=${page}`
+          `${API_LINK}/announcement/search/?brgy=${brgy}`
         );
 
         const filtered = res.data.result.find(
           (announcement) => announcement.event_id === event_id
         );
 
-        setAnnouncement(filtered);
+        // console.log(filtered);
 
-        var logo = document.getElementById("logo");
-        logo.src =
-          filtered.collections.logo.link !== ""
-            ? filtered.collections.logo.link
-            : defaultLogo;
+        if (!filtered) {
+          const res = await axios.get(
+            `${API_LINK}/announcement/search/?brgy=${"MUNISIPYO"}`
+          );
 
+          const filtered = res.data.result.find(
+            (announcement) => announcement.event_id === event_id
+          );
+          setAnnouncement(filtered);
+        } else {
+          setAnnouncement(filtered);
+        }
       } catch (err) {
         console.log(err);
       }
@@ -46,19 +52,6 @@ const Articles = () => {
 
   return (
     <div className="w-full flex flex-col">
-      {/* <div>
-        <div className="relative h-[250px] w-full object-cover">
-          <video className="h-full w-full object-cover" autoPlay muted loop>
-            <source src={video} type="video/mp4" />
-          </video>
-          <div
-            className="absolute inset-0 bg-black opacity-50"
-            style={{
-              content: "''",
-            }}
-          />
-        </div>
-      </div> */}
       {/* CONTENTS */}
       <div className="flex flex-col">
         <div>

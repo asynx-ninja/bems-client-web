@@ -32,44 +32,53 @@ const Form = ({ announcement }) => {
   const [isNotVerified, setIsNotVerified] = useState(false);
   const [info, setInfo] = useState({});
 
+  // console.log(announcement);
+
   useEffect(() => {
+    const checkForm = async (item) => {
+      const event_form = item;
+
+      event_form.form[0] = Object.fromEntries(
+        Object.entries(event_form.form[0]).filter(
+          ([key, value]) => value.checked === true
+        )
+      );
+
+      const getUser = await axios.get(`${API_LINK}/users/specific/${id}`);
+
+      setUserData(getUser.data[0]);
+      setIsNotVerified(
+        getUser.data[0].isApproved !== "Verified" ? true : false
+      );
+
+      event_form.form[0].user_id.value = getUser.data[0].user_id;
+
+      setDetail(event_form);
+    };
     const fetchForms = async () => {
       try {
         const brgyinfo = await axios.get(`${API_LINK}/brgyinfo/?brgy=${brgy}`);
         setInfo(brgyinfo.data[0]);
 
         const event_response = await axios.get(
-          `${API_LINK}/event_form/check/?brgy=${
-            announcement.brgy !== brgy ? "MUNISIPYO" : brgy
-          }&event_id=${event_id}`
+          `${API_LINK}/event_form/check/?brgy=${brgy}&event_id=${event_id}`
         );
 
         if (event_response.data.length === 0) {
-          setNoForm(true);
+          const event_response = await axios.get(
+            `${API_LINK}/event_form/check/?brgy=${"MUNISIPYO"}&event_id=${event_id}`
+          );
+
+          if (event_response.data.length === 0) {
+            setNoForm(true);
+          } else {
+            setNoForm(false);
+          }
+          checkForm(event_response.data[0]);
         } else {
           setNoForm(false);
+          checkForm(event_response.data[0]);
         }
-
-        const event_form = event_response.data[0];
-
-        event_form.form[0] = Object.fromEntries(
-          Object.entries(event_form.form[0]).filter(
-            ([key, value]) => value.checked === true
-          )
-        );
-
-        const getUser = await axios.get(`${API_LINK}/users/specific/${id}`);
-
-        setUserData(getUser.data[0]);
-        setIsNotVerified(
-          getUser.data[0].isApproved !== "Verified" ? true : false
-        );
-
-        event_form.form[0].user_id.value = getUser.data[0].user_id;
-
-        // console.log(event_form.length)
-
-        setDetail(event_form);
       } catch (error) {
         console.log(error);
       }
@@ -78,9 +87,8 @@ const Form = ({ announcement }) => {
     };
 
     fetchForms();
-  }, [event_id]);
+  }, [event_id, brgy]);
 
-  // console.log(event_id)
   // console.log("event", detail);
 
   const checkEmptyFields = () => {
