@@ -48,9 +48,9 @@ const About = () => {
                     <h3 className="sm:text-4xl md:text-4xl font-medium text-black sm:text-center lg:text-left">
                       {item.title}
                     </h3>
-                    <p className="mt-4 sm:text-[14px] md:text-[18px] text-black sm:text-center lg:text-left">
+                    <div className="mt-4 sm:text-[14px] md:text-[18px] text-black sm:text-center lg:text-left">
                       {item.details}
-                    </p>
+                    </div>
                   </div>
                   <div className="w-0 md:w-0 lg:w-1/2 p-6 hidden sm:hidden lg:block">
                     <div className="h-64  rounded-md">
@@ -78,9 +78,9 @@ const About = () => {
                     <h3 className="sm:text-4xl md:text-4xl font-medium text-black sm:text-center lg:text-left">
                       {item.title}
                     </h3>
-                    <p className="mt-4 sm:text-[14px] md:text-[18px] text-black sm:text-center lg:text-left">
+                    <div className="mt-4 sm:text-[14px] md:text-[18px] text-black sm:text-center lg:text-left">
                       {item.details}
-                    </p>
+                    </div>
                   </div>
                 </>
               )}
