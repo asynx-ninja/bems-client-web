@@ -16,7 +16,9 @@ import ComposeModal from "../../components/inquiriesComponents/inquiriesModals/C
 import InquiriesList from "../../components/inquiriesComponents/InquiriesList";
 import video from "../../assets/image/video.mp4";
 import no_data from "../../assets/image/no-data.png";
+import { io } from 'socket.io-client'
 
+const socket = io(`http://localhost:8800`)
 const Inquiries = () => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -33,7 +35,7 @@ const Inquiries = () => {
   const [getAll, setGetAll] = useState([]);
   const [searchResult, setSearchResult] = useState(0);
   const [info, setInfo] = useState({});
-
+  const [update, setUpdate] = useState(false)
   useEffect(() => {
     document.title = "Inquiries | Barangay E-Services Management";
   }, []);
@@ -61,6 +63,7 @@ const Inquiries = () => {
         console.log(response.data);
 
         if (response.status === 200) {
+          setUpdate(false)
           setInquiries(
             response.data.result.sort(
               (date1, date2) =>
@@ -89,7 +92,7 @@ const Inquiries = () => {
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [user_id, brgy, SortByName, currentPage]);
+  }, [user_id, brgy, SortByName, currentPage, update]);
 
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected);
@@ -301,6 +304,7 @@ const Inquiries = () => {
                   <InquiriesList
                     inquiries={inquiries}
                     setInquiry={setInquiry}
+                    setUpdate={setUpdate}
                   />
                 )}
               </tbody>
@@ -337,7 +341,7 @@ const Inquiries = () => {
         </div>
       </div>
       <ComposeModal />
-      <ViewMessage inquiry={inquiry} setInquiry={setInquiry} />
+      <ViewMessage inquiry={inquiry} setInquiry={setInquiry} setUpdate={setUpdate} />
     </div>
   );
 };

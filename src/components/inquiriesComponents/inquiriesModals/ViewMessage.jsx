@@ -10,8 +10,10 @@ import ViewDropbox from "./ViewDropbox";
 import Preloader from "../../loaders/Preloader";
 import { useSearchParams } from "react-router-dom";
 import moment from "moment";
+import { io } from 'socket.io-client'
 
-const ViewMessage = ({ inquiry, setInquiry }) => {
+const socket = io(`http://localhost:8800`)
+const ViewMessage = ({ inquiry, setInquiry, setUpdate }) => {
   // console.log(inquiry.folder_id);
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get("id");
@@ -118,7 +120,7 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
 
   const handleOnSend = async (e) => {
     e.preventDefault();
-    console.log(newMessage);
+   
 
     if (newMessage.message === "" && createFiles.length === 0) {
       setErrMsg(true);
@@ -126,7 +128,9 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
       return;
     }
 
-    setSubmitClicked(true);
+   
+
+    // setSubmitClicked(true);
 
     try {
       const obj = {
@@ -135,6 +139,15 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
         date: newMessage.date,
         folder_id: inquiry.folder_id,
       };
+
+      if (inquiry.compose.to === 'Admin') {
+        socket.emit('send-muni_inquiry', obj);
+        console.log("muni", inquiry.compose.to)
+      } else {
+        socket.emit('send-staff_inquiry', obj);
+        console.log("staff", inquiry.compose.to)
+      }
+
       var formData = new FormData();
       formData.append("response", JSON.stringify(obj));
       for (let i = 0; i < createFiles.length; i++) {
@@ -194,13 +207,13 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
         });
 
         if (result.status === 200) {
-          setTimeout(() => {
-            setSubmitClicked(false);
-            setUpdatingStatus("success");
-            setTimeout(() => {
-              window.location.reload();
-            }, 3000);
-          }, 1000);
+          // setTimeout(() => {
+          //   setSubmitClicked(false);
+          //   setUpdatingStatus("success");
+          //   setTimeout(() => {
+          //     window.location.reload();
+          //   }, 3000);
+          // }, 1000);
         }
       } else {
         setSubmitClicked(false);
@@ -208,7 +221,7 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
         setError(error.message);
       }
 
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       console.log(error);
     }
@@ -553,6 +566,9 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
                     type="button"
                     className="h-[2.5rem] w-full py-1 px-6 gap-2 rounded-md borde text-sm font-base bg-pink-900 text-white shadow-sm"
                     data-hs-overlay="#hs-modal-viewInquiries"
+                    onClick={() => {
+                      setUpdate(true); // Set update to true
+                    }}
                   >
                     CLOSE
                   </button>

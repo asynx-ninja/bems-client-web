@@ -28,7 +28,7 @@ const EventsApplication = () => {
   const [searchResult, setSearchResult] = useState(0);
   const [getAll, setGetAll] = useState([]);
   const [info, setInfo] = useState({});
-
+  const [update, setUpdate] = useState(false)
   useEffect(() => {
     document.title = "Service Request | Barangay E-Services Management";
   }, []);
@@ -55,6 +55,7 @@ const EventsApplication = () => {
         // const getUser = await axios.get(`${API_LINK}/users/specific/${id}`);
 
         if (response.status === 200) {
+          setUpdate(false)
           setEvents(response.data.result);
           setPageCount(response.data.pageCount);
           setGetAll(response.data.all);
@@ -76,7 +77,7 @@ const EventsApplication = () => {
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [brgy, id, SortByName, currentPage]);
+  }, [brgy, id, SortByName, currentPage, update]);
 
   // console.log(getAll)
 
@@ -259,6 +260,7 @@ const EventsApplication = () => {
                   <EventsApplicationList
                     events={events}
                     setViewEvent={setViewEvent}
+                    setUpdate={setUpdate} 
                   />
                 )}
               </tbody>
@@ -293,8 +295,8 @@ const EventsApplication = () => {
           </div>
         </div>
       </div>
-      <ViewEventModal viewEvent={viewEvent} />
-      <CancelEventApplicationModal viewEvent={viewEvent} />
+      <ViewEventModal viewEvent={viewEvent} setUpdate={setUpdate}  />
+      <CancelEventApplicationModal viewEvent={viewEvent} setUpdate={setUpdate} />
     </div>
   );
 };

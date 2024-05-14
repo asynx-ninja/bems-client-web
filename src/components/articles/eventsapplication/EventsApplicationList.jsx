@@ -1,8 +1,10 @@
 import { AiOutlineEye } from "react-icons/ai";
 import { FaTimes } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
-
-const EventsApplicationList = ({ events, setViewEvent }) => {
+import { io } from 'socket.io-client'
+import { useEffect } from "react";
+const socket = io(`http://localhost:8800`)
+const EventsApplicationList = ({ events, setViewEvent, setUpdate }) => {
   const location = useLocation();
   const page = location.pathname.split("/")[1];
 
@@ -22,6 +24,23 @@ const EventsApplicationList = ({ events, setViewEvent }) => {
   const handleView = (item) => {
     setViewEvent(item);
   };
+
+  useEffect(() => {
+    const handleEventAppli = (event_appli) => {
+      setViewEvent((prevApplication = { response: [] }) => ({
+        ...prevApplication,
+        response: [...(prevApplication.response || []), event_appli], // Ensure prevApplication.response is an array
+      }));
+      setUpdate(true);
+    };
+  
+    socket.on('receive-event_appli', handleEventAppli);
+  
+    return () => {
+      socket.off('receive-event_appli', handleEventAppli);
+    };
+  }, [socket, setViewEvent]);
+  
 
   return Object.entries(events).map(([idx, item]) => (
     <tr key={idx} className="odd:bg-slate-100 text-center">
@@ -96,7 +115,10 @@ const EventsApplicationList = ({ events, setViewEvent }) => {
             <button
               type="button"
               data-hs-overlay="#hs-viewRequest-modal"
-              onClick={() => handleView({ ...item })}
+              onClick={() => {
+                handleView({ ...item }); // Call handleView function
+                setUpdate(true); // Set update to true
+              }}
               className="hs-tooltip-toggle text-white bg-teal-800  font-medium text-xs px-2 py-2 inline-flex items-center rounded-lg"
             >
               <AiOutlineEye size={24} style={{ color: "#ffffff" }} />
@@ -116,7 +138,7 @@ const EventsApplicationList = ({ events, setViewEvent }) => {
             <button
               type="button"
               data-hs-overlay="#hs-cancelEvent-modal"
-              onClick={() => handleView({ ...item })}
+              onClick={() => { handleView({ ...item }); setUpdate(true); }}
               className="hs-tooltip-toggle text-white bg-red-800  font-medium text-xs px-2 py-2 inline-flex items-center rounded-lg"
             >
               <FaTimes size={24} style={{ color: "#ffffff" }} />

@@ -13,9 +13,12 @@ import ViewDropbox from "./ViewDropbox";
 import Preloader from "../../../loaders/Preloader";
 import { useSearchParams } from "react-router-dom";
 import moment from "moment";
+import { io } from 'socket.io-client'
+
+const socket = io(`http://localhost:8800`)
 // import EditDropbox from "./EditDropbox";
 
-const ViewEventModal = ({ viewEvent }) => {
+const ViewEventModal = ({ viewEvent, setUpdate }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get("id");
   const brgy = searchParams.get("brgy");
@@ -140,8 +143,8 @@ const ViewEventModal = ({ viewEvent }) => {
 
       return;
     }
-
-    setSubmitClicked(true);
+console.log(viewEvent)
+    // setSubmitClicked(true);
 
     try {
       const obj = {
@@ -158,6 +161,7 @@ const ViewEventModal = ({ viewEvent }) => {
         last_array:
           viewEvent.response.length > 0 ? viewEvent.response.length - 1 : 0,
       };
+      socket.emit('send-event_appli', (obj))
       var formData = new FormData();
       formData.append("response", JSON.stringify(obj));
 
@@ -166,11 +170,21 @@ const ViewEventModal = ({ viewEvent }) => {
       );
 
       if (res_folder.status === 200) {
-        const getEvent = await axios.get(
-          `${API_LINK}/announcement/specific/?brgy=${brgy}&archived=false&event_id=${viewEvent.event_id}`
-        );
-
+    
+        let getEvent;
+      
+        if (viewEvent.brgy === 'MUNISIPYO') {
+          getEvent = await axios.get(
+            `${API_LINK}/announcement/specific/?brgy=MUNISIPYO&archived=false&event_id=${viewEvent.event_id}`
+          );
+        } else {
+          getEvent = await axios.get(
+            `${API_LINK}/announcement/specific/?brgy=${viewEvent.brgy}&archived=false&event_id=${viewEvent.event_id}`
+          );
+        }
+        setUpdate(true)
         const notify = {
+          
           category: "Many",
           compose: {
             subject: `APPLICATION - ${viewEvent.event_name}`,
@@ -216,13 +230,14 @@ const ViewEventModal = ({ viewEvent }) => {
           );
 
           if (response.status === 200) {
-            setTimeout(() => {
-              setSubmitClicked(false);
-              setUpdatingStatus("success");
-              setTimeout(() => {
-                window.location.reload();
-              }, 3000);
-            }, 1000);
+            setUpdate(true)
+            // setTimeout(() => {
+            //   setSubmitClicked(false);
+            //   setUpdatingStatus("success");
+            //   setTimeout(() => {
+            //     window.location.reload();
+            //   }, 3000);
+            // }, 1000);
           } else {
             setSubmitClicked(false);
             setUpdatingStatus("error");
@@ -548,7 +563,11 @@ const ViewEventModal = ({ viewEvent }) => {
                 type="button"
                 className="py-1 px-6 inline-flex justify-center items-center gap-2 rounded-md border text-sm font-base text-white shadow-sm align-middle"
                 data-hs-overlay="#hs-viewRequest-modal"
-                onClick={() => setErrMsg(false)}
+                onClick={() => {
+                  setErrMsg(false);
+                  setUpdate(true); // Set update to true
+                }}
+                
                 style={{
                   background: "#B95252",
                 }}
