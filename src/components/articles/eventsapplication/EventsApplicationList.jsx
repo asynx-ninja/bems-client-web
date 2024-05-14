@@ -3,7 +3,7 @@ import { FaTimes } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 import { io } from 'socket.io-client'
 import { useEffect } from "react";
-const socket = io(`http://localhost:8800`)
+const socket = io(`https://bems-server.onrender.com`)
 const EventsApplicationList = ({ events, setViewEvent, setUpdate }) => {
   const location = useLocation();
   const page = location.pathname.split("/")[1];

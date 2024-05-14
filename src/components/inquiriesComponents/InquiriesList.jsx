@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { io } from 'socket.io-client'
 
-const socket = io(`http://localhost:8800`)
+const socket = io(`https://bems-server.onrender.com`)
 const InquiriesList = ({ inquiries, setInquiry, setUpdate }) => {
   const location = useLocation();
   const page = location.pathname.split("/")[1];

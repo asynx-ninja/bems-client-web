@@ -47,6 +47,7 @@ const Blotter = () => {
         console.log(error);
       }
     };
+    
     const fetch = async () => {
       try {
         // const response = await axios.get(
