@@ -13,12 +13,12 @@ import ViewDropbox from "./ViewDropbox";
 import Preloader from "../../../loaders/Preloader";
 import { useSearchParams } from "react-router-dom";
 import moment from "moment";
-import { io } from 'socket.io-client'
-
-const socket = io(`https://bems-server.onrender.com`)
+// import { io } from "socket.io-client";
+// import Socket_link from "../../../../config/Socket";
+// const socket = io(Socket_link);
 // import EditDropbox from "./EditDropbox";
 
-const ViewEventModal = ({ viewEvent, setUpdate }) => {
+const ViewEventModal = ({ viewEvent, setEventUpdate, setViewEvent, socket }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get("id");
   const brgy = searchParams.get("brgy");
@@ -143,7 +143,7 @@ const ViewEventModal = ({ viewEvent, setUpdate }) => {
 
       return;
     }
-console.log(viewEvent)
+    console.log(viewEvent);
     // setSubmitClicked(true);
 
     try {
@@ -161,7 +161,7 @@ console.log(viewEvent)
         last_array:
           viewEvent.response.length > 0 ? viewEvent.response.length - 1 : 0,
       };
-      socket.emit('send-event_appli', (obj))
+     
       var formData = new FormData();
       formData.append("response", JSON.stringify(obj));
 
@@ -170,10 +170,9 @@ console.log(viewEvent)
       );
 
       if (res_folder.status === 200) {
-    
         let getEvent;
-      
-        if (viewEvent.brgy === 'MUNISIPYO') {
+
+        if (viewEvent.brgy === "MUNISIPYO") {
           getEvent = await axios.get(
             `${API_LINK}/announcement/specific/?brgy=MUNISIPYO&archived=false&event_id=${viewEvent.event_id}`
           );
@@ -182,9 +181,8 @@ console.log(viewEvent)
             `${API_LINK}/announcement/specific/?brgy=${viewEvent.brgy}&archived=false&event_id=${viewEvent.event_id}`
           );
         }
-        setUpdate(true)
+
         const notify = {
-          
           category: "Many",
           compose: {
             subject: `APPLICATION - ${viewEvent.event_name}`,
@@ -230,7 +228,8 @@ console.log(viewEvent)
           );
 
           if (response.status === 200) {
-            setUpdate(true)
+            
+
             // setTimeout(() => {
             //   setSubmitClicked(false);
             //   setUpdatingStatus("success");
@@ -245,6 +244,13 @@ console.log(viewEvent)
           }
         }
       }
+      socket.emit("send-event_appli", obj);
+      setEventUpdate((prevState) => !prevState);
+    return({
+      socket,
+      setEventUpdate
+    })
+      
     } catch (error) {
       console.log(error);
     }
@@ -565,9 +571,7 @@ console.log(viewEvent)
                 data-hs-overlay="#hs-viewRequest-modal"
                 onClick={() => {
                   setErrMsg(false);
-                  setUpdate(true); // Set update to true
                 }}
-                
                 style={{
                   background: "#B95252",
                 }}

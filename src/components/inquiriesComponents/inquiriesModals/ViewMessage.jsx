@@ -10,10 +10,10 @@ import ViewDropbox from "./ViewDropbox";
 import Preloader from "../../loaders/Preloader";
 import { useSearchParams } from "react-router-dom";
 import moment from "moment";
-import { io } from 'socket.io-client'
-
-const socket = io(`https://bems-server.onrender.com`)
-const ViewMessage = ({ inquiry, setInquiry, setUpdate }) => {
+// import { io } from 'socket.io-client'
+// import Socket_link from "../../../config/Socket";
+// const socket = io(Socket_link)
+const ViewMessage = ({ inquiry, setInquiry, setInqsUpdate, inqsupdate, socket }) => {
   // console.log(inquiry.folder_id);
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get("id");
@@ -215,6 +215,7 @@ const ViewMessage = ({ inquiry, setInquiry, setUpdate }) => {
           //   }, 3000);
           // }, 1000);
         }
+        setInqsUpdate((prevState)=> !prevState)
       } else {
         setSubmitClicked(false);
         setUpdatingStatus("error");
@@ -566,9 +567,6 @@ const ViewMessage = ({ inquiry, setInquiry, setUpdate }) => {
                     type="button"
                     className="h-[2.5rem] w-full py-1 px-6 gap-2 rounded-md borde text-sm font-base bg-pink-900 text-white shadow-sm"
                     data-hs-overlay="#hs-modal-viewInquiries"
-                    onClick={() => {
-                      setUpdate(true); // Set update to true
-                    }}
                   >
                     CLOSE
                   </button>

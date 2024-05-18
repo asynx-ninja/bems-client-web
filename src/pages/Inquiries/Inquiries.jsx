@@ -16,9 +16,9 @@ import ComposeModal from "../../components/inquiriesComponents/inquiriesModals/C
 import InquiriesList from "../../components/inquiriesComponents/InquiriesList";
 import video from "../../assets/image/video.mp4";
 import no_data from "../../assets/image/no-data.png";
-import { io } from 'socket.io-client'
-
-const socket = io(`https://bems-server.onrender.com`)
+import { io } from "socket.io-client";
+import Socket_link from "../../config/Socket";
+const socket = io(Socket_link);
 const Inquiries = () => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -35,7 +35,7 @@ const Inquiries = () => {
   const [getAll, setGetAll] = useState([]);
   const [searchResult, setSearchResult] = useState(0);
   const [info, setInfo] = useState({});
-  const [update, setUpdate] = useState(false)
+  const [inqsupdate, setInqsUpdate] = useState(false);
   useEffect(() => {
     document.title = "Inquiries | Barangay E-Services Management";
   }, []);
@@ -63,7 +63,7 @@ const Inquiries = () => {
         console.log(response.data);
 
         if (response.status === 200) {
-          setUpdate(false)
+        
           setInquiries(
             response.data.result.sort(
               (date1, date2) =>
@@ -78,9 +78,11 @@ const Inquiries = () => {
           );
           let arr = [...uniqueInquiries].sort();
           setSortBy(arr);
+        
         } else {
           setInquiries([]);
         }
+        setInqsUpdate((prevState)=>!prevState);
       } catch (error) {
         console.log(error);
       }
@@ -92,7 +94,7 @@ const Inquiries = () => {
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [user_id, brgy, SortByName, currentPage, update]);
+  }, [user_id, brgy, SortByName, currentPage, inqsupdate]);
 
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected);
@@ -304,7 +306,9 @@ const Inquiries = () => {
                   <InquiriesList
                     inquiries={inquiries}
                     setInquiry={setInquiry}
-                    setUpdate={setUpdate}
+                    inqsupdate={inqsupdate}
+                    setInqsUpdate={setInqsUpdate}
+                    socket={socket}
                   />
                 )}
               </tbody>
@@ -341,7 +345,13 @@ const Inquiries = () => {
         </div>
       </div>
       <ComposeModal />
-      <ViewMessage inquiry={inquiry} setInquiry={setInquiry} setUpdate={setUpdate} />
+      <ViewMessage
+        inquiry={inquiry}
+        setInquiry={setInquiry}
+        inqsupdate={inqsupdate}
+        setInqsUpdate={setInqsUpdate}
+        socket={socket}
+      />
     </div>
   );
 };
