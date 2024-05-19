@@ -140,13 +140,7 @@ const ViewMessage = ({ inquiry, setInquiry, setInqsUpdate, inqsupdate, socket })
         folder_id: inquiry.folder_id,
       };
 
-      if (inquiry.compose.to === 'Admin') {
-        socket.emit('send-muni_inquiry', obj);
-        console.log("muni", inquiry.compose.to)
-      } else {
-        socket.emit('send-staff_inquiry', obj);
-        console.log("staff", inquiry.compose.to)
-      }
+   
 
       var formData = new FormData();
       formData.append("response", JSON.stringify(obj));
@@ -214,6 +208,13 @@ const ViewMessage = ({ inquiry, setInquiry, setInqsUpdate, inqsupdate, socket })
           //     window.location.reload();
           //   }, 3000);
           // }, 1000);
+        }
+        if (inquiry.compose.to === 'Admin') {
+          socket.emit('send-muni_inquiry', obj);
+          console.log("muni", inquiry.compose.to)
+        } else {
+          socket.emit('send-staff_inquiry', obj);
+          console.log("staff", inquiry.compose.to)
         }
         setInqsUpdate((prevState)=> !prevState)
       } else {

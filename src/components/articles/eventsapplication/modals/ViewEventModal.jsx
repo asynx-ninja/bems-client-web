@@ -305,7 +305,9 @@ const ViewEventModal = ({ viewEvent, setEventUpdate, setViewEvent, socket }) => 
                   <form>
                     {!viewEvent.response || viewEvent.response.length === 0 ? (
                       viewEvent.status === "Cancelled" ||
-                      viewEvent.status === "Rejected" ? (
+                      viewEvent.status === "Rejected" ||
+                      viewEvent.status === "Application Completed" 
+                      ? (
                         <div>
                           <p className="text-center text-[14px]">
                             You are unable to reply to this conversation due to
@@ -441,7 +443,9 @@ const ViewEventModal = ({ viewEvent, setEventUpdate, setViewEvent, socket }) => 
                           {index === viewEvent.response.length - 1 ? (
                             <div className="flex flex-row items-center w-full">
                               {viewEvent.status === "Cancelled" ||
-                              viewEvent.status === "Rejected" ? (
+                              viewEvent.status === "Rejected" ||
+                              viewEvent.status === "Application Completed"
+                              ? (
                                 <div>
                                   <p className="text-center text-[14px]">
                                     You are unable to reply to this conversation
@@ -460,7 +464,8 @@ const ViewEventModal = ({ viewEvent, setEventUpdate, setViewEvent, socket }) => 
                                 type="button"
                                 className={
                                   viewEvent.status === "Cancelled" ||
-                                  viewEvent.status === "Rejected"
+                                  viewEvent.status === "Rejected" ||
+                                  viewEvent.status === "Application Completed"
                                     ? "hidden"
                                     : "h-8 w-full lg:w-32 py-1 px-2 gap-2 mt-4 rounded-full borde text-sm font-base bg-custom-green-header text-white shadow-sm"
                                 }
