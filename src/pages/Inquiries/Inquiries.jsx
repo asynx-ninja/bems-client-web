@@ -84,11 +84,7 @@ const Inquiries = () => {
     };
 
     getBrgy();
-    const interval = setInterval(() => {
-      fetch();
-    }, 3000);
-
-    return () => clearInterval(interval);
+    fetch();
   }, [user_id, brgy, SortByName, currentPage]);
 
   const handlePageChange = ({ selected }) => {

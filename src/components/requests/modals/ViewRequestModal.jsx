@@ -39,6 +39,11 @@ const ViewRequestModal = ({ viewRequest }) => {
   }, [viewRequest]);
 
   useEffect(() => {
+    var container = document.getElementById('scrolltobottom');
+    container.scrollTop = container.scrollHeight
+  })
+
+  useEffect(() => {
     const fetchUser = async () => {
       try {
         const res = await axios.get(`${API_LINK}/users/specific/${id}`);
@@ -265,7 +270,10 @@ const ViewRequestModal = ({ viewRequest }) => {
               </h3>
             </div>
 
-            <div className="scrollbarWidth scrollbarTrack scrollbarHover scrollbarThumb flex flex-col mx-auto w-full py-5 px-5 overflow-y-auto relative h-[470px]">
+            <div 
+            className="scrollbarWidth scrollbarTrack scrollbarHover scrollbarThumb flex flex-col mx-auto w-full py-5 px-5 overflow-y-auto relative h-[470px]"
+            id="scrolltobottom"
+            >
               <div className="border-solid border-0 border-black/50 border-b-2 flex justify-between items-center mb-4">
                 <b className="uppercase font-medium text-lg md:text-lg">
                   Evaluation

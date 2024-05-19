@@ -15,39 +15,43 @@ const ViewMessage = ({ specBlotter, setSpecBlotter }) => {
   // console.log(inquiry.folder_id);
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get("id");
-  const [userData, setUserData] = useState({})
+  const [userData, setUserData] = useState({});
   const [reply, setReply] = useState(false);
   const [upload, setUpload] = useState(false);
   const [files, setFiles] = useState([]);
   const [createFiles, setCreateFiles] = useState([]);
   const [viewFiles, setViewFiles] = useState([]);
   const [newMessage, setNewMessage] = useState({
-    sender: '',
+    sender: "",
     message: "",
     date: new Date(),
   });
   const [submitClicked, setSubmitClicked] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState(null);
-  const [errMsg, setErrMsg] = useState(false)
-  const [isComplainant, setIsComplainant] = useState(false)
+  const [errMsg, setErrMsg] = useState(false);
+  const [isComplainant, setIsComplainant] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const res = await axios.get(`${API_LINK}/users/specific/${id}`);
-        setUserData(res.data[0])
+        setUserData(res.data[0]);
         setNewMessage({
           sender: `${res.data[0].firstName.toUpperCase()} ${res.data[0].lastName.toUpperCase()}`,
           message: "",
           date: new Date(),
-        })
-
+        });
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
-    fetchUser()
-  }, [id])
+    };
+    fetchUser();
+  }, [id]);
+
+  useEffect(() => {
+    var container = document.getElementById("scrolltobottom");
+    container.scrollTop = container.scrollHeight;
+  });
 
   // useEffect(() => {
   //   setFiles(specBlotter.length === 0 ? [] : specBlotter.compose.file);
@@ -56,7 +60,8 @@ const ViewMessage = ({ specBlotter, setSpecBlotter }) => {
   useEffect(() => {
     if (specBlotter.length !== 0) {
       if (specBlotter && specBlotter.responses.length !== 0) {
-        const lastResponse = specBlotter.responses[specBlotter.responses.length - 1];
+        const lastResponse =
+          specBlotter.responses[specBlotter.responses.length - 1];
 
         if (lastResponse.file && lastResponse.file.length > 0) {
           setViewFiles(lastResponse.file);
@@ -116,22 +121,22 @@ const ViewMessage = ({ specBlotter, setSpecBlotter }) => {
   };
 
   const setType = (item) => {
-    if(item === "Complainant"){
-      return "COMPLAINANT"
-      setIsComplainant(true)
-    } else { 
-      return "DEFENDANT"
+    if (item === "Complainant") {
+      return "COMPLAINANT";
+      setIsComplainant(true);
+    } else {
+      return "DEFENDANT";
     }
-  }
+  };
 
   const handleOnSend = async (e) => {
     e.preventDefault();
     console.log(newMessage);
 
     if (newMessage.message === "" && createFiles.length === 0) {
-      setErrMsg(true)
+      setErrMsg(true);
 
-      return
+      return;
     }
 
     setSubmitClicked(true);
@@ -147,8 +152,8 @@ const ViewMessage = ({ specBlotter, setSpecBlotter }) => {
 
       const targetIds = [
         specBlotter?.to[0]?.user_id,
-        specBlotter?.to[1]?.user_id
-      ]
+        specBlotter?.to[1]?.user_id,
+      ];
 
       var formData = new FormData();
       formData.append("response", JSON.stringify(obj));
@@ -162,7 +167,6 @@ const ViewMessage = ({ specBlotter, setSpecBlotter }) => {
       );
 
       if (response.status === 200) {
-
         const notify = {
           category: "Many",
           compose: {
@@ -191,15 +195,11 @@ const ViewMessage = ({ specBlotter, setSpecBlotter }) => {
           },
         };
 
-        const result = await axios.post(
-          `${API_LINK}/notification/`,
-          notify,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const result = await axios.post(`${API_LINK}/notification/`, notify, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
         if (result.status === 200) {
           setTimeout(() => {
@@ -210,7 +210,6 @@ const ViewMessage = ({ specBlotter, setSpecBlotter }) => {
             }, 3000);
           }, 1000);
         }
-
       } else {
         setSubmitClicked(false);
         setUpdatingStatus("error");
@@ -243,7 +242,10 @@ const ViewMessage = ({ specBlotter, setSpecBlotter }) => {
                 </h3>
               </div>
 
-              <div className="scrollbarWidth scrollbarTrack scrollbarHover scrollbarThumb flex flex-col mx-auto w-full pt-5 px-5 overflow-y-auto relative max-h-[470px]">
+              <div
+                className="scrollbarWidth scrollbarTrack scrollbarHover scrollbarThumb flex flex-col mx-auto w-full pt-5 px-5 overflow-y-auto relative max-h-[470px]"
+                id="scrolltobottom"
+              >
                 <b className="border-solid border-0 border-black/50 border-b-2  uppercase font-medium text-lg md:text-lg mb-4">
                   Patawag Details
                 </b>
@@ -260,7 +262,7 @@ const ViewMessage = ({ specBlotter, setSpecBlotter }) => {
                       id="title"
                       name="title"
                       className="shadow appearance-none border w-full py-2 px-3 text-sm text-black rounded-lg focus:border-green-500 focus:ring-green-500 focus:outline-none focus:shadow-outline"
-                      value={specBlotter && specBlotter.name || ""}
+                      value={(specBlotter && specBlotter.name) || ""}
                       disabled
                     />
                   </div>
@@ -272,18 +274,18 @@ const ViewMessage = ({ specBlotter, setSpecBlotter }) => {
                       To
                     </label>
                     <span className="text-xs sm:text-sm text-black line-clamp-2 ">
-                      {
-                        specBlotter && specBlotter.to && specBlotter.to.length !== 0 ?
-                          specBlotter.to.map((item, i) => (
-                            <div key={i}>
-                              {item.lastName}, {item.firstName} ({setType(item.type)})
-                            </div>
-                          ))
-                          :
-                          <div>
-
+                      {specBlotter &&
+                      specBlotter.to &&
+                      specBlotter.to.length !== 0 ? (
+                        specBlotter.to.map((item, i) => (
+                          <div key={i}>
+                            {item.lastName}, {item.firstName} (
+                            {setType(item.type)})
                           </div>
-                      }
+                        ))
+                      ) : (
+                        <div></div>
+                      )}
                     </span>
                   </div>
                 </div>
@@ -301,7 +303,7 @@ const ViewMessage = ({ specBlotter, setSpecBlotter }) => {
                       id="title"
                       name="title"
                       className="shadow appearance-none border w-full py-2 px-3 text-sm text-black rounded-lg focus:border-green-500 focus:ring-green-500 focus:outline-none focus:shadow-outline"
-                      value={specBlotter && specBlotter.brgy || ""}
+                      value={(specBlotter && specBlotter.brgy) || ""}
                       disabled
                     />
                   </div>
@@ -332,15 +334,16 @@ const ViewMessage = ({ specBlotter, setSpecBlotter }) => {
                     Conversation History
                   </b>
                   <form>
-                    {!specBlotter.responses || specBlotter.responses.length === 0 ? (
+                    {!specBlotter.responses ||
+                    specBlotter.responses.length === 0 ? (
                       <div className="flex flex-col items-center">
-                        {
-                          errMsg ? (
-                            <div className="w-[100%] bg-red-500 rounded-md mb-[10px] flex">
-                              <p className="py-[10px] text-[12px] px-[20px] text-white font-medium">Please enter a message or insert a file!</p>
-                            </div>
-                          ) : null
-                        }
+                        {errMsg ? (
+                          <div className="w-[100%] bg-red-500 rounded-md mb-[10px] flex">
+                            <p className="py-[10px] text-[12px] px-[20px] text-white font-medium">
+                              Please enter a message or insert a file!
+                            </p>
+                          </div>
+                        ) : null}
                         <div className="relative w-full mt-4 mx-2">
                           <div className="relative w-full">
                             <textarea
@@ -408,77 +411,71 @@ const ViewMessage = ({ specBlotter, setSpecBlotter }) => {
                       specBlotter.responses.map((responseItem, index) => (
                         <div
                           key={index}
-                          className={responseItem.sender === `${userData.firstName.toUpperCase()} ${userData.lastName.toUpperCase()}` || responseItem.sender === "Resident" ? "flex flex-col justify-end items-end mb-5 w-full h-auto" : "flex flex-col justify-start items-start mb-5 w-full h-auto"}
+                          className={
+                            responseItem.sender ===
+                              `${userData.firstName.toUpperCase()} ${userData.lastName.toUpperCase()}` ||
+                            responseItem.sender === "Resident"
+                              ? "flex flex-col justify-end items-end mb-5 w-full h-auto"
+                              : "flex flex-col justify-start items-start mb-5 w-full h-auto"
+                          }
                         >
-                          <div
-                            className="flex flex-col items-end mb-5 h-auto"
-                          >
-                            <div
-                              className="flex flex-row w-full justify-between"
-                            >
+                          <div className="flex flex-col items-end mb-5 h-auto">
+                            <div className="flex flex-row w-full justify-between">
                               <div className="flex flex-col md:flex-row md:items-center">
                                 <p className="text-[14px] text-black md:text-sm font-medium uppercase ">
                                   {responseItem.sender}
                                 </p>
                               </div>
                             </div>
-                            {
-                              responseItem.message !== "" ?
-                                <div
-                                  className="flex flex-col rounded-xl bg-custom-green-button w-full px-2 md:px-4 py-2"
-                                  onClick={(e) => e.stopPropagation()}
-                                >
-                                  <div className="w-full h-full">
-                                    <div className="w-full h-full rounded-xl p-1">
-                                      <p className="text-[10px] text-white md:text-xs">
-                                        {responseItem.message}
-                                      </p>
-                                    </div>
+                            {responseItem.message !== "" ? (
+                              <div
+                                className="flex flex-col rounded-xl bg-custom-green-button w-full px-2 md:px-4 py-2"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                <div className="w-full h-full">
+                                  <div className="w-full h-full rounded-xl p-1">
+                                    <p className="text-[10px] text-white md:text-xs">
+                                      {responseItem.message}
+                                    </p>
                                   </div>
                                 </div>
-                                : null
-                            }
-                            {
-                              !responseItem.file.length ?
-                                null
-                                :
-                                <div className="flex flex-col rounded-xl bg-custom-green-button w-full mt-2 px-2 md:px-4 py-2">
-                                  <ViewDropbox
-                                    viewFiles={responseItem.file || []}
-                                    setViewFiles={setViewFiles}
-                                  />
-                                </div>
-                            }
+                              </div>
+                            ) : null}
+                            {!responseItem.file.length ? null : (
+                              <div className="flex flex-col rounded-xl bg-custom-green-button w-full mt-2 px-2 md:px-4 py-2">
+                                <ViewDropbox
+                                  viewFiles={responseItem.file || []}
+                                  setViewFiles={setViewFiles}
+                                />
+                              </div>
+                            )}
                             <p className="text-[10px] md:text-xs mt-[5px] text-black text-right text-xs">
                               {DateFormat(responseItem.date) || ""}
                             </p>
                           </div>
-                          {index === specBlotter.responses.length - 1 ?
+                          {index === specBlotter.responses.length - 1 ? (
                             <div className="flex flex-row items-center w-full">
-                              {
-                                responseItem.isRepliable === false ?
-                                  null
-                                  :
-                                  <button
-                                    type="button"
-                                    className="h-8 w-full lg:w-32 py-1 px-2 gap-2 mt-4 rounded-full borde text-sm font-base bg-custom-green-header text-white shadow-sm"
-                                    onClick={handleOnReply}
-                                    hidden={reply}
-                                  >
-                                    REPLY
-                                  </button>
-                              }
+                              {responseItem.isRepliable === false ? null : (
+                                <button
+                                  type="button"
+                                  className="h-8 w-full lg:w-32 py-1 px-2 gap-2 mt-4 rounded-full borde text-sm font-base bg-custom-green-header text-white shadow-sm"
+                                  onClick={handleOnReply}
+                                  hidden={reply}
+                                >
+                                  REPLY
+                                </button>
+                              )}
                               {!reply ? (
                                 <div></div>
                               ) : (
                                 <div className="relative w-full mt-4 mx-2">
-                                  {
-                                    errMsg ? (
-                                      <div className="w-[100%] bg-red-500 rounded-md mb-[10px] flex">
-                                        <p className="py-[10px] text-[12px] px-[20px] text-white font-medium">Please enter a message or insert a file!</p>
-                                      </div>
-                                    ) : null
-                                  }
+                                  {errMsg ? (
+                                    <div className="w-[100%] bg-red-500 rounded-md mb-[10px] flex">
+                                      <p className="py-[10px] text-[12px] px-[20px] text-white font-medium">
+                                        Please enter a message or insert a file!
+                                      </p>
+                                    </div>
+                                  ) : null}
                                   <div className="relative w-full">
                                     <textarea
                                       id="message"
@@ -544,7 +541,7 @@ const ViewMessage = ({ specBlotter, setSpecBlotter }) => {
                                 </div>
                               )}
                             </div>
-                            : null}
+                          ) : null}
                         </div>
                       ))}
                   </form>
@@ -572,6 +569,6 @@ const ViewMessage = ({ specBlotter, setSpecBlotter }) => {
       )}
     </div>
   );
-}
+};
 
 export default ViewMessage;

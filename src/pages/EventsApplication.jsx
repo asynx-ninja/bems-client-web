@@ -70,12 +70,7 @@ const EventsApplication = () => {
       }
     };
     getBrgy();
-
-    const interval = setInterval(() => {
-      fetch();
-    }, 3000);
-
-    return () => clearInterval(interval);
+    fetch();
   }, [brgy, id, SortByName, currentPage]);
 
   // console.log(getAll)

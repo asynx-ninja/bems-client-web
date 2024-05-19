@@ -70,12 +70,7 @@ const Blotter = () => {
       }
     };
     getBrgy();
-
-    const interval = setInterval(() => {
-      fetch();
-    }, 3000);
-
-    return () => clearInterval(interval);
+    fetch();
   }, [user_id, brgy, searchName, currentPage]);
 
   const handlePageChange = ({ selected }) => {

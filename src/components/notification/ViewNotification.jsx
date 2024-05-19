@@ -7,7 +7,7 @@ const ViewNotification = ({ viewNotif, userData, info }) => {
   const id = searchParams.get("id");
   const brgy = searchParams.get("brgy");
 
-  console.log(viewNotif);
+  // console.log(viewNotif);
 
   return (
     <div>

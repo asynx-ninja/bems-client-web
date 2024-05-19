@@ -51,6 +51,11 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
   }, [id]);
 
   useEffect(() => {
+    var container = document.getElementById('scrolltobottom');
+    container.scrollTop = container.scrollHeight
+  })
+
+  useEffect(() => {
     setFiles(inquiry.length === 0 ? [] : inquiry.compose.file);
   }, [inquiry]);
 
@@ -234,7 +239,10 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
                 </h3>
               </div>
 
-              <div className="scrollbarWidth scrollbarTrack scrollbarHover scrollbarThumb flex flex-col mx-auto w-full pt-5 px-5 overflow-y-auto relative max-h-[470px]">
+              <div 
+              className="scrollbarWidth scrollbarTrack scrollbarHover scrollbarThumb flex flex-col mx-auto w-full pt-5 px-5 overflow-y-auto relative max-h-[470px]"
+              id="scrolltobottom"
+              >
                 <b className="border-solid border-0 border-black/50 border-b-2  uppercase font-medium text-lg md:text-lg mb-4">
                   Inquiry Details
                 </b>
