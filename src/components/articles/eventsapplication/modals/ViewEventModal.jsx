@@ -234,8 +234,13 @@ const ViewEventModal = ({
 
         if (result.status === 200) {
           for (let i = 0; i < createFiles.length; i++) {
+            const url = URL.createObjectURL(createFiles[i]);
+            fileObjects.push({ url: url, name: createFiles[i].name })
+
             formData.append("files", createFiles[i]);
           }
+
+          socket.emit("send-event_appli", { obj, files: fileObjects });
 
           const response = await axios.patch(
             `${API_LINK}/application/?app_id=${
@@ -261,7 +266,6 @@ const ViewEventModal = ({
           }
         }
       }
-      socket.emit("send-event_appli", obj);
       setEventUpdate((prevState) => !prevState);
       return {
         socket,
