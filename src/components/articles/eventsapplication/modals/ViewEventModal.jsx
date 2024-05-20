@@ -229,7 +229,7 @@ const ViewEventModal = ({
           );
 
           if (response.status === 200) {
-            socket.emit("send-event_appli", response.data.response[response.data.response.length - 1]);
+            socket.emit("send-event_appli", response.data);
             // setTimeout(() => {
             //   setSubmitClicked(false);
             //   setUpdatingStatus("success");
@@ -244,7 +244,7 @@ const ViewEventModal = ({
           }
         }
       }
-      setEventUpdate((prevState) => !prevState);
+      // setEventUpdate((prevState) => !prevState);
       return {
         socket,
         setEventUpdate,

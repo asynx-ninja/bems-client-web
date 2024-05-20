@@ -259,6 +259,7 @@ const EventsApplication = () => {
                 ) : (
                   <EventsApplicationList
                     events={events}
+                    setEvents={setEvents}
                     setViewEvent={setViewEvent}
                     setEventUpdate={setEventUpdate}
                     socket={socket}
