@@ -27,7 +27,6 @@ const ViewMessage = ({
   const [upload, setUpload] = useState(false);
   const [files, setFiles] = useState([]);
   const [createFiles, setCreateFiles] = useState([]);
-  const [viewFiles, setViewFiles] = useState([]);
   const [newMessage, setNewMessage] = useState({
     sender: "",
     message: "",
@@ -64,22 +63,6 @@ const ViewMessage = ({
 
   useEffect(() => {
     setFiles(inquiry.length === 0 ? [] : inquiry.compose.file);
-  }, [inquiry]);
-
-  useEffect(() => {
-    if (inquiry.length !== 0) {
-      if (inquiry && inquiry.response.length !== 0) {
-        const lastResponse = inquiry.response[inquiry.response.length - 1];
-
-        if (lastResponse.file && lastResponse.file.length > 0) {
-          setViewFiles(lastResponse.file);
-        } else {
-          setViewFiles([]);
-        }
-      } else {
-        setViewFiles([]);
-      }
-    }
   }, [inquiry]);
 
   const fileInputRef = useRef();
@@ -471,7 +454,6 @@ const ViewMessage = ({
                               <div className="flex flex-col rounded-xl bg-custom-green-button w-full mt-2 px-2 md:px-4 py-2">
                                 <ViewDropbox
                                   viewFiles={responseItem.file || []}
-                                  setViewFiles={setViewFiles}
                                 />
                               </div>
                             )}

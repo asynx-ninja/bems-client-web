@@ -11,16 +11,14 @@ import Preloader from "../../loaders/Preloader";
 import { useSearchParams } from "react-router-dom";
 import moment from "moment";
 
-const ViewMessage = ({ specBlotter, setSpecBlotter }) => {
+const ViewMessage = ({ specBlotter }) => {
   // console.log(inquiry.folder_id);
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get("id");
   const [userData, setUserData] = useState({});
-  const [reply, setReply] = useState(false);
   const [upload, setUpload] = useState(false);
   const [files, setFiles] = useState([]);
   const [createFiles, setCreateFiles] = useState([]);
-  const [viewFiles, setViewFiles] = useState([]);
   const [newMessage, setNewMessage] = useState({
     sender: "",
     message: "",
@@ -29,7 +27,7 @@ const ViewMessage = ({ specBlotter, setSpecBlotter }) => {
   const [submitClicked, setSubmitClicked] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState(null);
   const [errMsg, setErrMsg] = useState(false);
-  const [isComplainant, setIsComplainant] = useState(false);
+  const [isComplainant, setIsComplainant] = useState([]);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -49,30 +47,15 @@ const ViewMessage = ({ specBlotter, setSpecBlotter }) => {
   }, [id]);
 
   useEffect(() => {
+    if (Array.isArray(specBlotter.to)) {
+      setIsComplainant(specBlotter.to);
+    }
+  }, [specBlotter, userData.user_id]);
+
+  useEffect(() => {
     var container = document.getElementById("scrolltobottom");
     container.scrollTop = container.scrollHeight;
   });
-
-  // useEffect(() => {
-  //   setFiles(specBlotter.length === 0 ? [] : specBlotter.compose.file);
-  // }, [specBlotter]);
-
-  useEffect(() => {
-    if (specBlotter.length !== 0) {
-      if (specBlotter && specBlotter.responses.length !== 0) {
-        const lastResponse =
-          specBlotter.responses[specBlotter.responses.length - 1];
-
-        if (lastResponse.file && lastResponse.file.length > 0) {
-          setViewFiles(lastResponse.file);
-        } else {
-          setViewFiles([]);
-        }
-      } else {
-        setViewFiles([]);
-      }
-    }
-  }, [specBlotter]);
 
   const fileInputRef = useRef();
 
@@ -82,11 +65,7 @@ const ViewMessage = ({ specBlotter, setSpecBlotter }) => {
     fileInputRef.current.click();
   };
 
-  const handleOnReply = () => {
-    setReply(!reply);
-  };
-
-  // console.log(newMessage)
+  console.log(isComplainant);
 
   const handleOnUpload = () => {
     setUpload(!upload);
@@ -123,9 +102,21 @@ const ViewMessage = ({ specBlotter, setSpecBlotter }) => {
   const setType = (item) => {
     if (item === "Complainant") {
       return "COMPLAINANT";
-      setIsComplainant(true);
     } else {
       return "DEFENDANT";
+    }
+  };
+
+  const setTypeChat = (item) => {
+    if (Array.isArray(isComplainant)) {
+      const type = isComplainant.find(
+        (complainant) =>
+          `${complainant && complainant.firstName} ${
+            complainant && complainant.lastName
+          }` === item.sender
+      );
+
+      return type.type.toUpperCase()
     }
   };
 
@@ -243,8 +234,8 @@ const ViewMessage = ({ specBlotter, setSpecBlotter }) => {
               </div>
 
               <div
-                className="scrollbarWidth scrollbarTrack scrollbarHover scrollbarThumb flex flex-col mx-auto w-full pt-5 px-5 overflow-y-auto relative max-h-[470px]"
                 id="scrolltobottom"
+                className="scrollbarWidth scrollbarTrack scrollbarHover scrollbarThumb flex flex-col mx-auto w-full pt-5 px-5 overflow-y-auto relative max-h-[470px]"
               >
                 <b className="border-solid border-0 border-black/50 border-b-2  uppercase font-medium text-lg md:text-lg mb-4">
                   Patawag Details
@@ -424,20 +415,23 @@ const ViewMessage = ({ specBlotter, setSpecBlotter }) => {
                               responseItem.sender ===
                                 `${userData.firstName.toUpperCase()} ${userData.lastName.toUpperCase()}` ||
                               responseItem.sender === "Resident"
-                                ? "flex flex-col items-end mb-5 h-auto"
-                                : "flex flex-col items-start mb-5 h-auto"
+                                ? "flex flex-col items-end mb-5 h-aut0 sm:w-full md:w-[400px]"
+                                : "flex flex-col items-start mb-5 h-auto sm:w-full md:w-[400px]"
                             }
                           >
                             <div className="flex flex-row w-full justify-between">
                               <div className="flex flex-col md:flex-row md:items-center">
                                 <p className="text-[14px] text-black md:text-sm font-medium uppercase ">
-                                  {responseItem.sender}
+                                  {responseItem.sender}{" "}
+                                  {responseItem.type === "Resident"
+                                    ? `(${setTypeChat(responseItem)})`
+                                    : ""}
                                 </p>
                               </div>
                             </div>
                             {responseItem.message !== "" ? (
                               <div
-                                className="flex flex-col rounded-xl bg-custom-green-button px-2 md:px-4 py-2"
+                                className="flex flex-col rounded-xl bg-custom-green-button w-full px-2 md:px-4 py-2"
                                 onClick={(e) => e.stopPropagation()}
                               >
                                 <div className="w-full h-full">
@@ -453,7 +447,6 @@ const ViewMessage = ({ specBlotter, setSpecBlotter }) => {
                               <div className="flex flex-col rounded-xl bg-custom-green-button w-full mt-2 px-2 md:px-4 py-2">
                                 <ViewDropbox
                                   viewFiles={responseItem.file || []}
-                                  setViewFiles={setViewFiles}
                                 />
                               </div>
                             )}

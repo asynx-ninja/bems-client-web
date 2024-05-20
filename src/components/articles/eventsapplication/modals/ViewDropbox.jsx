@@ -1,12 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { FaRegFileLines } from "react-icons/fa6";
 
 const ViewDropbox = ({ viewFiles }) => {
   const [isDragging, setIsDragging] = useState(false);
-  const [isImage, setIsImage] = useState(false)
-  const fileInputRef = useRef();
-  const navigate = useNavigate();
 
   function truncateFileName(fileName) {
     const maxLength = 20; // Maximum length of the displayed file name
@@ -17,37 +13,6 @@ const ViewDropbox = ({ viewFiles }) => {
       return truncatedFileName;
     }
   }
-
-  // console.log(viewFiles)
-
-  // useEffect(() => {
-  //   const checkExtension = (item) => {
-  //     const fileExtension = item.split('.').pop().toLowerCase();
-
-  //     return fileExtension
-  //   }
-  //   const checkImage = () => {
-  //     let image
-
-  //     if (viewFiles && viewFiles.length > 0) {
-  //       image = viewFiles.filter(item => checkExtension(item.name) === 'jpg' ||
-  //         checkExtension(item.name) === 'png' ||
-  //         checkExtension(item.name) === 'jpeg' ||
-  //         checkExtension(item.name) === 'gif' ||
-  //         checkExtension(item.name) === 'bmp'
-  //       )
-
-  //       if (image.length > 0) {
-  //         setIsImage(true)
-  //       } else {
-  //         setIsImage(false)
-  //       }
-  //     }
-
-  //     console.log(image)
-  //   }
-  //   checkImage()
-  // }, [viewFiles])
 
   const checkExtension = (item) => {
     const fileExtension = item.split('.').pop().toLowerCase();
@@ -87,16 +52,6 @@ const ViewDropbox = ({ viewFiles }) => {
     e.target.classList.add("drag-over");
     setIsDragging(true);
   };
-
-  // const handleFileClick = (file) => {
-  //   const url = URL.createObjectURL(file);
-  //   const a = document.createElement("a");
-  //   a.href = url;
-  //   a.download = file.name;
-  //   document.body.appendChild(a);
-  //   a.click();
-  //   document.body.removeChild(a);
-  // };
 
   return (
     <div className="">

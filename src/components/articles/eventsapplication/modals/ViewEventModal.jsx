@@ -1,11 +1,7 @@
 import React from "react";
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
-// import defaultImg from "../../../../assets/header/side-bg.png"
 import API_LINK from "../../../../config/API";
-// import bgmodal from "../../assets/modals/bg-modal2.png";
-import wait from "../../../../assets/image/wait.png";
-import { AiOutlineSend } from "react-icons/ai";
 import { IoIosAttach } from "react-icons/io";
 import { IoSend } from "react-icons/io5";
 import Dropbox from "./Dropbox";
@@ -31,7 +27,6 @@ const ViewEventModal = ({
   const [reply, setReply] = useState(false);
   const [upload, setUpload] = useState(false);
   const [createFiles, setCreateFiles] = useState([]);
-  const [viewFiles, setViewFiles] = useState([]);
   const [newMessage, setNewMessage] = useState({
     sender: "",
     message: "",
@@ -82,22 +77,6 @@ const ViewEventModal = ({
     };
     fetchUser();
   }, [id, viewEvent]);
-
-  useEffect(() => {
-    if (viewEvent && viewEvent.response && viewEvent.response.length !== 0) {
-      const lastResponse = viewEvent.response[viewEvent.response.length - 1];
-
-      // console.log(lastResponse)
-
-      if (lastResponse.file && lastResponse.file.length > 0) {
-        setViewFiles(lastResponse.file);
-      } else {
-        setViewFiles([]);
-      }
-    } else {
-      setViewFiles([]);
-    }
-  }, [viewEvent]);
 
   // console.log(viewEvent)
 
@@ -237,13 +216,8 @@ const ViewEventModal = ({
 
         if (result.status === 200) {
           for (let i = 0; i < createFiles.length; i++) {
-            const url = URL.createObjectURL(createFiles[i]);
-            fileObjects.push({ url: url, name: createFiles[i].name });
-
             formData.append("files", createFiles[i]);
           }
-
-          socket.emit("send-event_appli", { obj, files: fileObjects });
 
           const response = await axios.patch(
             `${API_LINK}/application/?app_id=${
@@ -255,6 +229,7 @@ const ViewEventModal = ({
           );
 
           if (response.status === 200) {
+            socket.emit("send-event_appli", response.data.response[response.data.response.length - 1]);
             // setTimeout(() => {
             //   setSubmitClicked(false);
             //   setUpdatingStatus("success");
@@ -570,16 +545,6 @@ const ViewEventModal = ({
 
             {/* Buttons */}
             <div className="flex justify-end items-center gap-x-2 py-3 px-6 dark:border-gray-700">
-              {/* <button
-                type="button"
-                className="py-1 px-6 inline-flex justify-center items-center gap-2 rounded-md borde text-sm font-base text-white shadow-sm align-middle"
-                data-hs-overlay="#hs-viewRequest-modal"
-                style={{
-                  background: '#268F26'
-                }}
-              >
-                SEND
-              </button> */}
               <button
                 type="button"
                 className="py-1 px-6 inline-flex justify-center items-center gap-2 rounded-md border text-sm font-base text-white shadow-sm align-middle"

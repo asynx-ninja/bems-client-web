@@ -2,9 +2,6 @@ import React from "react";
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import API_LINK from "../../../config/API";
-import wait from "../../../assets/image/wait.png";
-// import bgmodal from "../../assets/modals/bg-modal2.png";
-import { AiOutlineSend } from "react-icons/ai";
 import { IoIosAttach } from "react-icons/io";
 import { IoSend } from "react-icons/io5";
 import Dropbox from "./Dropbox";
@@ -21,9 +18,7 @@ const ViewRequestModal = ({ viewRequest }) => {
   const [userData, setUserData] = useState({});
   const [reply, setReply] = useState(false);
   const [upload, setUpload] = useState(false);
-  const [files, setFiles] = useState([]);
   const [createFiles, setCreateFiles] = useState([]);
-  const [viewFiles, setViewFiles] = useState([]);
   const [newMessage, setNewMessage] = useState({
     sender: "",
     message: "",
@@ -33,10 +28,6 @@ const ViewRequestModal = ({ viewRequest }) => {
   const [submitClicked, setSubmitClicked] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState(null);
   const [errMsg, setErrMsg] = useState(false);
-
-  useEffect(() => {
-    setFiles(viewRequest.length === 0 ? [] : viewRequest.file);
-  }, [viewRequest]);
 
   useEffect(() => {
     var container = document.getElementById("scrolltobottom");
@@ -59,25 +50,6 @@ const ViewRequestModal = ({ viewRequest }) => {
     };
     fetchUser();
   }, [id]);
-
-  useEffect(() => {
-    if (
-      viewRequest &&
-      viewRequest.response &&
-      viewRequest.response.length !== 0
-    ) {
-      const lastResponse =
-        viewRequest.response[viewRequest.response.length - 1];
-
-      if (lastResponse.file && lastResponse.file.length > 0) {
-        setViewFiles(lastResponse.file);
-      } else {
-        setViewFiles([]);
-      }
-    } else {
-      setViewFiles([]);
-    }
-  }, [viewRequest]);
 
   const fileInputRef = useRef();
 
@@ -429,7 +401,6 @@ const ViewRequestModal = ({ viewRequest }) => {
                               <div className="flex flex-col rounded-xl bg-custom-green-button w-full mt-2 px-2 md:px-4 py-2">
                                 <ViewDropbox
                                   viewFiles={responseItem.file || []}
-                                  setViewFiles={setViewFiles}
                                 />
                               </div>
                             )}

@@ -1,9 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const ViewDropbox = ({ viewFiles, setViewFiles }) => {
+const ViewDropbox = ({ viewFiles }) => {
   const [isDragging, setIsDragging] = useState(false);
-  const [isImage, setIsImage] = useState(false)
   const fileInputRef = useRef();
   const navigate = useNavigate();
 
@@ -28,13 +27,6 @@ const ViewDropbox = ({ viewFiles, setViewFiles }) => {
     }
   }
 
-  const dropHandler = (e) => {
-    e.preventDefault();
-    const droppedFiles = e.dataTransfer.files;
-    setViewFiles([...viewFiles, ...droppedFiles]);
-    setIsDragging(false);
-  };
-
   const dragOverHandler = (e) => {
     e.preventDefault();
     e.target.classList.add("drag-over");
@@ -58,27 +50,12 @@ const ViewDropbox = ({ viewFiles, setViewFiles }) => {
     fileInputRef.current.click();
   };
 
-  const handleDelete = (idx) => {
-    setViewFiles((prev) => prev.filter((_, index) => index !== idx));
-  };
-
-  // const handleFileClick = (file) => {
-  //   const url = URL.createObjectURL(file);
-  //   const a = document.createElement("a");
-  //   a.href = url;
-  //   a.download = file.name;
-  //   document.body.appendChild(a);
-  //   a.click();
-  //   document.body.removeChild(a);
-  // };
-
   return (
     <div className="">
       <main className="container mx-auto h-auto px-1">
         <article
           aria-label="File Upload Modal"
           className="relative h-full flex flex-col "
-          onDrop={dropHandler}
           onDragOver={dragOverHandler}
           onDragLeave={dragLeaveHandler}
           onDragEnter={dragEnterHandler}

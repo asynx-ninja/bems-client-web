@@ -1,42 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const ViewDropbox = ({ viewFiles, setViewFiles }) => {
+const ViewDropbox = ({ viewFiles }) => {
   const [isDragging, setIsDragging] = useState(false);
-  const [isImage, setIsImage] = useState(false)
   const fileInputRef = useRef();
   const navigate = useNavigate();
-
-  // console.log(viewFiles)
-
-  // useEffect(() => {
-  //   const checkExtension = (item) => {
-  //     const fileExtension = item.split('.').pop().toLowerCase();
-
-  //     return fileExtension
-  //   }
-  //   const checkImage = () => {
-  //     let image
-
-  //     if (viewFiles && viewFiles.length > 0) {
-  //       image = viewFiles.filter(item => checkExtension(item.name) === 'jpg' ||
-  //         checkExtension(item.name) === 'png' ||
-  //         checkExtension(item.name) === 'jpeg' ||
-  //         checkExtension(item.name) === 'gif' ||
-  //         checkExtension(item.name) === 'bmp'
-  //       )
-
-  //       if (image.length > 0) {
-  //         setIsImage(true)
-  //       } else {
-  //         setIsImage(false)
-  //       }
-  //     }
-
-  //     console.log(image)
-  //   }
-  //   checkImage()
-  // }, [viewFiles])
 
   const checkExtension = (item) => {
     const fileExtension = item.split('.').pop().toLowerCase();
@@ -58,13 +26,6 @@ const ViewDropbox = ({ viewFiles, setViewFiles }) => {
       return false
     }
   }
-
-  const dropHandler = (e) => {
-    e.preventDefault();
-    const droppedFiles = e.dataTransfer.files;
-    setViewFiles([...viewFiles, ...droppedFiles]);
-    setIsDragging(false);
-  };
 
   const dragOverHandler = (e) => {
     e.preventDefault();
@@ -89,27 +50,12 @@ const ViewDropbox = ({ viewFiles, setViewFiles }) => {
     fileInputRef.current.click();
   };
 
-  const handleDelete = (idx) => {
-    setViewFiles((prev) => prev.filter((_, index) => index !== idx));
-  };
-
-  // const handleFileClick = (file) => {
-  //   const url = URL.createObjectURL(file);
-  //   const a = document.createElement("a");
-  //   a.href = url;
-  //   a.download = file.name;
-  //   document.body.appendChild(a);
-  //   a.click();
-  //   document.body.removeChild(a);
-  // };
-
   return (
     <div className="">
       <main className="container mx-auto h-auto px-1">
         <article
           aria-label="File Upload Modal"
           className="relative h-full flex flex-col "
-          onDrop={dropHandler}
           onDragOver={dragOverHandler}
           onDragLeave={dragLeaveHandler}
           onDragEnter={dragEnterHandler}
