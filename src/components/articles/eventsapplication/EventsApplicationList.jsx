@@ -5,7 +5,7 @@ import { io } from "socket.io-client";
 import { useEffect } from "react";
 // import Socket_link from "../../../config/Socket";
 // const socket = io(Socket_link);
-const EventsApplicationList = ({ events, setViewEvent, setEventUpdate, socket }) => {
+const EventsApplicationList = ({ events, setEvents, setViewEvent, setEventUpdate, socket }) => {
   const location = useLocation();
   const page = location.pathname.split("/")[1];
 
@@ -24,15 +24,21 @@ const EventsApplicationList = ({ events, setViewEvent, setEventUpdate, socket })
 
   const handleView = (item) => {
     setViewEvent(item);
-    setEventUpdate((prevState) => !prevState);
+    // setEventUpdate((prevState) => !prevState);
   };
 
   useEffect(() => {
     const handleEventAppli = (event_appli) => {
-      setViewEvent((prevApplication = { response: [] }) => ({
-        ...prevApplication,
-        response: [...(prevApplication.response || []), event_appli], // Ensure prevApplication.response is an array
-      }));
+      // setViewEvent((prevApplication = { response: [] }) => ({
+      //   ...prevApplication,
+      //   response: [...(prevApplication.response || []), event_appli], // Ensure prevApplication.response is an array
+      // }));
+
+      setViewEvent(event_appli)
+
+      setEvents(curItem => curItem.map((item) =>
+        item._id === event_appli._id ? event_appli : item
+      ))
     };
     // setEventUpdate((prevState) => !prevState);
     socket.on("receive-event_appli", handleEventAppli);
