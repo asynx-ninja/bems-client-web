@@ -1,11 +1,14 @@
 import { AiOutlineEye } from "react-icons/ai";
 import { FaArrowLeft } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
-
-const InquiriesList = ({ inquiries, setInquiry }) => {
+import { useEffect, useState } from "react";
+// import { io } from 'socket.io-client'
+// import Socket_link from "../../config/Socket";
+// const socket = io(Socket_link)
+const InquiriesList = ({ inquiries, setInquiry, setInqsUpdate, inqsupdate, socket }) => {
   const location = useLocation();
   const page = location.pathname.split("/")[1];
-
+  const [to, setTo] = useState('');
   const DateFormat = (date) => {
     if (!date) return "";
 
@@ -21,9 +24,46 @@ const InquiriesList = ({ inquiries, setInquiry }) => {
 
   // console.log(inquiries)
 
+
   const handleView = (item) => {
     setInquiry(item);
+    console.log(item.compose.to)
+    setTo(item.compose.to)
+    setInqsUpdate((prevState)=> !prevState)
   };
+
+  useEffect(() => {
+    if (to === 'Admin') {
+      const handleMuniInq = (muni_inquiry) => {
+        setInquiry((prevMuniInq) => ({
+          ...prevMuniInq,
+          response: [...prevMuniInq.response, muni_inquiry],
+        }));
+      };
+
+      socket.on('receive-muni_inquiry', handleMuniInq);
+    
+      return () => {
+        socket.off('receive-muni_inquiry', handleMuniInq);
+       
+      };
+    
+    } else {
+      const handleStaffInq = (staff_inquiry) => {
+        setInquiry((prevMuniInq) => ({
+          ...prevMuniInq,
+          response: [...prevMuniInq.response, staff_inquiry],
+        }));
+      };
+
+      socket.on('receive-staff_inquiry', handleStaffInq);
+
+      return () => {
+        socket.off('receive-staff_inquiry', handleStaffInq);
+      };
+    }
+  }, [to, socket, setInquiry]); 
+
 
   return inquiries.map((item, index) => (
     <tr key={index} className="odd:bg-slate-100 text-center">
@@ -82,7 +122,7 @@ const InquiriesList = ({ inquiries, setInquiry }) => {
             <button
               type="button"
               data-hs-overlay="#hs-modal-viewInquiries"
-              onClick={() => handleView({ ...item })}
+              onClick={() => handleView(item)}
               className="hs-tooltip-toggle text-white bg-teal-800  font-medium text-xs px-2 py-2 inline-flex items-center rounded-lg"
             >
               <AiOutlineEye size={24} style={{ color: "#ffffff" }} />

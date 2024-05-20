@@ -155,13 +155,9 @@ const ViewDropbox = ({ viewFiles, setViewFiles }) => {
                         :
                         <article
                           tabIndex={0}
-                          className="group sm:w-[80px] sm:h-[80px] lg:w-[150px] lg:h-[150px] rounded-md focus:outline-none focus:shadow-outline elative bg-gray-100 cursor-pointer relative shadow-sm"
+                          className="group sm:w-[80px] lg:w-[150px] rounded-md focus:outline-none focus:shadow-outline relative bg-gray-100 cursor-pointer shadow-sm"
                         >
-                          <img
-                            alt="upload preview"
-                            className="img-preview hidden w-full h-full sticky object-cover rounded-md bg-fixed"
-                          />
-                          <section className="flex flex-col relative rounded-md text-xs break-words w-full h-full z-20 top-0 py-2 px-3">
+                          <section className="flex flex-col rounded-md text-xs break-words w-full h-full z-20 top-0 py-2 px-3">
                             <a
                               href={file.link}
                               target="_blank"
@@ -169,21 +165,6 @@ const ViewDropbox = ({ viewFiles, setViewFiles }) => {
                             >
                               {file.name}
                             </a>
-                            <div className="flex absolute right-0 left-0 top-0 bottom-0 opacity-50 z-[0]">
-                              <span className="p-1 text-blue-800 m-auto">
-                                <i>
-                                  <svg
-                                    className="fill-current sm:w-[45px] sm:h-[45px] lg:w-[80px] lg:h-[80px] pt-1"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width={24}
-                                    height={24}
-                                    viewBox="0 0 24 24"
-                                  >
-                                    <path d="M15 2v5h5v15h-16v-20h11zm1-2h-14v24h20v-18l-6-6z" />
-                                  </svg>
-                                </i>
-                              </span>
-                            </div>
                           </section>
                         </article>
                     }

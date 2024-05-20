@@ -10,8 +10,16 @@ import ViewDropbox from "./ViewDropbox";
 import Preloader from "../../loaders/Preloader";
 import { useSearchParams } from "react-router-dom";
 import moment from "moment";
-
-const ViewMessage = ({ inquiry, setInquiry }) => {
+// import { io } from 'socket.io-client'
+// import Socket_link from "../../../config/Socket";
+// const socket = io(Socket_link)
+const ViewMessage = ({
+  inquiry,
+  setInquiry,
+  setInqsUpdate,
+  inqsupdate,
+  socket,
+}) => {
   // console.log(inquiry.folder_id);
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get("id");
@@ -51,9 +59,9 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
   }, [id]);
 
   useEffect(() => {
-    var container = document.getElementById('scrolltobottom');
-    container.scrollTop = container.scrollHeight
-  })
+    var container = document.getElementById("scrolltobottom");
+    container.scrollTop = container.scrollHeight;
+  });
 
   useEffect(() => {
     setFiles(inquiry.length === 0 ? [] : inquiry.compose.file);
@@ -123,7 +131,6 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
 
   const handleOnSend = async (e) => {
     e.preventDefault();
-    console.log(newMessage);
 
     if (newMessage.message === "" && createFiles.length === 0) {
       setErrMsg(true);
@@ -131,7 +138,7 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
       return;
     }
 
-    setSubmitClicked(true);
+    // setSubmitClicked(true);
 
     try {
       const obj = {
@@ -140,6 +147,7 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
         date: newMessage.date,
         folder_id: inquiry.folder_id,
       };
+
       var formData = new FormData();
       formData.append("response", JSON.stringify(obj));
       for (let i = 0; i < createFiles.length; i++) {
@@ -199,21 +207,29 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
         });
 
         if (result.status === 200) {
-          setTimeout(() => {
-            setSubmitClicked(false);
-            setUpdatingStatus("success");
-            setTimeout(() => {
-              window.location.reload();
-            }, 3000);
-          }, 1000);
+          // setTimeout(() => {
+          //   setSubmitClicked(false);
+          //   setUpdatingStatus("success");
+          //   setTimeout(() => {
+          //     window.location.reload();
+          //   }, 3000);
+          // }, 1000);
         }
+        if (inquiry.compose.to === "Admin") {
+          socket.emit("send-muni_inquiry", obj);
+          console.log("muni", inquiry.compose.to);
+        } else {
+          socket.emit("send-staff_inquiry", obj);
+          console.log("staff", inquiry.compose.to);
+        }
+        setInqsUpdate((prevState) => !prevState);
       } else {
         setSubmitClicked(false);
         setUpdatingStatus("error");
         setError(error.message);
       }
 
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       console.log(error);
     }
@@ -239,9 +255,9 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
                 </h3>
               </div>
 
-              <div 
-              className="scrollbarWidth scrollbarTrack scrollbarHover scrollbarThumb flex flex-col mx-auto w-full pt-5 px-5 overflow-y-auto relative max-h-[470px]"
-              id="scrolltobottom"
+              <div
+                className="scrollbarWidth scrollbarTrack scrollbarHover scrollbarThumb flex flex-col mx-auto w-full pt-5 px-5 overflow-y-auto relative max-h-[470px]"
+                id="scrolltobottom"
               >
                 <b className="border-solid border-0 border-black/50 border-b-2  uppercase font-medium text-lg md:text-lg mb-4">
                   Inquiry Details
@@ -422,11 +438,11 @@ const ViewMessage = ({ inquiry, setInquiry }) => {
                             responseItem.sender ===
                               `${userData.firstName.toUpperCase()} ${userData.lastName.toUpperCase()}` ||
                             responseItem.sender === "Resident"
-                              ? "flex flex-col justify-end items-end mb-5 w-full h-auto"
-                              : "flex flex-col justify-start items-start mb-5 w-full h-auto"
+                              ? "flex flex-col justify-end items-end mb-1 w-full h-auto"
+                              : "flex flex-col justify-start items-start mb-1 w-full h-auto"
                           }
                         >
-                          <div className="flex flex-col items-end mb-5 h-auto">
+                          <div className="flex flex-col items-end mb-1 h-auto">
                             <div className="flex flex-row w-full justify-between">
                               <div className="flex flex-col md:flex-row md:items-center">
                                 <p className="text-[14px] text-black md:text-sm font-medium uppercase ">

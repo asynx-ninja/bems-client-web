@@ -2,7 +2,7 @@ import { AiOutlineEye } from "react-icons/ai";
 import { FaArrowLeft } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 
-const BlotterRecords = ({ blotters, setSpecBlotter }) => {
+const BlotterRecords = ({ blotters, setSpecBlotter, socket }) => {
     const location = useLocation()
     const page = location.pathname.split("/")[1]
 

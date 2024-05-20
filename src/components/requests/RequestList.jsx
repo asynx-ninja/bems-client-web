@@ -7,6 +7,7 @@ const RequestList = ({
   selectedItems,
   checkboxHandler,
   setViewRequest,
+  socket
 }) => {
   const location = useLocation();
   const page = location.pathname.split("/")[1];

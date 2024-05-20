@@ -415,8 +415,8 @@ const ViewMessage = ({ specBlotter, setSpecBlotter }) => {
                             responseItem.sender ===
                               `${userData.firstName.toUpperCase()} ${userData.lastName.toUpperCase()}` ||
                             responseItem.sender === "Resident"
-                              ? "flex flex-col justify-end items-end mb-5 w-full h-auto"
-                              : "flex flex-col justify-start items-start mb-5 w-full h-auto"
+                              ? "flex flex-col justify-end items-end mb-1 w-full h-auto"
+                              : "flex flex-col justify-start items-start mb-1 w-full h-auto"
                           }
                         >
                           <div className="flex flex-col items-end mb-5 h-auto">

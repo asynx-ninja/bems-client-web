@@ -21,6 +21,35 @@ const About = () => {
 
     fetch();
   }, []);
+  const extractUrl = (text) => {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const urls = text.match(urlRegex);
+    return urls ? urls[0] : null;
+  };
+  
+  const renderDescriptionWithLink = (description, linkText = "Download Here") => {
+    const url = extractUrl(description);
+    if (url) {
+      const parts = description.split(url);
+      return (
+        <>
+          {parts[0]}
+          <br /> {/* Ensure the link starts on a new line */}
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block mt-2 px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+          >
+            {linkText}
+          </a>
+          {parts[1]}
+        </>
+      );
+    }
+    return description;
+  };
+  
   return (
     <div
       id="about"
@@ -40,50 +69,50 @@ const About = () => {
               data-aos-anchor-placement="top-center"
               key={index}
             >
-              {/* Conditionally render text and image based on the index */}
-              {index % 2 === 0 ? (
-                <>
-                  {/* Text on the left, image on the right */}
-                  <div className="w-full md:w-full lg:w-1/2 md:p-6">
-                    <h3 className="sm:text-4xl md:text-4xl font-medium text-black sm:text-center lg:text-left">
-                      {item.title}
-                    </h3>
-                    <p className="mt-4 sm:text-[14px] md:text-[18px] text-black sm:text-center lg:text-left">
-                      {item.details}
-                    </p>
-                  </div>
-                  <div className="w-0 md:w-0 lg:w-1/2 p-6 hidden sm:hidden lg:block">
-                    <div className="h-64  rounded-md">
-                      <img
-                        className="h-64 w-full object-contain"
-                        src={item.banner.link !== "" ? item.banner.link : sampleImg}
-                        alt=""
-                      />
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <>
-                  {/* Image on the left, text on the right */}
-                  <div className="w-0 md:w-0 lg:w-1/2 p-6 hidden sm:hidden lg:block">
-                    <div className="h-64  rounded-md">
-                      <img
-                        className="h-64 w-full object-contain"
-                        src={item.banner.link !== "" ? item.banner.link : sampleImg}
-                        alt=""
-                      />
-                    </div>
-                  </div>
-                  <div className="w-full md:w-full lg:w-1/2 md:p-6">
-                    <h3 className="sm:text-4xl md:text-4xl font-medium text-black sm:text-center lg:text-left">
-                      {item.title}
-                    </h3>
-                    <p className="mt-4 sm:text-[14px] md:text-[18px] text-black sm:text-center lg:text-left">
-                      {item.details}
-                    </p>
-                  </div>
-                </>
-              )}
+             {/* Conditionally render text and image based on the index */}
+{index % 2 === 0 ? (
+  <>
+    {/* Text on the left, image on the right */}
+    <div className="w-full md:w-full lg:w-1/2 md:p-6">
+      <h3 className="sm:text-4xl md:text-4xl font-medium text-black sm:text-center lg:text-left">
+        {item.title}
+      </h3>
+      <p className="mt-4 sm:text-[14px] md:text-[18px] text-black sm:text-center lg:text-left">
+        {renderDescriptionWithLink(item.details)}
+      </p>
+    </div>
+    <div className="w-0 md:w-0 lg:w-1/2 p-6 hidden sm:hidden lg:block">
+      <div className="h-64  rounded-md">
+        <img
+          className="h-64 w-full object-contain"
+          src={item.banner.link !== "" ? item.banner.link : sampleImg}
+          alt=""
+        />
+      </div>
+    </div>
+  </>
+) : (
+  <>
+    {/* Image on the left, text on the right */}
+    <div className="w-0 md:w-0 lg:w-1/2 p-6 hidden sm:hidden lg:block">
+      <div className="h-64  rounded-md">
+        <img
+          className="h-64 w-full object-contain"
+          src={item.banner.link !== "" ? item.banner.link : sampleImg}
+          alt=""
+        />
+      </div>
+    </div>
+    <div className="w-full md:w-full lg:w-1/2 md:p-6">
+      <h3 className="sm:text-4xl md:text-4xl font-medium text-black sm:text-center lg:text-left">
+        {item.title}
+      </h3>
+      <p className="mt-4 sm:text-[14px] md:text-[18px] text-black sm:text-center lg:text-left">
+        {renderDescriptionWithLink(item.details)}
+      </p>
+    </div>
+  </>
+)}
             </div>
           ))}
         </div>

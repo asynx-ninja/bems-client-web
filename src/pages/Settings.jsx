@@ -557,7 +557,6 @@ const Settings = () => {
           } else {
             console.error("Update failed. Status:", response.status);
           }
-
         } catch (err) {
           console.log(err)
         }

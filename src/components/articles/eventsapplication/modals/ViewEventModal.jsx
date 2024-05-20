@@ -13,9 +13,17 @@ import ViewDropbox from "./ViewDropbox";
 import Preloader from "../../../loaders/Preloader";
 import { useSearchParams } from "react-router-dom";
 import moment from "moment";
+// import { io } from "socket.io-client";
+// import Socket_link from "../../../../config/Socket";
+// const socket = io(Socket_link);
 // import EditDropbox from "./EditDropbox";
 
-const ViewEventModal = ({ viewEvent }) => {
+const ViewEventModal = ({
+  viewEvent,
+  setEventUpdate,
+  setViewEvent,
+  socket,
+}) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get("id");
   const brgy = searchParams.get("brgy");
@@ -34,6 +42,7 @@ const ViewEventModal = ({ viewEvent }) => {
   const [submitClicked, setSubmitClicked] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState(null);
   const [errMsg, setErrMsg] = useState(false);
+  const chatContainerRef = useRef(null);
 
   // console.log(viewEvent);
 
@@ -42,9 +51,17 @@ const ViewEventModal = ({ viewEvent }) => {
   }, [viewEvent]);
 
   useEffect(() => {
-    var container = document.getElementById('scrolltobottom');
-    container.scrollTop = container.scrollHeight
-  })
+    var container = document.getElementById("scrolltobottom");
+    container.scrollTop = container.scrollHeight;
+  });
+
+  useEffect(() => {
+    const container = chatContainerRef.current;
+
+    if (container && viewEvent && viewEvent.response && viewEvent.response.length > 0) {
+      container.scrollTop = container.scrollTo({ bottom: container.scrollHeight, behavior: 'smooth'});
+    }
+  }, [viewEvent.response]);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -145,8 +162,8 @@ const ViewEventModal = ({ viewEvent }) => {
 
       return;
     }
-
-    setSubmitClicked(true);
+    console.log(viewEvent);
+    // setSubmitClicked(true);
 
     try {
       const obj = {
@@ -163,6 +180,7 @@ const ViewEventModal = ({ viewEvent }) => {
         last_array:
           viewEvent.response.length > 0 ? viewEvent.response.length - 1 : 0,
       };
+
       var formData = new FormData();
       formData.append("response", JSON.stringify(obj));
 
@@ -171,9 +189,17 @@ const ViewEventModal = ({ viewEvent }) => {
       );
 
       if (res_folder.status === 200) {
-        const getEvent = await axios.get(
-          `${API_LINK}/announcement/specific/?brgy=${brgy}&archived=false&event_id=${viewEvent.event_id}`
-        );
+        let getEvent;
+
+        if (viewEvent.brgy === "MUNISIPYO") {
+          getEvent = await axios.get(
+            `${API_LINK}/announcement/specific/?brgy=MUNISIPYO&archived=false&event_id=${viewEvent.event_id}`
+          );
+        } else {
+          getEvent = await axios.get(
+            `${API_LINK}/announcement/specific/?brgy=${viewEvent.brgy}&archived=false&event_id=${viewEvent.event_id}`
+          );
+        }
 
         const notify = {
           category: "Many",
@@ -221,13 +247,13 @@ const ViewEventModal = ({ viewEvent }) => {
           );
 
           if (response.status === 200) {
-            setTimeout(() => {
-              setSubmitClicked(false);
-              setUpdatingStatus("success");
-              setTimeout(() => {
-                window.location.reload();
-              }, 3000);
-            }, 1000);
+            // setTimeout(() => {
+            //   setSubmitClicked(false);
+            //   setUpdatingStatus("success");
+            //   setTimeout(() => {
+            //     window.location.reload();
+            //   }, 3000);
+            // }, 1000);
           } else {
             setSubmitClicked(false);
             setUpdatingStatus("error");
@@ -235,6 +261,12 @@ const ViewEventModal = ({ viewEvent }) => {
           }
         }
       }
+      socket.emit("send-event_appli", obj);
+      setEventUpdate((prevState) => !prevState);
+      return {
+        socket,
+        setEventUpdate,
+      };
     } catch (error) {
       console.log(error);
     }
@@ -270,9 +302,10 @@ const ViewEventModal = ({ viewEvent }) => {
               </h3>
             </div>
 
-            <div 
-            className="scrollbarWidth scrollbarTrack scrollbarHover scrollbarThumb flex flex-col mx-auto w-full py-5 px-5 overflow-y-auto relative h-[470px]"
-            id="scrolltobottom"
+            <div
+              className="scrollbarWidth scrollbarTrack scrollbarHover scrollbarThumb flex flex-col mx-auto w-full py-5 px-5 overflow-y-auto relative h-[470px]"
+              id="scrolltobottom"
+              ref={chatContainerRef}
             >
               <div className="border-solid border-0 border-black/50 border-b-2 flex justify-between items-center mb-4">
                 <b className="uppercase font-medium text-lg md:text-lg">
@@ -292,7 +325,8 @@ const ViewEventModal = ({ viewEvent }) => {
                   <form>
                     {!viewEvent.response || viewEvent.response.length === 0 ? (
                       viewEvent.status === "Cancelled" ||
-                      viewEvent.status === "Rejected" ? (
+                      viewEvent.status === "Rejected" ||
+                      viewEvent.status === "Application Completed" ? (
                         <div>
                           <p className="text-center text-[14px]">
                             You are unable to reply to this conversation due to
@@ -387,8 +421,8 @@ const ViewEventModal = ({ viewEvent }) => {
                             responseItem.sender ===
                               `${userData.firstName.toUpperCase()} ${userData.lastName.toUpperCase()}` ||
                             responseItem.sender === "Resident"
-                              ? "flex flex-col justify-end items-end mb-5 w-full h-auto"
-                              : "flex flex-col justify-start items-start mb-5 w-full h-auto"
+                              ? "flex flex-col justify-end items-end mb-1 w-full h-auto"
+                              : "flex flex-col justify-start items-start mb-1 w-full h-auto"
                           }
                         >
                           <div className="flex flex-col items-end mb-5 h-auto">
@@ -428,7 +462,8 @@ const ViewEventModal = ({ viewEvent }) => {
                           {index === viewEvent.response.length - 1 ? (
                             <div className="flex flex-row items-center w-full">
                               {viewEvent.status === "Cancelled" ||
-                              viewEvent.status === "Rejected" ? (
+                              viewEvent.status === "Rejected" ||
+                              viewEvent.status === "Application Completed" ? (
                                 <div>
                                   <p className="text-center text-[14px]">
                                     You are unable to reply to this conversation
@@ -447,7 +482,8 @@ const ViewEventModal = ({ viewEvent }) => {
                                 type="button"
                                 className={
                                   viewEvent.status === "Cancelled" ||
-                                  viewEvent.status === "Rejected"
+                                  viewEvent.status === "Rejected" ||
+                                  viewEvent.status === "Application Completed"
                                     ? "hidden"
                                     : "h-8 w-full lg:w-32 py-1 px-2 gap-2 mt-4 rounded-full borde text-sm font-base bg-custom-green-header text-white shadow-sm"
                                 }
@@ -556,7 +592,9 @@ const ViewEventModal = ({ viewEvent }) => {
                 type="button"
                 className="py-1 px-6 inline-flex justify-center items-center gap-2 rounded-md border text-sm font-base text-white shadow-sm align-middle"
                 data-hs-overlay="#hs-viewRequest-modal"
-                onClick={() => setErrMsg(false)}
+                onClick={() => {
+                  setErrMsg(false);
+                }}
                 style={{
                   background: "#B95252",
                 }}

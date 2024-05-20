@@ -16,7 +16,9 @@ import ComposeModal from "../../components/inquiriesComponents/inquiriesModals/C
 import InquiriesList from "../../components/inquiriesComponents/InquiriesList";
 import video from "../../assets/image/video.mp4";
 import no_data from "../../assets/image/no-data.png";
-
+import { io } from "socket.io-client";
+import Socket_link from "../../config/Socket";
+const socket = io(Socket_link);
 const Inquiries = () => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -33,7 +35,8 @@ const Inquiries = () => {
   const [getAll, setGetAll] = useState([]);
   const [searchResult, setSearchResult] = useState(0);
   const [info, setInfo] = useState({});
-
+  const [inqsupdate, setInqsUpdate] = useState(false);
+  
   useEffect(() => {
     document.title = "Inquiries | Barangay E-Services Management";
   }, []);
@@ -61,6 +64,7 @@ const Inquiries = () => {
         console.log(response.data);
 
         if (response.status === 200) {
+        
           setInquiries(
             response.data.result.sort(
               (date1, date2) =>
@@ -75,9 +79,11 @@ const Inquiries = () => {
           );
           let arr = [...uniqueInquiries].sort();
           setSortBy(arr);
+        
         } else {
           setInquiries([]);
         }
+        setInqsUpdate((prevState)=>!prevState);
       } catch (error) {
         console.log(error);
       }
@@ -114,7 +120,7 @@ const Inquiries = () => {
     setInquiries(getSearch);
   };
 
-  // console.log(inquiries)
+  // console.log(socket)
 
   const tableHeader = [
     "Inquiry ID",
@@ -297,6 +303,9 @@ const Inquiries = () => {
                   <InquiriesList
                     inquiries={inquiries}
                     setInquiry={setInquiry}
+                    inqsupdate={inqsupdate}
+                    setInqsUpdate={setInqsUpdate}
+                    socket={socket}
                   />
                 )}
               </tbody>
@@ -333,7 +342,13 @@ const Inquiries = () => {
         </div>
       </div>
       <ComposeModal />
-      <ViewMessage inquiry={inquiry} setInquiry={setInquiry} />
+      <ViewMessage
+        inquiry={inquiry}
+        setInquiry={setInquiry}
+        inqsupdate={inqsupdate}
+        setInqsUpdate={setInqsUpdate}
+        socket={socket}
+      />
     </div>
   );
 };

@@ -15,6 +15,9 @@ import video from "../assets/image/video.mp4";
 import no_data from "../assets/image/no-data.png";
 import ViewMessage from "../components/blotters/blotterModals/ViewMessage";
 import BlotterRecords from "../components/blotters/BlotterRecords";
+import { io } from "socket.io-client";
+import Socket_link from "../config/Socket";
+const socket = io(Socket_link);
 
 const Blotter = () => {
   const [selectedItems, setSelectedItems] = useState([]);
@@ -47,6 +50,7 @@ const Blotter = () => {
         console.log(error);
       }
     };
+    
     const fetch = async () => {
       try {
         // const response = await axios.get(
@@ -174,6 +178,7 @@ const Blotter = () => {
                   <BlotterRecords
                     blotters={blotter}
                     setSpecBlotter={setSpecBlotter}
+                    socket={socket}
                   />
                 )}
               </tbody>
@@ -205,7 +210,7 @@ const Blotter = () => {
           </div>
         </div>
       </div>
-      <ViewMessage specBlotter={specBlotter} setSpecBlotter={setSpecBlotter} />
+      <ViewMessage specBlotter={specBlotter} setSpecBlotter={setSpecBlotter} socket={socket}/>
     </div>
   );
 };

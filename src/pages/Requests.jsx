@@ -13,6 +13,10 @@ import ViewRequestModal from "../components/requests/modals/ViewRequestModal";
 import CancelRequestModal from "../components/requests/modals/CancelRequestModal";
 import RequestList from "../components/requests/RequestList";
 import no_data from "../assets/image/no-data.png";
+import { io } from "socket.io-client";
+import Socket_link from "../config/Socket";
+const socket = io(Socket_link);
+
 
 const Requests = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -271,6 +275,7 @@ const Requests = () => {
                     selectedItems={selectedItems}
                     checkboxHandler={checkAllHandler}
                     setViewRequest={setViewRequest}
+                    socket={socket}
                   />
                 )}
               </tbody>
@@ -305,7 +310,7 @@ const Requests = () => {
           </div>
         </div>
       </div>
-      <ViewRequestModal viewRequest={viewRequest} />
+      <ViewRequestModal viewRequest={viewRequest} socket={socket} />
       <CancelRequestModal viewRequest={viewRequest} />
     </div>
   );

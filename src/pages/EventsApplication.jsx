@@ -6,6 +6,9 @@ import video from "../assets/image/video.mp4";
 import axios from "axios";
 import API_LINK from "../config/API";
 import { useSearchParams } from "react-router-dom";
+import io from "socket.io-client"
+import Socket_link from "../config/Socket";
+const socket = io(Socket_link)
 
 // COMPONENTS
 import ViewEventModal from "../components/articles/eventsapplication/modals/ViewEventModal";
@@ -28,7 +31,7 @@ const EventsApplication = () => {
   const [searchResult, setSearchResult] = useState(0);
   const [getAll, setGetAll] = useState([]);
   const [info, setInfo] = useState({});
-
+  const [eventupdate, setEventUpdate] = useState(false)
   useEffect(() => {
     document.title = "Service Request | Barangay E-Services Management";
   }, []);
@@ -55,6 +58,7 @@ const EventsApplication = () => {
         // const getUser = await axios.get(`${API_LINK}/users/specific/${id}`);
 
         if (response.status === 200) {
+         
           setEvents(response.data.result);
           setPageCount(response.data.pageCount);
           setGetAll(response.data.all);
@@ -65,6 +69,7 @@ const EventsApplication = () => {
           let arr = [...uniqueServiceNames].sort();
           setSortBy(arr);
         }
+        // setEventUpdate((prevState)=> !prevState)
       } catch (err) {
         console.log(err);
       }
@@ -254,6 +259,8 @@ const EventsApplication = () => {
                   <EventsApplicationList
                     events={events}
                     setViewEvent={setViewEvent}
+                    setEventUpdate={setEventUpdate} 
+                    socket={socket}
                   />
                 )}
               </tbody>
@@ -288,8 +295,8 @@ const EventsApplication = () => {
           </div>
         </div>
       </div>
-      <ViewEventModal viewEvent={viewEvent} />
-      <CancelEventApplicationModal viewEvent={viewEvent} />
+      <ViewEventModal viewEvent={viewEvent} setEventUpdate={setEventUpdate} socket={socket}  />
+      <CancelEventApplicationModal viewEvent={viewEvent}/>
     </div>
   );
 };
