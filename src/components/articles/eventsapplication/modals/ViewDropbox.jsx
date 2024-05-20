@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaRegFileLines } from "react-icons/fa6";
 
-const ViewDropbox = ({ viewFiles, setViewFiles }) => {
+const ViewDropbox = ({ viewFiles }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [isImage, setIsImage] = useState(false)
   const fileInputRef = useRef();
@@ -70,13 +70,6 @@ const ViewDropbox = ({ viewFiles, setViewFiles }) => {
     }
   }
 
-  const dropHandler = (e) => {
-    e.preventDefault();
-    const droppedFiles = e.dataTransfer.files;
-    setViewFiles([...viewFiles, ...droppedFiles]);
-    setIsDragging(false);
-  };
-
   const dragOverHandler = (e) => {
     e.preventDefault();
     e.target.classList.add("drag-over");
@@ -95,15 +88,6 @@ const ViewDropbox = ({ viewFiles, setViewFiles }) => {
     setIsDragging(true);
   };
 
-  const handleAdd = (e) => {
-    e.preventDefault();
-    fileInputRef.current.click();
-  };
-
-  const handleDelete = (idx) => {
-    setViewFiles((prev) => prev.filter((_, index) => index !== idx));
-  };
-
   // const handleFileClick = (file) => {
   //   const url = URL.createObjectURL(file);
   //   const a = document.createElement("a");
@@ -120,7 +104,6 @@ const ViewDropbox = ({ viewFiles, setViewFiles }) => {
         <article
           aria-label="File Upload Modal"
           className="relative h-full flex flex-col "
-          onDrop={dropHandler}
           onDragOver={dragOverHandler}
           onDragLeave={dragLeaveHandler}
           onDragEnter={dragEnterHandler}
@@ -142,7 +125,7 @@ const ViewDropbox = ({ viewFiles, setViewFiles }) => {
               {viewFiles && viewFiles.length > 0 ? (
                 viewFiles.map((file, idx) => (
                   <li
-                    className="flex mx-2"
+                    className="flex w-full"
                     key={idx}
                     // onClick={() => handleFileClick(file)}
                   >
@@ -164,7 +147,7 @@ const ViewDropbox = ({ viewFiles, setViewFiles }) => {
                         :
                         <article
                           tabIndex={0}
-                          className="group sm:w-[80px] lg:w-[150px] rounded-md focus:outline-none focus:shadow-outline relative bg-gray-100 cursor-pointer shadow-sm"
+                          className="group sm:w-[100%] lg:w-[150px] md:w-[198px] rounded-md focus:outline-none focus:shadow-outline relative bg-gray-100 cursor-pointer shadow-sm"
                         >
                           <section className="flex flex-col rounded-md text-xs break-words w-full h-full z-20 top-0 py-2 px-3">
                             <a

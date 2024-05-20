@@ -100,7 +100,7 @@ const ViewDropbox = ({ viewFiles, setViewFiles }) => {
               {viewFiles && viewFiles.length > 0 ? (
                 viewFiles.map((file, idx) => (
                   <li
-                    className="flex mx-2"
+                    className="flex"
                     key={idx}
                     // onClick={() => handleFileClick(file)}
                   >

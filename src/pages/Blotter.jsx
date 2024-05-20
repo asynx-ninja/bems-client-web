@@ -30,6 +30,8 @@ const Blotter = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [pageCount, setPageCount] = useState(0);
   const [searchName, setSearchName] = useState("");
+  const [searchInput, setSearchInput] = useState("");
+  const [searchResult, setSearchResult] = useState(0);
   const [getAll, setGetAll] = useState([]);
   const [info, setInfo] = useState({});
 
@@ -50,7 +52,7 @@ const Blotter = () => {
         console.log(error);
       }
     };
-    
+
     const fetch = async () => {
       try {
         // const response = await axios.get(
@@ -82,11 +84,14 @@ const Blotter = () => {
   };
 
   const handleOnSearch = (e) => {
-    const getSearch = getAll.filter((item) =>
-      item.req_id.toUpperCase().includes(e.target.value.toUpperCase())
-    );
+    const inputValue = e.target.value.toUpperCase();
+    setSearchInput(e.target.value);
 
-    setBlotter(getSearch);
+    const getSearch = getAll.filter((item) =>
+      item.req_id.toUpperCase().includes(inputValue)
+    );
+    setSearchResult(getSearch.length);
+    setRequest(getSearch);
   };
 
   const tableHeader = ["Blotter ID", "Name", "to", "date", "status", "actions"];
@@ -117,25 +122,30 @@ const Blotter = () => {
 
           <div className="mt-5 sw-full flex flex-row sm:justify-center md:justify-end items-center">
             {/* SEARCH */}
-            <div className="flex gap-2">
-              <input
-                className="rounded-lg uppercase"
-                type="text"
-                placeholder="Search..."
-                onChange={handleOnSearch}
-              />
-              <button
-                className="rounded-xl w-[40px] h-[40px] justify-center items-center text-white"
-                style={{
-                  background: `${
-                    info && info.theme && info.theme.primary !== ""
-                      ? info.theme.primary
-                      : "#295141"
-                  }`,
-                }}
-              >
-                <FaSearch className="w-full" />
-              </button>
+            <div className="flex sm:flex-col-reverse md:flex-row items-center gap-2">
+              <p className={searchInput !== "" ? "text-gray-400" : "hidden"}>
+                Searching {searchInput}, return {searchResult} result/s
+              </p>
+              <div className="flex items-center gap-2">
+                <input
+                  className="rounded-lg"
+                  type="text"
+                  placeholder="Search..."
+                  onChange={handleOnSearch}
+                />
+                <button
+                  className="rounded-xl w-[40px] h-[40px] justify-center items-center text-white"
+                  style={{
+                    background: `${
+                      info && info.theme && info.theme.primary !== ""
+                        ? info.theme.primary
+                        : "#295141"
+                    }`,
+                  }}
+                >
+                  <FaSearch className="w-full" />
+                </button>
+              </div>
             </div>
           </div>
 
@@ -210,7 +220,11 @@ const Blotter = () => {
           </div>
         </div>
       </div>
-      <ViewMessage specBlotter={specBlotter} setSpecBlotter={setSpecBlotter} socket={socket}/>
+      <ViewMessage
+        specBlotter={specBlotter}
+        setSpecBlotter={setSpecBlotter}
+        socket={socket}
+      />
     </div>
   );
 };

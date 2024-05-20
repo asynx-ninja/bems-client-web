@@ -6,9 +6,9 @@ import video from "../assets/image/video.mp4";
 import axios from "axios";
 import API_LINK from "../config/API";
 import { useSearchParams } from "react-router-dom";
-import io from "socket.io-client"
+import io from "socket.io-client";
 import Socket_link from "../config/Socket";
-const socket = io(Socket_link)
+const socket = io(Socket_link);
 
 // COMPONENTS
 import ViewEventModal from "../components/articles/eventsapplication/modals/ViewEventModal";
@@ -31,7 +31,7 @@ const EventsApplication = () => {
   const [searchResult, setSearchResult] = useState(0);
   const [getAll, setGetAll] = useState([]);
   const [info, setInfo] = useState({});
-  const [eventupdate, setEventUpdate] = useState(false)
+  const [eventupdate, setEventUpdate] = useState(false);
   useEffect(() => {
     document.title = "Service Request | Barangay E-Services Management";
   }, []);
@@ -58,7 +58,6 @@ const EventsApplication = () => {
         // const getUser = await axios.get(`${API_LINK}/users/specific/${id}`);
 
         if (response.status === 200) {
-         
           setEvents(response.data.result);
           setPageCount(response.data.pageCount);
           setGetAll(response.data.all);
@@ -94,7 +93,7 @@ const EventsApplication = () => {
 
   const handleOnSearch = (e) => {
     const inputValue = e.target.value.toUpperCase();
-    setSearchInput(inputValue);
+    setSearchInput(e.target.value);
 
     const getSearch = getAll.filter(
       (item) =>
@@ -195,28 +194,30 @@ const EventsApplication = () => {
             </div>
 
             {/* SEARCH */}
-            <div className="flex items-center gap-2">
+            <div className="flex sm:flex-col-reverse md:flex-row items-center gap-2">
               <p className={searchInput !== "" ? "text-gray-400" : "hidden"}>
                 Searching {searchInput}, return {searchResult} result/s
               </p>
-              <input
-                className="rounded-lg sm:w-[250px] md:w-[350px] placeholder:text-[14px] placeholder:text-gray-300"
-                type="text"
-                placeholder="Search by ID | Name"
-                onChange={handleOnSearch}
-              />
-              <button
-                className="rounded-xl w-[40px] h-[40px] justify-center items-center text-white"
-                style={{
-                  background: `${
-                    info && info.theme && info.theme.primary !== ""
-                      ? info.theme.primary
-                      : "#295141"
-                  }`,
-                }}
-              >
-                <FaSearch className="w-full" />
-              </button>
+              <div className="flex items-center gap-2">
+                <input
+                  className="rounded-lg sm:w-[250px] md:w-[350px] placeholder:text-[14px] placeholder:text-gray-300"
+                  type="text"
+                  placeholder="Search by ID | Name"
+                  onChange={handleOnSearch}
+                />
+                <button
+                  className="rounded-xl w-[40px] h-[40px] justify-center items-center text-white"
+                  style={{
+                    background: `${
+                      info && info.theme && info.theme.primary !== ""
+                        ? info.theme.primary
+                        : "#295141"
+                    }`,
+                  }}
+                >
+                  <FaSearch className="w-full" />
+                </button>
+              </div>
             </div>
           </div>
           {/* Table */}
@@ -259,7 +260,7 @@ const EventsApplication = () => {
                   <EventsApplicationList
                     events={events}
                     setViewEvent={setViewEvent}
-                    setEventUpdate={setEventUpdate} 
+                    setEventUpdate={setEventUpdate}
                     socket={socket}
                   />
                 )}
@@ -295,8 +296,12 @@ const EventsApplication = () => {
           </div>
         </div>
       </div>
-      <ViewEventModal viewEvent={viewEvent} setEventUpdate={setEventUpdate} socket={socket}  />
-      <CancelEventApplicationModal viewEvent={viewEvent}/>
+      <ViewEventModal
+        viewEvent={viewEvent}
+        setEventUpdate={setEventUpdate}
+        socket={socket}
+      />
+      <CancelEventApplicationModal viewEvent={viewEvent} />
     </div>
   );
 };

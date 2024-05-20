@@ -17,7 +17,6 @@ import { io } from "socket.io-client";
 import Socket_link from "../config/Socket";
 const socket = io(Socket_link);
 
-
 const Requests = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get("id");
@@ -95,7 +94,7 @@ const Requests = () => {
 
   const handleOnSearch = (e) => {
     const inputValue = e.target.value.toUpperCase();
-    setSearchInput(inputValue);
+    setSearchInput(e.target.value);
 
     const getSearch = getAll.filter(
       (item) =>
@@ -209,28 +208,30 @@ const Requests = () => {
             </div>
 
             {/* SEARCH */}
-            <div className="flex items-center gap-2">
+            <div className="flex sm:flex-col-reverse md:flex-row items-center gap-2">
               <p className={searchInput !== "" ? "text-gray-400" : "hidden"}>
                 Searching {searchInput}, return {searchResult} result/s
               </p>
-              <input
-                className="rounded-lg sm:w-[250px] md:w-[350px] placeholder:text-[14px] placeholder:text-gray-300"
-                type="text"
-                placeholder="Search by ID | Name"
-                onChange={handleOnSearch}
-              />
-              <button
-                className="rounded-xl w-[40px] h-[40px] justify-center items-center text-white"
-                style={{
-                  background: `${
-                    info && info.theme && info.theme.primary !== ""
-                      ? info.theme.primary
-                      : "#295141"
-                  }`,
-                }}
-              >
-                <FaSearch className="w-full" />
-              </button>
+              <div className="flex items-center gap-2">
+                <input
+                  className="rounded-lg sm:w-[250px] md:w-[350px] placeholder:text-[14px] placeholder:text-gray-300"
+                  type="text"
+                  placeholder="Search by ID | Name"
+                  onChange={handleOnSearch}
+                />
+                <button
+                  className="rounded-xl w-[40px] h-[40px] justify-center items-center text-white"
+                  style={{
+                    background: `${
+                      info && info.theme && info.theme.primary !== ""
+                        ? info.theme.primary
+                        : "#295141"
+                    }`,
+                  }}
+                >
+                  <FaSearch className="w-full" />
+                </button>
+              </div>
             </div>
           </div>
 

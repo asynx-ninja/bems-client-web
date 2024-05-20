@@ -419,7 +419,15 @@ const ViewMessage = ({ specBlotter, setSpecBlotter }) => {
                               : "flex flex-col justify-start items-start mb-1 w-full h-auto"
                           }
                         >
-                          <div className="flex flex-col items-end mb-5 h-auto">
+                          <div
+                            className={
+                              responseItem.sender ===
+                                `${userData.firstName.toUpperCase()} ${userData.lastName.toUpperCase()}` ||
+                              responseItem.sender === "Resident"
+                                ? "flex flex-col items-end mb-5 h-auto"
+                                : "flex flex-col items-start mb-5 h-auto"
+                            }
+                          >
                             <div className="flex flex-row w-full justify-between">
                               <div className="flex flex-col md:flex-row md:items-center">
                                 <p className="text-[14px] text-black md:text-sm font-medium uppercase ">
@@ -429,7 +437,7 @@ const ViewMessage = ({ specBlotter, setSpecBlotter }) => {
                             </div>
                             {responseItem.message !== "" ? (
                               <div
-                                className="flex flex-col rounded-xl bg-custom-green-button w-full px-2 md:px-4 py-2"
+                                className="flex flex-col rounded-xl bg-custom-green-button px-2 md:px-4 py-2"
                                 onClick={(e) => e.stopPropagation()}
                               >
                                 <div className="w-full h-full">
@@ -455,91 +463,73 @@ const ViewMessage = ({ specBlotter, setSpecBlotter }) => {
                           </div>
                           {index === specBlotter.responses.length - 1 ? (
                             <div className="flex flex-row items-center w-full">
-                              {responseItem.isRepliable === false ? null : (
-                                <button
-                                  type="button"
-                                  className="h-8 w-full lg:w-32 py-1 px-2 gap-2 mt-4 rounded-full borde text-sm font-base bg-custom-green-header text-white shadow-sm"
-                                  onClick={handleOnReply}
-                                  hidden={reply}
-                                >
-                                  REPLY
-                                </button>
-                              )}
-                              {!reply ? (
-                                <div></div>
-                              ) : (
-                                <div className="relative w-full mt-4 mx-2">
-                                  {errMsg ? (
-                                    <div className="w-[100%] bg-red-500 rounded-md mb-[10px] flex">
-                                      <p className="py-[10px] text-[12px] px-[20px] text-white font-medium">
-                                        Please enter a message or insert a file!
-                                      </p>
-                                    </div>
-                                  ) : null}
-                                  <div className="relative w-full">
-                                    <textarea
-                                      id="message"
-                                      name="message"
-                                      onChange={handleChange}
-                                      className="p-4 pb-12 block w-full border-gray-200 rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none border"
-                                      placeholder="Input response..."
-                                    ></textarea>
+                              <div className="relative w-full mt-4 mx-2">
+                                {errMsg ? (
+                                  <div className="w-[100%] bg-red-500 rounded-md mb-[10px] flex">
+                                    <p className="py-[10px] text-[12px] px-[20px] text-white font-medium">
+                                      Please enter a message or insert a file!
+                                    </p>
+                                  </div>
+                                ) : null}
+                                <div className="relative w-full">
+                                  <textarea
+                                    id="message"
+                                    name="message"
+                                    onChange={handleChange}
+                                    className="p-4 pb-12 block w-full border-gray-200 rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none border"
+                                    placeholder="Input response..."
+                                  ></textarea>
 
-                                    <div className="absolute bottom-px inset-x-px p-2 rounded-b-md bg-white">
-                                      <div className="flex justify-between items-center">
-                                        <div className="flex items-center">
-                                          <input
-                                            type="file"
-                                            name="file"
-                                            onChange={(e) =>
-                                              handleFileChange(e)
-                                            }
-                                            ref={fileInputRef}
-                                            accept=".xlsx,.xls,.doc,.docx,.ppt,.pptx,.txt,.pdf"
-                                            multiple="multiple"
-                                            className="hidden"
+                                  <div className="absolute bottom-px inset-x-px p-2 rounded-b-md bg-white">
+                                    <div className="flex justify-between items-center">
+                                      <div className="flex items-center">
+                                        <input
+                                          type="file"
+                                          name="file"
+                                          onChange={(e) => handleFileChange(e)}
+                                          ref={fileInputRef}
+                                          accept=".xlsx,.xls,.doc,.docx,.ppt,.pptx,.txt,.pdf"
+                                          multiple="multiple"
+                                          className="hidden"
+                                        />
+                                        <button
+                                          id="button"
+                                          onClick={handleAdd || handleOnUpload}
+                                          className="mt-2 rounded-xl px-3 py-1 hover:bg-gray-300 focus:shadow-outline focus:outline-none"
+                                        >
+                                          <IoIosAttach size={24} />
+                                        </button>
+                                      </div>
+
+                                      <div className="flex items-center gap-x-1">
+                                        <button
+                                          type="submit"
+                                          onClick={handleOnSend}
+                                          className="inline-flex flex-shrink-0 justify-center items-center w-28 rounded-lg text-white py-1 px-6 gap-2 bg-cyan-700"
+                                        >
+                                          <span>SEND</span>
+                                          <IoSend
+                                            size={18}
+                                            className="flex-shrink-0"
                                           />
-                                          <button
-                                            id="button"
-                                            onClick={
-                                              handleAdd || handleOnUpload
-                                            }
-                                            className="mt-2 rounded-xl px-3 py-1 hover:bg-gray-300 focus:shadow-outline focus:outline-none"
-                                          >
-                                            <IoIosAttach size={24} />
-                                          </button>
-                                        </div>
-
-                                        <div className="flex items-center gap-x-1">
-                                          <button
-                                            type="submit"
-                                            onClick={handleOnSend}
-                                            className="inline-flex flex-shrink-0 justify-center items-center w-28 rounded-lg text-white py-1 px-6 gap-2 bg-cyan-700"
-                                          >
-                                            <span>SEND</span>
-                                            <IoSend
-                                              size={18}
-                                              className="flex-shrink-0"
-                                            />
-                                          </button>
-                                        </div>
+                                        </button>
                                       </div>
                                     </div>
                                   </div>
-                                  {!upload ? (
-                                    // Render Dropbox only when there are uploaded files
-                                    createFiles.length > 0 && (
-                                      <Dropbox
-                                        createFiles={createFiles}
-                                        setCreateFiles={setCreateFiles}
-                                        handleFileChange={handleFileChange}
-                                      />
-                                    )
-                                  ) : (
-                                    <div></div>
-                                  )}
                                 </div>
-                              )}
+                                {!upload ? (
+                                  // Render Dropbox only when there are uploaded files
+                                  createFiles.length > 0 && (
+                                    <Dropbox
+                                      createFiles={createFiles}
+                                      setCreateFiles={setCreateFiles}
+                                      handleFileChange={handleFileChange}
+                                    />
+                                  )
+                                ) : (
+                                  <div></div>
+                                )}
+                              </div>
                             </div>
                           ) : null}
                         </div>

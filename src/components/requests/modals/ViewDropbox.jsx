@@ -127,11 +127,11 @@ const ViewDropbox = ({ viewFiles, setViewFiles }) => {
             <h1 className="pb-2 text-sm font-medium text-white">
               Files Attached:
             </h1>
-            <ul id="gallery" className="flex flex-1 flex-wrap">
+            <ul id="gallery" className="flex w-full flex-1 flex-wrap">
               {viewFiles && viewFiles.length > 0 ? (
                 viewFiles.map((file, idx) => (
                   <li
-                    className="flex mx-2"
+                    className="flex"
                     key={idx}
                     // onClick={() => handleFileClick(file)}
                   >

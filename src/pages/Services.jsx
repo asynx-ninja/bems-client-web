@@ -60,7 +60,7 @@ const Services = () => {
   const handleOnSearch = (e) => {
     const inputValue = e.target.value.toUpperCase();
 
-    setSearchInput(inputValue)
+    setSearchInput(e.target.value)
 
     if (inputValue !== "") {
       const getSearch = search.filter((item) =>
