@@ -29,19 +29,9 @@ const EventsApplicationList = ({ events, setViewEvent, setEventUpdate, socket })
 
   useEffect(() => {
     const handleEventAppli = (event_appli) => {
-      // console.log("received appli", event_appli);
-      let files = []
-      // // let blob = await fetch(event_appli.url).then(r => r.blob());
-      if (event_appli.files) {
-        for (const file of event_appli.files) {
-          // let fileObject = await fetch(file.url).then(r => r.blob()).then(blobFile => new File([blobFile], file.name, { type: blobFile.type }))
-          files.push({ link: file.url, name: file.name })
-        }
-      }
-
       setViewEvent((prevApplication = { response: [] }) => ({
         ...prevApplication,
-        response: [...(prevApplication.response || []), { ...event_appli.obj, file: files }], // Ensure prevApplication.response is an array
+        response: [...(prevApplication.response || []), event_appli], // Ensure prevApplication.response is an array
       }));
     };
     // setEventUpdate((prevState) => !prevState);
