@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { FaRegFileLines } from "react-icons/fa6";
 
 const ViewDropbox = ({ viewFiles, setViewFiles }) => {
   const [isDragging, setIsDragging] = useState(false);
