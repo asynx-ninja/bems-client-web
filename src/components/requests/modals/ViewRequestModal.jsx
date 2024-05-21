@@ -11,7 +11,7 @@ import { useSearchParams } from "react-router-dom";
 import moment from "moment";
 // import EditDropbox from "./EditDropbox";
 
-const ViewRequestModal = ({ viewRequest }) => {
+const ViewRequestModal = ({ viewRequest, setRequestUpdate, socket }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get("id");
   const brgy = searchParams.get("brgy");
@@ -114,7 +114,7 @@ const ViewRequestModal = ({ viewRequest }) => {
       return;
     }
 
-    setSubmitClicked(true);
+    // setSubmitClicked(true);
 
     try {
       const obj = {
@@ -191,13 +191,7 @@ const ViewRequestModal = ({ viewRequest }) => {
           });
 
           if (result.status === 200) {
-            setTimeout(() => {
-              setSubmitClicked(false);
-              setUpdatingStatus("success");
-              setTimeout(() => {
-                window.location.reload();
-              }, 3000);
-            }, 1000);
+            socket.emit("send-get_request", response.data);
           }
         } else {
           setSubmitClicked(false);
@@ -205,6 +199,10 @@ const ViewRequestModal = ({ viewRequest }) => {
           setError(error.message);
         }
       }
+      return {
+        socket,
+        setRequestUpdate,
+      };
     } catch (error) {
       console.log(error);
     }
@@ -372,11 +370,19 @@ const ViewRequestModal = ({ viewRequest }) => {
                               responseItem.sender ===
                                 `${userData.firstName.toUpperCase()} ${userData.lastName.toUpperCase()}` ||
                               responseItem.sender === "Resident"
-                                ? "flex flex-col items-end mb-5 h-auto"
-                                : "flex flex-col items-start mb-5 h-auto"
+                                ? "flex flex-col items-end mb-5 h-auto max-w-[80%]"
+                                : "flex flex-col items-start mb-5 h-auto max-w-[80%]"
                             }
                           >
-                            <div className="flex flex-row w-full justify-between">
+                            <div
+                              className={
+                                responseItem.sender ===
+                                  `${userData.firstName.toUpperCase()} ${userData.lastName.toUpperCase()}` ||
+                                responseItem.sender === "Resident"
+                                  ? "flex flex-row w-full justify-end"
+                                  : "flex flex-row w-full justify-between"
+                              }
+                            >
                               <div className="flex flex-col md:flex-row md:items-center">
                                 <p className="text-[14px] text-black md:text-sm font-medium uppercase ">
                                   {responseItem.sender}
@@ -504,16 +510,6 @@ const ViewRequestModal = ({ viewRequest }) => {
 
             {/* Buttons */}
             <div className="flex justify-end items-center gap-x-2 py-3 px-6 dark:border-gray-700">
-              {/* <button
-                type="button"
-                className="py-1 px-6 inline-flex justify-center items-center gap-2 rounded-md borde text-sm font-base text-white shadow-sm align-middle"
-                data-hs-overlay="#hs-viewRequest-modal"
-                style={{
-                  background: '#268F26'
-                }}
-              >
-                SEND
-              </button> */}
               <button
                 type="button"
                 className="py-1 px-6 inline-flex justify-center items-center gap-2 rounded-md border text-sm font-base text-white shadow-sm align-middle"

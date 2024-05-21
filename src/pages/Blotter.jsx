@@ -34,6 +34,7 @@ const Blotter = () => {
   const [searchResult, setSearchResult] = useState(0);
   const [getAll, setGetAll] = useState([]);
   const [info, setInfo] = useState({});
+  const [blotterupdate, setBlotterUpdate] = useState(false);
 
   useEffect(() => {
     document.title = "Blotter | Barangay E-Services Management";
@@ -187,7 +188,9 @@ const Blotter = () => {
                 ) : (
                   <BlotterRecords
                     blotters={blotter}
+                    setBlotter={setBlotter}
                     setSpecBlotter={setSpecBlotter}
+                    setBlotterUpdate={setBlotterUpdate}
                     socket={socket}
                   />
                 )}
@@ -223,6 +226,7 @@ const Blotter = () => {
       <ViewMessage
         specBlotter={specBlotter}
         setSpecBlotter={setSpecBlotter}
+        setBlotterUpdate={setBlotterUpdate}
         socket={socket}
       />
     </div>

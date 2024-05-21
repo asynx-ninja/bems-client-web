@@ -11,7 +11,12 @@ import Preloader from "../../loaders/Preloader";
 import { useSearchParams } from "react-router-dom";
 import moment from "moment";
 
-const ViewMessage = ({ specBlotter }) => {
+const ViewMessage = ({
+  specBlotter,
+  setSpecBlotter,
+  setBlotterUpdate,
+  socket,
+}) => {
   // console.log(inquiry.folder_id);
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get("id");
@@ -47,8 +52,8 @@ const ViewMessage = ({ specBlotter }) => {
   }, [id]);
 
   useEffect(() => {
-    if (Array.isArray(specBlotter.to)) {
-      setIsComplainant(specBlotter.to);
+    if (Array.isArray(specBlotter && specBlotter.to)) {
+      setIsComplainant(specBlotter && specBlotter.to);
     }
   }, [specBlotter, userData.user_id]);
 
@@ -116,7 +121,9 @@ const ViewMessage = ({ specBlotter }) => {
           }` === item.sender
       );
 
-      return type.type.toUpperCase()
+      if (type) {
+        return type.type.toUpperCase();
+      }
     }
   };
 
@@ -130,7 +137,7 @@ const ViewMessage = ({ specBlotter }) => {
       return;
     }
 
-    setSubmitClicked(true);
+    // setSubmitClicked(true);
 
     try {
       const obj = {
@@ -193,21 +200,17 @@ const ViewMessage = ({ specBlotter }) => {
         });
 
         if (result.status === 200) {
-          setTimeout(() => {
-            setSubmitClicked(false);
-            setUpdatingStatus("success");
-            setTimeout(() => {
-              window.location.reload();
-            }, 3000);
-          }, 1000);
+          socket.emit("send-blotter", response.data);
         }
       } else {
         setSubmitClicked(false);
         setUpdatingStatus("error");
         setError(error.message);
       }
-
-      window.location.reload();
+      return {
+        socket,
+        setBlotterUpdate,
+      };
     } catch (error) {
       console.log(error);
     }
@@ -415,11 +418,19 @@ const ViewMessage = ({ specBlotter }) => {
                               responseItem.sender ===
                                 `${userData.firstName.toUpperCase()} ${userData.lastName.toUpperCase()}` ||
                               responseItem.sender === "Resident"
-                                ? "flex flex-col items-end mb-5 h-aut0 sm:w-full md:w-[400px]"
-                                : "flex flex-col items-start mb-5 h-auto sm:w-full md:w-[400px]"
+                                ? "flex flex-col items-end mb-5 h-aut0 max-w-[80%]"
+                                : "flex flex-col items-start mb-5 h-auto max-w-[80%]"
                             }
                           >
-                            <div className="flex flex-row w-full justify-between">
+                            <div
+                              className={
+                                responseItem.sender ===
+                                  `${userData.firstName.toUpperCase()} ${userData.lastName.toUpperCase()}` ||
+                                responseItem.sender === "Resident"
+                                  ? "flex flex-row w-full justify-end"
+                                  : "flex flex-row w-full justify-between"
+                              }
+                            >
                               <div className="flex flex-col md:flex-row md:items-center">
                                 <p className="text-[14px] text-black md:text-sm font-medium uppercase ">
                                   {responseItem.sender}{" "}
@@ -436,7 +447,7 @@ const ViewMessage = ({ specBlotter }) => {
                               >
                                 <div className="w-full h-full">
                                   <div className="w-full h-full rounded-xl p-1">
-                                    <p className="text-[10px] text-white md:text-xs">
+                                    <p className="text-[10px] text-white md:text-xs ">
                                       {responseItem.message}
                                     </p>
                                   </div>

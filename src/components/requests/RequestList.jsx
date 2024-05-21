@@ -1,16 +1,42 @@
 import { AiOutlineEye } from "react-icons/ai";
 import { FaTimes } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 const RequestList = ({
   request,
+  setRequest,
   selectedItems,
   checkboxHandler,
   setViewRequest,
-  socket
+  setRequestUpdate,
+  socket,
 }) => {
   const location = useLocation();
   const page = location.pathname.split("/")[1];
+
+  useEffect(() => {
+    const handleRequest = (new_request) => {
+      // setViewEvent((prevRequest = { response: [] }) => ({
+      //   ...prevRequest,
+      //   response: [...(prevRequest.response || []), new_request], // Ensure prevRequest.response is an array
+      // }));
+
+      setViewRequest(new_request);
+
+      setRequest((curItem) =>
+        curItem.map((item) =>
+          item._id === new_request._id ? new_request : item
+        )
+      );
+    };
+    // setRequestUpdate((prevState) => !prevState);
+    socket.on("receive-new_request", handleRequest);
+
+    return () => {
+      socket.off("receive-new_request", handleRequest);
+    };
+  }, [socket, setViewRequest]);
 
   const DateFormat = (date) => {
     if (!date) return "";

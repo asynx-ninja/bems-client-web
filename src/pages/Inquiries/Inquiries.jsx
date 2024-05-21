@@ -302,8 +302,8 @@ const Inquiries = () => {
                 ) : (
                   <InquiriesList
                     inquiries={inquiries}
+                    setInquiries={setInquiries}
                     setInquiry={setInquiry}
-                    inqsupdate={inqsupdate}
                     setInqsUpdate={setInqsUpdate}
                     socket={socket}
                   />
@@ -345,7 +345,6 @@ const Inquiries = () => {
       <ViewMessage
         inquiry={inquiry}
         setInquiry={setInquiry}
-        inqsupdate={inqsupdate}
         setInqsUpdate={setInqsUpdate}
         socket={socket}
       />

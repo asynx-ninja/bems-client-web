@@ -5,10 +5,16 @@ import { useEffect, useState } from "react";
 // import { io } from 'socket.io-client'
 // import Socket_link from "../../config/Socket";
 // const socket = io(Socket_link)
-const InquiriesList = ({ inquiries, setInquiry, setInqsUpdate, inqsupdate, socket }) => {
+const InquiriesList = ({
+  inquiries,
+  setInquiries,
+  setInquiry,
+  setInqsUpdate,
+  socket,
+}) => {
   const location = useLocation();
   const page = location.pathname.split("/")[1];
-  const [to, setTo] = useState('');
+  const [to, setTo] = useState("");
   const DateFormat = (date) => {
     if (!date) return "";
 
@@ -24,46 +30,43 @@ const InquiriesList = ({ inquiries, setInquiry, setInqsUpdate, inqsupdate, socke
 
   // console.log(inquiries)
 
-
   const handleView = (item) => {
     setInquiry(item);
-    console.log(item.compose.to)
-    setTo(item.compose.to)
-    setInqsUpdate((prevState)=> !prevState)
+    setTo(item.compose.to);
+    setInqsUpdate((prevState) => !prevState);
   };
 
   useEffect(() => {
-    if (to === 'Admin') {
+    if (to === "Admin") {
       const handleMuniInq = (muni_inquiry) => {
-        setInquiry((prevMuniInq) => ({
-          ...prevMuniInq,
-          response: [...prevMuniInq.response, muni_inquiry],
-        }));
+        setInquiry(muni_inquiry)
+
+        setInquiries(curItem => curItem.map((item) =>
+          item._id === muni_inquiry._id ? muni_inquiry : item
+        ))
       };
 
-      socket.on('receive-muni_inquiry', handleMuniInq);
-    
+      socket.on("receive-muni_inquiry", handleMuniInq);
+
       return () => {
-        socket.off('receive-muni_inquiry', handleMuniInq);
-       
+        socket.off("receive-muni_inquiry", handleMuniInq);
       };
-    
     } else {
       const handleStaffInq = (staff_inquiry) => {
-        setInquiry((prevMuniInq) => ({
-          ...prevMuniInq,
-          response: [...prevMuniInq.response, staff_inquiry],
-        }));
+        setInquiry(muni_inquiry)
+
+        setInquiries(curItem => curItem.map((item) =>
+          item._id === staff_inquiry._id ? staff_inquiry : item
+        ))
       };
 
-      socket.on('receive-staff_inquiry', handleStaffInq);
+      socket.on("receive-staff_inquiry", handleStaffInq);
 
       return () => {
-        socket.off('receive-staff_inquiry', handleStaffInq);
+        socket.off("receive-staff_inquiry", handleStaffInq);
       };
     }
-  }, [to, socket, setInquiry]); 
-
+  }, [to, socket, setInquiry]);
 
   return inquiries.map((item, index) => (
     <tr key={index} className="odd:bg-slate-100 text-center">

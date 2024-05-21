@@ -76,7 +76,7 @@ const ViewDropbox = ({ viewFiles }) => {
             <h1 className="pb-2 text-sm font-medium text-white">
               Files Attached:
             </h1>
-            <ul id="gallery" className="flex flex-1 flex-wrap">
+            <ul id="gallery" className="flex flex-1 flex-wrap gap-1">
               {viewFiles && viewFiles.length > 0 ? (
                 viewFiles.map((file, idx) => (
                   <li
@@ -102,7 +102,7 @@ const ViewDropbox = ({ viewFiles }) => {
                         :
                         <article
                           tabIndex={0}
-                          className="group sm:w-[100%] lg:w-[150px] md:w-[198px] rounded-md focus:outline-none focus:shadow-outline relative bg-gray-100 cursor-pointer shadow-sm"
+                          className="group sm:w-[100%] rounded-md focus:outline-none focus:shadow-outline relative bg-gray-100 cursor-pointer shadow-sm"
                         >
                           <section className="flex flex-col rounded-md text-xs break-words w-full h-full z-20 top-0 py-2 px-3">
                             <a

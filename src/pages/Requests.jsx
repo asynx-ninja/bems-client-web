@@ -33,6 +33,7 @@ const Requests = () => {
   const [searchResult, setSearchResult] = useState(0);
   const [getAll, setGetAll] = useState([]);
   const [info, setInfo] = useState({});
+  const [requestupdate, setRequestUpdate] = useState(false);
 
   useEffect(() => {
     document.title = "Service Request | Barangay E-Services Management";
@@ -273,9 +274,11 @@ const Requests = () => {
                 ) : (
                   <RequestList
                     request={request}
+                    setRequest={setRequest}
                     selectedItems={selectedItems}
                     checkboxHandler={checkAllHandler}
                     setViewRequest={setViewRequest}
+                    setRequestUpdate={setRequestUpdate}
                     socket={socket}
                   />
                 )}
@@ -311,7 +314,7 @@ const Requests = () => {
           </div>
         </div>
       </div>
-      <ViewRequestModal viewRequest={viewRequest} socket={socket} />
+      <ViewRequestModal viewRequest={viewRequest} setRequestUpdate={setRequestUpdate} socket={socket}/>
       <CancelRequestModal viewRequest={viewRequest} />
     </div>
   );
