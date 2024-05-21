@@ -34,7 +34,7 @@ const EventsApplication = () => {
   const [eventupdate, setEventUpdate] = useState(false);
   
   useEffect(() => {
-    document.title = "Service Request | Barangay E-Services Management";
+    document.title = "Events Application | Barangay E-Services Management";
   }, []);
 
   useEffect(() => {

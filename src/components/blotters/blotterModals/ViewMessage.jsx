@@ -10,7 +10,7 @@ import ViewDropbox from "./ViewDropbox";
 import Preloader from "../../loaders/Preloader";
 import { useSearchParams } from "react-router-dom";
 import moment from "moment";
-import { FaTimes } from "react-icons/fa";
+import { FaTimes, FaFileImage } from "react-icons/fa";
 
 const ViewMessage = ({
   specBlotter,
@@ -21,6 +21,7 @@ const ViewMessage = ({
   // console.log(inquiry.folder_id);
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get("id");
+  const chatContainerRef = useRef(null);
   const [userData, setUserData] = useState({});
   const [upload, setUpload] = useState(false);
   const [files, setFiles] = useState([]);
@@ -30,8 +31,6 @@ const ViewMessage = ({
     message: "",
     date: new Date(),
   });
-  const [submitClicked, setSubmitClicked] = useState(false);
-  const [updatingStatus, setUpdatingStatus] = useState(null);
   const [errMsg, setErrMsg] = useState(false);
   const [isComplainant, setIsComplainant] = useState([]);
   const [onSend, setOnSend] = useState(false);
@@ -39,12 +38,13 @@ const ViewMessage = ({
     state: false,
     timeKey: 0,
   });
-  const chatContainerRef = useRef(null);
 
-  const chats = document.getElementById("scrolltobottom");
-  if (chats) {
-    chats.scrollTop = chats.scrollHeight;
-  }
+  useEffect(() => {
+    const chats = document.getElementById("scrolltobottom");
+    if (chats) {
+      chats.scrollTop = chats.scrollHeight;
+    }
+  });
 
   useEffect(() => {
     const container = chatContainerRef.current;
@@ -86,6 +86,7 @@ const ViewMessage = ({
   }, [specBlotter, userData.user_id]);
 
   const fileInputRef = useRef();
+  const imageInputRef = useRef();
 
   const handleAdd = (e) => {
     e.preventDefault();
@@ -93,7 +94,13 @@ const ViewMessage = ({
     fileInputRef.current.click();
   };
 
-  console.log(isComplainant);
+  const handleAddImage = (e) => {
+    e.preventDefault();
+
+    imageInputRef.current.click();
+  };
+
+  // console.log(isComplainant);
 
   const handleOnUpload = () => {
     setUpload(!upload);
@@ -241,8 +248,6 @@ const ViewMessage = ({
         setCreateFiles([]);
         setOnSend(false);
       } else {
-        setSubmitClicked(false);
-        setUpdatingStatus("error");
         setError(error.message);
       }
       return {
@@ -463,11 +468,16 @@ const ViewMessage = ({
                               </div>
                             ) : null}
                             {!responseItem.file.length ? null : (
-                              <div className="flex flex-col rounded-xl">
-                                <ViewDropbox
-                                  viewFiles={responseItem.file || []}
-                                />
-                              </div>
+                              <ViewDropbox
+                                viewFiles={responseItem.file || []}
+                                responseItem={
+                                  responseItem.sender ===
+                                    `${userData.firstName.toUpperCase()} ${userData.lastName.toUpperCase()}` ||
+                                  responseItem.sender === "Resident"
+                                    ? true
+                                    : false
+                                }
+                              />
                             )}
                             <p
                               className={
@@ -581,6 +591,25 @@ const ViewMessage = ({
                             >
                               <IoIosAttach
                                 size={24}
+                                className="text-[#2d6a4f]"
+                              />
+                            </button>
+                            <input
+                              type="file"
+                              name="file"
+                              onChange={(e) => handleFileChange(e)}
+                              ref={imageInputRef}
+                              accept="image/png, image/gif, image/jpeg"
+                              multiple="multiple"
+                              className="hidden"
+                            />
+                            <button
+                              id="button"
+                              onClick={handleAddImage || handleOnUpload}
+                              className="p-2 hover:rounded-full hover:bg-white focus:shadow-outline focus:outline-none"
+                            >
+                              <FaFileImage
+                                size={22}
                                 className="text-[#2d6a4f]"
                               />
                             </button>

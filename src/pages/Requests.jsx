@@ -24,7 +24,6 @@ const Requests = () => {
   const user_id = searchParams.get("user_id");
   const [request, setRequest] = useState([]);
   const [viewRequest, setViewRequest] = useState([]);
-  const [selectedItems, setSelectedItems] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [pageCount, setPageCount] = useState(0);
   const [sortBy, setSortBy] = useState([]);
@@ -104,18 +103,6 @@ const Requests = () => {
     );
     setSearchResult(getSearch.length);
     setRequest(getSearch);
-  };
-
-  const checkAllHandler = () => {
-    if (request.length === selectedItems.length) {
-      setSelectedItems([]);
-    } else {
-      const postIds = request.map((item) => {
-        return item._id;
-      });
-
-      setSelectedItems(postIds);
-    }
   };
 
   const tableHeader = [
@@ -275,8 +262,6 @@ const Requests = () => {
                   <RequestList
                     request={request}
                     setRequest={setRequest}
-                    selectedItems={selectedItems}
-                    checkboxHandler={checkAllHandler}
                     setViewRequest={setViewRequest}
                     setRequestUpdate={setRequestUpdate}
                     socket={socket}
@@ -314,7 +299,11 @@ const Requests = () => {
           </div>
         </div>
       </div>
-      <ViewRequestModal viewRequest={viewRequest} setRequestUpdate={setRequestUpdate} socket={socket}/>
+      <ViewRequestModal
+        viewRequest={viewRequest}
+        setRequestUpdate={setRequestUpdate}
+        socket={socket}
+      />
       <CancelRequestModal viewRequest={viewRequest} />
     </div>
   );

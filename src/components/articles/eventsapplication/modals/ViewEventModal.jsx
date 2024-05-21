@@ -6,26 +6,16 @@ import { IoIosAttach } from "react-icons/io";
 import { IoSend } from "react-icons/io5";
 import Dropbox from "./Dropbox";
 import ViewDropbox from "./ViewDropbox";
-import Preloader from "../../../loaders/Preloader";
 import { useSearchParams } from "react-router-dom";
 import moment from "moment";
-import { FaTimes } from "react-icons/fa";
-// import { io } from "socket.io-client";
-// import Socket_link from "../../../../config/Socket";
-// const socket = io(Socket_link);
-// import EditDropbox from "./EditDropbox";
+import { FaTimes, FaFileImage } from "react-icons/fa";
 
-const ViewEventModal = ({
-  viewEvent,
-  setEventUpdate,
-  setViewEvent,
-  socket,
-}) => {
+const ViewEventModal = ({ viewEvent, setEventUpdate, socket }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get("id");
   const brgy = searchParams.get("brgy");
+  const chatContainerRef = useRef(null);
   const [userData, setUserData] = useState({});
-  const [reply, setReply] = useState(false);
   const [upload, setUpload] = useState(false);
   const [createFiles, setCreateFiles] = useState([]);
   const [newMessage, setNewMessage] = useState({
@@ -34,10 +24,7 @@ const ViewEventModal = ({
     date: new Date(),
   });
   const [error, setError] = useState(null);
-  const [submitClicked, setSubmitClicked] = useState(false);
-  const [updatingStatus, setUpdatingStatus] = useState(null);
   const [errMsg, setErrMsg] = useState(false);
-  const chatContainerRef = useRef(null);
   const [onSend, setOnSend] = useState(false);
   const [viewTime, setViewTime] = useState({
     state: false,
@@ -45,11 +32,10 @@ const ViewEventModal = ({
   });
 
   // console.log(viewEvent);
-
-  // const chats = document.getElementById("scrolltobottom");
-  // if (chats) {
-  //   chats.scrollTop = chats.scrollHeight;
-  // }
+  useEffect(() => {
+    const container = document.getElementById("scrolltobottom");
+    container.scrollTop = container.scrollHeight;
+  });
 
   useEffect(() => {
     const container = chatContainerRef.current;
@@ -87,6 +73,7 @@ const ViewEventModal = ({
   // console.log(viewEvent)
 
   const fileInputRef = useRef();
+  const imageInputRef = useRef();
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -120,6 +107,12 @@ const ViewEventModal = ({
     e.preventDefault();
 
     fileInputRef.current.click();
+  };
+
+  const handleAddImage = (e) => {
+    e.preventDefault();
+
+    imageInputRef.current.click();
   };
 
   const handleOnUpload = () => {
@@ -247,8 +240,6 @@ const ViewEventModal = ({
             setCreateFiles([]);
             setOnSend(false);
           } else {
-            setSubmitClicked(false);
-            setUpdatingStatus("error");
             setError(error.message);
           }
         }
@@ -401,6 +392,13 @@ const ViewEventModal = ({
                               <div className="flex flex-col rounded-xl">
                                 <ViewDropbox
                                   viewFiles={responseItem.file || []}
+                                  responseItem={
+                                    responseItem.sender ===
+                                      `${userData.firstName.toUpperCase()} ${userData.lastName.toUpperCase()}` ||
+                                    responseItem.sender === "Resident"
+                                      ? true
+                                      : false
+                                  }
                                 />
                               </div>
                             )}
@@ -517,6 +515,22 @@ const ViewEventModal = ({
                           >
                             <IoIosAttach size={24} className="text-[#2d6a4f]" />
                           </button>
+                          <input
+                            type="file"
+                            name="file"
+                            onChange={(e) => handleFileChange(e)}
+                            ref={imageInputRef}
+                            accept="image/png, image/gif, image/jpeg"
+                            multiple="multiple"
+                            className="hidden"
+                          />
+                          <button
+                            id="button"
+                            onClick={handleAddImage || handleOnUpload}
+                            className="p-2 hover:rounded-full hover:bg-white focus:shadow-outline focus:outline-none"
+                          >
+                            <FaFileImage size={22} className="text-[#2d6a4f]" />
+                          </button>
                         </div>
 
                         <div className="flex items-center gap-x-1">
@@ -545,7 +559,6 @@ const ViewEventModal = ({
                 </div>
               )}
             </div>
-
           </div>
         </div>
       </div>

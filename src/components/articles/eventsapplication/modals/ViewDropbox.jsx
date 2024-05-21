@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FaRegFileLines } from "react-icons/fa6";
 
-const ViewDropbox = ({ viewFiles }) => {
+const ViewDropbox = ({ viewFiles, responseItem }) => {
   const [isDragging, setIsDragging] = useState(false);
 
   function truncateFileName(fileName) {
@@ -67,21 +67,21 @@ const ViewDropbox = ({ viewFiles }) => {
           onDragLeave={dragLeaveHandler}
           onDragEnter={dragEnterHandler}
         >
-          {isDragging && (
-            <div
-              id="overlay"
-              className="h-full bg-opacity-75 bg-gray-100 absolute top-0 left-0 pointer-events-none z-50 flex flex-col items-center justify-center rounded-md"
+          <section
+            className="h-full p-1 flex flex-row"
+          >
+            <ul
+              id="gallery"
+              className= "h-full p-1 flex flex-col gap-1"
             >
-              <i>{/* SVG code */}</i>
-              <p className="text-lg text-blue-700">Drop files to upload</p>
-            </div>
-          )}
-          <section className="h-full overflow-auto p-1 flex flex-col">
-            <ul id="gallery" className="flex flex-col gap-1">
               {viewFiles && viewFiles.length > 0 ? (
                 viewFiles.map((file, idx) => (
                   <li
-                    className="flex"
+                    className={
+                      responseItem
+                        ? "flex flex-col justify-end items-end"
+                        : "flex flex-col justify-end items-start"
+                    }
                     key={idx}
                     // onClick={() => handleFileClick(file)}
                   >
@@ -101,6 +101,11 @@ const ViewDropbox = ({ viewFiles }) => {
                     ) : (
                       <article
                         tabIndex={0}
+                        // className={
+                        //   responseItem
+                        //     ? "flex flex-col justify-end items-end"
+                        //     : "flex flex-col justify-end items-start"
+                        // }
                         className="group rounded-md focus:outline-none focus:shadow-outline relative bg-gray-100 border border-gray-300 cursor-pointer shadow-sm"
                       >
                         <section className="flex flex-col rounded-md text-xs break-words w-full h-full z-20 top-0 py-2 px-3">

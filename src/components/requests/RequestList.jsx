@@ -6,14 +6,29 @@ import { useEffect } from "react";
 const RequestList = ({
   request,
   setRequest,
-  selectedItems,
-  checkboxHandler,
   setViewRequest,
   setRequestUpdate,
   socket,
 }) => {
   const location = useLocation();
   const page = location.pathname.split("/")[1];
+
+  const DateFormat = (date) => {
+    if (!date) return "";
+
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+    };
+    return new Intl.DateTimeFormat("en-US", options).format(new Date(date));
+  };
+
+  const handleView = (item) => {
+    setViewRequest(item);
+  };
 
   useEffect(() => {
     const handleRequest = (new_request) => {
@@ -37,23 +52,6 @@ const RequestList = ({
       socket.off("receive-reply-service-req", handleRequest);
     };
   }, [socket, setViewRequest]);
-
-  const DateFormat = (date) => {
-    if (!date) return "";
-
-    const options = {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "numeric",
-      minute: "numeric",
-    };
-    return new Intl.DateTimeFormat("en-US", options).format(new Date(date));
-  };
-
-  const handleView = (item) => {
-    setViewRequest(item);
-  };
 
   return Object.entries(request).map(([idx, item]) => (
     <tr key={idx} className="odd:bg-slate-100 text-center">

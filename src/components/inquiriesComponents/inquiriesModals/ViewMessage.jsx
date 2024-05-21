@@ -10,7 +10,7 @@ import ViewDropbox from "./ViewDropbox";
 import Preloader from "../../loaders/Preloader";
 import { useSearchParams } from "react-router-dom";
 import moment from "moment";
-import { FaTimes } from "react-icons/fa";
+import { FaTimes, FaFileImage } from "react-icons/fa";
 
 // import { io } from 'socket.io-client'
 // import Socket_link from "../../../config/Socket";
@@ -19,6 +19,7 @@ const ViewMessage = ({ inquiry, setInquiry, setInqsUpdate, socket }) => {
   // console.log(inquiry.folder_id);
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get("id");
+  const chatContainerRef = useRef(null);
   const [userData, setUserData] = useState({});
   const [upload, setUpload] = useState(false);
   const [files, setFiles] = useState([]);
@@ -28,22 +29,21 @@ const ViewMessage = ({ inquiry, setInquiry, setInqsUpdate, socket }) => {
     message: "",
     date: new Date(),
   });
-  const [submitClicked, setSubmitClicked] = useState(false);
-  const [updatingStatus, setUpdatingStatus] = useState(null);
   const [errMsg, setErrMsg] = useState(false);
   const [onSend, setOnSend] = useState(false);
   const [viewTime, setViewTime] = useState({
     state: false,
     timeKey: 0,
   });
-  const chatContainerRef = useRef(null);
 
   // console.log(inquiry)
 
-  const chats = document.getElementById("scrolltobottom");
-  if (chats) {
-    chats.scrollTop = chats.scrollHeight;
-  }
+  useEffect(() => {
+    const chats = document.getElementById("scrolltobottom");
+    if (chats) {
+      chats.scrollTop = chats.scrollHeight;
+    }
+  });
 
   useEffect(() => {
     const container = chatContainerRef.current;
@@ -84,11 +84,18 @@ const ViewMessage = ({ inquiry, setInquiry, setInqsUpdate, socket }) => {
   }, [inquiry]);
 
   const fileInputRef = useRef();
+  const imageInputRef = useRef();
 
   const handleAdd = (e) => {
     e.preventDefault();
 
     fileInputRef.current.click();
+  };
+
+  const handleAddImage = (e) => {
+    e.preventDefault();
+
+    imageInputRef.current.click();
   };
 
   // console.log(newMessage)
@@ -226,8 +233,6 @@ const ViewMessage = ({ inquiry, setInquiry, setInqsUpdate, socket }) => {
         setCreateFiles([]);
         setOnSend(false);
       } else {
-        setSubmitClicked(false);
-        setUpdatingStatus("error");
         setError(error.message);
       }
       return {
@@ -460,11 +465,16 @@ const ViewMessage = ({ inquiry, setInquiry, setInqsUpdate, socket }) => {
                               </div>
                             ) : null}
                             {!responseItem.file ? null : (
-                              <div className="flex flex-col rounded-xl">
-                                <ViewDropbox
-                                  viewFiles={responseItem.file || []}
-                                />
-                              </div>
+                              <ViewDropbox
+                                viewFiles={responseItem.file || []}
+                                responseItem={
+                                  responseItem.sender ===
+                                    `${userData.firstName.toUpperCase()} ${userData.lastName.toUpperCase()}` ||
+                                  responseItem.sender === "Resident"
+                                    ? true
+                                    : false
+                                }
+                              />
                             )}
                             <p
                               className={
@@ -484,9 +494,7 @@ const ViewMessage = ({ inquiry, setInquiry, setInqsUpdate, socket }) => {
 
               {/* CHAT BOX */}
 
-              {inquiry &&
-              inquiry.response &&
-              inquiry.response.length === 0 ? (
+              {inquiry && inquiry.response && inquiry.response.length === 0 ? (
                 <p className="pb-1 text-[12px] px-[20px] text-black font-medium">
                   Start a Conversation
                 </p>
@@ -578,6 +586,25 @@ const ViewMessage = ({ inquiry, setInquiry, setInqsUpdate, socket }) => {
                             >
                               <IoIosAttach
                                 size={24}
+                                className="text-[#2d6a4f]"
+                              />
+                            </button>
+                            <input
+                              type="file"
+                              name="file"
+                              onChange={(e) => handleFileChange(e)}
+                              ref={imageInputRef}
+                              accept="image/png, image/gif, image/jpeg"
+                              multiple="multiple"
+                              className="hidden"
+                            />
+                            <button
+                              id="button"
+                              onClick={handleAddImage || handleOnUpload}
+                              className="p-2 hover:rounded-full hover:bg-white focus:shadow-outline focus:outline-none"
+                            >
+                              <FaFileImage
+                                size={22}
                                 className="text-[#2d6a4f]"
                               />
                             </button>

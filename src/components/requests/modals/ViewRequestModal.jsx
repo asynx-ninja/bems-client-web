@@ -6,19 +6,16 @@ import { IoIosAttach } from "react-icons/io";
 import { IoSend } from "react-icons/io5";
 import Dropbox from "./Dropbox";
 import ViewDropbox from "./ViewDropbox";
-import Preloader from "../../loaders/Preloader";
 import { useSearchParams } from "react-router-dom";
 import moment from "moment";
-import { FaTimes } from "react-icons/fa";
-// import EditDropbox from "./EditDropbox";
+import { FaTimes, FaFileImage } from "react-icons/fa";
 
 const ViewRequestModal = ({ viewRequest, setRequestUpdate, socket }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get("id");
   const brgy = searchParams.get("brgy");
-  const [userData, setUserData] = useState({});
   const chatContainerRef = useRef(null);
-  const [reply, setReply] = useState(false);
+  const [userData, setUserData] = useState({});
   const [upload, setUpload] = useState(false);
   const [createFiles, setCreateFiles] = useState([]);
   const [newMessage, setNewMessage] = useState({
@@ -27,8 +24,6 @@ const ViewRequestModal = ({ viewRequest, setRequestUpdate, socket }) => {
     date: new Date(),
   });
   const [error, setError] = useState(null);
-  const [submitClicked, setSubmitClicked] = useState(false);
-  const [updatingStatus, setUpdatingStatus] = useState(null);
   const [errMsg, setErrMsg] = useState(false);
   const [onSend, setOnSend] = useState(false);
   const [viewTime, setViewTime] = useState({
@@ -36,10 +31,10 @@ const ViewRequestModal = ({ viewRequest, setRequestUpdate, socket }) => {
     timeKey: 0,
   });
 
-  const chats = document.getElementById("scrolltobottom");
-  if (chats) {
-    chats.scrollTop = chats.scrollHeight;
-  }
+  useEffect(() => {
+    const container = document.getElementById("scrolltobottom");
+    container.scrollTop = container.scrollHeight;
+  });
 
   useEffect(() => {
     const container = chatContainerRef.current;
@@ -72,9 +67,10 @@ const ViewRequestModal = ({ viewRequest, setRequestUpdate, socket }) => {
       }
     };
     fetchUser();
-  }, [id]);
+  }, [id, viewRequest]);
 
   const fileInputRef = useRef();
+  const imageInputRef = useRef();
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -110,8 +106,10 @@ const ViewRequestModal = ({ viewRequest, setRequestUpdate, socket }) => {
     fileInputRef.current.click();
   };
 
-  const handleOnReply = () => {
-    setReply(!reply);
+  const handleAddImage = (e) => {
+    e.preventDefault();
+
+    imageInputRef.current.click();
   };
 
   const handleOnUpload = () => {
@@ -232,8 +230,6 @@ const ViewRequestModal = ({ viewRequest, setRequestUpdate, socket }) => {
             setOnSend(false);
           }
         } else {
-          setSubmitClicked(false);
-          setUpdatingStatus("error");
           setError(error.message);
         }
       }
@@ -386,11 +382,16 @@ const ViewRequestModal = ({ viewRequest, setRequestUpdate, socket }) => {
                               </div>
                             ) : null}
                             {!responseItem.file ? null : (
-                              <div className="flex flex-col rounded-xl">
-                                <ViewDropbox
-                                  viewFiles={responseItem.file || []}
-                                />
-                              </div>
+                              <ViewDropbox
+                                viewFiles={responseItem.file || []}
+                                responseItem={
+                                  responseItem.sender ===
+                                    `${userData.firstName.toUpperCase()} ${userData.lastName.toUpperCase()}` ||
+                                  responseItem.sender === "Resident"
+                                    ? true
+                                    : false
+                                }
+                              />
                             )}
                             <p
                               className={
@@ -505,6 +506,25 @@ const ViewRequestModal = ({ viewRequest, setRequestUpdate, socket }) => {
                           >
                             <IoIosAttach size={24} className="text-[#2d6a4f]" />
                           </button>
+                          <input
+                              type="file"
+                              name="file"
+                              onChange={(e) => handleFileChange(e)}
+                              ref={imageInputRef}
+                              accept="image/png, image/gif, image/jpeg"
+                              multiple="multiple"
+                              className="hidden"
+                            />
+                            <button
+                              id="button"
+                              onClick={handleAddImage || handleOnUpload}
+                              className="p-2 hover:rounded-full hover:bg-white focus:shadow-outline focus:outline-none"
+                            >
+                              <FaFileImage
+                                size={22}
+                                className="text-[#2d6a4f]"
+                              />
+                            </button>
                         </div>
 
                         <div className="flex items-center gap-x-1">
