@@ -31,10 +31,10 @@ const RequestList = ({
       );
     };
     // setRequestUpdate((prevState) => !prevState);
-    socket.on("receive-new_request", handleRequest);
+    socket.on("receive-reply-service-req", handleRequest);
 
     return () => {
-      socket.off("receive-new_request", handleRequest);
+      socket.off("receive-reply-service-req", handleRequest);
     };
   }, [socket, setViewRequest]);
 

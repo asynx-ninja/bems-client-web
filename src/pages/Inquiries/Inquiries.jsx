@@ -36,7 +36,7 @@ const Inquiries = () => {
   const [searchResult, setSearchResult] = useState(0);
   const [info, setInfo] = useState({});
   const [inqsupdate, setInqsUpdate] = useState(false);
-  
+
   useEffect(() => {
     document.title = "Inquiries | Barangay E-Services Management";
   }, []);
@@ -64,7 +64,6 @@ const Inquiries = () => {
         console.log(response.data);
 
         if (response.status === 200) {
-        
           setInquiries(
             response.data.result.sort(
               (date1, date2) =>
@@ -79,11 +78,10 @@ const Inquiries = () => {
           );
           let arr = [...uniqueInquiries].sort();
           setSortBy(arr);
-        
         } else {
           setInquiries([]);
         }
-        setInqsUpdate((prevState)=>!prevState);
+        setInqsUpdate((prevState) => !prevState);
       } catch (error) {
         console.log(error);
       }
@@ -341,7 +339,7 @@ const Inquiries = () => {
           </div>
         </div>
       </div>
-      <ComposeModal />
+      <ComposeModal setInqsUpdate={setInqsUpdate} socket={socket} />
       <ViewMessage
         inquiry={inquiry}
         setInquiry={setInquiry}

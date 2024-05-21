@@ -21,10 +21,10 @@ const BlotterRecords = ({ blotters, setBlotter, setSpecBlotter, setBlotterUpdate
       ))
     };
     // setBlotterUpdate((prevState) => !prevState);
-    socket.on("receive-new_blotter", handleBlotter);
+    socket.on("receive-patawag", handleBlotter);
 
     return () => {
-      socket.off("receive-new_blotter", handleBlotter);
+      socket.off("receive-patawag", handleBlotter);
     };
   }, [socket, setSpecBlotter]);
 

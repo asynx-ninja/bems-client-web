@@ -4,11 +4,11 @@ import { useSearchParams } from "react-router-dom";
 import Dropbox from "./Dropbox";
 import API_LINK from "../../../config/API";
 import axios from "axios";
-import moment from 'moment'
+import moment from "moment";
 
 import Preloader from "../../loaders/Preloader";
 
-const ComposeModal = () => {
+const ComposeModal = ({ setInqsUpdate, socket }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const fileInputRef = useRef();
   const id = searchParams.get("id");
@@ -29,13 +29,13 @@ const ComposeModal = () => {
       to: "",
     },
     brgy: brgy,
-  })
+  });
   const [error, setError] = useState(null);
   const [submitClicked, setSubmitClicked] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState(null);
   const [showError, setShowError] = useState({
     error: false,
-    message: ""
+    message: "",
   });
 
   useEffect(() => {
@@ -61,9 +61,9 @@ const ComposeModal = () => {
   const handleOnClose = () => {
     setShowError({
       error: false,
-      message: ""
-    })
-  }
+      message: "",
+    });
+  };
 
   const handleOnUpload = () => {
     setUpload(!upload);
@@ -76,9 +76,14 @@ const ComposeModal = () => {
   };
 
   const handleOnCompose = (e) => {
-    const newInquiry = composeMessage
+    const newInquiry = composeMessage;
 
-    if (e.target.name === "subject" || e.target.name === "message" || e.target.name === "file" || e.target.name === "to") {
+    if (
+      e.target.name === "subject" ||
+      e.target.name === "message" ||
+      e.target.name === "file" ||
+      e.target.name === "to"
+    ) {
       newInquiry.compose = {
         ...newInquiry.compose,
         [e.target.name]: e.target.value,
@@ -86,16 +91,15 @@ const ComposeModal = () => {
 
       setComposeMessage((prev) => ({
         ...prev,
-        compose: newInquiry.compose
-      }))
+        compose: newInquiry.compose,
+      }));
     } else {
       setComposeMessage((prev) => ({
         ...prev,
-        [e.target.name]: e.target.value
-      }))
+        [e.target.name]: e.target.value,
+      }));
     }
-
-  }
+  };
 
   const getType = (type) => {
     switch (type) {
@@ -110,32 +114,33 @@ const ComposeModal = () => {
   const handleOnSend = async (e) => {
     e.preventDefault();
 
-    if (!composeMessage.name ||
+    if (
+      !composeMessage.name ||
       !composeMessage.email ||
-      !composeMessage.compose.to || 
+      !composeMessage.compose.to ||
       !composeMessage.compose.subject
     ) {
       setShowError({
         error: true,
-        message: "Please fill up Required information!"
+        message: "Please fill up Required information!",
       });
       return;
       // Proceed with form submission...
     } else {
       setShowError({
         error: false,
-        message: ""
+        message: "",
       });
     }
 
     setSubmitClicked(true);
 
     try {
-      var formData = new FormData()
-      formData.append("inquiries", JSON.stringify(composeMessage))
-      console.log(composeMessage)
+      var formData = new FormData();
+      formData.append("inquiries", JSON.stringify(composeMessage));
+      console.log(composeMessage);
       for (let i = 0; i < createFiles.length; i++) {
-        formData.append("files", createFiles[i])
+        formData.append("files", createFiles[i]);
       }
 
       const folderResponse = await axios.get(
@@ -143,7 +148,6 @@ const ComposeModal = () => {
       );
 
       if (folderResponse.status == 200) {
-
         const response = await axios.post(
           `${API_LINK}/inquiries/?inq_folder_id=${folderResponse.data[0].inquiries}`,
           formData,
@@ -155,7 +159,6 @@ const ComposeModal = () => {
         );
 
         if (response.status === 200) {
-
           const notify = {
             category: "Many",
             compose: {
@@ -198,7 +201,6 @@ const ComposeModal = () => {
           };
 
           try {
-
             const result = await axios.post(
               `${API_LINK}/notification/`,
               notify,
@@ -218,23 +220,23 @@ const ComposeModal = () => {
                 }, 3000);
               }, 1000);
             }
-
           } catch (err) {
-            console.log(err)
+            console.log(err);
           }
-
         } else {
           setSubmitClicked(false);
           setUpdatingStatus("error");
           setError(error.message);
         }
-
       }
-
+      return {
+        socket,
+        setInqsUpdate,
+      };
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   // console.log(composeMessage)
 
@@ -258,16 +260,15 @@ const ComposeModal = () => {
                 </h3>
               </div>
               <div className="mt-5 h-[400px] overflow-y-auto overflow-x-hidden">
-                {
-                  showError.error ?
-                    <div
-                      className="bg-red-50 border text-center border-red-200 text-sm text-red-600 rounded-md py-4 mt-2 mb-4"
-                      role="alert"
-                    >
-                      <span className="font-bold ">Warning:</span> {showError.message}
-                    </div>
-                    : null
-                }
+                {showError.error ? (
+                  <div
+                    className="bg-red-50 border text-center border-red-200 text-sm text-red-600 rounded-md py-4 mt-2 mb-4"
+                    role="alert"
+                  >
+                    <span className="font-bold ">Warning:</span>{" "}
+                    {showError.message}
+                  </div>
+                ) : null}
                 <form>
                   <div className="flex flex-col lg:flex-row">
                     <div className="mb-4 px-4 w-full">
@@ -282,8 +283,11 @@ const ComposeModal = () => {
                         id="title"
                         onChange={handleOnCompose}
                         name="name"
-                        className={showError.error ? "w-full p-2 border border-red-300 rounded focus:border-red-500 focus:ring-red-500"
-                          : "w-full p-2 border border-gray-300 rounded focus:border-green-500 focus:ring-green-500"}
+                        className={
+                          showError.error
+                            ? "w-full p-2 border border-red-300 rounded focus:border-red-500 focus:ring-red-500"
+                            : "w-full p-2 border border-gray-300 rounded focus:border-green-500 focus:ring-green-500"
+                        }
                       />
                     </div>
                     <div className="mb-4 px-4 w-full">
@@ -298,8 +302,11 @@ const ComposeModal = () => {
                         id="title"
                         onChange={handleOnCompose}
                         name="email"
-                        className={showError.error ? "w-full p-2 border border-red-300 rounded focus:border-red-500 focus:ring-red-500"
-                          : "w-full p-2 border border-gray-300 rounded focus:border-green-500 focus:ring-green-500"}
+                        className={
+                          showError.error
+                            ? "w-full p-2 border border-red-300 rounded focus:border-red-500 focus:ring-red-500"
+                            : "w-full p-2 border border-gray-300 rounded focus:border-green-500 focus:ring-green-500"
+                        }
                       />
                     </div>
                   </div>
@@ -316,8 +323,11 @@ const ComposeModal = () => {
                       id="title"
                       name="subject"
                       onChange={handleOnCompose}
-                      className={showError.error ? "w-full p-2 border border-red-300 rounded focus:border-red-500 focus:ring-red-500"
-                        : "w-full p-2 border border-gray-300 rounded focus:border-green-500 focus:ring-green-500"}
+                      className={
+                        showError.error
+                          ? "w-full p-2 border border-red-300 rounded focus:border-red-500 focus:ring-red-500"
+                          : "w-full p-2 border border-gray-300 rounded focus:border-green-500 focus:ring-green-500"
+                      }
                     />
                   </div>
 
@@ -333,10 +343,15 @@ const ComposeModal = () => {
                       name="to"
                       value={composeMessage.compose.to || ""}
                       onChange={handleOnCompose}
-                      className={showError.error ? "w-full p-2 border border-red-300 rounded focus:border-red-500 focus:ring-red-500"
-                        : "w-full p-2 border border-gray-300 rounded focus:border-green-500 focus:ring-green-500"}
+                      className={
+                        showError.error
+                          ? "w-full p-2 border border-red-300 rounded focus:border-red-500 focus:ring-red-500"
+                          : "w-full p-2 border border-gray-300 rounded focus:border-green-500 focus:ring-green-500"
+                      }
                     >
-                      <option value='' disabled>-- Select Recipient --</option>
+                      <option value="" disabled>
+                        -- Select Recipient --
+                      </option>
                       <option value="Admin">Admin</option>
                       <option value="Staff">Staff</option>
                     </select>
@@ -354,8 +369,11 @@ const ComposeModal = () => {
                       name="message"
                       onChange={handleOnCompose}
                       rows="4"
-                      className={showError.error ? "w-full p-2 border border-red-300 rounded focus:border-red-500 focus:ring-red-500"
-                        : "w-full p-2 border border-gray-300 rounded focus:border-green-500 focus:ring-green-500"}
+                      className={
+                        showError.error
+                          ? "w-full p-2 border border-red-300 rounded focus:border-red-500 focus:ring-red-500"
+                          : "w-full p-2 border border-gray-300 rounded focus:border-green-500 focus:ring-green-500"
+                      }
                     />
                   </div>
                   <div className="m-[10px] w-full">
@@ -371,24 +389,20 @@ const ComposeModal = () => {
                       />
                       <button
                         id="button"
-                        onClick={
-                          handleAdd || handleOnUpload
-                        }
+                        onClick={handleAdd || handleOnUpload}
                         className="mt-2 flex rounded-xl px-3 py-1 hover:bg-gray-300 focus:shadow-outline focus:outline-none"
                       >
                         <IoIosAttach size={24} />
                         Attach a File
                       </button>
                     </div>
-                    {
-                      createFiles.length > 0 && (
-                        <Dropbox
-                          createFiles={createFiles}
-                          setCreateFiles={setCreateFiles}
-                          handleFileChange={handleFileChange}
-                        />
-                      )
-                    }
+                    {createFiles.length > 0 && (
+                      <Dropbox
+                        createFiles={createFiles}
+                        setCreateFiles={setCreateFiles}
+                        handleFileChange={handleFileChange}
+                      />
+                    )}
                   </div>
                 </form>
               </div>
@@ -420,6 +434,6 @@ const ComposeModal = () => {
       )}
     </div>
   );
-}
+};
 
 export default ComposeModal;

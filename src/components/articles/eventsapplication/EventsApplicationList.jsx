@@ -41,10 +41,10 @@ const EventsApplicationList = ({ events, setEvents, setViewEvent, setEventUpdate
       ))
     };
     // setEventUpdate((prevState) => !prevState);
-    socket.on("receive-event_appli", handleEventAppli);
+    socket.on("receive-reply-event-appli", handleEventAppli);
 
     return () => {
-      socket.off("receive-event_appli", handleEventAppli);
+      socket.off("receive-reply-event-appli", handleEventAppli);
     };
   }, [socket, setViewEvent]);
 

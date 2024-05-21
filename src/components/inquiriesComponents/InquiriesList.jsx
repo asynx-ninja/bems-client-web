@@ -46,10 +46,10 @@ const InquiriesList = ({
         ))
       };
 
-      socket.on("receive-muni_inquiry", handleMuniInq);
+      socket.on("receive-reply-muni-inquiry", handleMuniInq);
 
       return () => {
-        socket.off("receive-muni_inquiry", handleMuniInq);
+        socket.off("receive-reply-muni-inquiry", handleMuniInq);
       };
     } else {
       const handleStaffInq = (staff_inquiry) => {
@@ -60,10 +60,10 @@ const InquiriesList = ({
         ))
       };
 
-      socket.on("receive-staff_inquiry", handleStaffInq);
+      socket.on("receive-reply-staff-inquiry", handleStaffInq);
 
       return () => {
-        socket.off("receive-staff_inquiry", handleStaffInq);
+        socket.off("receive-reply-staff-inquiry", handleStaffInq);
       };
     }
   }, [to, socket, setInquiry]);

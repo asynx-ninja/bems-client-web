@@ -9,6 +9,7 @@ import ViewDropbox from "./ViewDropbox";
 import Preloader from "../../../loaders/Preloader";
 import { useSearchParams } from "react-router-dom";
 import moment from "moment";
+import { FaTimes } from "react-icons/fa";
 // import { io } from "socket.io-client";
 // import Socket_link from "../../../../config/Socket";
 // const socket = io(Socket_link);
@@ -37,6 +38,11 @@ const ViewEventModal = ({
   const [updatingStatus, setUpdatingStatus] = useState(null);
   const [errMsg, setErrMsg] = useState(false);
   const chatContainerRef = useRef(null);
+  const [onSend, setOnSend] = useState(false);
+  const [viewTime, setViewTime] = useState({
+    state: false,
+    timeKey: 0,
+  });
 
   // console.log(viewEvent);
 
@@ -144,6 +150,8 @@ const ViewEventModal = ({
     // setSubmitClicked(true);
 
     try {
+      setOnSend(true);
+
       const obj = {
         sender: `${userData.firstName.toUpperCase()} ${userData.lastName.toUpperCase()}`,
         message: newMessage.message,
@@ -225,7 +233,10 @@ const ViewEventModal = ({
           );
 
           if (response.status === 200) {
-            socket.emit("send-event_appli", response.data);
+            socket.emit("send-reply-event-appli", response.data);
+
+            setCreateFiles([]);
+            setOnSend(false);
           } else {
             setSubmitClicked(false);
             setUpdatingStatus("error");
@@ -252,6 +263,14 @@ const ViewEventModal = ({
     else if (status === "Not Responded") return "pink-700";
     else if (status === "Rejected") return "red-800";
     else return "black";
+  };
+
+  const handleOnViewTime = (item) => {
+    console.log(item);
+    setViewTime({
+      state: !viewTime.state,
+      timeKey: item,
+    });
   };
 
   return (
@@ -314,71 +333,78 @@ const ViewEventModal = ({
                       ) : (
                         <div className={"flex flex-col items-center"}>
                           {errMsg ? (
-                            <div className="w-[100%] bg-red-500 rounded-md mb-[10px] flex">
+                            <div className="w-[100%] bg-red-500 rounded-md mb-[10px] flex justify-between">
                               <p className="py-[10px] text-[12px] px-[20px] text-white font-medium">
                                 Please enter a message or insert a file!
                               </p>
+                              <button
+                                className="px-[10px] text-white"
+                                onClick={() => setErrMsg(!errMsg)}
+                              >
+                                <FaTimes />
+                              </button>
                             </div>
                           ) : null}
-                          <div className="relative w-full mt-4 mx-2">
-                            <div className="relative w-full">
-                              <textarea
-                                id="message"
-                                name="message"
-                                onChange={handleChange}
-                                className="p-4 pb-12 block w-full border-gray-200 rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none border"
-                                placeholder="Input response..."
-                              ></textarea>
+                          <div className="relative w-full mt-5">
+                            <textarea
+                              id="message"
+                              name="message"
+                              multiple
+                              rows="7"
+                              onChange={handleChange}
+                              className="p-4 pb-12 block w-full  border-[#b7e4c7] rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none border focus:outline-none focus:ring-0 focus:border-[#b7e4c7]"
+                              placeholder="Input response..."
+                            ></textarea>
 
-                              <div className="absolute bottom-px inset-x-px p-2 rounded-b-md bg-white">
-                                <div className="flex justify-between items-center">
-                                  <div className="flex items-center">
-                                    <input
-                                      type="file"
-                                      name="file"
-                                      onChange={(e) => handleFileChange(e)}
-                                      ref={fileInputRef}
-                                      accept=".xlsx,.xls,.doc,.docx,.ppt,.pptx,.txt,.pdf"
-                                      multiple="multiple"
-                                      className="hidden"
+                            <div className="absolute bottom-px inset-x-px p-2 rounded-b-md bg-[#b7e4c7]">
+                              <div className="flex justify-between items-center">
+                                <div className="flex items-center">
+                                  <input
+                                    type="file"
+                                    name="file"
+                                    onChange={(e) => handleFileChange(e)}
+                                    ref={fileInputRef}
+                                    accept=".xlsx,.xls,.doc,.docx,.ppt,.pptx,.txt,.pdf"
+                                    multiple="multiple"
+                                    className="hidden"
+                                  />
+                                  <button
+                                    id="button"
+                                    onClick={handleAdd || handleOnUpload}
+                                    className="p-2 hover:rounded-full hover:bg-white focus:shadow-outline focus:outline-none"
+                                  >
+                                    <IoIosAttach
+                                      size={24}
+                                      className="text-[#2d6a4f]"
                                     />
-                                    <button
-                                      id="button"
-                                      onClick={handleAdd || handleOnUpload}
-                                      className="mt-2 rounded-xl px-3 py-1 hover:bg-gray-300 focus:shadow-outline focus:outline-none"
-                                    >
-                                      <IoIosAttach size={24} />
-                                    </button>
-                                  </div>
+                                  </button>
+                                </div>
 
-                                  <div className="flex items-center gap-x-1">
-                                    <button
-                                      type="submit"
-                                      onClick={handleOnSend}
-                                      className="inline-flex flex-shrink-0 justify-center items-center w-28 rounded-lg text-white py-1 px-6 gap-2 bg-cyan-700"
-                                    >
-                                      <span>SEND</span>
+                                <div className="flex items-center gap-x-1">
+                                  <button
+                                    type="submit"
+                                    onClick={handleOnSend}
+                                    disabled={onSend}
+                                    className="inline-flex flex-shrink-0 justify-center items-center rounded-lg p-2 gap-2 text-[#2d6a4f] hover:bg-white hover:rounded-full  "
+                                  >
+                                    {onSend ? (
+                                      <div
+                                        class="animate-spin inline-block size-6 border-[3px] border-current border-t-transparent text-blue-600 rounded-full dark:text-blue-500"
+                                        role="status"
+                                        aria-label="loading"
+                                      >
+                                        <span class="sr-only">Loading...</span>
+                                      </div>
+                                    ) : (
                                       <IoSend
-                                        size={18}
-                                        className="flex-shrink-0"
+                                        size={24}
+                                        className="flex-shrink-0 "
                                       />
-                                    </button>
-                                  </div>
+                                    )}
+                                  </button>
                                 </div>
                               </div>
                             </div>
-                            {upload ? (
-                              // Render Dropbox only when there are uploaded files
-                              createFiles.length > 0 && (
-                                <Dropbox
-                                  createFiles={createFiles}
-                                  setCreateFiles={setCreateFiles}
-                                  handleFileChange={handleFileChange}
-                                />
-                              )
-                            ) : (
-                              <div></div>
-                            )}
                           </div>
                         </div>
                       )
@@ -392,7 +418,7 @@ const ViewEventModal = ({
                             responseItem.sender ===
                               `${userData.firstName.toUpperCase()} ${userData.lastName.toUpperCase()}` ||
                             responseItem.sender === "Resident"
-                              ? "flex flex-col justify-end items-end mb-1 w-full h-auto"
+                              ? "flex flex-col justify-end items-end w-full h-auto"
                               : "flex flex-col justify-start items-start mb-1 w-full h-auto"
                           }
                         >
@@ -401,7 +427,7 @@ const ViewEventModal = ({
                               responseItem.sender ===
                                 `${userData.firstName.toUpperCase()} ${userData.lastName.toUpperCase()}` ||
                               responseItem.sender === "Resident"
-                                ? "flex flex-col items-end mb-5 h-auto max-w-[80%]"
+                                ? "flex flex-col items-end h-auto max-w-[80%]"
                                 : "flex flex-col items-start mb-5 h-auto max-w-[80%]"
                             }
                           >
@@ -410,24 +436,30 @@ const ViewEventModal = ({
                                 responseItem.sender ===
                                   `${userData.firstName.toUpperCase()} ${userData.lastName.toUpperCase()}` ||
                                 responseItem.sender === "Resident"
-                                  ? "flex flex-row w-full justify-end"
+                                  ? "hidden"
                                   : "flex flex-row w-full justify-between"
                               }
                             >
                               <div className="flex flex-col md:flex-row md:items-center">
-                                <p className="text-[14px] text-black md:text-sm font-medium uppercase ">
-                                  {responseItem.sender}
+                                <p className="text-[14px] text-black md:text-sm font-medium capitalize text-wrap">
+                                  {responseItem.sender.toLowerCase()}
                                 </p>
                               </div>
                             </div>
                             {responseItem.message !== "" ? (
                               <div
-                                className="flex flex-col rounded-xl bg-custom-green-button w-full px-2 md:px-4 py-2"
-                                onClick={(e) => e.stopPropagation()}
+                                className={
+                                  responseItem.sender ===
+                                    `${userData.firstName.toUpperCase()} ${userData.lastName.toUpperCase()}` ||
+                                  responseItem.sender === "Resident"
+                                    ? "flex flex-col rounded-xl bg-green-400 mb-1 text-white px-2 md:px-4 py-2 cursor-pointer"
+                                    : "flex flex-col rounded-xl bg-gray-100 border text-black border-gray-300 px-2 md:px-4 py-2 cursor-pointer"
+                                }
+                                onClick={() => handleOnViewTime(index)}
                               >
                                 <div className="w-full h-full">
                                   <div className="w-full h-full rounded-xl p-1">
-                                    <p className="text-[10px] text-white md:text-xs">
+                                    <p className="text-[12px] md:text-xs">
                                       {responseItem.message}
                                     </p>
                                   </div>
@@ -435,13 +467,19 @@ const ViewEventModal = ({
                               </div>
                             ) : null}
                             {!responseItem.file ? null : (
-                              <div className="flex flex-col rounded-xl bg-custom-green-button w-full mt-2 px-2 md:px-4 py-2">
+                              <div className="flex flex-col rounded-xl">
                                 <ViewDropbox
                                   viewFiles={responseItem.file || []}
                                 />
                               </div>
                             )}
-                            <p className="text-[10px] md:text-xs mt-[5px] text-black text-right text-xs">
+                            <p
+                              className={
+                                !viewTime.state && viewTime.timeKey === index
+                                  ? "text-[10px] md:text-xs mt-[5px] text-black text-right text-xs"
+                                  : "hidden"
+                              }
+                            >
                               {DateFormat(responseItem.date) || ""}
                             </p>
                           </div>
@@ -466,22 +504,30 @@ const ViewEventModal = ({
                               ) : (
                                 <div className="relative w-full mt-4 mx-2">
                                   {errMsg ? (
-                                    <div className="w-[100%] bg-red-500 rounded-md mb-[10px] flex">
+                                    <div className="w-[100%] bg-red-500 rounded-md mb-[10px] flex justify-between">
                                       <p className="py-[10px] text-[12px] px-[20px] text-white font-medium">
                                         Please enter a message or insert a file!
                                       </p>
+                                      <button
+                                        className="px-[10px] text-white"
+                                        onClick={() => setErrMsg(!errMsg)}
+                                      >
+                                        <FaTimes />
+                                      </button>
                                     </div>
                                   ) : null}
                                   <div className="relative w-full">
                                     <textarea
                                       id="message"
                                       name="message"
+                                      multiple
+                                      rows="7"
                                       onChange={handleChange}
-                                      className="p-4 pb-12 block w-full border-gray-200 rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none border"
+                                      className="p-4 pb-12 block w-full  border-[#b7e4c7] rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none border focus:outline-none focus:ring-0 focus:border-[#b7e4c7]"
                                       placeholder="Input response..."
                                     ></textarea>
 
-                                    <div className="absolute bottom-px inset-x-px p-2 rounded-b-md bg-white">
+                                    <div className="absolute bottom-px inset-x-px p-2 rounded-b-md bg-[#b7e4c7]">
                                       <div className="flex justify-between items-center">
                                         <div className="flex items-center">
                                           <input
@@ -500,9 +546,12 @@ const ViewEventModal = ({
                                             onClick={
                                               handleAdd || handleOnUpload
                                             }
-                                            className="mt-2 rounded-xl px-3 py-1 hover:bg-gray-300 focus:shadow-outline focus:outline-none"
+                                            className="p-2 hover:rounded-full hover:bg-white focus:shadow-outline focus:outline-none"
                                           >
-                                            <IoIosAttach size={24} />
+                                            <IoIosAttach
+                                              size={24}
+                                              className="text-[#2d6a4f]"
+                                            />
                                           </button>
                                         </div>
 
@@ -510,13 +559,25 @@ const ViewEventModal = ({
                                           <button
                                             type="submit"
                                             onClick={handleOnSend}
-                                            className="inline-flex flex-shrink-0 justify-center items-center w-28 rounded-lg text-white py-1 px-6 gap-2 bg-cyan-700"
+                                            disabled={onSend}
+                                            className="inline-flex flex-shrink-0 justify-center items-center rounded-lg p-2 gap-2 text-[#2d6a4f] hover:bg-white hover:rounded-full  "
                                           >
-                                            <span>SEND</span>
-                                            <IoSend
-                                              size={18}
-                                              className="flex-shrink-0"
-                                            />
+                                            {onSend ? (
+                                              <div
+                                                class="animate-spin inline-block size-6 border-[3px] border-current border-t-transparent text-blue-600 rounded-full dark:text-blue-500"
+                                                role="status"
+                                                aria-label="loading"
+                                              >
+                                                <span class="sr-only">
+                                                  Loading...
+                                                </span>
+                                              </div>
+                                            ) : (
+                                              <IoSend
+                                                size={24}
+                                                className="flex-shrink-0 "
+                                              />
+                                            )}
                                           </button>
                                         </div>
                                       </div>
