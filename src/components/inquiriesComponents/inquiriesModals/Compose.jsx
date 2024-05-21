@@ -212,6 +212,11 @@ const ComposeModal = ({ setInqsUpdate, socket }) => {
             );
 
             if (result.status === 200) {
+              if (composeMessage.compose.to === "Admin") {
+                socket.emit("send-muni-inquiry", response.data);
+              } else {
+                socket.emit("send-staff-inquiry", response.data);
+              }
               setTimeout(() => {
                 setSubmitClicked(false);
                 setUpdatingStatus("success");
@@ -220,6 +225,10 @@ const ComposeModal = ({ setInqsUpdate, socket }) => {
                 }, 3000);
               }, 1000);
             }
+            return {
+              socket,
+              setInqsUpdate,
+            };
           } catch (err) {
             console.log(err);
           }
@@ -229,10 +238,6 @@ const ComposeModal = ({ setInqsUpdate, socket }) => {
           setError(error.message);
         }
       }
-      return {
-        socket,
-        setInqsUpdate,
-      };
     } catch (error) {
       console.log(error);
     }

@@ -10,6 +10,9 @@ import no_data from "../../assets/image/no-data.png";
 import Notification from "../notification/Notification";
 import ViewNotification from "../notification/ViewNotification";
 import TopHeader from "./TopHeader";
+import { io } from "socket.io-client";
+import Socket_link from "../../config/Socket";
+const socket = io(Socket_link);
 
 const Header = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -95,6 +98,10 @@ const Header = () => {
   const handleImageError = (event) => {
     event.target.src = defaultPFP;
   };
+
+  const handleOnLogout = () => {
+    socket.emit("logout", id);
+  }
 
   // console.log(notification)
   // console.log(userData)
@@ -267,6 +274,7 @@ const Header = () => {
                   <Link
                     to="/"
                     onClick={() => {
+                      handleOnLogout()
                       window.innerWidth >= 320 && window.innerWidth <= 1023
                         ? document
                             .getQuerySelector(

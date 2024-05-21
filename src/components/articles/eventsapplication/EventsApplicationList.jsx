@@ -3,6 +3,7 @@ import { FaTimes } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 import { io } from "socket.io-client";
 import { useEffect } from "react";
+import { useState } from "react";
 // import Socket_link from "../../../config/Socket";
 // const socket = io(Socket_link);
 const EventsApplicationList = ({ events, setEvents, setViewEvent, setEventUpdate, socket }) => {

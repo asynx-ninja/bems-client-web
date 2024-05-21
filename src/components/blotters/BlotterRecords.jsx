@@ -21,10 +21,10 @@ const BlotterRecords = ({ blotters, setBlotter, setSpecBlotter, setBlotterUpdate
       ))
     };
     // setBlotterUpdate((prevState) => !prevState);
-    socket.on("receive-patawag", handleBlotter);
+    socket.on("receive-reply-patawag", handleBlotter);
 
     return () => {
-      socket.off("receive-patawag", handleBlotter);
+      socket.off("receive-reply-patawag", handleBlotter);
     };
   }, [socket, setSpecBlotter]);
 
@@ -109,7 +109,7 @@ const BlotterRecords = ({ blotters, setBlotter, setSpecBlotter, setBlotterUpdate
                 <div className="hs-tooltip inline-block">
                   <button
                     type="button"
-                    data-hs-overlay="#hs-modal-viewInquiries"
+                    data-hs-overlay="#hs-modal-viewSpecBlotter"
                     onClick={() => handleView({ ...item })}
                     className="hs-tooltip-toggle text-white bg-teal-800  font-medium text-xs px-2 py-2 inline-flex items-center rounded-lg"
                   >
