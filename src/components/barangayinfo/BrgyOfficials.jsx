@@ -64,6 +64,8 @@ const BrgyOfficials = () => {
           `${API_LINK}/brgyofficial/chairman?brgy=${brgy}&archived=${false}`
         );
 
+        console.log(brgy_official)
+
         var chairman = document.getElementById("chairman");
         chairman.src =
           brgy_chairman.data.result[0] &&
@@ -117,11 +119,9 @@ const BrgyOfficials = () => {
   };
 
   return (
-    <div className={officials.length !== 0 ? "w-full flex flex-col" : "hidden"}>
+    <div className={officials.length !== 0 ? "w-full flex flex-col mb-[80px]" : "hidden"}>
       <div
-        className={
-          currentPage === 1 ? "hidden" : "w-full mx-auto mt-[100px] mb-[20px]"
-        }
+        className="w-full mx-auto mt-[100px] mb-[20px]"
       >
         <div
           className={`rounded-xl w-[300px] mx-auto bg-gradient-to-r from-[${
@@ -208,29 +208,6 @@ const BrgyOfficials = () => {
             </div>
           </div>
         ))}
-      </div>
-      <div
-        className={`md:py-4 md:px-4 mt-[50px] bg-[${
-          info && info.theme && info.theme.primary !== ""
-            ? info.theme.primary
-            : "#295141"
-        }] flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3 w-full`}
-      >
-        <span className="font-medium text-white sm:text-xs text-sm">
-          Showing {currentPage + 1} out of {pageCount} pages
-        </span>
-        <ReactPaginate
-          breakLabel="..."
-          nextLabel=">>"
-          onPageChange={handlePageChange}
-          pageRangeDisplayed={3}
-          pageCount={pageCount}
-          previousLabel="<<"
-          className="flex space-x-3 text-white font-bold"
-          activeClassName="text-yellow-500"
-          disabledLinkClassName="text-gray-300"
-          renderOnZeroPageCount={null}
-        />
       </div>
     </div>
   );
