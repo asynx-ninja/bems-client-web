@@ -22,6 +22,7 @@ const EventsApplication = () => {
   const brgy = searchParams.get("brgy");
   const user_id = searchParams.get("user_id");
   const [events, setEvents] = useState([]);
+  const [filteredEvents, setFilteredEvents] = useState([]);
   const [viewEvent, setViewEvent] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [pageCount, setPageCount] = useState(0);
@@ -53,35 +54,39 @@ const EventsApplication = () => {
     const fetch = async () => {
       try {
         const response = await axios.get(
-          `${API_LINK}/application/specific/?user_id=${user_id}&event_name=${SortByName}&page=${currentPage}`
+          `${API_LINK}/application/specific/?user_id=${user_id}&event_name=${SortByName}&archived=false`
         );
 
         // const getUser = await axios.get(`${API_LINK}/users/specific/${id}`);
 
+        // console.log(response)
+
         if (response.status === 200) {
           setEvents(response.data.result);
+          setFilteredEvents(response.data.result.slice(0, 10));
           setPageCount(response.data.pageCount);
-          setGetAll(response.data.all);
 
-          let uniqueServiceNames = new Set(
-            response.data.all.map((item) => item.event_name)
+          let uniqueEventName = new Set(
+            response.data.result.map((item) => item.event_name)
           );
-          let arr = [...uniqueServiceNames].sort();
+          let arr = [...uniqueEventName].sort();
           setSortBy(arr);
-        }
-        // setEventUpdate((prevState)=> !prevState)
+        } 
       } catch (err) {
         console.log(err);
       }
     };
     getBrgy();
     fetch();
-  }, [brgy, id, SortByName, currentPage]);
+  }, [brgy, user_id, SortByName]);
 
   // console.log(getAll)
 
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected);
+    const start = selected * 10;
+    const end = start + 10;
+    setFilteredEvents(events.slice(start, end));
   };
 
   const handleRequestFilter = (selectedType) => {
@@ -93,16 +98,17 @@ const EventsApplication = () => {
   };
 
   const handleOnSearch = (e) => {
-    const inputValue = e.target.value.toUpperCase();
     setSearchInput(e.target.value);
 
     const getSearch = getAll.filter(
       (item) =>
-        item.application_id.toUpperCase().includes(inputValue) ||
-        item.event_name.toUpperCase().includes(inputValue)
+        item.application_id.toUpperCase().includes(e.target.value) ||
+        item.event_name.toUpperCase().includes(e.target.value)
     );
     setSearchResult(getSearch.length);
-    setEvents(getSearch);
+    setFilteredEvents(getSearch.slice(0, 10)); // Show first page of filtered results
+    setPageCount(Math.ceil(getSearch.length / 10)); // Update page count based on filtered results
+
   };
 
   const tableHeader = [
@@ -259,10 +265,11 @@ const EventsApplication = () => {
                   </tr>
                 ) : (
                   <EventsApplicationList
-                    events={events}
+                    events={filteredEvents}
                     setEvents={setEvents}
                     setViewEvent={setViewEvent}
                     setEventUpdate={setEventUpdate}
+                    setFilteredEvents={setFilteredEvents}
                     socket={socket}
                   />
                 )}

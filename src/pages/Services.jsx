@@ -5,24 +5,24 @@ import { Link, useSearchParams } from "react-router-dom";
 import video from "../assets/image/video.mp4";
 import axios from "axios";
 import API_LINK from "../config/API";
-import no_data from "../assets/image/no-data.png"
+import no_data from "../assets/image/no-data.png";
 
 const Services = () => {
-  const [filter, setFilter] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get("id");
   const brgy = searchParams.get("brgy");
+  const [service, setService] = useState([]);
   const [filterType, setFilterType] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [pageCount, setPageCount] = useState(0);
   const [search, setSearch] = useState([]);
-  const [searchInput, setSearchInput] = useState("")
-  const [searchResult, setSearchResult] = useState(0)
+  const [searchInput, setSearchInput] = useState("");
+  const [searchResult, setSearchResult] = useState(0);
   const [info, setInfo] = useState({});
 
   useEffect(() => {
     fetchServices();
-  }, [brgy, currentPage]);
+  }, [brgy]);
 
   const fetchServices = async () => {
     try {
@@ -30,22 +30,18 @@ const Services = () => {
       if (brgyInfo.status === 200) {
         setInfo(brgyInfo.data[0]);
       } else {
-        setInfo({})
+        setInfo({});
       }
 
       const response = await axios.get(
-        `${API_LINK}/services/?brgy=${brgy}&archived=false&approved=Approved&page=${currentPage}`
+        `${API_LINK}/services/?brgy=${brgy}&archived=false&approved=Approved`
       );
 
-      const search = await axios.get(
-        `${API_LINK}/services/search/?brgy=${brgy}&archived=false&approved=Approved`
-      );
+      console.log(response)
 
-      setSearch(search.data.result)
-      setFilter(response.data.result);
-      setFilterType(response.data.result);
+      setService(response.data.result);
+      setFilterType(response.data.result.slice(0, 10));
       setPageCount(response.data.pageCount);
-
     } catch (error) {
       console.log(error);
     }
@@ -55,27 +51,24 @@ const Services = () => {
 
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected);
+    const start = selected * 10;
+    const end = start + 10;
+    setFilterType(service.slice(start, end));
   };
 
   const handleOnSearch = (e) => {
-    const inputValue = e.target.value.toUpperCase();
-
-    setSearchInput(e.target.value)
-
-    if (inputValue !== "") {
-      const getSearch = search.filter((item) =>
-        item.name.toUpperCase().includes(inputValue)
-      )
-      setFilterType(getSearch);
-      setSearchResult(getSearch.length)
-    } else {
-      fetchServices()
-    }
+    setSearchInput(e.target.value);
+    const filteredData = service.filter(
+      (item) =>
+        item.name.toLowerCase().includes(e.target.value.toLowerCase())
+    );
+    setSearchResult(filteredData.length);
+    setFilterType(filteredData.slice(0, 10)); // Show first page of filtered results
+    setPageCount(Math.ceil(filteredData.length / 10)); // Update page count based on filtered results
   };
 
   return (
     <div className="flex flex-col items-center">
-
       <div className="relative h-[250px] w-full object-cover">
         <video className="h-full w-full object-cover" autoPlay muted loop>
           <source src={video} type="video/mp4" />
@@ -88,8 +81,10 @@ const Services = () => {
         />
       </div>
 
-      <div className='font-bold w-[90%] mx-auto py-10 flex justify-center'>
-        <h1 className='text-[38px] text-center border-b-[2px] border-custom-green-header'>OFFERED <b className='text-custom-green-header'>SERVICES</b></h1>
+      <div className="font-bold w-[90%] mx-auto py-10 flex justify-center">
+        <h1 className="text-[38px] text-center border-b-[2px] border-custom-green-header">
+          OFFERED <b className="text-custom-green-header">SERVICES</b>
+        </h1>
       </div>
 
       <div className="mb-5 flex gap-2">
@@ -102,7 +97,11 @@ const Services = () => {
         <button
           className="rounded-xl w-[40px] h-[40px] justify-center items-center text-white"
           style={{
-            background: `${info && info.theme && info.theme.primary !== "" ? info.theme.primary : '#295141'}`
+            background: `${
+              info && info.theme && info.theme.primary !== ""
+                ? info.theme.primary
+                : "#295141"
+            }`,
           }}
         >
           <FaSearch className="w-full" />
@@ -112,14 +111,32 @@ const Services = () => {
         Searching {searchInput}, return {searchResult} result/s
       </p>
 
-      <div className={filterType.length === 0 ? "grid grid-cols-1 justify-center items-center" : "grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-8 p-4 w-full max-w-7xl"}>
+      <div
+        className={
+          filterType.length === 0
+            ? "grid grid-cols-1 justify-center items-center"
+            : "grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-8 p-4 w-full max-w-7xl"
+        }
+      >
         {filterType.map((item, i) => (
           <Link
             key={i}
             to={`/services_form/?id=${id}&brgy=${brgy}&service_id=${item.service_id}`}
           >
-            <div className={`border-[1px] hover:border-[${info && info.theme && info.theme.secondary !== "" ? info.theme.secondary : '#295141'}] group md:h-[350px] relative rounded-lg shadow-lg overflow-hidden transform transition duration-500 ease-in-out hover:scale-105`}>
-              <div className={`bg-opacity-[50%] bg-[${info && info.theme && info.theme.secondary !== "" ? info.theme.secondary : '#295141'}] overflow-hidden`}>
+            <div
+              className={`border-[1px] hover:border-[${
+                info && info.theme && info.theme.secondary !== ""
+                  ? info.theme.secondary
+                  : "#295141"
+              }] group md:h-[350px] relative rounded-lg shadow-lg overflow-hidden transform transition duration-500 ease-in-out hover:scale-105`}
+            >
+              <div
+                className={`bg-opacity-[50%] bg-[${
+                  info && info.theme && info.theme.secondary !== ""
+                    ? info.theme.secondary
+                    : "#295141"
+                }] overflow-hidden`}
+              >
                 <img
                   className="w-full h-48 object-contain hover:scale-150 transition-all"
                   src={item.collections.logo.link}
@@ -138,16 +155,24 @@ const Services = () => {
           </Link>
         ))}
 
-        {
-          filterType.length === 0 ?
-            <div className="flex flex-col my-[80px]">
-              <img className="w-[150px] mx-auto" src={no_data} alt="" />
-              <p className="mx-auto">No Records Shown</p>
-            </div>
-            : null
-        }
+        {filterType.length === 0 ? (
+          <div className="flex flex-col my-[80px]">
+            <img className="w-[150px] mx-auto" src={no_data} alt="" />
+            <p className="mx-auto">No Records Shown</p>
+          </div>
+        ) : null}
       </div>
-      <div className={searchInput === "" ? `md:py-4 md:px-4 bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3 w-full` : "hidden"}>
+      <div
+        className={
+          searchInput === ""
+            ? `md:py-4 md:px-4 bg-[${
+                info && info.theme && info.theme.primary !== ""
+                  ? info.theme.primary
+                  : "#295141"
+              }] flex items-center justify-between sm:flex-col-reverse md:flex-row sm:py-3 w-full`
+            : "hidden"
+        }
+      >
         <span className="font-medium text-white sm:text-xs text-sm">
           Showing {currentPage + 1} out of {pageCount} pages
         </span>

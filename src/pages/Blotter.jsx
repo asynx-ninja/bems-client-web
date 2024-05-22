@@ -26,6 +26,7 @@ const Blotter = () => {
   const id = searchParams.get("id");
   const brgy = searchParams.get("brgy");
   const [blotter, setBlotter] = useState([]);
+  const [filteredBlotter, setFilteredBlotter] = useState([]);
   const [specBlotter, setSpecBlotter] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [pageCount, setPageCount] = useState(0);
@@ -56,19 +57,15 @@ const Blotter = () => {
 
     const fetch = async () => {
       try {
-        // const response = await axios.get(
-        //     `${API_LINK}/blotter/?id=${user_id}&brgy=${brgy}&to=${SortByName}&archived=false&page=${currentPage}`
-        // );
-
         const response = await axios.get(
-          `${API_LINK}/blotter/specific/patawag/?user_id=${user_id}&page=${currentPage}`
+          `${API_LINK}/blotter/specific/patawag/?user_id=${user_id}`
         );
 
         if (response.status === 200) {
           // setBlotter(response.data.result.sort((date1, date2) => new Date(date2.createdAt) - new Date(date1.createdAt)))
           setBlotter(response.data.result);
+          setFilteredBlotter(response.data.result.slice(0, 10));
           setPageCount(response.data.pageCount);
-          setGetAll(response.data.all);
         } else {
           setBlotter([]);
         }
@@ -78,21 +75,27 @@ const Blotter = () => {
     };
     getBrgy();
     fetch();
-  }, [user_id, brgy, searchName, currentPage]);
+  }, [user_id, brgy]);
 
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected);
+    const start = selected * 10;
+    const end = start + 10;
+    setFilteredBlotter(blotter.slice(start, end));
   };
 
   const handleOnSearch = (e) => {
-    const inputValue = e.target.value.toUpperCase();
     setSearchInput(e.target.value);
-
-    const getSearch = getAll.filter((item) =>
-      item.req_id.toUpperCase().includes(inputValue)
+    const filteredData = inquiries.filter(
+      (item) =>
+        item.inq_id.toLowerCase().includes(e.target.value.toLowerCase()) ||
+        item.compose.subject
+          .toLowerCase()
+          .includes(e.target.value.toLowerCase())
     );
-    setSearchResult(getSearch.length);
-    setRequest(getSearch);
+    setSearchResult(filteredData.length);
+    setFilteredBlotter(filteredData.slice(0, 10)); // Show first page of filtered results
+    setPageCount(Math.ceil(filteredData.length / 10)); // Update page count based on filtered results
   };
 
   const tableHeader = ["Blotter ID", "Name", "to", "date", "status", "actions"];

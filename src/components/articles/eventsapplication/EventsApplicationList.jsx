@@ -3,7 +3,14 @@ import { FaTimes } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 
-const EventsApplicationList = ({ events, setEvents, setViewEvent, setEventUpdate, socket }) => {
+const EventsApplicationList = ({
+  events,
+  setEvents,
+  setViewEvent,
+  setEventUpdate,
+  setFilteredEvents,
+  socket,
+}) => {
   const location = useLocation();
   const page = location.pathname.split("/")[1];
 
@@ -22,29 +29,31 @@ const EventsApplicationList = ({ events, setEvents, setViewEvent, setEventUpdate
 
   const handleView = (item) => {
     setViewEvent(item);
-    // setEventUpdate((prevState) => !prevState);
   };
 
   useEffect(() => {
     const handleEventAppli = (event_appli) => {
-      // setViewEvent((prevApplication = { response: [] }) => ({
-      //   ...prevApplication,
-      //   response: [...(prevApplication.response || []), event_appli], // Ensure prevApplication.response is an array
-      // }));
+      setViewEvent(event_appli);
 
-      setViewEvent(event_appli)
-
-      setEvents(curItem => curItem.map((item) =>
-        item._id === event_appli._id ? event_appli : item
-      ))
+      setEvents((curItem) =>
+        curItem.map((item) =>
+          item._id === event_appli._id ? event_appli : item
+        )
+      );
     };
-    // setEventUpdate((prevState) => !prevState);
+
+    const handleNewEventAppli = (obj) => {
+      setFilteredEvents((prev) => [obj, ...prev]);
+    };
+
     socket.on("receive-reply-event-appli", handleEventAppli);
+    socket.on("receive-event-appli", handleNewEventAppli);
 
     return () => {
       socket.off("receive-reply-event-appli", handleEventAppli);
+      socket.off("receive-event-appli", handleNewEventAppli);
     };
-  }, [socket, setViewEvent]);
+  }, [socket, setViewEvent, setFilteredEvents]);
 
   return Object.entries(events).map(([idx, item]) => (
     <tr key={idx} className="odd:bg-slate-100 text-center">

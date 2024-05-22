@@ -210,6 +210,11 @@ const ComposeModal = () => {
             );
 
             if (result.status === 200) {
+              if (response.data.compose.to === "Admin") {
+                socket.emit("send-muni-inquiry", response.data);
+              } else {
+                socket.emit("send-staff-inquiry", response.data);
+              }
               setTimeout(() => {
                 setSubmitClicked(false);
                 setUpdatingStatus("success");

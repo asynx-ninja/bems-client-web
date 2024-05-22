@@ -255,7 +255,7 @@ const ViewEventModal = ({ viewEvent, setEventUpdate, socket }) => {
   };
 
   const setColor = (status) => {
-    if (status === "Completed") return "green-800";
+    if (status === "Application Completed") return "green-800";
     else if (status === "Pending") return "custom-amber";
     else if (status === "Cancelled") return "gray-700";
     else if (status === "Processing") return "blue-800";

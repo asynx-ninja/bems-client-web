@@ -23,6 +23,7 @@ const Requests = () => {
   const brgy = searchParams.get("brgy");
   const user_id = searchParams.get("user_id");
   const [request, setRequest] = useState([]);
+  const [filteredRequest, setFilteredRequest] = useState([]);
   const [viewRequest, setViewRequest] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [pageCount, setPageCount] = useState(0);
@@ -54,16 +55,18 @@ const Requests = () => {
     const fetch = async () => {
       try {
         const response = await axios.get(
-          `${API_LINK}/requests/specific/?user_id=${user_id}&service_name=${SortByName}&page=${currentPage}`
+          `${API_LINK}/requests/specific/?user_id=${user_id}&service_name=${SortByName}&archived=false`
         );
+
+        console.log(response)
 
         if (response.status === 200) {
           setRequest(response.data.result);
+          setFilteredRequest(response.data.result.slice(0, 10));
           setPageCount(response.data.pageCount);
-          setGetAll(response.data.all);
 
           let uniqueServiceNames = new Set(
-            response.data.all.map((item) => item.service_name)
+            response.data.result.map((item) => item.service_name)
           );
           let arr = [...uniqueServiceNames].sort();
           setSortBy(arr);
@@ -74,12 +77,15 @@ const Requests = () => {
     };
     getBrgy();
     fetch();
-  }, [brgy, id, SortByName, currentPage]);
+  }, [brgy, user_id, SortByName]);
 
   // console.log(request)
 
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected);
+    const start = selected * 10;
+    const end = start + 10;
+    setFilteredInquiries(request.slice(start, end));
   };
 
   // console.log(viewRequest);
@@ -93,16 +99,16 @@ const Requests = () => {
   };
 
   const handleOnSearch = (e) => {
-    const inputValue = e.target.value.toUpperCase();
     setSearchInput(e.target.value);
 
     const getSearch = getAll.filter(
       (item) =>
-        item.req_id.toUpperCase().includes(inputValue) ||
-        item.service_name.toUpperCase().includes(inputValue)
+        item.req_id.toUpperCase().includes(e.target.value) ||
+        item.service_name.toUpperCase().includes(e.target.value)
     );
     setSearchResult(getSearch.length);
-    setRequest(getSearch);
+    setFilteredRequest(getSearch.slice(0, 10)); // Show first page of filtered results
+    setPageCount(Math.ceil(getSearch.length / 10)); // Update page count based on filtered results
   };
 
   const tableHeader = [
@@ -260,10 +266,11 @@ const Requests = () => {
                   </tr>
                 ) : (
                   <RequestList
-                    request={request}
+                    request={filteredRequest}
                     setRequest={setRequest}
                     setViewRequest={setViewRequest}
                     setRequestUpdate={setRequestUpdate}
+                    setFilteredRequest={setFilteredRequest}
                     socket={socket}
                   />
                 )}

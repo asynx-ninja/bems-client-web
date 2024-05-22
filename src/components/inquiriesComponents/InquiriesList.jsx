@@ -10,11 +10,11 @@ const InquiriesList = ({
   setInquiries,
   setInquiry,
   setInqsUpdate,
+  setFilteredInquiries,
   socket,
 }) => {
   const location = useLocation();
   const page = location.pathname.split("/")[1];
-  const [to, setTo] = useState("");
   const DateFormat = (date) => {
     if (!date) return "";
 
@@ -32,41 +32,46 @@ const InquiriesList = ({
 
   const handleView = (item) => {
     setInquiry(item);
-    setTo(item.compose.to);
     setInqsUpdate((prevState) => !prevState);
   };
 
   useEffect(() => {
-    if (to === "Admin") {
-      const handleMuniInq = (muni_inquiry) => {
-        setInquiry(muni_inquiry)
+    const handleMuniInq = (muni_inquiry) => {
+      setInquiry(muni_inquiry);
 
-        setInquiries(curItem => curItem.map((item) =>
+      setInquiries((curItem) =>
+        curItem.map((item) =>
           item._id === muni_inquiry._id ? muni_inquiry : item
-        ))
-      };
+        )
+      );
+    };
 
-      socket.on("receive-reply-muni-inquiry", handleMuniInq);
+    const handleStaffInq = (staff_inquiry) => {
+      setInquiry(muni_inquiry);
 
-      return () => {
-        socket.off("receive-reply-muni-inquiry", handleMuniInq);
-      };
-    } else {
-      const handleStaffInq = (staff_inquiry) => {
-        setInquiry(muni_inquiry)
-
-        setInquiries(curItem => curItem.map((item) =>
+      setInquiries((curItem) =>
+        curItem.map((item) =>
           item._id === staff_inquiry._id ? staff_inquiry : item
-        ))
-      };
+        )
+      );
+    };
 
-      socket.on("receive-reply-staff-inquiry", handleStaffInq);
+    const handleNewInq = (obj) => {
+      setFilteredInquiries((prev) => [obj, ...prev]);
+    };
 
-      return () => {
-        socket.off("receive-reply-staff-inquiry", handleStaffInq);
-      };
-    }
-  }, [to, socket, setInquiry]);
+    socket.on("receive-reply-muni-inquiry", handleMuniInq);
+    socket.on("receive-muni-inquiry", handleNewInq);
+    socket.on("receive-reply-staff-inquiry", handleStaffInq);
+    socket.on("receive-staff-inquiry", handleNewInq);
+
+    return () => {
+      socket.off("receive-reply-muni-inquiry", handleMuniInq);
+      socket.off("receive-muni-inquiry", handleNewInq);
+      socket.off("receive-staff-inquiry", handleNewInq);
+      socket.off("receive-reply-staff-inquiry", handleStaffInq);
+    };
+  }, [socket, setInquiry, setFilteredInquiries]);
 
   return inquiries.map((item, index) => (
     <tr key={index} className="odd:bg-slate-100 text-center">

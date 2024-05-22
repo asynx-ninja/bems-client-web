@@ -8,6 +8,7 @@ const RequestList = ({
   setRequest,
   setViewRequest,
   setRequestUpdate,
+  setFilteredRequest,
   socket,
 }) => {
   const location = useLocation();
@@ -31,27 +32,28 @@ const RequestList = ({
   };
 
   useEffect(() => {
-    const handleRequest = (new_request) => {
-      // setViewEvent((prevRequest = { response: [] }) => ({
-      //   ...prevRequest,
-      //   response: [...(prevRequest.response || []), new_request], // Ensure prevRequest.response is an array
-      // }));
-
-      setViewRequest(new_request);
+    const handleRequest = (new_chat) => {
+      setViewRequest(new_chat);
 
       setRequest((curItem) =>
         curItem.map((item) =>
-          item._id === new_request._id ? new_request : item
+          item._id === new_chat._id ? new_chat : item
         )
       );
     };
-    // setRequestUpdate((prevState) => !prevState);
+
+    const handleNewRequest = (obj) => {
+      setFilteredRequest(prev => [obj, ...prev])
+    };
+
     socket.on("receive-reply-service-req", handleRequest);
+    socket.on("receive-service-req", handleNewRequest);
 
     return () => {
       socket.off("receive-reply-service-req", handleRequest);
+      socket.off("receive-service-req", handleNewRequest);
     };
-  }, [socket, setViewRequest]);
+  }, [socket, setViewRequest, setFilteredRequest]);
 
   return Object.entries(request).map(([idx, item]) => (
     <tr key={idx} className="odd:bg-slate-100 text-center">

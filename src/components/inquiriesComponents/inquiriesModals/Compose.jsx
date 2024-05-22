@@ -59,6 +59,11 @@ const ComposeModal = ({ setInqsUpdate, socket }) => {
   };
 
   const handleOnClose = () => {
+    document.getElementById("name").value = "";
+    document.getElementById("subject").value = "";
+    document.getElementById("to").value = "";
+    document.getElementById("message").value = "";
+    setCreateFiles([])
     setShowError({
       error: false,
       message: "",
@@ -278,14 +283,14 @@ const ComposeModal = ({ setInqsUpdate, socket }) => {
                   <div className="flex flex-col lg:flex-row">
                     <div className="mb-4 px-4 w-full">
                       <label
-                        htmlFor="title"
+                        htmlFor="name"
                         className="block text-sm font-medium text-gray-700"
                       >
                         Name
                       </label>
                       <input
                         type="text"
-                        id="title"
+                        id="name"
                         onChange={handleOnCompose}
                         name="name"
                         className={
@@ -297,14 +302,14 @@ const ComposeModal = ({ setInqsUpdate, socket }) => {
                     </div>
                     <div className="mb-4 px-4 w-full">
                       <label
-                        htmlFor="title"
+                        htmlFor="email"
                         className="block text-sm font-medium text-gray-700"
                       >
                         Email
                       </label>
                       <input
                         type="text"
-                        id="title"
+                        id="email"
                         onChange={handleOnCompose}
                         name="email"
                         className={
@@ -318,14 +323,14 @@ const ComposeModal = ({ setInqsUpdate, socket }) => {
 
                   <div className="mb-4 px-4">
                     <label
-                      htmlFor="title"
+                      htmlFor="subject"
                       className="block text-sm font-medium text-gray-700"
                     >
                       Subject:
                     </label>
                     <input
                       type="text"
-                      id="title"
+                      id="subject"
                       name="subject"
                       onChange={handleOnCompose}
                       className={
@@ -338,13 +343,13 @@ const ComposeModal = ({ setInqsUpdate, socket }) => {
 
                   <div className="mb-4 px-4">
                     <label
-                      htmlFor="title"
+                      htmlFor="to"
                       className="block text-sm font-medium text-gray-700"
                     >
                       To:
                     </label>
                     <select
-                      id="title"
+                      id="to"
                       name="to"
                       value={composeMessage.compose.to || ""}
                       onChange={handleOnCompose}

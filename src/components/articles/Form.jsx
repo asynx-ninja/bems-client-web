@@ -12,6 +12,9 @@ import moment from "moment";
 import PersonalDetails from "./eventsform/PersonalDetails";
 import OtherDetails from "./eventsform/OtherDetails";
 import Preloader from "../loaders/Preloader";
+import { io } from "socket.io-client";
+import Socket_link from "../../config/Socket";
+const socket = io(Socket_link);
 
 const Form = ({ announcement }) => {
   const fileInputRef = useRef();
@@ -33,6 +36,28 @@ const Form = ({ announcement }) => {
   const [info, setInfo] = useState({});
 
   // console.log(announcement);
+
+  useEffect(() => {
+    const handleEventForm = (obj) => {
+      if (obj.isActive) {
+        obj.form[0] = Object.fromEntries(
+          Object.entries(obj.form[0]).filter(
+            ([key, value]) => value.checked === true
+          )
+        );
+
+        obj.form[0].user_id.value = userData.user_id;
+
+        setDetail(obj);
+      }
+    };
+
+    socket.on("receive-edit-event-form", handleEventForm);
+
+    return () => {
+      socket.off("receive-edit-event-form", handleEventForm);
+    };
+  }, [socket]);
 
   useEffect(() => {
     const checkForm = async (item) => {
@@ -410,6 +435,7 @@ const Form = ({ announcement }) => {
             );
 
             if (result.status === 200) {
+              socket.emit("send-event-appli", response.data);
               setTimeout(() => {
                 setSubmitClicked(false);
                 setUpdatingStatus("success");

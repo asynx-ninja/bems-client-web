@@ -14,6 +14,9 @@ import moment from "moment";
 import PersonalDetails from "../components/serviceform/PersonalDetails";
 import OtherDetails from "../components/serviceform/OtherDetails";
 import Preloader from "../components/loaders/Preloader";
+import { io } from "socket.io-client";
+import Socket_link from "../config/Socket";
+const socket = io(Socket_link);
 
 const ServicesForm = ({ props }) => {
   const fileInputRef = useRef();
@@ -37,18 +40,42 @@ const ServicesForm = ({ props }) => {
   const [info, setInfo] = useState({});
 
   useEffect(() => {
+    const handleRequestForm = (obj) => {
+      if (obj.isActive) {
+        obj.form[0] = Object.fromEntries(
+          Object.entries(obj.form[0]).filter(
+            ([_, value]) => value.checked === true
+          )
+        );
+
+        obj.form[0].user_id.value = userData.user_id;
+
+        setDetail(obj);
+      }
+    };
+
+    socket.on("receive-edit-service-form", handleRequestForm);
+
+    return () => {
+      socket.off("receive-edit-service-form", handleRequestForm);
+    };
+  }, [socket]);
+
+  useEffect(() => {
     const fetchForms = async () => {
       try {
         const brgyInfo = await axios.get(`${API_LINK}/brgyinfo/?brgy=${brgy}`);
         if (brgyInfo.status === 200) {
           setInfo(brgyInfo.data[0]);
         } else {
-          setInfo({})
+          setInfo({});
         }
 
         const service_response = await axios.get(
           `${API_LINK}/services/specific_service/?brgy=${brgy}&service_id=${service_id}`
         );
+
+        // console.log(service_response)
 
         const response = await axios.get(
           `${API_LINK}/services/?brgy=${brgy}&archived=false&approved=Approved&page=${page}`
@@ -342,15 +369,6 @@ const ServicesForm = ({ props }) => {
           )
         );
 
-        // const { id_pic: _, ...newForm1 } = detail.form[0];
-
-        // const deleteFileForm2 = detail.form[1].map((item) => {
-        //   return {
-        //     ...item,
-        //     form: item.form.filter((childItem) => childItem.type !== "file"),
-        //   };
-        // });
-
         const newForm2 = detail.form[1].map((item) => {
           return {
             ...item,
@@ -440,6 +458,7 @@ const ServicesForm = ({ props }) => {
               );
 
               if (result.status === 200) {
+                socket.emit("send-service-req", response.data);
                 setTimeout(() => {
                   setSubmitClicked(false);
                   setUpdatingStatus("success");
@@ -519,7 +538,7 @@ const ServicesForm = ({ props }) => {
               </div>
             ) : null}
           </div>
-          
+
           <div className="flex mx-auto sm:flex-row md:flex-row lg:w-full items-center gap-4 px-4 md:px-0 justify-center">
             <button
               disabled={noForm === true || isNotVerified}

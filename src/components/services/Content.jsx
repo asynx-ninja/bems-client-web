@@ -9,7 +9,7 @@ const Content = ({ service, info }) => {
       ? service.collections.file
       : "";
 
-  console.log(service);
+  // console.log(service);
 
   return (
     <div className="flex flex-col gap-5 sm:px-2 md:px-5 w-full">

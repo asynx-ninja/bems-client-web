@@ -20,19 +20,17 @@ import { io } from "socket.io-client";
 import Socket_link from "../../config/Socket";
 const socket = io(Socket_link);
 const Inquiries = () => {
-  const [selectedItems, setSelectedItems] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const user_id = searchParams.get("user_id");
   const id = searchParams.get("id");
   const brgy = searchParams.get("brgy");
   const [inquiries, setInquiries] = useState([]);
+  const [filteredInquiries, setFilteredInquiries] = useState([]);
   const [inquiry, setInquiry] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [pageCount, setPageCount] = useState(0);
-  const [sortBy, setSortBy] = useState([]);
   const [SortByName, setSortByName] = useState("all");
   const [searchInput, setSearchInput] = useState("");
-  const [getAll, setGetAll] = useState([]);
   const [searchResult, setSearchResult] = useState(0);
   const [info, setInfo] = useState({});
   const [inqsupdate, setInqsUpdate] = useState(false);
@@ -58,10 +56,8 @@ const Inquiries = () => {
     const fetch = async () => {
       try {
         const response = await axios.get(
-          `${API_LINK}/inquiries/?id=${user_id}&brgy=${brgy}&to=${SortByName}&archived=false&page=${currentPage}`
+          `${API_LINK}/inquiries/?id=${user_id}&brgy=${brgy}&archived=false&to=${SortByName}`
         );
-
-        console.log(response.data);
 
         if (response.status === 200) {
           setInquiries(
@@ -70,18 +66,11 @@ const Inquiries = () => {
                 new Date(date2.createdAt) - new Date(date1.createdAt)
             )
           );
+          setFilteredInquiries(response.data.result.slice(0, 10));
           setPageCount(response.data.pageCount);
-          setGetAll(response.data.all);
-
-          let uniqueInquiries = new Set(
-            response.data.all.map((item) => item.compose.to)
-          );
-          let arr = [...uniqueInquiries].sort();
-          setSortBy(arr);
         } else {
           setInquiries([]);
         }
-        setInqsUpdate((prevState) => !prevState);
       } catch (error) {
         console.log(error);
       }
@@ -89,10 +78,13 @@ const Inquiries = () => {
 
     getBrgy();
     fetch();
-  }, [user_id, brgy, SortByName, currentPage]);
+  }, [user_id, brgy, SortByName]);
 
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected);
+    const start = selected * 10;
+    const end = start + 10;
+    setFilteredInquiries(inquiries.slice(start, end));
   };
 
   const handleRequestFilter = (selectedType) => {
@@ -104,18 +96,17 @@ const Inquiries = () => {
   };
 
   const handleOnSearch = (e) => {
-    const inputValue = e.target.value.toUpperCase();
-    setSearchInput(inputValue);
-
-    const getSearch = getAll.filter(
+    setSearchInput(e.target.value);
+    const filteredData = inquiries.filter(
       (item) =>
-        item.inq_id.toUpperCase().includes(e.target.value.toUpperCase()) ||
+        item.inq_id.toLowerCase().includes(e.target.value.toLowerCase()) ||
         item.compose.subject
-          .toUpperCase()
-          .includes(e.target.value.toUpperCase())
+          .toLowerCase()
+          .includes(e.target.value.toLowerCase())
     );
-    setSearchResult(getSearch.length);
-    setInquiries(getSearch);
+    setSearchResult(filteredData.length);
+    setFilteredInquiries(filteredData.slice(0, 10)); // Show first page of filtered results
+    setPageCount(Math.ceil(filteredData.length / 10)); // Update page count based on filtered results
   };
 
   // console.log(socket)
@@ -222,16 +213,18 @@ const Inquiries = () => {
                 </a>
                 <hr className="border-[#4e4e4e] my-1" />
                 <div className="flex flex-col scrollbarWidth scrollbarTrack scrollbarHover scrollbarThumb overflow-y-scroll h-44">
-                  {sortBy.map((event_name, index) => (
-                    <a
-                      key={index}
-                      onClick={() => handleRequestFilter(event_name)}
-                      className="flex items-center font-medium uppercase gap-x-3.5 py-2 px-3 rounded-xl text-sm text-black hover:bg-[#b3c5cc] hover:text-gray-800 focus:ring-2 focus:ring-blue-500"
-                      href="#"
-                    >
-                      {event_name}
-                    </a>
-                  ))}
+                  <button
+                    onClick={() => handleRequestFilter("Admin")}
+                    className="flex items-center font-medium uppercase gap-x-3.5 py-2 px-3 rounded-xl text-sm text-black hover:bg-[#b3c5cc] hover:text-gray-800 focus:ring-2 focus:ring-blue-500"
+                  >
+                    Municipality
+                  </button>
+                  <button
+                    onClick={() => handleRequestFilter("Staff")}
+                    className="flex items-center font-medium uppercase gap-x-3.5 py-2 px-3 rounded-xl text-sm text-black hover:bg-[#b3c5cc] hover:text-gray-800 focus:ring-2 focus:ring-blue-500"
+                  >
+                    Barangay Staff
+                  </button>
                 </div>
               </ul>
             </div>
@@ -299,10 +292,11 @@ const Inquiries = () => {
                   </tr>
                 ) : (
                   <InquiriesList
-                    inquiries={inquiries}
+                    inquiries={filteredInquiries}
                     setInquiries={setInquiries}
                     setInquiry={setInquiry}
                     setInqsUpdate={setInqsUpdate}
+                    setFilteredInquiries={setFilteredInquiries}
                     socket={socket}
                   />
                 )}
