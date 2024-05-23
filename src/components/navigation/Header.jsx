@@ -93,7 +93,7 @@ const Header = () => {
     }, 3000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [brgy]);
 
   const handleImageError = (event) => {
     event.target.src = defaultPFP;
@@ -180,7 +180,7 @@ const Header = () => {
                 <FaBell className="m-auto" size={"20px"} />
                 {unread === 0 ? null : (
                   <div className="absolute inline-flex items-center justify-center w-5 h-5 text-[10px] font-bold text-white bg-red-500 border-2 rounded-full top-[-5px] right-0">
-                    {unread}
+                    {unread < 99 ? unread : "99+"}
                   </div>
                 )}
               </button>
@@ -198,7 +198,7 @@ const Header = () => {
                 >
                   <div className="py-[10px] px-[5px] border-b-[1px] border-custom-gray flex justify-between">
                     <h1 className="font-medium text-[18px] my-auto">
-                      Notifications ({unread})
+                      Notifications ({unread < 99 ? unread : "99+"})
                     </h1>
                   </div>
 
