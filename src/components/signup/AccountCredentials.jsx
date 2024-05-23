@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 
-const AccountCredentials = ({ formData, empty, emptyFields, restrict, handleChange, passwordError, passwordStrengthError, passwordMatchSuccess, passwordStrengthSuccess, showError, passwordStrength, duplicateError, successReg, termsAccepted, setTermsAccepted, policyAccepted, setPolicyAccepted, handleSubmit, handleNextPage }) => {
+const AccountCredentials = ({ formData, empty, emptyFields, restrict, handleChange, passwordError, passwordStrengthError, passwordMatchSuccess, passwordStrengthSuccess, showError, passwordStrength, duplicateError, successReg, termsAccepted, setTermsAccepted, policyAccepted, setPolicyAccepted, handleSubmit, handleNextPage, ageRes }) => {
     const [passwordShown, setPasswordShown] = useState(false);
     const [repasswordShown, setRePasswordShown] = useState(false);
 
@@ -40,6 +40,14 @@ const AccountCredentials = ({ formData, empty, emptyFields, restrict, handleChan
                 >
                     <span className="font-bold">Warning:</span> Please read both the
                     Terms of Use and Data Privacy Policy!
+                </div>
+            )}
+            {ageRes && (
+                <div
+                    className="bg-red-50 border border-red-200 text-sm text-red-600 rounded-md p-4 mt-2 mb-4"
+                    role="alert"
+                >
+                    <span className="font-bold">Warning:</span> You must be atleast 16 years old to register!
                 </div>
             )}
 

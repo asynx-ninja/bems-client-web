@@ -98,7 +98,7 @@ const ViewMessage = ({ inquiry, setInquiry, setInqsUpdate, socket }) => {
     imageInputRef.current.click();
   };
 
-  // console.log(newMessage)
+  // console.log(inquiry);
 
   const handleOnUpload = () => {
     setUpload(!upload);
@@ -158,6 +158,7 @@ const ViewMessage = ({ inquiry, setInquiry, setInqsUpdate, socket }) => {
       const obj = {
         sender: `${userData.firstName.toUpperCase()} ${userData.lastName.toUpperCase()}`,
         message: newMessage.message,
+        type: "Resident",
         date: newMessage.date,
         folder_id: inquiry.folder_id,
       };
@@ -224,6 +225,7 @@ const ViewMessage = ({ inquiry, setInquiry, setInqsUpdate, socket }) => {
 
         if (result.status === 200) {
           document.getElementById("message").value = "";
+          // console.log(response.data);
           if (inquiry.compose.to === "Admin") {
             socket.emit("send-reply-muni-inquiry", response.data);
           } else {
@@ -305,104 +307,10 @@ const ViewMessage = ({ inquiry, setInquiry, setInqsUpdate, socket }) => {
 
               <div
                 ref={chatContainerRef}
-                className="scrollbarWidth scrollbarTrack scrollbarHover scrollbarThumb flex flex-col mx-auto w-full py-5 px-5 overflow-y-auto relative h-[300px]"
+                className="scrollbarWidth scrollbarTrack scrollbarHover scrollbarThumb flex flex-col mx-auto w-full py-1 px-5 overflow-y-auto relative h-[300px]"
                 id="scrolltobottom"
               >
-                <b className="border-solid border-0 border-black/50 border-b-2  uppercase font-medium text-lg md:text-lg mb-4">
-                  Inquiry Details
-                </b>
-                <div className="flex flex-col lg:flex-row">
-                  <div className="mb-4 px-2 w-full lg:w-1/2">
-                    <label
-                      htmlFor="title"
-                      className="block text-sm font-bold text-gray-700"
-                    >
-                      Name
-                    </label>
-                    <input
-                      type="text"
-                      id="title"
-                      name="title"
-                      className="shadow appearance-none border w-full py-2 px-3 text-sm text-black rounded-lg focus:border-green-500 focus:ring-green-500 focus:outline-none focus:shadow-outline"
-                      value={(inquiry && inquiry.name) || ""}
-                      disabled
-                    />
-                  </div>
-                  <div className="mb-4 px-2 w-full lg:w-1/2">
-                    <label
-                      htmlFor="title"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Email
-                    </label>
-                    <input
-                      type="text"
-                      id="title"
-                      name="title"
-                      className="shadow appearance-none border w-full py-2 px-3 text-sm text-black rounded-lg focus:border-green-500 focus:ring-green-500 focus:outline-none focus:shadow-outline"
-                      value={(inquiry && inquiry.email) || ""}
-                      disabled
-                    />
-                  </div>
-                </div>
-
-                <div className="flex flex-col lg:flex-row">
-                  <div className="mb-4 px-2 w-full lg:w-1/2">
-                    <label
-                      htmlFor="title"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Subject
-                    </label>
-                    <input
-                      type="text"
-                      id="title"
-                      name="title"
-                      className="shadow appearance-none border w-full py-2 px-3 text-sm text-black rounded-lg focus:border-green-500 focus:ring-green-500 focus:outline-none focus:shadow-outline"
-                      value={(inquiry && inquiry?.compose?.subject) || ""}
-                      disabled
-                    />
-                  </div>
-                  <div className="mb-4 px-2 w-full lg:w-1/2">
-                    <label
-                      htmlFor="title"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Date
-                    </label>
-                    <input
-                      type="text"
-                      id="title"
-                      name="title"
-                      className="shadow appearance-none border w-full py-2 px-3 text-sm text-black rounded-lg focus:border-green-500 focus:ring-green-500 focus:outline-none focus:shadow-outline"
-                      value={
-                        DateFormat(inquiry && inquiry?.compose?.date) || ""
-                      }
-                      disabled
-                    />
-                  </div>
-                </div>
-
-                <div className="mb-4 px-2">
-                  <label
-                    htmlFor="details"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Message
-                  </label>
-                  <textarea
-                    id="details"
-                    name="details"
-                    rows="4"
-                    className="shadow appearance-none border w-full h-full py-2 px-3 text-sm text-black rounded-lg focus:border-green-500 focus:ring-green-500 focus:outline-none focus:shadow-outline"
-                    value={(inquiry && inquiry?.compose?.message) || ""}
-                    disabled
-                  />
-                </div>
-
-                <EditDropbox files={inquiry && files} setFiles={setFiles} />
-
-                <div className="flex flex-col mt-5 w-full">
+                <div className="flex flex-col w-full">
                   <b className="border-solid border-0 w-full border-black/50 border-b-2 my-4 uppercase font-medium text-lg md:text-lg mb-4">
                     Conversation History
                   </b>

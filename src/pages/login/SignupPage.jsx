@@ -72,8 +72,9 @@ const SignupPage = () => {
   const [errMsg, setErrMsg] = useState(false);
   const fileInputPrimaryIDRef = useRef();
   const fileInputSecondaryIDRef = useRef();
+  const [ageRes, setAgeRes] = useState(false)
 
-  const WebcamCapture = () => {
+  const WebcamCapture = ({ setCapture }) => {
     const webcamRef = React.useRef(null);
     const [capturedImage, setCapturedImage] = useState(null);
 
@@ -104,6 +105,8 @@ const SignupPage = () => {
             ...prev,
             selfie: selfieFile,
           }));
+
+          setCapture(false)
         } catch (error) {
           console.error("Error fetching image:", error);
         }
@@ -343,6 +346,11 @@ const SignupPage = () => {
       selfie: formData.selfie,
     };
 
+    if(obj.age < 16){
+      setAgeRes(true);
+      return;
+    }
+
     const res_folder = await axios.get(
       `${API_LINK}/folder/specific/?brgy=${obj.address.brgy}`
     );
@@ -527,6 +535,7 @@ const SignupPage = () => {
               setPolicyAccepted={setPolicyAccepted}
               handleSubmit={handleSubmit}
               handleNextPage={handleNextPage}
+              ageRes={ageRes}
             />
           ) : null}
 

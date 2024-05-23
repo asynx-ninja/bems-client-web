@@ -31,9 +31,9 @@ const Requests = () => {
   const [SortByName, setSortByName] = useState("all");
   const [searchInput, setSearchInput] = useState("");
   const [searchResult, setSearchResult] = useState(0);
-  const [getAll, setGetAll] = useState([]);
   const [info, setInfo] = useState({});
   const [requestupdate, setRequestUpdate] = useState(false);
+  const [serviceNameList, setServiceList] = useState([]);
 
   useEffect(() => {
     document.title = "Service Request | Barangay E-Services Management";
@@ -58,18 +58,12 @@ const Requests = () => {
           `${API_LINK}/requests/specific/?user_id=${user_id}&service_name=${SortByName}&archived=false`
         );
 
-        console.log(response)
+        // console.log(response)
 
         if (response.status === 200) {
           setRequest(response.data.result);
           setFilteredRequest(response.data.result.slice(0, 10));
           setPageCount(response.data.pageCount);
-
-          let uniqueServiceNames = new Set(
-            response.data.result.map((item) => item.service_name)
-          );
-          let arr = [...uniqueServiceNames].sort();
-          setSortBy(arr);
         }
       } catch (err) {
         console.log(err);
@@ -79,13 +73,32 @@ const Requests = () => {
     fetch();
   }, [brgy, user_id, SortByName]);
 
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        const response = await axios.get(
+          `${API_LINK}/services/get_distinct_services/?brgy=${brgy}`
+        );
+
+        if (response.status === 200) {
+          let uniqueEventName = new Set(response.data.map((item) => item._id));
+          let arr = [...uniqueEventName].sort();
+          setSortBy(arr);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetch();
+  }, [brgy]);
+
   // console.log(request)
 
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected);
     const start = selected * 10;
     const end = start + 10;
-    setFilteredInquiries(request.slice(start, end));
+    setFilteredRequest(request.slice(start, end));
   };
 
   // console.log(viewRequest);
@@ -101,11 +114,12 @@ const Requests = () => {
   const handleOnSearch = (e) => {
     setSearchInput(e.target.value);
 
-    const getSearch = getAll.filter(
+    const getSearch = request.filter(
       (item) =>
-        item.req_id.toUpperCase().includes(e.target.value) ||
-        item.service_name.toUpperCase().includes(e.target.value)
+        item.req_id.toLowerCase().includes(e.target.value) ||
+        item.service_name.toLowerCase().includes(e.target.value)
     );
+
     setSearchResult(getSearch.length);
     setFilteredRequest(getSearch.slice(0, 10)); // Show first page of filtered results
     setPageCount(Math.ceil(getSearch.length / 10)); // Update page count based on filtered results
@@ -178,24 +192,22 @@ const Requests = () => {
                 className="bg-[#f8f8f8] border-2 border-[#ffb13c] hs-dropdown-menu w-72 transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden z-10  shadow-xl rounded-xl p-2 "
                 aria-labelledby="hs-dropdown"
               >
-                <a
+                <button
                   onClick={handleResetFilter}
                   className="flex items-center font-medium uppercase gap-x-3.5 py-2 px-2 text-sm text-black hover:bg-[#b3c5cc] hover:text-gray-800 hover:rounded-[12px] focus:ring-2 focus:ring-blue-500"
-                  href="#"
                 >
                   RESET FILTERS
-                </a>
+                </button>
                 <hr className="border-[#4e4e4e] my-1" />
                 <div className="flex flex-col scrollbarWidth scrollbarTrack scrollbarHover scrollbarThumb overflow-y-scroll h-44">
                   {sortBy.map((service_name, index) => (
-                    <a
+                    <button
                       key={index}
                       onClick={() => handleRequestFilter(service_name)}
-                      className="flex items-center font-medium uppercase gap-x-3.5 py-2 px-3 rounded-xl text-sm text-black hover:bg-[#b3c5cc] hover:text-gray-800 focus:ring-2 focus:ring-blue-500"
-                      href="#"
+                      className="flex text-left items-center font-medium uppercase gap-x-3.5 py-2 px-3 rounded-xl text-sm text-black hover:bg-[#b3c5cc] hover:text-gray-800 focus:ring-2 focus:ring-blue-500"
                     >
                       {service_name}
-                    </a>
+                    </button>
                   ))}
                 </div>
               </ul>

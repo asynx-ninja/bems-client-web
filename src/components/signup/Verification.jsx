@@ -220,7 +220,7 @@ const Verification = ({ formData, setFormData, empty, emptyFields, handleAddPrim
                                 <div></div>
                             ) : (
                                 <div>
-                                    <WebcamCapture />
+                                    <WebcamCapture setCapture={setCapture} />
                                 </div>
                             )}
                         </div>

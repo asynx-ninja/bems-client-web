@@ -309,15 +309,6 @@ const Form = ({ announcement }) => {
     return newFile;
   };
 
-  // const generatePDF = async () => {
-  //   try {
-  //     const result = await pdf(<SampleDocument detail={detail} />).toBlob();
-  //     saveAs(new File([result], "filename"), "NewFile.pdf");
-  //   } catch (error) {
-  //     console.error(error.message);
-  //   }
-  // };
-
   const getType = (type) => {
     switch (type) {
       case "MUNISIPYO":

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import defaultPFP from "../assets/sample-image/default-pfp.png";
-import sampleID from "../assets/image/sampleID.png"
+import sampleID from "../assets/image/sampleID.png";
 import {
   FaCamera,
   FaFacebook,
@@ -9,7 +9,7 @@ import {
   FaPhone,
   FaTwitter,
   FaInstagram,
-  FaCameraRetro
+  FaCameraRetro,
 } from "react-icons/fa";
 import axios from "axios";
 import API_LINK from "../config/API";
@@ -17,7 +17,7 @@ import banner from "../assets/image/1.png";
 import Webcam from "react-webcam";
 import moment from "moment";
 
-// COMPONENTS 
+// COMPONENTS
 import PersonalInfo from "../components/settings/PersonalInfo";
 import AddressDetails from "../components/settings/AddressDetails";
 import OtherPersonalData from "../components/settings/OthersPersonalData";
@@ -35,20 +35,20 @@ const Settings = () => {
   const id = searchParams.get("id");
   const brgy = searchParams.get("brgy");
   const fileInputRef = useRef();
-  const fileInputPrimaryIDRef = useRef()
-  const fileInputSecondaryIDRef = useRef()
+  const fileInputPrimaryIDRef = useRef();
+  const fileInputSecondaryIDRef = useRef();
   const [activeButton, setActiveButton] = useState({
     personal: true,
     username: false,
     password: false,
-    govID: false
+    govID: false,
   });
   const [editButton, setEditButton] = useState(true);
   const [pfp, setPfp] = useState("");
   const [govID, setGovID] = useState({
     primary: "",
-    secondary: ""
-  })
+    secondary: "",
+  });
   const [userAddress, setUserAddress] = useState({
     street: "",
     brgy: "",
@@ -86,7 +86,7 @@ const Settings = () => {
   const [empty, setEmpty] = useState(false);
   const [showError, setShowError] = useState({
     error: false,
-    message: ""
+    message: "",
   });
   const [error, setError] = useState(null);
   const [submitClicked, setSubmitClicked] = useState(false);
@@ -98,13 +98,14 @@ const Settings = () => {
     secondary_file: "",
     secondary_id: "",
     selfie: "",
-  })
+  });
   const [totalProcessedFiles, setTotalProcessedFiles] = useState({
     primary: 0,
-    secondary: 0
-  })
+    secondary: 0,
+  });
+  const [ageRes, setAgeRes] = useState(false);
 
-  const WebcamCapture = () => {
+  const WebcamCapture = ({ setCapture }) => {
     const webcamRef = React.useRef(null);
     const [capturedImage, setCapturedImage] = useState(null);
 
@@ -135,10 +136,11 @@ const Settings = () => {
             ...prev,
             verification: {
               ...prev.verification,
-              selfie: selfieFile
-            }
-          }))
+              selfie: selfieFile,
+            },
+          }));
 
+          setCapture(false);
         } catch (error) {
           console.error("Error fetching image:", error);
         }
@@ -175,7 +177,7 @@ const Settings = () => {
         )}
       </>
     );
-  }
+  };
 
   const handleFileChange = (field, e) => {
     e.preventDefault();
@@ -183,16 +185,22 @@ const Settings = () => {
 
     setVerification((prevVerification) => ({
       ...prevVerification,
-      [field]: prevVerification[field] === null ? files : [...prevVerification[field], ...files],
+      [field]:
+        prevVerification[field] === null
+          ? files
+          : [...prevVerification[field], ...files],
     }));
 
     setUserData((prev) => ({
       ...prev,
       verification: {
         ...prev.verification,
-        [field]: prev.verification[field] === null ? files : [...prev.verification[field], ...files]
-      }
-    }))
+        [field]:
+          prev.verification[field] === null
+            ? files
+            : [...prev.verification[field], ...files],
+      },
+    }));
   };
 
   const handleAdd = () => {
@@ -205,10 +213,10 @@ const Settings = () => {
 
   const handleAddSecondaryID = () => {
     fileInputSecondaryIDRef.current.click();
-  }
+  };
 
   const handleProfileChange = (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     var profile = document.getElementById("pfp");
     profile.src = URL.createObjectURL(e.target.files[0]);
@@ -217,8 +225,7 @@ const Settings = () => {
     };
 
     setPfp(e.target.files[0]);
-
-  }
+  };
 
   // console.log(userData)
 
@@ -229,7 +236,7 @@ const Settings = () => {
         if (brgyInfo.status === 200) {
           setInfo(brgyInfo.data[0]);
         } else {
-          setInfo({})
+          setInfo({});
         }
         const res = await axios.get(`${API_LINK}/users/specific/${id}`);
         if (res.status === 200) {
@@ -330,7 +337,7 @@ const Settings = () => {
   };
 
   const saveChanges = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (
       !userData.firstName ||
@@ -342,14 +349,14 @@ const Settings = () => {
       setEmpty(true);
       setShowError({
         error: true,
-        message: "Please fill up Required information!"
+        message: "Please fill up Required information!",
       });
       return;
       // Proceed with form submission...
     } else {
       setShowError({
         error: false,
-        message: "Please fill up Required information!"
+        message: "Please fill up Required information!",
       });
       setEmpty(false);
     }
@@ -384,8 +391,14 @@ const Settings = () => {
       },
     };
 
-    try {
+    const age = calculateAge(userData.birthday);
 
+    if (age < 16) {
+      setAgeRes(true);
+      return;
+    }
+
+    try {
       const res_folder = await axios.get(
         `${API_LINK}/folder/specific/?brgy=${brgy}`
       );
@@ -419,7 +432,10 @@ const Settings = () => {
           formData.append("file", pfp);
 
           if (res_folder.status === 200) {
-            const response = await axios.patch(`${API_LINK}/users/?doc_id=${id}&folder_id=${res_folder.data[0].pfp}`, formData);
+            const response = await axios.patch(
+              `${API_LINK}/users/?doc_id=${id}&folder_id=${res_folder.data[0].pfp}`,
+              formData
+            );
 
             if (response.status === 200) {
               console.log("Update successful:", response);
@@ -442,19 +458,17 @@ const Settings = () => {
                   window.location.reload();
                 }, 3000);
               }, 1000);
-
             } else {
               console.error("Update failed. Status:", response.status);
             }
           }
-
         } catch (error) {
-          console.log(error)
+          console.log(error);
         }
       } else if (activeButton.govID === true) {
         setSubmitClicked(true);
         try {
-          var formData = new FormData()
+          var formData = new FormData();
 
           const [primarySaved, primaryUpload] =
             userData.verification.primary_file.reduce(
@@ -478,7 +492,10 @@ const Settings = () => {
 
           formData.append("primarySaved", JSON.stringify(primarySaved));
           formData.append("secondarySaved", JSON.stringify(secondarySaved));
-          formData.append("oldVerification", JSON.stringify(userData.verification));
+          formData.append(
+            "oldVerification",
+            JSON.stringify(userData.verification)
+          );
           formData.append("newVerification", JSON.stringify(verification));
 
           if (!userData.verification.selfie.hasOwnProperty("link")) {
@@ -499,8 +516,9 @@ const Settings = () => {
           if (primaryUpload.length > 0) {
             for (let i = 0; i < primaryUpload.length; i += 1) {
               let file = {
-                name: `${userData.lastName}, ${userData.firstName
-                  } - PRIMARY ID ${moment(new Date()).format("MMDDYYYYHHmmss")}`,
+                name: `${userData.lastName}, ${
+                  userData.firstName
+                } - PRIMARY ID ${moment(new Date()).format("MMDDYYYYHHmmss")}`,
                 size: primaryUpload[i].size,
                 type: primaryUpload[i].type,
                 uri: primaryUpload[i].uri,
@@ -518,10 +536,11 @@ const Settings = () => {
           if (secondaryUpload.length > 0)
             for (let i = 0; i < secondaryUpload.length; i += 1) {
               let file = {
-                name: `${userData.lastName}, ${userData.firstName
-                  } - SECONDARY ID ${moment(new Date()).format(
-                    "MMDDYYYYHHmmss"
-                  )}`,
+                name: `${userData.lastName}, ${
+                  userData.firstName
+                } - SECONDARY ID ${moment(new Date()).format(
+                  "MMDDYYYYHHmmss"
+                )}`,
                 uri: secondaryUpload[i].uri,
                 type: secondaryUpload[i].type,
                 size: secondaryUpload[i].size,
@@ -553,20 +572,18 @@ const Settings = () => {
                 window.location.reload();
               }, 3000);
             }, 1000);
-
           } else {
             console.error("Update failed. Status:", response.status);
           }
         } catch (err) {
-          console.log(err)
+          console.log(err);
         }
       } else {
         setShowError({
           error: true,
-          message: "Please fill up Required information!"
+          message: "Please fill up Required information!",
         });
       }
-
     } catch (error) {
       console.error("Error saving changes:", error);
       setSubmitClicked(false);
@@ -650,28 +667,28 @@ const Settings = () => {
         personal: true,
         username: false,
         password: false,
-        govID: false
+        govID: false,
       });
     } else if (e.target.name === "username") {
       setActiveButton({
         personal: false,
         username: true,
         password: false,
-        govID: false
+        govID: false,
       });
     } else if (e.target.name === "password") {
       setActiveButton({
         personal: false,
         username: false,
         password: true,
-        govID: false
+        govID: false,
       });
     } else if (e.target.name === "governmentID") {
       setActiveButton({
         personal: false,
         username: false,
         password: false,
-        govID: true
+        govID: true,
       });
     }
   };
@@ -698,24 +715,40 @@ const Settings = () => {
           </div>
           <div className="flex sm:flex-col-reverse lg:flex-row-reverse sm:px-[5px] px-[20px] justify-center mb-[20px]">
             <div className="flex flex-col sm:w-full lg:w-9/12 mx-auto">
-              {
-                showError.error ?
-                  <div
-                    className="bg-red-50 border text-center border-red-200 text-sm text-red-600 rounded-md py-4 mt-2 mb-4"
-                    role="alert"
-                  >
-                    <span className="font-bold ">Warning:</span> {showError.message}
-                  </div>
-                  : null
-              }
+              {showError.error ? (
+                <div
+                  className="bg-red-50 border text-center border-red-200 text-sm text-red-600 rounded-md py-4 mt-2 mb-4"
+                  role="alert"
+                >
+                  <span className="font-bold ">Warning:</span>{" "}
+                  {showError.message}
+                </div>
+              ) : null}
+              {ageRes ? (
+                <div
+                  className="bg-red-50 border text-center border-red-200 text-sm text-red-600 rounded-md py-4 mt-2 mb-4"
+                  role="alert"
+                >
+                  <span className="font-bold ">Warning:</span> Your age must be
+                  atleast 16 years old to register!
+                </div>
+              ) : null}
               <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-[10px] my-5 pb-[10px] border-b-[2px] border-b-gray-200 px-[10px]">
                 <button
                   name="personal"
                   onClick={handleOnActive}
                   className={
                     activeButton.personal
-                      ? `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] text-white font-medium`
-                      : `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-white text-black font-medium transition-all ease-in-out hover:bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] hover:text-white`
+                      ? `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-[${
+                          info && info.theme && info.theme.primary !== ""
+                            ? info.theme.primary
+                            : "#295141"
+                        }] text-white font-medium`
+                      : `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-white text-black font-medium transition-all ease-in-out hover:bg-[${
+                          info && info.theme && info.theme.primary !== ""
+                            ? info.theme.primary
+                            : "#295141"
+                        }] hover:text-white`
                   }
                 >
                   Personal Info
@@ -725,8 +758,16 @@ const Settings = () => {
                   onClick={handleOnActive}
                   className={
                     activeButton.username
-                      ? `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] text-white font-medium`
-                      : `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-white text-black font-medium transition-all ease-in-out hover:bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] hover:text-white`
+                      ? `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-[${
+                          info && info.theme && info.theme.primary !== ""
+                            ? info.theme.primary
+                            : "#295141"
+                        }] text-white font-medium`
+                      : `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-white text-black font-medium transition-all ease-in-out hover:bg-[${
+                          info && info.theme && info.theme.primary !== ""
+                            ? info.theme.primary
+                            : "#295141"
+                        }] hover:text-white`
                   }
                 >
                   Change Username
@@ -736,8 +777,16 @@ const Settings = () => {
                   onClick={handleOnActive}
                   className={
                     activeButton.password
-                      ? `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] text-white font-medium`
-                      : `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-white text-black font-medium transition-all ease-in-out hover:bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] hover:text-white`
+                      ? `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-[${
+                          info && info.theme && info.theme.primary !== ""
+                            ? info.theme.primary
+                            : "#295141"
+                        }] text-white font-medium`
+                      : `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-white text-black font-medium transition-all ease-in-out hover:bg-[${
+                          info && info.theme && info.theme.primary !== ""
+                            ? info.theme.primary
+                            : "#295141"
+                        }] hover:text-white`
                   }
                 >
                   Change Password
@@ -747,8 +796,16 @@ const Settings = () => {
                   onClick={handleOnActive}
                   className={
                     activeButton.govID
-                      ? `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] text-white font-medium`
-                      : `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-white text-black font-medium transition-all ease-in-out hover:bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] hover:text-white`
+                      ? `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-[${
+                          info && info.theme && info.theme.primary !== ""
+                            ? info.theme.primary
+                            : "#295141"
+                        }] text-white font-medium`
+                      : `sm:text-[14px] md:text-[18px] h-[50px] px-[20px] rounded-md bg-white text-black font-medium transition-all ease-in-out hover:bg-[${
+                          info && info.theme && info.theme.primary !== ""
+                            ? info.theme.primary
+                            : "#295141"
+                        }] hover:text-white`
                   }
                 >
                   Verification
@@ -758,14 +815,31 @@ const Settings = () => {
               <div className={activeButton.personal ? "block" : "hidden"}>
                 <div className="h-full w-full shadow-lg px-[30px] pb-[30px]">
                   {/* PERSONAL DATA */}
-                  <PersonalInfo userData={userData} editButton={editButton} handleUserDataChange={handleUserDataChange} birthdayFormat={birthdayFormat} calculateAge={calculateAge} empty={empty} />
+                  <PersonalInfo
+                    userData={userData}
+                    editButton={editButton}
+                    handleUserDataChange={handleUserDataChange}
+                    birthdayFormat={birthdayFormat}
+                    calculateAge={calculateAge}
+                    empty={empty}
+                  />
 
                   {/* ADDRESS DETAILS */}
-                  <AddressDetails userAddress={userAddress} editButton={editButton} handleUserChangeAdd={handleUserChangeAdd} empty={empty} />
+                  <AddressDetails
+                    userAddress={userAddress}
+                    editButton={editButton}
+                    handleUserChangeAdd={handleUserChangeAdd}
+                    empty={empty}
+                  />
 
                   {/* OTHER PERSONAL DATA */}
-                  <OtherPersonalData userData={userData} userSocials={userSocials} handleUserDataChange={handleUserDataChange} handleUserSocials={handleUserSocials} editButton={editButton} />
-
+                  <OtherPersonalData
+                    userData={userData}
+                    userSocials={userSocials}
+                    handleUserDataChange={handleUserDataChange}
+                    handleUserSocials={handleUserSocials}
+                    editButton={editButton}
+                  />
                 </div>
               </div>
               <div
@@ -776,7 +850,16 @@ const Settings = () => {
                 }
               >
                 {/* CREDENTIALS */}
-                <Username userCred={userCred} handleUserChangeCred={handleUserChangeCred} editButton={editButton} message={message} passwordStrengthError={passwordStrengthError} passwordStrengthSuccess={passwordStrengthSuccess} passwordStrength={passwordStrength} empty={empty} />
+                <Username
+                  userCred={userCred}
+                  handleUserChangeCred={handleUserChangeCred}
+                  editButton={editButton}
+                  message={message}
+                  passwordStrengthError={passwordStrengthError}
+                  passwordStrengthSuccess={passwordStrengthSuccess}
+                  passwordStrength={passwordStrength}
+                  empty={empty}
+                />
               </div>
               <div
                 className={
@@ -786,7 +869,16 @@ const Settings = () => {
                 }
               >
                 {/* CREDENTIALS */}
-                <Password userCred={userCred} handleUserChangeCred={handleUserChangeCred} editButton={editButton} message={message} passwordStrengthError={passwordStrengthError} passwordStrengthSuccess={passwordStrengthSuccess} passwordStrength={passwordStrength} empty={empty} />
+                <Password
+                  userCred={userCred}
+                  handleUserChangeCred={handleUserChangeCred}
+                  editButton={editButton}
+                  message={message}
+                  passwordStrengthError={passwordStrengthError}
+                  passwordStrengthSuccess={passwordStrengthSuccess}
+                  passwordStrength={passwordStrength}
+                  empty={empty}
+                />
               </div>
               <div
                 className={
@@ -796,7 +888,22 @@ const Settings = () => {
                 }
               >
                 {/* CREDENTIALS */}
-                <GovernmentID userData={userData} setUserData={setUserData} editButton={editButton} handleAddPrimaryID={handleAddPrimaryID} handleAddSecondaryID={handleAddSecondaryID} fileInputPrimaryIDRef={fileInputPrimaryIDRef} fileInputSecondaryIDRef={fileInputSecondaryIDRef} handleFileChange={handleFileChange} totalProcessedFiles={totalProcessedFiles} setTotalProcessedFiles={setTotalProcessedFiles} WebcamCapture={WebcamCapture} setViewerVisible={setViewerVisible} setSelectedImage={setSelectedImage} setCapturedImage={setCapturedImage} />
+                <GovernmentID
+                  userData={userData}
+                  setUserData={setUserData}
+                  editButton={editButton}
+                  handleAddPrimaryID={handleAddPrimaryID}
+                  handleAddSecondaryID={handleAddSecondaryID}
+                  fileInputPrimaryIDRef={fileInputPrimaryIDRef}
+                  fileInputSecondaryIDRef={fileInputSecondaryIDRef}
+                  handleFileChange={handleFileChange}
+                  totalProcessedFiles={totalProcessedFiles}
+                  setTotalProcessedFiles={setTotalProcessedFiles}
+                  WebcamCapture={WebcamCapture}
+                  setViewerVisible={setViewerVisible}
+                  setSelectedImage={setSelectedImage}
+                  setCapturedImage={setCapturedImage}
+                />
               </div>
             </div>
             <div className="sm:w-full lg:w-[20%] relative mt-[-80px] mb-[20px]">
@@ -810,7 +917,11 @@ const Settings = () => {
                       className={
                         editButton
                           ? "hidden"
-                          : `block text-transparent p-[45px] font-medium rounded-full text-sm text-center opacity-0 hover:opacity-100 transition-opacity hover:bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] hover:bg-opacity-60 cursor-pointer`
+                          : `block text-transparent p-[45px] font-medium rounded-full text-sm text-center opacity-0 hover:opacity-100 transition-opacity hover:bg-[${
+                              info && info.theme && info.theme.primary !== ""
+                                ? info.theme.primary
+                                : "#295141"
+                            }] hover:bg-opacity-60 cursor-pointer`
                       }
                     >
                       <FaCamera
@@ -833,7 +944,11 @@ const Settings = () => {
                   </div>
                   <img
                     id="pfp"
-                    className={`w-[150px] h-[150px] rounded-full sm:mb-3 lg:mb-0 border-[5px] border-[${info && info.theme && info.theme.primary !== undefined ? info.theme.primary : ""}] object-cover`}
+                    className={`w-[150px] h-[150px] rounded-full sm:mb-3 lg:mb-0 border-[5px] border-[${
+                      info && info.theme && info.theme.primary !== undefined
+                        ? info.theme.primary
+                        : ""
+                    }] object-cover`}
                   />
                   {/* <button className="relative bottom-[25px] w-[40px] h-[40px] flex justify-center items-center rounded-full bg-[#295141] text-white px-3 py-2">
                                     <FaCamera size={20} className="cursor-none" />
@@ -847,64 +962,99 @@ const Settings = () => {
                     {userData.username}
                   </p>
                 </div>
-                <div className={userData.isApproved !== "Verified" ? "bg-gray-400 text-white font-medium px-4 py-1 rounded-2xl w-[150px] mx-auto mt-[20px]" : "bg-custom-green-button text-white font-medium px-4 py-1 rounded-2xl w-[150px] mx-auto mt-[20px]"}>
+                <div
+                  className={
+                    userData.isApproved !== "Verified"
+                      ? "bg-gray-400 text-white font-medium px-4 py-1 rounded-2xl w-[150px] mx-auto mt-[20px]"
+                      : "bg-custom-green-button text-white font-medium px-4 py-1 rounded-2xl w-[150px] mx-auto mt-[20px]"
+                  }
+                >
                   <h1 className="text-center">{userData.isApproved}</h1>
                 </div>
-                <div className={`flex flex-col justify-center sm:w-[250px] md:w-[90%] lg:w-full items-center mx-auto mt-5 bg-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] rounded-md p-[10px]`}>
+                <div
+                  className={`flex flex-col justify-center sm:w-[250px] md:w-[90%] lg:w-full items-center mx-auto mt-5 bg-[${
+                    info && info.theme && info.theme.primary !== ""
+                      ? info.theme.primary
+                      : "#295141"
+                  }] rounded-md p-[10px]`}
+                >
                   <div className="flex justify-center items-center border-b-[1px] border-white w-full pb-[10px]">
                     <h6 className="font-bold text-white">Socials</h6>
                   </div>
                   <div className="p-[10px] flex sm:flex-col md:flex-row lg:flex-col gap-5">
-                    {userSocials.facebook.name.length !== 0 ?
-                      <button
-                        className={`flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] text-white hover:p-2`}>
+                    {userSocials.facebook.name.length !== 0 ? (
+                      <a
+                        href={userSocials.facebook.link}
+                        className={`flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-[${
+                          info && info.theme && info.theme.primary !== ""
+                            ? info.theme.primary
+                            : "#295141"
+                        }] text-white hover:p-2`}
+                      >
                         <FaFacebook />
                         <p className="text-left truncate text-[12px]">
                           {userSocials.facebook.name}
                         </p>
-                      </button>
-                      : null
-                    }
-                    {userSocials.instagram.name.length !== 0 ?
-                      <button
-                        className={`flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] text-white hover:p-2`}>
+                      </a>
+                    ) : null}
+                    {userSocials.instagram.name.length !== 0 ? (
+                      <a
+                        href={userSocials.instagram.link}
+                        className={`flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-[${
+                          info && info.theme && info.theme.primary !== ""
+                            ? info.theme.primary
+                            : "#295141"
+                        }] text-white hover:p-2`}
+                      >
                         <FaInstagram />
                         <p className="text-left truncate text-[12px]">
                           {userSocials.instagram.name}
                         </p>
-                      </button>
-                      : null
-                    }
-                    {userSocials.twitter.name.length !== 0 ?
-                      <button
-                        className={`flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] text-white hover:p-2`}>
+                      </a>
+                    ) : null}
+                    {userSocials.twitter.name.length !== 0 ? (
+                      <a
+                        href={userSocials.twitter.link}
+                        className={`flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-[${
+                          info && info.theme && info.theme.primary !== ""
+                            ? info.theme.primary
+                            : "#295141"
+                        }] text-white hover:p-2`}
+                      >
                         <FaTwitter />
                         <p className="text-left truncate text-[12px]">
                           {userSocials.twitter.name}
                         </p>
-                      </button>
-                      : null
-                    }
-                    {userData.contact !== "" ?
+                      </a>
+                    ) : null}
+                    {userData.contact !== "" ? (
                       <button
-                        className={`flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] text-white hover:p-2`}>
+                        className={`flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-[${
+                          info && info.theme && info.theme.primary !== ""
+                            ? info.theme.primary
+                            : "#295141"
+                        }] text-white hover:p-2`}
+                      >
                         <FaPhone />
                         <p className="text-left truncate text-[12px]">
                           {userData.contact}
                         </p>
                       </button>
-                      : null
-                    }
-                    {userData.email !== "" ?
+                    ) : null}
+                    {userData.email !== "" ? (
                       <button
-                        className={`flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-[${info && info.theme && info.theme.primary !== "" ? info.theme.primary : "#295141"}] text-white hover:p-2`}>
+                        className={`flex gap-2 justify-left items-center transition-all ease-in-out hover:bg-white hover:rounded-full hover:text-[${
+                          info && info.theme && info.theme.primary !== ""
+                            ? info.theme.primary
+                            : "#295141"
+                        }] text-white hover:p-2`}
+                      >
                         <FaEnvelope />
                         <p className="text-left truncate text-[12px]">
                           {userData.email}
                         </p>
                       </button>
-                      : null
-                    }
+                    ) : null}
                   </div>
                 </div>
               </div>
@@ -919,7 +1069,7 @@ const Settings = () => {
               onClick={handleOnEdit}
               className=" text-white font-medium px-[20px] py-[5px] rounded-md"
               style={{
-                background: '#268F26'
+                background: "#268F26",
               }}
             >
               Edit
@@ -932,7 +1082,7 @@ const Settings = () => {
                 onClick={saveChanges}
                 className=" text-white font-medium px-[20px] py-[5px] rounded-md"
                 style={{
-                  background: '#268F26'
+                  background: "#268F26",
                 }}
               >
                 Save
@@ -942,7 +1092,7 @@ const Settings = () => {
                 name="cancel"
                 className=" text-white font-medium px-[20px] py-[5px] rounded-md"
                 style={{
-                  background: '#B95252'
+                  background: "#B95252",
                 }}
               >
                 Cancel

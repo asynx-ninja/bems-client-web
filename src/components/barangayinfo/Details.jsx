@@ -72,7 +72,7 @@ const Details = () => {
               <img
                 src={info.logo.link !== "" ? info.logo.link : null}
                 alt=""
-                className="sm:w-[120px] md:w-[160px] mx-auto absolute left-0 right-0 sm:-top-[65px] md:-top-[5.5rem]"
+                className="sm:w-[120px] md:w-[160px] rounded-full border border-[5px] mx-auto absolute left-0 right-0 sm:-top-[65px] md:-top-[5.5rem]"
               />
               <div className="h-[220px] flex flex-col justify-center items-center">
                 <h1 className="text-[22px] md:text-4xl font-bold uppercase text-white text-center pt-0 lg:pt-[40px]">

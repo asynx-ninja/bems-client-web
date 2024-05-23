@@ -39,7 +39,7 @@ const InquiriesList = ({
     const handleMuniInq = (muni_inquiry) => {
       setInquiry(muni_inquiry);
 
-      setInquiries((curItem) =>
+      setFilteredInquiries((curItem) =>
         curItem.map((item) =>
           item._id === muni_inquiry._id ? muni_inquiry : item
         )
@@ -47,9 +47,9 @@ const InquiriesList = ({
     };
 
     const handleStaffInq = (staff_inquiry) => {
-      setInquiry(muni_inquiry);
+      setInquiry(staff_inquiry);
 
-      setInquiries((curItem) =>
+      setFilteredInquiries((curItem) =>
         curItem.map((item) =>
           item._id === staff_inquiry._id ? staff_inquiry : item
         )
@@ -57,6 +57,7 @@ const InquiriesList = ({
     };
 
     const handleNewInq = (obj) => {
+      setInquiries((prev) => [obj, ...prev]);
       setFilteredInquiries((prev) => [obj, ...prev]);
     };
 
@@ -68,10 +69,32 @@ const InquiriesList = ({
     return () => {
       socket.off("receive-reply-muni-inquiry", handleMuniInq);
       socket.off("receive-muni-inquiry", handleNewInq);
-      socket.off("receive-staff-inquiry", handleNewInq);
       socket.off("receive-reply-staff-inquiry", handleStaffInq);
+      socket.off("receive-staff-inquiry", handleNewInq);
     };
   }, [socket, setInquiry, setFilteredInquiries]);
+
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  const isLatestResponseResident = (inquiry) => {
+    const { response } = inquiry;
+    console.log(response)
+    if (response && response.length > 0) {
+      const latestResponse = response[response.length - 1];
+      return (
+        latestResponse.type === "Staff" && latestResponse.type === "Admin"
+      );
+    }
+    return false;
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setShowTooltip((prev) => !prev);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return inquiries.map((item, index) => (
     <tr key={index} className="odd:bg-slate-100 text-center">
@@ -131,9 +154,20 @@ const InquiriesList = ({
               type="button"
               data-hs-overlay="#hs-modal-viewInquiries"
               onClick={() => handleView(item)}
-              className="hs-tooltip-toggle text-white bg-teal-800  font-medium text-xs px-2 py-2 inline-flex items-center rounded-lg"
+              className="hs-tooltip-toggle relative text-white bg-teal-800  font-medium text-xs px-2 py-2 inline-flex items-center rounded-lg"
             >
               <AiOutlineEye size={24} style={{ color: "#ffffff" }} />
+              {isLatestResponseResident(item) && (
+                <span className="tooltip inline-block absolute top-[-5px] right-2 z-10">
+                <span className="absolute inline-flex rounded-full bg-red-500 text-white h-3 w-3"></span>
+                <span className="absolute animate-ping inline-flex rounded-full bg-red-500 text-white h-3 w-3"></span>
+                {showTooltip && (
+                  <span className="tooltiptext bg-red-500 text-white text-xs py-1 px-2 rounded absolute -left-full top-1/2 transform -translate-y-1/2 -translate-x-full whitespace-nowrap">
+                    You have a new reply
+                  </span>
+                )}
+              </span>
+              )}
             </button>
             <span
               className="sm:hidden md:block hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-20 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded-md shadow-sm "

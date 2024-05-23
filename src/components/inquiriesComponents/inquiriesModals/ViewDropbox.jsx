@@ -101,11 +101,6 @@ const ViewDropbox = ({ viewFiles, responseItem }) => {
                     ) : (
                       <article
                         tabIndex={0}
-                        // className={
-                        //   responseItem
-                        //     ? "flex flex-col justify-end items-end"
-                        //     : "flex flex-col justify-end items-start"
-                        // }
                         className="group rounded-md focus:outline-none focus:shadow-outline relative bg-gray-100 border border-gray-300 cursor-pointer shadow-sm"
                       >
                         <section className="flex flex-col rounded-md text-xs break-words w-full h-full z-20 top-0 py-2 px-3">

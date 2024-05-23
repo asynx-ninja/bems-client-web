@@ -34,19 +34,13 @@ const Footer = () => {
       <footer className="bg-[#295141] text-white py-8">
         <div className=" mx-auto px-4">
           <div className="flex flex-wrap text-center">
-            <div className="w-full md:w-1/3">
-              <h4 className="uppercase font-bold mt-5 sm:text-[14px] md:text-[18px]">About us</h4>
-              <p className="sm:text-[12px] md:text-[16px]">
-                {aboutus && aboutus.details !== undefined ? aboutus.details : ""}
-              </p>
-            </div>
-            <div className="w-full md:w-1/3 mt-5">
+            <div className="w-full md:w-1/2 mt-5">
               <h4 className="uppercase  font-bold sm:text-[14px] md:text-[18px]">Contact us</h4>
               <p className="sm:text-[12px] md:text-[16px]">1234 Street Name, Montalban Rizal</p>
               <p className="sm:text-[12px] md:text-[16px]">Email: montalbanrizal@domain.com</p>
               <p className="sm:text-[12px] md:text-[16px]">Phone: (123) 111-1111</p>
             </div>
-            <div className="w-full md:w-1/3 mt-5">
+            <div className="w-full md:w-1/2 mt-5">
               <h4 className="uppercase font-bold sm:text-[14px] md:text-[18px]">Follow us</h4>
               <p className="sm:text-[12px] md:text-[16px]">Stay updated with our latest news and events.</p>
               <div className="mt-4">

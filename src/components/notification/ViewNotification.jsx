@@ -1,13 +1,25 @@
 import React from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import defaultLogo from "../../assets/header/side-bg.png";
+import { useState, useEffect } from "react";
 
 const ViewNotification = ({ viewNotif, userData, info }) => {
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
   const brgy = searchParams.get("brgy");
+  const [textareaHeight, setTextareaHeight] = useState("auto");
 
-  // console.log(viewNotif);
+  useEffect(() => {
+    const resizeTextarea = () => {
+      const textarea = document.getElementById("notifMessage");
+      textarea.style.height = "auto";
+      textarea.style.height = `${textarea.scrollHeight}px`;
+    };
+
+    resizeTextarea();
+    window.addEventListener("resize", resizeTextarea);
+    return () => window.removeEventListener("resize", resizeTextarea);
+  }, [viewNotif]);
 
   return (
     <div>
@@ -72,7 +84,9 @@ const ViewNotification = ({ viewNotif, userData, info }) => {
                 </div>
                 <div className="py-5 w-full h-auto">
                   <textarea
+                    id="notifMessage"
                     disabled
+                    style={{ height: textareaHeight }}
                     value={
                       viewNotif.length === 0 ? "" : viewNotif.compose.message
                     }

@@ -32,7 +32,10 @@ const ViewMessage = ({
     date: new Date(),
   });
   const [errMsg, setErrMsg] = useState(false);
-  const [isComplainant, setIsComplainant] = useState([]);
+  const [isType, setType] = useState({
+    complainant: [],
+    defendant: [],
+  });
   const [onSend, setOnSend] = useState(false);
   const [viewTime, setViewTime] = useState({
     state: false,
@@ -80,9 +83,10 @@ const ViewMessage = ({
   }, [id]);
 
   useEffect(() => {
-    if (Array.isArray(specBlotter && specBlotter.to)) {
-      setIsComplainant(specBlotter && specBlotter.to);
-    }
+    setType({
+      complainant: specBlotter && specBlotter.to && specBlotter.to.complainant,
+      defendant: specBlotter && specBlotter.to && specBlotter.to.defendant,
+    });
   }, [specBlotter, userData.user_id]);
 
   const fileInputRef = useRef();
@@ -134,22 +138,29 @@ const ViewMessage = ({
     setCreateFiles([...createFiles, ...e.target.files]);
   };
 
-  const setType = (item) => {
-    if (item === "Complainant") {
-      return "COMPLAINANT";
-    } else {
-      return "DEFENDANT";
-    }
-  };
-
   const setTypeChat = (item) => {
-    if (Array.isArray(isComplainant)) {
-      const type = isComplainant.find(
+    const complainant = isType.complainant;
+    const defendant = isType.defendant;
+
+    if (Array.isArray(isType.complainant)) {
+      const type = complainant.find(
         (complainant) =>
           `${complainant && complainant.firstName} ${
             complainant && complainant.lastName
           }` === item.sender
       );
+
+      if (type === undefined) {
+        const type = defendant.find(
+          (defendant) =>
+            `${defendant && defendant.firstName} ${
+              defendant && defendant.lastName
+            }` === item.sender
+        );
+        if (type) {
+          return `(${type.type.toLowerCase()})`;
+        }
+      }
 
       if (type) {
         return `(${type.type.toLowerCase()})`;
@@ -325,7 +336,7 @@ const ViewMessage = ({
                   Patawag Details
                 </b>
                 <div className="flex flex-col lg:flex-row">
-                  <div className="mb-4 px-2 w-full lg:w-1/2">
+                  <div className="mb-4 px-2 w-full">
                     <label
                       htmlFor="title"
                       className="block text-sm font-bold text-gray-700"
@@ -341,21 +352,48 @@ const ViewMessage = ({
                       disabled
                     />
                   </div>
+                </div>
+
+                <div className="flex flex-col lg:flex-row">
                   <div className="mb-4 px-2 w-full lg:w-1/2">
                     <label
                       htmlFor="title"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      To
+                      Complainant
                     </label>
-                    <span className="text-xs sm:text-sm text-black line-clamp-2 ">
+                    <span className="text-xs sm:text-sm text-black line-clamp-2 border border-gray-500 border-[1px] rounded-md p-2">
                       {specBlotter &&
                       specBlotter.to &&
-                      specBlotter.to.length !== 0 ? (
-                        specBlotter.to.map((item, i) => (
+                      specBlotter.to &&
+                      specBlotter.to.complainant &&
+                      specBlotter.to.complainant.length !== 0 ? (
+                        specBlotter.to.complainant.map((item, i) => (
+                          <div key={i}>
+                            {item.lastName}, {item.firstName}
+                          </div>
+                        ))
+                      ) : (
+                        <div></div>
+                      )}
+                    </span>
+                  </div>
+                  <div className="mb-4 px-2 w-full lg:w-1/2">
+                    <label
+                      htmlFor="title"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Defendant
+                    </label>
+                    <span className="text-xs sm:text-sm text-black line-clamp-2 border border-gray-500 border-[1px] rounded-md p-2">
+                      {specBlotter &&
+                      specBlotter.to &&
+                      specBlotter.to &&
+                      specBlotter.to.defendant &&
+                      specBlotter.to.defendant.length !== 0 ? (
+                        specBlotter.to.defendant.map((item, i) => (
                           <div key={i}>
                             {item.lastName}, {item.firstName} (
-                            {setType(item.type)})
                           </div>
                         ))
                       ) : (

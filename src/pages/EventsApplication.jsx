@@ -57,20 +57,10 @@ const EventsApplication = () => {
           `${API_LINK}/application/specific/?user_id=${user_id}&event_name=${SortByName}&archived=false`
         );
 
-        // const getUser = await axios.get(`${API_LINK}/users/specific/${id}`);
-
-        // console.log(response)
-
         if (response.status === 200) {
           setEvents(response.data.result);
           setFilteredEvents(response.data.result.slice(0, 10));
           setPageCount(response.data.pageCount);
-
-          let uniqueEventName = new Set(
-            response.data.result.map((item) => item.event_name)
-          );
-          let arr = [...uniqueEventName].sort();
-          setSortBy(arr);
         } 
       } catch (err) {
         console.log(err);
@@ -79,6 +69,27 @@ const EventsApplication = () => {
     getBrgy();
     fetch();
   }, [brgy, user_id, SortByName]);
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        const response = await axios.get(
+          `${API_LINK}/announcement/get_distinct_events/?brgy=${brgy}`
+        );
+
+        if (response.status === 200) {
+          let uniqueEventName = new Set(
+            response.data.map((item) => item._id)
+          );
+          let arr = [...uniqueEventName].sort();
+          setSortBy(arr);
+        } 
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetch();
+  }, [brgy]);
 
   // console.log(getAll)
 
@@ -100,7 +111,7 @@ const EventsApplication = () => {
   const handleOnSearch = (e) => {
     setSearchInput(e.target.value);
 
-    const getSearch = getAll.filter(
+    const getSearch = events.filter(
       (item) =>
         item.application_id.toUpperCase().includes(e.target.value) ||
         item.event_name.toUpperCase().includes(e.target.value)

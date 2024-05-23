@@ -20,7 +20,6 @@ import Socket_link from "../config/Socket";
 const socket = io(Socket_link);
 
 const Blotter = () => {
-  const [selectedItems, setSelectedItems] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const user_id = searchParams.get("user_id");
   const id = searchParams.get("id");
@@ -30,10 +29,8 @@ const Blotter = () => {
   const [specBlotter, setSpecBlotter] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [pageCount, setPageCount] = useState(0);
-  const [searchName, setSearchName] = useState("");
   const [searchInput, setSearchInput] = useState("");
   const [searchResult, setSearchResult] = useState(0);
-  const [getAll, setGetAll] = useState([]);
   const [info, setInfo] = useState({});
   const [blotterupdate, setBlotterUpdate] = useState(false);
 
@@ -61,6 +58,8 @@ const Blotter = () => {
           `${API_LINK}/blotter/specific/patawag/?user_id=${user_id}`
         );
 
+        // console.log(response)
+
         if (response.status === 200) {
           // setBlotter(response.data.result.sort((date1, date2) => new Date(date2.createdAt) - new Date(date1.createdAt)))
           setBlotter(response.data.result);
@@ -86,7 +85,7 @@ const Blotter = () => {
 
   const handleOnSearch = (e) => {
     setSearchInput(e.target.value);
-    const filteredData = inquiries.filter(
+    const filteredData = blotter.filter(
       (item) =>
         item.inq_id.toLowerCase().includes(e.target.value.toLowerCase()) ||
         item.compose.subject
@@ -98,7 +97,7 @@ const Blotter = () => {
     setPageCount(Math.ceil(filteredData.length / 10)); // Update page count based on filtered results
   };
 
-  const tableHeader = ["Blotter ID", "Name", "to", "date", "status", "actions"];
+  const tableHeader = ["Blotter ID", "Name", "Complainant", "Defendant", "date", "status", "actions"];
 
   return (
     <div className="flex flex-col h-full bg-gray-100">
@@ -119,7 +118,7 @@ const Blotter = () => {
           <div className="flex w-full justify-between">
             <div className="sm:mx-auto md:mx-0 md:mr-[20px] rounded-lg">
               <h2 className="sm:text-[26px] sm:text-center md:text-[2rem] font-bold text-green-900">
-                BLOTTER RECORDS
+                PATAWAG RECORDS
               </h2>
             </div>
           </div>
@@ -190,10 +189,11 @@ const Blotter = () => {
                   </tr>
                 ) : (
                   <BlotterRecords
-                    blotters={blotter}
+                    blotters={filteredBlotter}
                     setBlotter={setBlotter}
                     setSpecBlotter={setSpecBlotter}
                     setBlotterUpdate={setBlotterUpdate}
+                    setFilteredBlotter={setFilteredBlotter}
                     socket={socket}
                   />
                 )}

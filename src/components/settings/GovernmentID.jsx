@@ -232,7 +232,7 @@ const GovernmentID = ({ userData, setUserData, editButton, handleAddPrimaryID, h
                                 <div></div>
                             ) : (
                                 <div>
-                                    <WebcamCapture />
+                                    <WebcamCapture setCapture={setCapture} />
                                 </div>
                             )}
                         </div>
