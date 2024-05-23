@@ -40,6 +40,13 @@ export default {
       },
     },
   },
+  fontFamily: {
+    primary: "Gilmer-Regular",
+    'bold': "Gilmer-Bold",
+    'light': "Gilmer-Light",
+    'medium': "Gilmer-Medium",
+    'heavy': "Gilmer-Heavy",
+  },
   plugins: [
     require('preline/plugin'),
     require("flowbite/plugin"),
