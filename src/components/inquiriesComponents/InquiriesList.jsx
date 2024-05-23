@@ -82,7 +82,7 @@ const InquiriesList = ({
     if (response && response.length > 0) {
       const latestResponse = response[response.length - 1];
       return (
-        latestResponse.type === "Staff" && latestResponse.type === "Admin"
+        latestResponse.type === "Staff" || latestResponse.type === "Admin"
       );
     }
     return false;
