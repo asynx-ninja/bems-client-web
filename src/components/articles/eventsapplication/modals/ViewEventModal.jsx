@@ -237,6 +237,12 @@ const ViewEventModal = ({ viewEvent, setEventUpdate, socket }) => {
             document.getElementById("message").value = "";
             socket.emit("send-reply-event-appli", response.data);
 
+            setNewMessage({
+              sender: "",
+              message: "",
+              date: new Date(),
+            })
+
             setCreateFiles([]);
             setOnSend(false);
           } else {

@@ -87,17 +87,23 @@ const Blotter = () => {
     setSearchInput(e.target.value);
     const filteredData = blotter.filter(
       (item) =>
-        item.inq_id.toLowerCase().includes(e.target.value.toLowerCase()) ||
-        item.compose.subject
-          .toLowerCase()
-          .includes(e.target.value.toLowerCase())
+        item.patawag_id.toLowerCase().includes(e.target.value.toLowerCase()) ||
+        item.name.toLowerCase().includes(e.target.value.toLowerCase())
     );
     setSearchResult(filteredData.length);
     setFilteredBlotter(filteredData.slice(0, 10)); // Show first page of filtered results
     setPageCount(Math.ceil(filteredData.length / 10)); // Update page count based on filtered results
   };
 
-  const tableHeader = ["Blotter ID", "Name", "Complainant", "Defendant", "date", "status", "actions"];
+  const tableHeader = [
+    "Blotter ID",
+    "Name",
+    "Complainant",
+    "Defendant",
+    "date",
+    "status",
+    "actions",
+  ];
 
   return (
     <div className="flex flex-col h-full bg-gray-100">

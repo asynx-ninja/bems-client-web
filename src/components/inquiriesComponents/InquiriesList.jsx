@@ -53,7 +53,7 @@ const InquiriesList = ({
         curItem.map((item) =>
           item._id === staff_inquiry._id ? staff_inquiry : item
         )
-      );
+      );  
     };
 
     const handleNewInq = (obj) => {

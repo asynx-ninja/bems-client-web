@@ -179,7 +179,6 @@ const ViewMessage = ({
 
   const handleOnSend = async (e) => {
     e.preventDefault();
-    console.log(newMessage);
 
     if (newMessage.message === "" && createFiles.length === 0) {
       setErrMsg(true);
@@ -254,10 +253,16 @@ const ViewMessage = ({
         if (result.status === 200) {
           document.getElementById("message").value = "";
           socket.emit("send-reply-patawag", response.data);
-        }
 
-        setCreateFiles([]);
-        setOnSend(false);
+          setNewMessage({
+            sender: "",
+            message: "",
+            date: new Date(),
+          });
+
+          setCreateFiles([]);
+          setOnSend(false);
+        }
       } else {
         setError(error.message);
       }

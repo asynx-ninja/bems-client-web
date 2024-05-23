@@ -136,7 +136,6 @@ const ViewRequestModal = ({ viewRequest, setRequestUpdate, socket }) => {
 
   const handleOnSend = async (e) => {
     e.preventDefault();
-    console.log(newMessage);
 
     if (newMessage.message === "" && createFiles.length === 0) {
       setErrMsg(true);
@@ -225,6 +224,12 @@ const ViewRequestModal = ({ viewRequest, setRequestUpdate, socket }) => {
           if (result.status === 200) {
             document.getElementById("message").value = "";
             socket.emit("send-reply-service-req", response.data);
+
+            setNewMessage({
+              sender: "",
+              message: "",
+              date: new Date(),
+            });
 
             setCreateFiles([]);
             setOnSend(false);

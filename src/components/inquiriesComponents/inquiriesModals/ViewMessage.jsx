@@ -231,9 +231,16 @@ const ViewMessage = ({ inquiry, setInquiry, setInqsUpdate, socket }) => {
           } else {
             socket.emit("send-reply-staff-inquiry", response.data);
           }
+
+          setNewMessage({
+            sender: "",
+            message: "",
+            date: new Date(),
+          });
+
+          setCreateFiles([]);
+          setOnSend(false);
         }
-        setCreateFiles([]);
-        setOnSend(false);
       } else {
         setError(error.message);
       }
