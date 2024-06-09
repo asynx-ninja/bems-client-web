@@ -37,8 +37,6 @@ const Services = () => {
         `${API_LINK}/services/?brgy=${brgy}&archived=false&approved=Approved`
       );
 
-      console.log(response)
-
       setService(response.data.result);
       setFilterType(response.data.result.slice(0, 10));
       setPageCount(response.data.pageCount);

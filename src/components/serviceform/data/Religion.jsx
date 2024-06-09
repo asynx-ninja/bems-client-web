@@ -35,8 +35,8 @@ const Religion = ({ variable, item, handlePersonalDetail, emptyFields }) => {
         } py-3 px-4 block w-full text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500`}
       >
         <option value="">Select Religion</option>
-        {religions.map((religions) => (
-          <option value={religions}>{religions}</option>
+        {religions.map((religions, id) => (
+          <option key={id} value={religions}>{religions}</option>
         ))}
       </select>
     </div>

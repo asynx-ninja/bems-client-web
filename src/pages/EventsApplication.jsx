@@ -127,7 +127,7 @@ const EventsApplication = () => {
     "Events Name",
     "Application Date",
     "status",
-    "actions",
+    // "actions",
   ];
 
   return (

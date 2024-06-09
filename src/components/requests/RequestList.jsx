@@ -114,13 +114,6 @@ const RequestList = ({
 
       <td className="px-6 py-3">
         <div className="flex justify-center items-center">
-          {item.status === "Completed" && (
-            <div className="flex w-full items-center justify-center bg-custom-green-button3 m-2 rounded-lg">
-              <span className="text-xs sm:text-sm font-bold text-white p-3 mx-5">
-                COMPLETED
-              </span>
-            </div>
-          )}
           {item.status === "Transaction Completed" && (
             <div className="flex w-full items-center justify-center bg-green-500 m-2 rounded-lg">
               <span className="text-xs sm:text-sm font-bold text-white p-3 mx-5">
@@ -149,17 +142,10 @@ const RequestList = ({
               </span>
             </div>
           )}
-          {item.status === "Paid" && (
-            <div className="flex w-full items-center justify-center bg-violet-800 m-2 rounded-lg">
-              <span className="text-xs sm:text-sm font-bold text-white p-3 mx-5">
-                PAID
-              </span>
-            </div>
-          )}
-          {item.status === "Pending" && (
+          {item.status === "For Review" && (
             <div className="flex w-full items-center justify-center bg-custom-amber m-2 rounded-lg">
               <span className="text-xs sm:text-sm font-bold text-white p-3 mx-5">
-                PENDING
+                FOR REVIEW
               </span>
             </div>
           )}

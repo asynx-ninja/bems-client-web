@@ -10,6 +10,7 @@ const CivilStatus = ({ variable, item, handlePersonalDetail, emptyFields }) => {
         {item.display.toUpperCase()}
       </label>
       <select
+        disabled
         id={item.display}
         name={item.display}
         onChange={(e) => handlePersonalDetail(e, variable)}

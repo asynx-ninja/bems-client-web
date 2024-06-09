@@ -72,7 +72,7 @@ const SignupPage = () => {
   const [errMsg, setErrMsg] = useState(false);
   const fileInputPrimaryIDRef = useRef();
   const fileInputSecondaryIDRef = useRef();
-  const [ageRes, setAgeRes] = useState(false)
+  const [ageRes, setAgeRes] = useState(false);
 
   const WebcamCapture = ({ setCapture }) => {
     const webcamRef = React.useRef(null);
@@ -106,7 +106,7 @@ const SignupPage = () => {
             selfie: selfieFile,
           }));
 
-          setCapture(false)
+          setCapture(false);
         } catch (error) {
           console.error("Error fetching image:", error);
         }
@@ -171,6 +171,21 @@ const SignupPage = () => {
       [e.target.name]: e.target.value,
     }));
 
+    if (e.target.name === "birthday") {
+      let age = calculateAge(e.target.value);
+
+      setFormData((prev) => ({
+        ...prev,
+        age: calculateAge(e.target.value),
+      }));
+
+      if (age < 16) {
+        setAgeRes(true);
+      } else {
+        setAgeRes(false);
+      }
+    }
+
     if (e.target.name === "password") {
       const password = e.target.value;
       const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/;
@@ -193,6 +208,8 @@ const SignupPage = () => {
       setPasswordStrength(strength * 25);
     }
   };
+
+  // console.log(formData);
 
   const calculateAge = (birthDate) => {
     const today = new Date();
@@ -218,26 +235,64 @@ const SignupPage = () => {
         verification: false,
       });
     } else if (e.target.name === "Address") {
-      setSignupPage({
-        personal: false,
-        address: true,
-        credential: false,
-        verification: false,
-      });
-    } else if (e.target.name === "Credentials") {
-      setSignupPage({
-        personal: false,
-        address: false,
-        credential: true,
-        verification: false,
-      });
+      if (
+        formData.firstName !== "" &&
+        formData.lastName !== "" &&
+        formData.middleName !== "" &&
+        formData.birthday !== "" &&
+        formData.sex !== ""
+      ) {
+        if (formData.age >= 16) {
+          setEmpty(false);
+          setSignupPage({
+            personal: false,
+            address: true,
+            credential: false,
+            verification: false,
+          });
+        } else {
+          setEmpty(false);
+          setAgeRes(true);
+        }
+      } else {
+        setEmpty(true);
+      }
     } else if (e.target.name === "Verification") {
-      setSignupPage({
-        personal: false,
-        address: false,
-        credential: false,
-        verification: true,
-      });
+      if (
+        formData.contact !== "" &&
+        formData.civil_status !== "" &&
+        formData.occupation !== "" &&
+        formData.brgy !== "" &&
+        formData.street !== ""
+      ) {
+        setEmpty(false);
+        setSignupPage({
+          personal: false,
+          address: false,
+          credential: false,
+          verification: true,
+        });
+      } else {
+        setEmpty(true);
+      }
+    } else if (e.target.name === "Credentials") {
+      if (
+        !formData.primary_file ||
+        !formData.primary_id ||
+        !formData.secondary_file ||
+        !formData.secondary_id ||
+        !formData.selfie
+      ) {
+        setEmpty(true);
+      } else {
+        setEmpty(false);
+        setSignupPage({
+          personal: false,
+          address: false,
+          credential: true,
+          verification: false,
+        });
+      }
     }
   };
 
@@ -323,7 +378,7 @@ const SignupPage = () => {
       religion: formData.religion,
       email: formData.email,
       birthday: formData.birthday,
-      age: calculateAge(formData.birthday),
+      age: formData.age,
       contact: formData.contact,
       sex: formData.sex,
       address: {
@@ -338,7 +393,7 @@ const SignupPage = () => {
       isHead: formData.isHead,
       username: formData.username,
       password: formData.password,
-      isApproved: "Pending",
+      isApproved: "For Review",
       primary_id: formData.primary_id,
       primary_file: formData.primary_file,
       secondary_id: formData.secondary_id,
@@ -346,7 +401,7 @@ const SignupPage = () => {
       selfie: formData.selfie,
     };
 
-    if(obj.age < 16){
+    if (obj.age < 16) {
       setAgeRes(true);
       return;
     }
@@ -480,9 +535,9 @@ const SignupPage = () => {
               formData={formData}
               empty={empty}
               emptyFields={emptyFields}
-              restrict={restrict}
               handleChange={handleChange}
               handleNextPage={handleNextPage}
+              ageRes={ageRes}
             />
           ) : null}
           {signupPage.address === true ? (

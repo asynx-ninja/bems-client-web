@@ -1,11 +1,16 @@
 import { React, useRef } from "react";
 // FORM INPUTS
-import OccupationList from "../serviceform/data/OccupationList";
-import Religion from "../serviceform/data/Religion";
-import CivilStatus from "../serviceform/data/CivilStatus";
-import Sex from "../serviceform/data/Sex";
+import OccupationList from "./data/OccupationList";
+import Religion from "./data/Religion";
+import CivilStatus from "./data/CivilStatus";
+import Sex from "./data/Sex";
 
-const PersonalDetails = ({ detail, fileInputRef, handlePersonalDetail, emptyFields }) => {
+const PersonalDetails = ({
+  detail,
+  fileInputRef,
+  handlePersonalDetail,
+  emptyFields,
+}) => {
   return (
     <fieldset className="flex-col border-[1px] border-black rounded-md">
       <legend className="ml-2 px-2 text-sm font-medium">
@@ -85,7 +90,16 @@ const PersonalDetails = ({ detail, fileInputRef, handlePersonalDetail, emptyFiel
                       id={item.display}
                       value={item.value || ""}
                       readOnly={
-                        item.display === "age" || item.display === "user id"
+                        item.display === "age" ||
+                        item.display === "user id" ||
+                        item.display === "first name" ||
+                        item.display === "last name" ||
+                        item.display === "middle name" ||
+                        item.display === "suffix" ||
+                        item.display === "birthday" ||
+                        item.display === "contact" || 
+                        item.display === "email" || 
+                        item.display === "address"
                       }
                       className={`${
                         emptyFields.includes(item.display.toUpperCase())

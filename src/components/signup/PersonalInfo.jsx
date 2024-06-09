@@ -4,10 +4,11 @@ const PersonalInfo = ({
   formData,
   empty,
   emptyFields,
-  restrict,
   handleChange,
   handleNextPage,
+  ageRes,
 }) => {
+  
   const religions = [
     "Roman Catholic",
     "Islam",
@@ -36,13 +37,13 @@ const PersonalInfo = ({
           fields: {emptyFields.join(", ")}!
         </div>
       )}
-      {restrict && (
+      {ageRes && (
         <div
           className="bg-red-50 border border-red-200 text-sm text-red-600 rounded-md p-4 mt-2 mb-4"
           role="alert"
         >
-          <span className="font-bold">Warning:</span> Age must be 18 and above
-          to Register.
+          <span className="font-bold">Warning:</span> You must be atleast 16
+          years old to register!
         </div>
       )}
       <h1 className="py-3 mb-3 font-bold">Step 1: Personal Information</h1>

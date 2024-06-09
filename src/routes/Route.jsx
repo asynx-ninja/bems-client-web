@@ -18,11 +18,11 @@ import Loading from "../pages/forgotpass/Loading";
 
 // PAGES
 import Dashboard from "../pages/Dashboard";
-import Events from "../pages/Events";
+import Events from "../pages/EventsInfo";
 import Settings from "../pages/Settings";
 import BarangayInfo from "../pages/BarangayInfo";
 import Requests from "../pages/Requests";
-import Inquiries from "../pages/Inquiries/Inquiries";
+import Inquiries from "../pages/Inquiries";
 import Services from "../pages/Services";
 import ServicesForm from "../pages/ServicesForm";
 
@@ -35,7 +35,7 @@ import TouristSpotMain from "../components/touristspot/TouristSpotMain";
 import TouristSpot from "../pages/home/TouristSpot"
 
 // EVENTS
-import EventsInfo from "../components/dashboard/EventsInfo";
+import EventsInfo from "../pages/Events";
 import EventsApplication from "../pages/EventsApplication";
 
 // BLOTTER

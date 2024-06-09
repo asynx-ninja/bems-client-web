@@ -7,17 +7,17 @@ import { BsPrinter } from "react-icons/bs";
 import { useState, useEffect } from "react";
 import ReactPaginate from "react-paginate";
 import axios from "axios";
-import API_LINK from "../../config/API";
+import API_LINK from "../config/API";
 import { useSearchParams } from "react-router-dom";
 
 // COMPONENTS
-import ViewMessage from "../../components/inquiriesComponents/inquiriesModals/ViewMessage";
-import ComposeModal from "../../components/inquiriesComponents/inquiriesModals/Compose";
-import InquiriesList from "../../components/inquiriesComponents/InquiriesList";
-import video from "../../assets/image/video.mp4";
-import no_data from "../../assets/image/no-data.png";
+import ViewMessage from "../components/inquiriesComponents/inquiriesModals/ViewMessage";
+import ComposeModal from "../components/inquiriesComponents/inquiriesModals/Compose";
+import InquiriesList from "../components/inquiriesComponents/InquiriesList";
+import video from "../assets/image/video.mp4";
+import no_data from "../assets/image/no-data.png";
 import { io } from "socket.io-client";
-import Socket_link from "../../config/Socket";
+import Socket_link from "../config/Socket";
 const socket = io(Socket_link);
 const Inquiries = () => {
   const [searchParams, setSearchParams] = useSearchParams();

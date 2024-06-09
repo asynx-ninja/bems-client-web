@@ -152,6 +152,8 @@ const ComposeModal = ({ setInqsUpdate, socket }) => {
         `${API_LINK}/folder/specific/?brgy=${userData.address.brgy}`
       );
 
+      console.log(folderResponse)
+
       if (folderResponse.status == 200) {
         const response = await axios.post(
           `${API_LINK}/inquiries/?inq_folder_id=${folderResponse.data[0].inquiries}`,

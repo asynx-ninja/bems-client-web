@@ -24,8 +24,9 @@ const OccupationList = ({
         name={item.display}
         onChange={(e) => handlePersonalDetail(e, variable)}
         value={item.value || ""}
+        disabled
       >
-        <option value="" disabled="disabled">
+        <option value="" disabled>
           -- select occupation --
         </option>
         <optgroup label="Healthcare Practitioners and Technical Occupations:">

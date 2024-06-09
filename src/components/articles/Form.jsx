@@ -16,7 +16,7 @@ import { io } from "socket.io-client";
 import Socket_link from "../../config/Socket";
 const socket = io(Socket_link);
 
-const Form = ({ announcement }) => {
+const Form = ({ announcement, totalApplied }) => {
   const fileInputRef = useRef();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -34,8 +34,7 @@ const Form = ({ announcement }) => {
   const [noForm, setNoForm] = useState(false);
   const [isNotVerified, setIsNotVerified] = useState(false);
   const [info, setInfo] = useState({});
-
-  // console.log(announcement);
+  const [isEventExpired, setIsEventExpired] = useState(false);
 
   useEffect(() => {
     const handleEventForm = (obj) => {
@@ -63,22 +62,26 @@ const Form = ({ announcement }) => {
     const checkForm = async (item) => {
       const event_form = item;
 
-      event_form.form[0] = Object.fromEntries(
-        Object.entries(event_form.form[0]).filter(
-          ([key, value]) => value.checked === true
-        )
-      );
+      if (event_form && event_form.form) {
+        event_form.form[0] = Object.fromEntries(
+          Object.entries(event_form.form[0]).filter(
+            ([key, value]) => value.checked === true
+          )
+        );
 
-      const getUser = await axios.get(`${API_LINK}/users/specific/${id}`);
+        const getUser = await axios.get(`${API_LINK}/users/specific/${id}`);
 
-      setUserData(getUser.data[0]);
-      setIsNotVerified(
-        getUser.data[0].isApproved !== "Verified" ? true : false
-      );
+        setUserData(getUser.data[0]);
+        setIsNotVerified(
+          getUser.data[0].isApproved !== "Fully Verified" ? true : false
+        );
 
-      event_form.form[0].user_id.value = getUser.data[0].user_id;
+        event_form.form[0].user_id.value = getUser.data[0].user_id;
 
-      setDetail(event_form);
+        setDetail(event_form);
+
+        getDefaultDeets(event_form, getUser.data[0]);
+      }
     };
     const fetchForms = async () => {
       try {
@@ -100,6 +103,13 @@ const Form = ({ announcement }) => {
             setNoForm(false);
           }
           checkForm(event_response.data[0]);
+
+          const currentDate = new Date();
+          const inputDate = new Date(announcement.date);
+
+          if (inputDate < currentDate) {
+            setIsEventExpired(true);
+          }
         } else {
           setNoForm(false);
           checkForm(event_response.data[0]);
@@ -107,14 +117,47 @@ const Form = ({ announcement }) => {
       } catch (error) {
         console.log(error);
       }
+    };
 
-      // imageRef.current.src = defaultPFP;
+    const getUserDetailsChecked = (key, form, user) => {
+      const newData = form.form[0];
+
+      const objectConstraint = {
+        id_pic: null,
+        address: `${user.address.street}, ${user.address.brgy}, ${user.address.city}`,
+        birthday:
+          user.birthday === undefined ? "" : user.birthday.substr(0, 10),
+        age: calculateAge(user.birthday),
+        value: user[key],
+      };
+
+      newData[key] = {
+        ...newData[key],
+        value: Object.entries(objectConstraint).find(([k]) => key === k)
+          ? objectConstraint[key]
+          : user[key],
+      };
+
+      return newData;
+    };
+
+    const getDefaultDeets = (form, user) => {
+      if (form && form.form !== undefined) {
+        Object.entries(form.form[0]).map(([key]) => {
+          const newData = getUserDetailsChecked(key, form, user);
+
+          setDetail((prev) => ({
+            ...prev,
+            form: [newData, form.form[1]],
+          }));
+        });
+      }
     };
 
     fetchForms();
-  }, [event_id, brgy]);
+  }, [event_id, brgy, announcement]);
 
-  // console.log("event", detail);
+  // console.log(userData)
 
   const checkEmptyFields = () => {
     let arr = [];
@@ -165,100 +208,22 @@ const Form = ({ announcement }) => {
     return age;
   };
 
-  const getUserDetailsChecked = (key) => {
-    const newData = detail.form[0];
-
-    const objectConstraint = {
-      id_pic: null,
-      address: `${userData.address.street}, ${userData.address.brgy}, ${userData.address.city}`,
-      birthday:
-        userData.birthday === undefined ? "" : userData.birthday.substr(0, 10),
-      age: calculateAge(userData.birthday),
-      value: userData[key],
-    };
-
-    newData[key] = {
-      ...newData[key],
-      value: Object.entries(objectConstraint).find(([k]) => key === k)
-        ? objectConstraint[key]
-        : userData[key],
-    };
-
-    return newData;
-  };
-
-  const setUserDetailsChecked = (key) => {
-    const newData = detail.form[0];
-
-    const objectConstraint = {
-      id_pic: null,
-      age: 0,
-      weight: 0,
-    };
-
-    newData[key] = {
-      ...newData[key],
-      value: Object.entries(objectConstraint).find(([k]) => key === k)
-        ? objectConstraint[key]
-        : key === "user_id"
-        ? newData[key].value
-        : "",
-    };
-
-    return newData;
-  };
-
-  const getDefaultDeets = (e) => {
-    if (e.target.checked) {
-      Object.entries(detail.form[0]).map(([key]) => {
-        const newData = getUserDetailsChecked(key);
-
-        setDetail((prev) => ({
-          ...prev,
-          form: [newData, detail.form[1]],
-        }));
-      });
-    } else {
-      Object.entries(detail.form[0]).map(([key]) => {
-        const newData = setUserDetailsChecked(key);
-
-        setDetail((prev) => ({
-          ...prev,
-          form: [newData, detail.form[1]],
-        }));
-      });
-    }
-  };
-
   const handlePersonalDetail = (e, key) => {
     e.preventDefault();
 
     const newData = detail.form[0];
 
-    if (key === "id_pic") {
-      var output = imageRef.current;
-      output.src = URL.createObjectURL(e.target.files[0]);
-      output.onload = function () {
-        URL.revokeObjectURL(output.src); // free memory
-      };
-
-      newData[key] = {
-        ...newData[key],
-        value: e.target.files[0],
-      };
-    } else {
-      if (key === "birthday") {
-        newData.age = {
-          ...newData.age,
-          value: calculateAge(e.target.value),
-        };
-      }
-
-      newData[key] = {
-        ...newData[key],
-        value: e.target.value,
+    if (key === "birthday") {
+      newData.age = {
+        ...newData.age,
+        value: calculateAge(e.target.value),
       };
     }
+
+    newData[key] = {
+      ...newData[key],
+      value: e.target.value,
+    };
 
     setDetail((prev) => ({
       ...prev,
@@ -447,12 +412,6 @@ const Form = ({ announcement }) => {
             console.error("Update failed. Status:", response.status);
           }
         }
-
-        // generatePDF();
-
-        // for (var pair of formData.entries()) {
-        //   console.log(pair[0] + ", " + pair[1]);
-        // }
       } else {
         setEmptyFields(arr);
         setEmpty(true);
@@ -468,7 +427,6 @@ const Form = ({ announcement }) => {
   const handleOnClose = () => {
     setEmpty(false);
     setEmptyFields([]);
-    document.getElementById("defaultDeets").checked = false;
   };
 
   // console.log("user default data: ", userData)
@@ -487,8 +445,8 @@ const Form = ({ announcement }) => {
           <Breadcrumbs title={announcement && announcement.title} />
         </div>
 
-        <div className="bg-white rounded-lg shadow-xl  lg:w-full w-100 mx-auto mb-10">
-          <Content announcement={announcement} info={info} />
+        <div className="bg-white rounded-lg shadow-xl sm:w-[90%] lg:w-full w-100 mx-auto mb-10">
+          <Content announcement={announcement} info={info} totalApplied={totalApplied} />
           <div className="w-[90%] mx-auto flex flex-col items-center px-6 lg:px-0">
             {noForm ? (
               <div
@@ -503,19 +461,39 @@ const Form = ({ announcement }) => {
                 className="bg-red-50 border px-5 text-center border-red-200 text-sm text-red-600 rounded-md py-4 mt-2 mb-4"
                 role="alert"
               >
-                <span className="font-bold ">
-                  Warning: Your account is not eligible to request a Services,
+                <span className="">
+                  Warning: Your account is not eligible to apply in Events,
                   please complete your account information.
+                </span>
+              </div>
+            ) : null}
+            {isEventExpired ? (
+              <div
+                className="bg-red-50 border px-5 text-center border-red-200 text-sm text-red-600 rounded-md py-4 mt-2 mb-4"
+                role="alert"
+              >
+                <span className="">
+                  Notice: This event is currently expired.
+                </span>
+              </div>
+            ) : null}
+            {totalApplied === announcement.application_limit ? (
+              <div
+                className="bg-red-50 border px-5 text-center border-red-200 text-sm text-red-600 rounded-md py-4 mt-2 mb-4"
+                role="alert"
+              >
+                <span className="">
+                  Notice: This event has reach its application limit.
                 </span>
               </div>
             ) : null}
           </div>
           <div className="flex mx-auto sm:flex-row md:flex-row w-full items-center gap-4 justify-center">
             <button
-              disabled={noForm === true || isNotVerified}
+              disabled={noForm === true || isNotVerified || isEventExpired || totalApplied === announcement.application_limit}
               data-hs-overlay="#hs-full-screen-modal"
               className={
-                noForm === true || isNotVerified
+                noForm === true || isNotVerified || isEventExpired || totalApplied === announcement.application_limit
                   ? "flex items-center justify-center text-center bg-gray-400 sm:w-full md:w-[150px] sm:my-[5px] md:m-5 h-[50px] text-sm text-white font-medium rounded-lg"
                   : `flex items-center justify-center text-center bg-custom-green-button sm:w-full md:w-[150px] sm:my-[5px] md:m-5 h-[50px] text-sm text-white font-medium rounded-lg hover:bg-gradient-to-r from-[${
                       info &&
@@ -633,17 +611,6 @@ const Form = ({ announcement }) => {
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="flex w-full justify-start items-center gap-5">
-                    <input
-                      id="defaultDeets"
-                      type="checkbox"
-                      onChange={(e) => getDefaultDeets(e)}
-                      className="shrink-0 mt-0.5 border-gray-500 rounded-sm h-[20px] w-[20px] text-green-500 focus:ring-green-500"
-                    />
-                    <label htmlFor="defaultDeets">
-                      Check to insert your personal details
-                    </label>
                   </div>
                 </div>
                 <PersonalDetails

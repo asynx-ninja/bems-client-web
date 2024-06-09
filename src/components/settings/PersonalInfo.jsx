@@ -143,7 +143,7 @@ const PersonalInfo = ({userData, editButton, handleUserDataChange, birthdayForma
                         readOnly
                         id="age"
                         className="py-3 px-4 block w-full border-gray-200 text-black rounded-md text-sm focus:border-green-500 focus:ring-green-500 bg-white"
-                        placeholder="Suffix"
+                        placeholder="Age"
                         aria-describedby="hs-input-helper-text"
                         value={calculateAge(userData.birthday) || ""}
                     />

@@ -58,7 +58,7 @@ const EventsApplicationList = ({
     };
 
     const handleNewEventAppli = (obj) => {
-      setEvents((prev) => [obj, ...prev])
+      setEvents((prev) => [obj, ...prev]);
       setFilteredEvents((prev) => [obj, ...prev]);
     };
 
@@ -114,17 +114,10 @@ const EventsApplicationList = ({
 
       <td className="px-6 py-3">
         <div className="flex justify-center items-center">
-          {item.status === "Application Completed" && (
+          {item.status === "Approved" && (
             <div className="flex w-full items-center justify-center bg-green-500 m-2 rounded-lg">
               <span className="text-xs sm:text-sm font-bold text-white p-3 mx-5">
-                APPLICATION COMPLETED
-              </span>
-            </div>
-          )}
-          {item.status === "Paid" && (
-            <div className="flex w-full items-center justify-center bg-green-500 m-2 rounded-lg">
-              <span className="text-xs sm:text-sm font-bold text-white p-3 mx-5">
-                PAID
+              Approved
               </span>
             </div>
           )}
@@ -142,24 +135,17 @@ const EventsApplicationList = ({
               </span>
             </div>
           )}
-          {item.status === "Processing" && (
-            <div className="flex w-full items-center justify-center bg-[#3b66b6] m-2 rounded-lg">
-              <span className="text-xs sm:text-sm font-bold text-white p-3 mx-5">
-                PROCESSING
-              </span>
-            </div>
-          )}
-          {item.status === "Pending" && (
+          {item.status === "For Review" && (
             <div className="flex w-full items-center justify-center bg-custom-amber m-2 rounded-lg">
               <span className="text-xs sm:text-sm font-bold text-white p-3 mx-5">
-                PENDING
+                For Review
               </span>
             </div>
           )}
         </div>
       </td>
 
-      <td className="px-6 py-3">
+      {/* <td className="px-6 py-3">
         <div className="flex justify-center space-x-1 sm:space-x-none">
           <div className="hs-tooltip inline-block">
             <button
@@ -173,14 +159,14 @@ const EventsApplicationList = ({
               <AiOutlineEye size={24} style={{ color: "#ffffff" }} />
               {isLatestResponseResident(item) && (
                 <span className="tooltip inline-block absolute top-[-5px] right-2 z-10">
-                <span className="absolute inline-flex rounded-full bg-red-500 text-white h-3 w-3"></span>
-                <span className="absolute animate-ping inline-flex rounded-full bg-red-500 text-white h-3 w-3"></span>
-                {showTooltip && (
-                  <span className="tooltiptext bg-red-500 text-white text-xs py-1 px-2 rounded absolute -left-full top-1/2 transform -translate-y-1/2 -translate-x-full whitespace-nowrap">
-                    You have a new reply
-                  </span>
-                )}
-              </span>
+                  <span className="absolute inline-flex rounded-full bg-red-500 text-white h-3 w-3"></span>
+                  <span className="absolute animate-ping inline-flex rounded-full bg-red-500 text-white h-3 w-3"></span>
+                  {showTooltip && (
+                    <span className="tooltiptext bg-red-500 text-white text-xs py-1 px-2 rounded absolute -left-full top-1/2 transform -translate-y-1/2 -translate-x-full whitespace-nowrap">
+                      You have a new reply
+                    </span>
+                  )}
+                </span>
               )}
             </button>
             <span
@@ -192,7 +178,7 @@ const EventsApplicationList = ({
           </div>
           <div
             className={
-              item.status !== "Pending" ? "hidden" : "hs-tooltip inline-block"
+              item.status !== "For Review" ? "hidden" : "hs-tooltip inline-block"
             }
           >
             <button
@@ -213,7 +199,7 @@ const EventsApplicationList = ({
             </span>
           </div>
         </div>
-      </td>
+      </td> */}
     </tr>
   ));
 };

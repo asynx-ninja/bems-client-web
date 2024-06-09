@@ -110,7 +110,7 @@ const Header = () => {
     <div>
       <TopHeader
         fetch={fetch}
-        userData={userData.isApproved === "Verified" ? true : false}
+        userData={userData.isApproved === "Fully Verified" ? true : false}
       />
       <nav
         className={`h-[70px] bg-gradient-to-r from-[${

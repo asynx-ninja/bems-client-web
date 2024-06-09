@@ -1,21 +1,21 @@
 import React from "react";
-import { FaCalendarAlt } from "react-icons/fa";
+import { FaCalendarAlt, FaUsers } from "react-icons/fa";
 import { useRef, useEffect } from "react";
 import { AiFillFilePdf } from "react-icons/ai";
 import defaultBanner from "../../assets/image/1.png";
 
-const Content = ({ announcement, info }) => {
+const Content = ({ announcement, info, totalApplied }) => {
   const files =
     announcement &&
-      announcement.collections &&
-      announcement.collections.file !== undefined
+    announcement.collections &&
+    announcement.collections.file !== undefined
       ? announcement.collections.file
       : "";
 
   const banner =
     announcement &&
-      announcement.collections &&
-      announcement.collections.banner.link !== undefined
+    announcement.collections &&
+    announcement.collections.banner.link !== undefined
       ? announcement.collections.banner.link
       : defaultBanner;
 
@@ -30,15 +30,23 @@ const Content = ({ announcement, info }) => {
     return new Intl.DateTimeFormat("en-US", options).format(new Date(date));
   };
 
-  const reqAnother = () => { };
-
-  // console.log(announcement)
+  // console.log(announcement);
 
   return (
     <div className="flex flex-col gap-5 sm:px-2 md:px-5 w-full">
       {/* DESCRIPTION */}
-      <div className="sm:p-5 md:p-6 lg:w-full w-100 mx-auto">
-        <div className={`border-[1px] border-[${info && info.theme && info.theme.secondary !== "" ? info.theme.secondary : '#295141'}] bg-opacity-[50%] bg-[${info && info.theme && info.theme.secondary !== "" ? info.theme.secondary : '#295141'}] rounded-[15px]`}>
+      <div className="sm:p-5 md:p-6 w-full w-100 mx-auto">
+        <div
+          className={`border-[1px] border-[${
+            info && info.theme && info.theme.secondary !== ""
+              ? info.theme.secondary
+              : "#295141"
+          }] bg-opacity-[50%] bg-[${
+            info && info.theme && info.theme.secondary !== ""
+              ? info.theme.secondary
+              : "#295141"
+          }] rounded-[15px]`}
+        >
           <img
             className=" rounded-[15px] w-full sm:h-[200px] lg:h-[300px] object-contain"
             src={banner}
@@ -46,13 +54,29 @@ const Content = ({ announcement, info }) => {
           />
         </div>
 
-
         <div className="flex flex-col lg:flex-row justify-between items-start gap-5 ">
-          <div className={files.length === 0 ? "flex flex-col justify-between w-full lg:w-[100%]" : "flex flex-col justify-between w-full lg:w-[70%]"}>
+          <div
+            className={
+              files.length === 0
+                ? "flex flex-col justify-between w-full lg:w-[100%]"
+                : "flex flex-col justify-between w-full lg:w-[70%]"
+            }
+          >
             <div className="flex flex-col my-5 space-y-4">
               <h1 className="text-custom-green-header font-bold text-2xl md:text-[36px] text-left">
                 {announcement.title}
               </h1>
+              <div className="flex gap-5">
+                <div className="text-custom-green-header flex items-center font-bold gap-3">
+                  <FaCalendarAlt /> {dateFormat(announcement.date)}
+                </div>
+                {announcement && announcement.application_limit ? (
+                  <div className="text-custom-green-header flex items-center font-bold gap-3">
+                    <FaUsers /> {totalApplied} /{" "}
+                    {announcement && announcement.application_limit}
+                  </div>
+                ) : null}
+              </div>
             </div>
 
             <p className="text-gray-600 leading-relaxed whitespace-pre-wrap text-justify h-full pr-3">

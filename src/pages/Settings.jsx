@@ -289,6 +289,16 @@ const Settings = () => {
 
   const handleUserDataChange = (field, value) => {
     setUserData({ ...userData, [field]: value });
+
+    if (field === "birthday") {
+      let age = calculateAge(value);
+
+      if (age < 16) {
+        setAgeRes(true);
+      } else {
+        setAgeRes(false);
+      }
+    }
   };
 
   const handleUserChangeAdd = (field, value) => {
@@ -730,7 +740,7 @@ const Settings = () => {
                   role="alert"
                 >
                   <span className="font-bold ">Warning:</span> Your age must be
-                  atleast 16 years old to register!
+                  atleast 16 years old!
                 </div>
               ) : null}
               <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-[10px] my-5 pb-[10px] border-b-[2px] border-b-gray-200 px-[10px]">
@@ -964,7 +974,7 @@ const Settings = () => {
                 </div>
                 <div
                   className={
-                    userData.isApproved !== "Verified"
+                    userData.isApproved !== "Fully Verified"
                       ? "bg-gray-400 text-white font-medium px-4 py-1 rounded-2xl w-[150px] mx-auto mt-[20px]"
                       : "bg-custom-green-button text-white font-medium px-4 py-1 rounded-2xl w-[150px] mx-auto mt-[20px]"
                   }

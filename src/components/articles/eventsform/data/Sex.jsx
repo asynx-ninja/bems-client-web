@@ -18,6 +18,7 @@ const Sex = ({ variable, item, handlePersonalDetail, emptyFields }) => {
           type="radio"
           value="Male"
           checked={item.value === "Male"}
+          disabled
           onChange={(e) => handlePersonalDetail(e, variable)}
         />
         <label htmlFor="male" className="ml-2">

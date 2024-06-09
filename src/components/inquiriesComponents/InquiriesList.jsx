@@ -53,7 +53,7 @@ const InquiriesList = ({
         curItem.map((item) =>
           item._id === staff_inquiry._id ? staff_inquiry : item
         )
-      );  
+      );
     };
 
     const handleNewInq = (obj) => {
@@ -78,12 +78,10 @@ const InquiriesList = ({
 
   const isLatestResponseResident = (inquiry) => {
     const { response } = inquiry;
-    console.log(response)
+    console.log(response);
     if (response && response.length > 0) {
       const latestResponse = response[response.length - 1];
-      return (
-        latestResponse.type === "Staff" || latestResponse.type === "Admin"
-      );
+      return latestResponse.type === "Staff" || latestResponse.type === "Admin";
     }
     return false;
   };
@@ -130,10 +128,10 @@ const InquiriesList = ({
               </span>
             </div>
           )}
-          {item.isApproved === "Pending" && (
-            <div className="flex w-full items-center justify-center bg-custom-red-button m-2 rounded-lg">
+          {item.isApproved === "Submitted" && (
+            <div className="flex w-full items-center justify-center bg-custom-amber m-2 rounded-lg">
               <span className="text-xs sm:text-sm font-bold text-white p-3 mx-5">
-                PENDING
+                SUBMITTED
               </span>
             </div>
           )}
@@ -159,14 +157,14 @@ const InquiriesList = ({
               <AiOutlineEye size={24} style={{ color: "#ffffff" }} />
               {isLatestResponseResident(item) && (
                 <span className="tooltip inline-block absolute top-[-5px] right-2 z-10">
-                <span className="absolute inline-flex rounded-full bg-red-500 text-white h-3 w-3"></span>
-                <span className="absolute animate-ping inline-flex rounded-full bg-red-500 text-white h-3 w-3"></span>
-                {showTooltip && (
-                  <span className="tooltiptext bg-red-500 text-white text-xs py-1 px-2 rounded absolute -left-full top-1/2 transform -translate-y-1/2 -translate-x-full whitespace-nowrap">
-                    You have a new reply
-                  </span>
-                )}
-              </span>
+                  <span className="absolute inline-flex rounded-full bg-red-500 text-white h-3 w-3"></span>
+                  <span className="absolute animate-ping inline-flex rounded-full bg-red-500 text-white h-3 w-3"></span>
+                  {showTooltip && (
+                    <span className="tooltiptext bg-red-500 text-white text-xs py-1 px-2 rounded absolute -left-full top-1/2 transform -translate-y-1/2 -translate-x-full whitespace-nowrap">
+                      You have a new reply
+                    </span>
+                  )}
+                </span>
               )}
             </button>
             <span

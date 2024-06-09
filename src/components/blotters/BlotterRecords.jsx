@@ -126,17 +126,17 @@ const BlotterRecords = ({
             </td>
             <td className="px-6 py-3">
               <div className="flex justify-center items-center">
-                {item.status === "Completed" && (
+                {item.status === "Resolved" && (
                   <div className="flex w-full items-center justify-center bg-custom-green-button2 m-2 rounded-lg">
                     <span className="text-xs sm:text-sm font-bold text-white p-3 mx-5">
-                      COMPLETED
+                      Resolved
                     </span>
                   </div>
                 )}
-                {item.status === "Pending" && (
+                {item.status === "New" && (
                   <div className="flex w-full items-center justify-center bg-custom-red-button m-2 rounded-lg">
                     <span className="text-xs sm:text-sm font-bold text-white p-3 mx-5">
-                      Pending
+                      NEW
                     </span>
                   </div>
                 )}

@@ -97,7 +97,7 @@ const ServicesForm = ({ props }) => {
 
             setUserData(getUser.data[0]);
             setIsNotVerified(
-              getUser.data[0].isApproved !== "Verified" ? true : false
+              getUser.data[0].isApproved !== "Fully Verified" ? true : false
             );
 
             filter.form[0].user_id.value = getUser.data[0].user_id;
@@ -105,6 +105,8 @@ const ServicesForm = ({ props }) => {
             setNoForm(false);
             setService(rest);
             setDetail(filter);
+
+            getDefaultDeets(event_form, getUser.data[0]);
           } else {
             setNoForm(true);
             setService(service_response.data[0]);
@@ -126,6 +128,41 @@ const ServicesForm = ({ props }) => {
       }
 
       // imageRef.current.src = defaultPFP;
+    };
+
+    const getUserDetailsChecked = (key, form, user) => {
+      const newData = form.form[0];
+
+      const objectConstraint = {
+        id_pic: null,
+        address: `${user.address.street}, ${user.address.brgy}, ${user.address.city}`,
+        birthday:
+          user.birthday === undefined ? "" : user.birthday.substr(0, 10),
+        age: calculateAge(user.birthday),
+        value: user[key],
+      };
+
+      newData[key] = {
+        ...newData[key],
+        value: Object.entries(objectConstraint).find(([k]) => key === k)
+          ? objectConstraint[key]
+          : user[key],
+      };
+
+      return newData;
+    };
+
+    const getDefaultDeets = (form, user) => {
+      if (form && form.form !== undefined) {
+        Object.entries(form.form[0]).map(([key]) => {
+          const newData = getUserDetailsChecked(key, form, user);
+
+          setDetail((prev) => ({
+            ...prev,
+            form: [newData, form.form[1]],
+          }));
+        });
+      }
     };
 
     fetchForms();
@@ -180,71 +217,6 @@ const ServicesForm = ({ props }) => {
     }
 
     return age;
-  };
-
-  const getUserDetailsChecked = (key) => {
-    const newData = detail.form[0];
-
-    const objectConstraint = {
-      id_pic: null,
-      address: `${userData.address.street}, ${userData.address.brgy}, ${userData.address.city}`,
-      birthday:
-        userData.birthday === undefined ? "" : userData.birthday.substr(0, 10),
-      age: calculateAge(userData.birthday),
-      value: userData[key],
-    };
-
-    newData[key] = {
-      ...newData[key],
-      value: Object.entries(objectConstraint).find(([k]) => key === k)
-        ? objectConstraint[key]
-        : userData[key],
-    };
-
-    return newData;
-  };
-
-  const setUserDetailsChecked = (key) => {
-    const newData = detail.form[0];
-
-    const objectConstraint = {
-      id_pic: null,
-      age: 0,
-      weight: 0,
-    };
-
-    newData[key] = {
-      ...newData[key],
-      value: Object.entries(objectConstraint).find(([k]) => key === k)
-        ? objectConstraint[key]
-        : key === "user_id"
-        ? newData[key].value
-        : "",
-    };
-
-    return newData;
-  };
-
-  const getDefaultDeets = (e) => {
-    if (e.target.checked) {
-      Object.entries(detail.form[0]).map(([key]) => {
-        const newData = getUserDetailsChecked(key);
-
-        setDetail((prev) => ({
-          ...prev,
-          form: [newData, detail.form[1]],
-        }));
-      });
-    } else {
-      Object.entries(detail.form[0]).map(([key]) => {
-        const newData = setUserDetailsChecked(key);
-
-        setDetail((prev) => ({
-          ...prev,
-          form: [newData, detail.form[1]],
-        }));
-      });
-    }
   };
 
   const handlePersonalDetail = (e, key) => {
@@ -648,17 +620,6 @@ const ServicesForm = ({ props }) => {
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="flex w-full justify-start items-center gap-5">
-                    <input
-                      id="defaultDeets"
-                      type="checkbox"
-                      onChange={(e) => getDefaultDeets(e)}
-                      className="shrink-0 mt-0.5 border-gray-500 rounded-sm h-[20px] w-[20px] text-green-500 focus:ring-green-500"
-                    />
-                    <label htmlFor="defaultDeets">
-                      Check to insert your personal details
-                    </label>
                   </div>
                 </div>
                 <PersonalDetails
