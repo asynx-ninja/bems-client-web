@@ -66,8 +66,7 @@ const Inquiries = () => {
                 new Date(date2.createdAt) - new Date(date1.createdAt)
             )
           );
-          setFilteredInquiries(response.data.result.slice(0, 10));
-          setPageCount(response.data.pageCount);
+          
         } else {
           setInquiries([]);
         }
