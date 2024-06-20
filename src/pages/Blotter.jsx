@@ -61,7 +61,10 @@ const Blotter = () => {
         // console.log(response)
 
         if (response.status === 200) {
-          
+          // setBlotter(response.data.result.sort((date1, date2) => new Date(date2.createdAt) - new Date(date1.createdAt)))
+          setBlotter(response.data.result);
+          setFilteredBlotter(response.data.result.slice(0, 10));
+          setPageCount(response.data.pageCount);
         } else {
           setBlotter([]);
         }

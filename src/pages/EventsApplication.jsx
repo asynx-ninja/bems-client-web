@@ -58,7 +58,9 @@ const EventsApplication = () => {
         );
 
         if (response.status === 200) {
-          
+          setEvents(response.data.result);
+          setFilteredEvents(response.data.result.slice(0, 10));
+          setPageCount(response.data.pageCount);
         } 
       } catch (err) {
         console.log(err);

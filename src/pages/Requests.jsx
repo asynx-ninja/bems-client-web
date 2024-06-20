@@ -61,7 +61,9 @@ const Requests = () => {
         // console.log(response)
 
         if (response.status === 200) {
-          
+          setRequest(response.data.result);
+          setFilteredRequest(response.data.result.slice(0, 10));
+          setPageCount(response.data.pageCount);
         }
       } catch (err) {
         console.log(err);

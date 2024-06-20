@@ -43,11 +43,17 @@ const EventsInfo = () => {
           `${API_LINK}/announcement/all/?brgy=${brgy}&page=${currentPage}`
         );
 
+        setAnnouncements(response.data.result);
+        setFilterType(response.data.result.slice(0, 10))
+        setPageCount(response.data.pageCount);
       } else {
         const response = await axios.get(
           `${API_LINK}/announcement/?brgy=${brgy}&archived=false&page=${currentPage}`
         );
-
+        
+        setAnnouncements(response.data.result);
+        setFilterType(response.data.result.slice(0, 10))
+        setPageCount(response.data.pageCount);
       }
       
     } catch (err) {

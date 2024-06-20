@@ -70,7 +70,15 @@ const Header = () => {
             (item) => item.read_by.length === 0
           );
 
-          
+          if (sortedNotifications.length === read.length) {
+            setUnread(
+              sortedNotifications.length - (read.length - emptyRead.length)
+            );
+          } else {
+            setUnread(sortedNotifications.length - read.length);
+          }
+
+          setNotification(sortedNotifications);
         }
       } catch (error) {
         console.log(error);

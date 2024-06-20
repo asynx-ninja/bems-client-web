@@ -406,7 +406,109 @@ const SignupPage = () => {
       return;
     }
 
-    setSubmitClicked(true);
+    const res_folder = await axios.get(
+      `${API_LINK}/folder/specific/?brgy=${obj.address.brgy}`
+    );
+
+    if (res_folder.status === 200) {
+      try {
+        setSubmitClicked(true);
+
+        var newFormData = new FormData();
+
+        newFormData.append("user", JSON.stringify(obj));
+
+        let selfieFile = new File(
+          [formData.selfie],
+          `${formData.lastName}, ${formData.firstName} - SELFIE`,
+          {
+            type: "image/jpeg",
+            size: formData.selfie.size,
+            uri: formData.selfie.uri,
+          }
+        );
+
+        newFormData.append("files", selfieFile);
+
+        for (let i = 0; i < formData.primary_file.length; i++) {
+          let file = {
+            name: `${formData.lastName}, ${
+              formData.firstName
+            } - PRIMARY ID ${moment(new Date()).format("MMDDYYYYHHmmss")}`,
+            size: formData.primary_file[i].size,
+            type: formData.primary_file[i].type,
+            uri: formData.primary_file[i].uri,
+          };
+
+          newFormData.append(
+            "files",
+            new File([formData.primary_file[i]], file.name, {
+              type: file.type,
+            })
+          );
+        }
+
+        for (let i = 0; i < formData.secondary_file.length; i++) {
+          let file = {
+            name: `${formData.lastName}, ${
+              formData.firstName
+            } - SECONDARY ID ${moment(new Date()).format("MMDDYYYYHHmmss")}`,
+            uri: formData.secondary_file[i].uri,
+            type: formData.secondary_file[i].type,
+            size: formData.secondary_file[i].size,
+          };
+
+          newFormData.append(
+            "files",
+            new File([formData.secondary_file[i]], file.name, {
+              type: file.type,
+            })
+          );
+        }
+
+        const response = await axios.post(
+          `${API_LINK}/users/?folder_id=${res_folder.data[0].verification}`,
+          newFormData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
+        console.log(response.data);
+
+        if (response.status === 200) {
+          setsuccessReg(true);
+
+          const email = btoa(obj.email);
+          const barangay = btoa(obj.address.brgy);
+
+          setTimeout(() => {
+            setSubmitClicked(false);
+            setUpdatingStatus("success");
+            setTimeout(function () {
+              navigate(`/loading/?email=${email}&brgy=${barangay}`);
+            }, 3000);
+          }, 1000);
+        }
+      } catch (error) {
+        console.log(error);
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.error
+        ) {
+          setDuplicateError(error.response.data.error);
+          setEmpty(false);
+          setShowError(false);
+          setSubmitClicked(false);
+          setUpdatingStatus("error");
+        } else {
+          setDuplicateError("An unknown error occurred.");
+        }
+      }
+    }
   };
 
   // console.log(formData);
